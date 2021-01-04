@@ -1,11 +1,6 @@
 ---
-<<<<<<< HEAD
 title: "一文搞懂ASCII、Unicode、UTF"
-date: 2020-9-18 09:27:53
-=======
-title: 一文搞懂ASCII、Unicode、UTF
 date: 2020-9-18T09:27:53+08:00
->>>>>>> 322ae0ee90b3994a1d24f1dbb6b7d40968145c5d
 toc: true
 images:
 tags:
@@ -18,7 +13,7 @@ tags:
 
 ## 什么是ASCII，为什么又要引入Unicode
 
-![](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/ascii.png)
+![image](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/ascii.png)
 
 都应该了解过 ASCII、Unicode、Unicode 码点、UTF-8等一系列名词。先说 ASCII（American Standard Code for Information Interchange: 美国信息交换标准代码），它是一种**字符集**，说白了就是一个字符和数字的**一一对应关系**，你想找这个字符怎么办，计算机又不认识字符？给出他的对应的数字就行了。最初只有美国等一些使用英文的国家使用，所以 128 个字符完全够用，它包含了标点符号、数字和字母等。但是随着世界上使用计算机的国家越来越多，这 128 个字符是完全不够用的。所以 **Unicode 字符集** 就出现了。Unicode 包含了世界上绝大多数的字符，给他们提供了一一对应关系，比如“知”字对应 30693，即 U+77e5（16 进制形式）。所以说白了 ASCII 和 Unicode 就是**一种字符集**，**一种字符对应关系**，Unicode 中每个字符被称为一个 **Code Point**（码点），而 Go 语言中的 rune 类型正是代表了这样一个单位，即一个 rune 代表了一个 unicode 字符。
 
