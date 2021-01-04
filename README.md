@@ -1,6 +1,6 @@
 # 失落的迷之博客
 
-写写代码，喝喝茶，搞搞 Go，一起吧，这是我的项目地址：<https://github.com/eddycjy/blog>
+这是我的项目地址：<https://github.com/sh1luo>
 
 ## 在线阅读
 

@@ -100,14 +100,14 @@ googleAnalytics = "UA-166045776-1"
     weight = 11
 
   [[menu.nav]]
-    name = "Go系列"
+    name = "生活"
     url = "k8s-categories/"
-    weight = 11
+    weight = 12
 
   [[menu.nav]]
-    name = "Prometheus系列"
+    name = "Go系列"
     url = "prometheus-categories/"
-    weight = 11
+    weight = 13
 
 
 
