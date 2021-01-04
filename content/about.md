@@ -10,7 +10,7 @@ date: "2019-12-15"
 ### 联系方式
 
 - Github：<https://github.com/sh1luo>
-- 邮箱：silo1999@163.com
+- 邮箱：<silo1999@163.com>
 - 公众号：编程低北（后续会更新）
 
 ### 我的公众号
