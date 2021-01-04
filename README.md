@@ -1,14 +1,14 @@
-# 煎鱼的迷之博客
+# 失落的迷之博客
 
-写写代码，喝喝茶，搞搞 Go，一起吧，这是我的项目地址：https://github.com/eddycjy/blog
+写写代码，喝喝茶，搞搞 Go，一起吧，这是我的项目地址：<https://github.com/eddycjy/blog>
 
 ## 在线阅读
 
-- https://eddycjy.com/
+- <https://sh1luo.gitee.io/>
 
 ## 我的公众号
 
-![image](https://image.eddycjy.com/7074be90379a121746146bc4229819f8.jpg)
+暂不推广
 
 ## ？
 

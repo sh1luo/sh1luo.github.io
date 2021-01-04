@@ -7,9 +7,9 @@ date: "2019-12-15"
 
 业余会定期翻译外文，参与 GCTT 翻译工作。
 
-### 联系方式：
+### 联系方式
 
-- Github：https://github.com/sh1luo
+- Github：<https://github.com/sh1luo>
 - 邮箱：silo1999@163.com
 - 公众号：编程低北（后续会更新）
 

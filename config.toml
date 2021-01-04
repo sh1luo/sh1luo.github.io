@@ -40,11 +40,11 @@ googleAnalytics = "UA-166045776-1"
   themeColor = "#494f5c"
 
   homeSubtitle = "Summary, Thinking, Life"
-  footerCopyright = ' &#183; <a href="http://www.beian.miit.gov.cn/">粤ICP备19076352号</a>'
+  # footerCopyright = ' &#183; <a href="http://www.beian.miit.gov.cn/">粤ICP备19076352号</a>'
   # bgImg = ""  # Homepage background-image URL
 
   # Prefix of link to the git commit detail page. GitInfo must be enabled.
-  gitUrl = "https://github.com/eddycjy/blog/commit/"
+  #gitUrl = "https://github.com/eddycjy/blog/commit/"
 
   # Toggling this option needs to rebuild SCSS, requires Hugo extended version
   justifyContent = false  # Set "text-align: justify" to `.content`.
@@ -62,6 +62,14 @@ googleAnalytics = "UA-166045776-1"
   [[params.social]]
     name = "github"
     url = "https://github.com/sh1luo"
+
+  [[params.social]]
+    name = "email"
+    url = "silo1999@163.com"
+
+  [[params.social]]
+    name = "qq"
+    url = "http://wpa.qq.com/msgrd?v=3&uin=690898835&site=qq&menu=yes"
 
 [menu]
 
@@ -87,12 +95,12 @@ googleAnalytics = "UA-166045776-1"
     weight = 10
 
   [[menu.nav]]
-    name = "Go系列"
+    name = "总结"
     url = "go-categories/"
     weight = 11
 
   [[menu.nav]]
-    name = "Kubernetes系列"
+    name = "Go系列"
     url = "k8s-categories/"
     weight = 11
 
