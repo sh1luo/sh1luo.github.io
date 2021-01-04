@@ -65,7 +65,7 @@ googleAnalytics = "UA-166045776-1"
 
   [[params.social]]
     name = "email"
-    url = "silo1999@163.com"
+    url = "mailto:silo1999@163.com"
 
   [[params.social]]
     name = "qq"
