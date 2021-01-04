@@ -1,6 +1,6 @@
 ---
 title: "一文搞懂ASCII、Unicode、UTF"
-date: "2020-09-18T09:27:53+08:00"
+date: "2020-09-18 09:27 +08:00"
 toc: true
 images:
 tags:
@@ -9,7 +9,7 @@ tags:
 
 ## 起因
 
-最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在**会用**的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。 
+最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在**会用**的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。
 
 ## 什么是ASCII，为什么又要引入Unicode
 
@@ -63,9 +63,9 @@ package main
 import "fmt"
 
 func main() {
-	str := "hello,狗狼"
-	fmt.Println(len(str))
-	fmt.Println(len([]rune(str)))
+ str := "hello,狗狼"
+ fmt.Println(len(str))
+ fmt.Println(len([]rune(str)))
 }
 ```
 
@@ -83,12 +83,3 @@ Process finished with exit code 0
 综上所述，ASCII 和 Unicode 都是一种字符集，代表了字符与数字间的一一对应关系。而 UTF 是一种变长的字符编码规范。而 rune 是 Go 语言中的一个变量类型，一个 rune 代表了一个 Unicode 码点单位。以上。
 
 因个人能力有限，有疏漏之处欢迎和我交流 :)
-
-
-
-
-
-
-
-
-
