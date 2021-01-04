@@ -96,17 +96,17 @@ googleAnalytics = "UA-166045776-1"
 
   [[menu.nav]]
     name = "总结"
-    url = "go-categories/"
+    url = "summary/"
     weight = 11
 
   [[menu.nav]]
     name = "生活"
-    url = "k8s-categories/"
+    url = "life/"
     weight = 12
 
   [[menu.nav]]
     name = "Go系列"
-    url = "prometheus-categories/"
+    url = "go/"
     weight = 13
 
 
