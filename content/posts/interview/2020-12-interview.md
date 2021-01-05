@@ -8,6 +8,8 @@ tags:
 
 ## 写作背景
 
+<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/bytedance.jpg" alt="bytedance" style="zoom: 25%;" />
+
 由于早早有了就业的想法，于是我在大三上学期快要结束的时候便早早地”物色“各大公司的实习了，也是希望能在就业前增加几段实习经历，丰富一下经验。这也是人生中我的第一次面试，感触颇多。特别记录下来自己的总结以及对于假期自己的学习规划。
 
 ## 面试总结
