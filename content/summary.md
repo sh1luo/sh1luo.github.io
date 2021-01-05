@@ -7,6 +7,8 @@ date: "2019-12-16"
 
 0. [一文搞懂 ASCII、Unicode、rune 和 UTF](/posts/summary/ascii-unicode-utf)
 1. [记人生中的前几次面试](/posts/interview/2020-12-interview)
+2. [RPC VS. HTTP](/posts/rpc/rpcVShttp)
+3. [手写一个简单的RPC Framework](/post/rpc/rpcg)
 
 ### 我的公众号
 
