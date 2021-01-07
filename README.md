@@ -4,7 +4,7 @@
 
 ## 在线阅读
 
-- <https://sh1luo.gitee.io/>
+- <https://kcode.icu/>
 
 ## 我的公众号
 
