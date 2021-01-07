@@ -7,7 +7,7 @@ tags:
 
 ## 写作背景
 
-<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/bytedance.jpg" alt="bytedance" style="zoom: 25%;" />
+![](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/bytedance.jpg)
 
 由于早早有了就业的想法，于是我在大三上学期快要结束的时候便早早地”物色“各大公司的实习了，也是希望能在就业前增加几段实习经历，丰富一下经验。这也是人生中我的第一次面试，感触颇多。特别记录下来自己的总结以及对于假期自己的学习规划。
 
@@ -17,7 +17,7 @@ tags:
 
 ### 简历
 
-<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210103221551405.png" alt="image" style="zoom: 50%;" />
+![](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210103221551405.png)
 
 我个人使用的简历大致是这样的风格，简约并且色调一致。简历这块我倒没什么卡壳，简历没过的 **我猜** 都是因为学历等等硬性条件不合适，这也是没有办法的事情。这里需要确保这么几点：
 
