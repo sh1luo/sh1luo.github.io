@@ -2,72 +2,72 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on 失落</title>
-    <link>https://sh1luo.github.io/tags/</link>
+    <link>https://kcode.icu/tags/</link>
     <description>Recent content in Tags on 失落</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 03 Jan 2021 21:18:13 +0000</lastBuildDate><atom:link href="https://sh1luo.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 03 Jan 2021 21:18:13 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>面试</title>
-      <link>https://sh1luo.github.io/tags/%E9%9D%A2%E8%AF%95/</link>
+      <link>https://kcode.icu/tags/%E9%9D%A2%E8%AF%95/</link>
       <pubDate>Sun, 03 Jan 2021 21:18:13 +0000</pubDate>
       
-      <guid>https://sh1luo.github.io/tags/%E9%9D%A2%E8%AF%95/</guid>
+      <guid>https://kcode.icu/tags/%E9%9D%A2%E8%AF%95/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go</title>
-      <link>https://sh1luo.github.io/tags/go/</link>
+      <link>https://kcode.icu/tags/go/</link>
       <pubDate>Sat, 28 Nov 2020 15:45:13 +0000</pubDate>
       
-      <guid>https://sh1luo.github.io/tags/go/</guid>
+      <guid>https://kcode.icu/tags/go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>RPC</title>
-      <link>https://sh1luo.github.io/tags/rpc/</link>
+      <link>https://kcode.icu/tags/rpc/</link>
       <pubDate>Sat, 28 Nov 2020 15:45:13 +0000</pubDate>
       
-      <guid>https://sh1luo.github.io/tags/rpc/</guid>
+      <guid>https://kcode.icu/tags/rpc/</guid>
       <description></description>
     </item>
     
     <item>
       <title>框架</title>
-      <link>https://sh1luo.github.io/tags/%E6%A1%86%E6%9E%B6/</link>
+      <link>https://kcode.icu/tags/%E6%A1%86%E6%9E%B6/</link>
       <pubDate>Sat, 28 Nov 2020 15:45:13 +0000</pubDate>
       
-      <guid>https://sh1luo.github.io/tags/%E6%A1%86%E6%9E%B6/</guid>
+      <guid>https://kcode.icu/tags/%E6%A1%86%E6%9E%B6/</guid>
       <description></description>
     </item>
     
     <item>
       <title>REST</title>
-      <link>https://sh1luo.github.io/tags/rest/</link>
+      <link>https://kcode.icu/tags/rest/</link>
       <pubDate>Tue, 10 Nov 2020 21:30:13 +0000</pubDate>
       
-      <guid>https://sh1luo.github.io/tags/rest/</guid>
+      <guid>https://kcode.icu/tags/rest/</guid>
       <description></description>
     </item>
     
     <item>
       <title>字符集</title>
-      <link>https://sh1luo.github.io/tags/%E5%AD%97%E7%AC%A6%E9%9B%86/</link>
+      <link>https://kcode.icu/tags/%E5%AD%97%E7%AC%A6%E9%9B%86/</link>
       <pubDate>Fri, 18 Sep 2020 09:27:13 +0000</pubDate>
       
-      <guid>https://sh1luo.github.io/tags/%E5%AD%97%E7%AC%A6%E9%9B%86/</guid>
+      <guid>https://kcode.icu/tags/%E5%AD%97%E7%AC%A6%E9%9B%86/</guid>
       <description></description>
     </item>
     
     <item>
       <title>踩坑</title>
-      <link>https://sh1luo.github.io/tags/%E8%B8%A9%E5%9D%91/</link>
+      <link>https://kcode.icu/tags/%E8%B8%A9%E5%9D%91/</link>
       <pubDate>Sun, 26 Apr 2020 11:34:13 +0000</pubDate>
       
-      <guid>https://sh1luo.github.io/tags/%E8%B8%A9%E5%9D%91/</guid>
+      <guid>https://kcode.icu/tags/%E8%B8%A9%E5%9D%91/</guid>
       <description></description>
     </item>
     

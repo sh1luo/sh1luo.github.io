@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>踩坑 on 失落</title>
-    <link>https://sh1luo.github.io/tags/%E8%B8%A9%E5%9D%91/</link>
+    <link>https://kcode.icu/tags/%E8%B8%A9%E5%9D%91/</link>
     <description>Recent content in 踩坑 on 失落</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 26 Apr 2020 11:34:13 +0000</lastBuildDate><atom:link href="https://sh1luo.github.io/tags/%E8%B8%A9%E5%9D%91/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Apr 2020 11:34:13 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E8%B8%A9%E5%9D%91/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>OBS显示器捕获黑屏解决方案</title>
-      <link>https://sh1luo.github.io/posts/chore/obs/</link>
+      <link>https://kcode.icu/posts/chore/obs/</link>
       <pubDate>Sun, 26 Apr 2020 11:34:13 +0000</pubDate>
       
-      <guid>https://sh1luo.github.io/posts/chore/obs/</guid>
+      <guid>https://kcode.icu/posts/chore/obs/</guid>
       <description>问题起因 由于我最近重新安装了系统，在重新下载 OBS 后发现捕获不到桌面。我之前解决方法就是直接在显卡控制面板里将 OBS 设置为集显就行了。但是这次设置了也不行，有可能是我下载的显卡驱动版本不对。。于是就找到了这个终极解决方案，基本电脑上有这个功能的都能解决。
 问题环境 操作系统：Win10 64位 专业版 - 1909
 CPU 集成显卡型号：Inter(R) UHD Graphics 630
