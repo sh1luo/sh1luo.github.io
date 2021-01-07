@@ -1,4 +1,4 @@
-baseURL = "https://kcode.icu/"
+baseURL = "http://kcode.icu/"
 languageCode = "zh-hans"
 defaultContentLanguage = "en"
 title = "失落"
