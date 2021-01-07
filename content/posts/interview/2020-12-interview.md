@@ -17,7 +17,7 @@ tags:
 
 ### 简历
 
-<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210103221551405.png" alt="image-20210103221551405" style="zoom:50%;" />
+<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210103221551405.png" alt="image" style="zoom: 50%;" />
 
 我个人使用的简历大致是这样的风格，简约并且色调一致。简历这块我倒没什么卡壳，简历没过的 **我猜** 都是因为学历等等硬性条件不合适，这也是没有办法的事情。这里需要确保这么几点：
 
