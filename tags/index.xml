@@ -7,7 +7,52 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 03 Jan 2021 21:18:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Jan 2021 23:10:22 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTTP</title>
+      <link>https://www.kcode.icu/tags/http/</link>
+      <pubDate>Fri, 15 Jan 2021 23:10:22 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/tags/http/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>原理</title>
+      <link>https://www.kcode.icu/tags/%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Fri, 15 Jan 2021 23:10:22 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/tags/%E5%8E%9F%E7%90%86/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CDN</title>
+      <link>https://www.kcode.icu/tags/cdn/</link>
+      <pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/tags/cdn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>博客</title>
+      <link>https://www.kcode.icu/tags/%E5%8D%9A%E5%AE%A2/</link>
+      <pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/tags/%E5%8D%9A%E5%AE%A2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>杂谈</title>
+      <link>https://www.kcode.icu/tags/%E6%9D%82%E8%B0%88/</link>
+      <pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/tags/%E6%9D%82%E8%B0%88/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>面试</title>
       <link>https://www.kcode.icu/tags/%E9%9D%A2%E8%AF%95/</link>
@@ -50,24 +95,6 @@
       <pubDate>Tue, 10 Nov 2020 21:30:13 +0000</pubDate>
       
       <guid>https://www.kcode.icu/tags/rest/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>字符集</title>
-      <link>https://www.kcode.icu/tags/%E5%AD%97%E7%AC%A6%E9%9B%86/</link>
-      <pubDate>Fri, 18 Sep 2020 09:27:13 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/tags/%E5%AD%97%E7%AC%A6%E9%9B%86/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>踩坑</title>
-      <link>https://www.kcode.icu/tags/%E8%B8%A9%E5%9D%91/</link>
-      <pubDate>Sun, 26 Apr 2020 11:34:13 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/tags/%E8%B8%A9%E5%9D%91/</guid>
       <description></description>
     </item>
     

@@ -6,8 +6,76 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-hans</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Sun, 03 Jan 2021 21:18:13 +0000</lastBuildDate>
+		<lastBuildDate>Fri, 15 Jan 2021 23:10:22 +0000</lastBuildDate>
 		<atom:link href="https://www.kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title></title>
+			<link>https://www.kcode.icu/posts/http/</link>
+			<pubDate>Fri, 15 Jan 2021 23:10:22 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/http/</guid>
+			<description>标题的这句话我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
+HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP）。</description>
+			<content type="html"><![CDATA[<p>标题的这句话我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。</p>
+<h2 id="http是什么">HTTP是什么</h2>
+<p>超文本传输协议（Hypertext Transfer Protocol，HTTP）。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title></title>
+			<link>https://www.kcode.icu/posts/chore/blog_journey/</link>
+			<pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/chore/blog_journey/</guid>
+			<description>仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
+ 尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。 使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。 发现了国内访问速度更快的 Gitee Page。 再次购买域名，使用 CDN 加速国外空间，未果（下文说）&amp;hellip;&amp;hellip;  前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
+当时配置那个 A 记录，CNAME 记录啥的根本不知道是什么东西，也不知道 DNS 是什么，就是配，成功了就行，不成功就猜，一个个试呗。现在想想，真的是走了不少弯路，如果能系统地学一下多好。不过这些问题也都在我后来的实践以及学习过程中逐一解决了，现在遇到问题也不用像没头苍蝇一样乱撞了，这种感觉很不错 :)
+这件事也让我大致理解了一句老话，大致是这么说的：真正厉害的技术人员不是说他写程序一定要多么多么厉害，而是他有非常强悍的问题定位能力（trouble shooting），能解决别人解决不了的问题，而这一切都源自于无数经验的积累以及深度的思考。
+下面说我的最后一次迁移：)
+ 之所以有两个部分是因为买了域名后才发现必须要国内域名并且备案，才能加速国内。我买的是国外域名所以没办法，最后就用 GitHub Page + 自定义域名了。
+ GitHub Page+自定义域名 这种方案比较简单（因为GitHub 都帮我们做了），你首先需要创建一个名为 &amp;lt;YourGitHubName&amp;gt;.github.io 的仓库，比如 sh1luo.github.io，然后购买一个域名（国内国外都行，国内要备案），给他添加一条 CNAME 记录 ，就像这样
+我是国外的域名，所以转为了国内的 DNSPod 进行解析，希望快一点，做法也非常简单。就是把原域名服务器商的 NameServers 改成 新解析服务器提供的就好了，如上图的 hickory.dnspod.net 那两条。
+当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加一条 CNAME 记录，然后在 GitHub Pages 那里设置上自定义域名就完事了，它会自动帮你部署 HTTPS 和一切的 :)
+CDN加速 如果你是国内的域名但是是国外的空间，就可以使用 CDN 加速了，加速区域选国内。这里需要注意源站地址由于是 GitHub Pages ，而 GitHub Pages 有 4 个 IP。都写上一行一个，回源 HOST 写你自己地址就可以了。这个回源 HOST 实际上就是 HTTP 头里的 host 字段，如果同一台机器上有多个服务的话，用来标识是哪一个服务，比较常见就是一个 IP 地址上配置了多个域名，就是通过这种给 host 首部字段的方式区分的不同 Web 站点。</description>
+			<content type="html"><![CDATA[<p><!-- raw HTML omitted --></p>
+<p>仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：</p>
+<ul>
+<li>尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。</li>
+<li>使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。</li>
+<li>发现了国内访问速度更快的 Gitee Page。</li>
+<li>再次购买域名，使用 CDN 加速国外空间，未果（下文说）&hellip;&hellip;</li>
+</ul>
+<p>前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。</p>
+<p>当时配置那个 A 记录，CNAME 记录啥的根本不知道是什么东西，也不知道 DNS 是什么，就是配，成功了就行，不成功就猜，一个个试呗。现在想想，真的是走了不少弯路，如果能系统地学一下多好。不过这些问题也都在我后来的实践以及学习过程中逐一解决了，现在遇到问题也不用像没头苍蝇一样乱撞了，这种感觉很不错 :)</p>
+<p>这件事也让我大致理解了一句老话，大致是这么说的：真正厉害的技术人员不是说他写程序一定要多么多么厉害，而是他有非常强悍的问题定位能力（trouble shooting），能解决别人解决不了的问题，而这一切都源自于无数经验的积累以及深度的思考。</p>
+<p>下面说我的最后一次迁移：)</p>
+<blockquote>
+<p>之所以有两个部分是因为买了域名后才发现必须要国内域名并且备案，才能加速国内。我买的是国外域名所以没办法，最后就用 GitHub Page + 自定义域名了。</p>
+</blockquote>
+<h2 id="github-page自定义域名">GitHub Page+自定义域名</h2>
+<p><!-- raw HTML omitted --></p>
+<p>这种方案比较简单（因为GitHub 都帮我们做了），你首先需要创建一个名为 <code>&lt;YourGitHubName&gt;.github.io</code> 的仓库，比如 <code>sh1luo.github.io</code>，然后购买一个域名（国内国外都行，国内要备案），给他添加一条 <a href="https://baike.baidu.com/item/CNAME/9845877?fr=aladdin">CNAME 记录</a> ，就像这样</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118183506330.png" alt="DNS记录"></p>
+<p>我是国外的域名，所以转为了国内的 <a href="https://www.dnspod.cn/">DNSPod</a> 进行解析，希望快一点，做法也非常简单。就是把原域名服务器商的 NameServers 改成 新解析服务器提供的就好了，如上图的 hickory.dnspod.net 那两条。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118183902580.png" alt="image-20210118183902580"></p>
+<p>当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加一条 CNAME 记录，然后在 GitHub Pages 那里设置上自定义域名就完事了，它会自动帮你部署 HTTPS 和一切的 :)</p>
+<h2 id="cdn加速">CDN加速</h2>
+<p>如果你是国内的域名但是是国外的空间，就可以使用 CDN 加速了，加速区域选国内。这里需要注意源站地址由于是 GitHub Pages ，而 GitHub Pages 有 4 个 IP。都写上一行一个，回源 HOST 写你自己地址就可以了。这个回源 HOST 实际上就是 HTTP 头里的 host 字段，如果同一台机器上有多个服务的话，用来标识是哪一个服务，比较常见就是一个 IP 地址上配置了多个域名，就是通过这种给 host 首部字段的方式区分的不同 Web 站点。</p>
+<p><!-- raw HTML omitted --></p>
+<p>配置完源站信息后，会生成一个 CDN 域名，比如我的是 <code>kcode.icu.cdn.dnsv1.com</code> ，然后再添加一条 CNAME 记录指向这个域名就搞定。参考上面的 <code>DNS记录</code> 这张图。这样配置过，你的网站经过缓存后国内访问速度能达到非常恐怖的速度，可以试着 ping 一下哦。</p>
+<h2 id="actions自动化构建">Actions自动化构建</h2>
+<h2 id="说在最后">说在最后</h2>
+<p>之前是在阿里云买的是国内域名并在阿里云备案，到期之后续费价格是之前 10 倍。。在这个期间还不小心把备案号主体（直到现在我也不知道是个啥，貌似还需要写个书面申请到当地管局）不小心删了，再次备案怎么也申请不过，左右摇头+上下点头了几十分钟脖子都酸了还不通过，于是直接去 <a href="https://www.namesilo.com/">NameSilo</a> 上买的国外域名。这里没什么好说的就是付费就完事（手动狗头）。</p>
+<p>因为这是国外域名服务器，如果你想用国内域名服务器解析的话（比如国内的），就把 NameServers 设置为目标域名服务器提供的记录值就可以了，其实就是一条 NS 记录。我用的还是它默认的域名服务器，因为我的是国外域名，CDN 国内加速不了，必须要备案，下面会说。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210117164512937.png" alt="hickory这个位置字段的这两条就是"></p>
+<p>如果你要修改域名服务器的话，在目标网站上里创建域名后，就会为你生成若干条 NS 记录，回到原网站修改了就好了。</p>
+<blockquote>
+<p>买域名可以选择国内也可以选择国外，国内必须备案，国外不用。</p>
+</blockquote>
+]]></content>
+		</item>
 		
 		<item>
 			<title>记人生中前几次面试及思考</title>
