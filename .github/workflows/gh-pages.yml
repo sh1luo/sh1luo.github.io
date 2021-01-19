@@ -21,11 +21,8 @@ jobs:
           extended: true 
 
       - name: Build 
-        run: hugo
-      
-      - name: AddCNAME
-        run: echo www.kcode.icu >> CNAME
-      
+        run: hugo && echo www.kcode.icu >> ./public/CNAME
+        
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
