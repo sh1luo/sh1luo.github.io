@@ -22,7 +22,10 @@ jobs:
 
       - name: Build 
         run: hugo
-
+      
+      - name: AddCNAME
+        run: echo www.kcode.icu >> CNAME
+      
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
