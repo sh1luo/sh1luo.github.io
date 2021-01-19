@@ -7,7 +7,7 @@ tags:
   - 杂谈
 ---
 
-<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118174633253.png" alt="image-20210118174633253" style="zoom:50%;" />
+<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118174633253.png" alt="image-20210118174633253"  />
 
 仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
 
