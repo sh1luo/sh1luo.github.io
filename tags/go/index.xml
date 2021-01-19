@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go on 失落</title>
-    <link>https://www.kcode.icu/tags/go/</link>
+    <link>https://kcode.icu/tags/go/</link>
     <description>Recent content in Go on 失落</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 28 Nov 2020 15:45:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 Nov 2020 15:45:13 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>手写一个RPCg（上）</title>
-      <link>https://www.kcode.icu/posts/rpc/rpcg/</link>
+      <link>https://kcode.icu/posts/rpc/rpcg/</link>
       <pubDate>Sat, 28 Nov 2020 15:45:13 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/rpc/rpcg/</guid>
+      <guid>https://kcode.icu/posts/rpc/rpcg/</guid>
       <description>须知 可能看到这里的一部分人还不知道什么是 RPC，也不知道为什么要用 RPC，内心：HTTP不香吗？那么你需要首先看一下这篇文章：
  你觉得HTTP哪都好用是因为你不知道RPC
  已经实现的 这篇文章我会带你手写一个简易版本的 RPC 框架，这个框架会支持如下这些功能：
