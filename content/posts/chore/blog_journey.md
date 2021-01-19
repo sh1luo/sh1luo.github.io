@@ -35,6 +35,8 @@ tags:
 
 我是国外的域名，所以转为了国内的 [DNSPod](https://www.dnspod.cn/) 进行解析，希望快一点，做法也非常简单。就是把原域名服务器商的 NameServers 改成 新解析服务器提供的就好了，如上图的 hickory.dnspod.net 那两条。
 
+
+
 ![image-20210118183902580](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118183902580.png)
 
 当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加一条 CNAME 记录，然后在 GitHub Pages 那里设置上自定义域名就完事了，它会自动帮你部署 HTTPS 和一切的 :)
