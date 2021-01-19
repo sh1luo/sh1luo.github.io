@@ -29,8 +29,6 @@ tags:
 
 ## GitHub Page+自定义域名
 
-<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118181726052.png" alt="image-20210118181726052"  />
-
 这种方案比较简单（因为GitHub 都帮我们做了），你首先需要创建一个名为 `<YourGitHubName>.github.io` 的仓库，比如 `sh1luo.github.io`，然后购买一个域名（国内国外都行，国内要备案），给他添加一条 [CNAME 记录](https://baike.baidu.com/item/CNAME/9845877?fr=aladdin) ，就像这样
 
 ![DNS记录](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210119101326692.png)
@@ -40,6 +38,8 @@ tags:
 ![image-20210118183902580](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118183902580.png)
 
 当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加一条 CNAME 记录，然后在 GitHub Pages 那里设置上自定义域名就完事了，它会自动帮你部署 HTTPS 和一切的 :)
+
+<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118181726052.png" alt="image-20210118181726052"  />
 
 ## CDN加速
 
