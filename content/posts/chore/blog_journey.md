@@ -32,7 +32,7 @@ tags:
 
 这种方案比较简单（因为GitHub 都帮我们做了），你首先需要创建一个名为 `<YourGitHubName>.github.io` 的仓库，比如 `sh1luo.github.io`，然后购买一个域名（国内国外都行，国内要备案），给他添加一条 [CNAME 记录](https://baike.baidu.com/item/CNAME/9845877?fr=aladdin) ，就像这样
 
-![DNS记录](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118183506330.png)
+![DNS记录](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210119101326692.png)
 
 我是国外的域名，所以转为了国内的 [DNSPod](https://www.dnspod.cn/) 进行解析，希望快一点，做法也非常简单。就是把原域名服务器商的 NameServers 改成 新解析服务器提供的就好了，如上图的 hickory.dnspod.net 那两条。
 
