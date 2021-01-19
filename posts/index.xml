@@ -1,20 +1,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>Posts on 失落</title>
-		<link>https://kcode.icu/posts/</link>
+		<link>https://www.kcode.icu/posts/</link>
 		<description>Recent content in Posts on 失落</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-hans</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
 		<lastBuildDate>Fri, 15 Jan 2021 23:10:22 +0000</lastBuildDate>
-		<atom:link href="https://kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
+		<atom:link href="https://www.kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
 		
 		<item>
 			<title>聊聊你最常见的HTTP</title>
-			<link>https://kcode.icu/posts/http/</link>
+			<link>https://www.kcode.icu/posts/http/</link>
 			<pubDate>Fri, 15 Jan 2021 23:10:22 +0000</pubDate>
 			
-			<guid>https://kcode.icu/posts/http/</guid>
+			<guid>https://www.kcode.icu/posts/http/</guid>
 			<description>标题的这句话我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
 HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP）。</description>
 			<content type="html"><![CDATA[<p>标题的这句话我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。</p>
@@ -25,10 +25,10 @@ HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP）。</
 		
 		<item>
 			<title>几经周折的博客变迁史</title>
-			<link>https://kcode.icu/posts/chore/blog_journey/</link>
+			<link>https://www.kcode.icu/posts/chore/blog_journey/</link>
 			<pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate>
 			
-			<guid>https://kcode.icu/posts/chore/blog_journey/</guid>
+			<guid>https://www.kcode.icu/posts/chore/blog_journey/</guid>
 			<description>仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
  尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。 使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。 发现了国内访问速度更快的 Gitee Page。 再次购买域名，使用 CDN 加速国外空间，未果（下文说）&amp;hellip;&amp;hellip;  前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
 当时配置那个 A 记录，CNAME 记录啥的根本不知道是什么东西，也不知道 DNS 是什么，就是配，成功了就行，不成功就猜，一个个试呗。现在想想，真的是走了不少弯路，如果能系统地学一下多好。不过这些问题也都在我后来的实践以及学习过程中逐一解决了，现在遇到问题也不用像没头苍蝇一样乱撞了，这种感觉很不错 :)
@@ -79,10 +79,10 @@ CDN加速 如果你是国内的域名但是是国外的空间，就可以使用 
 		
 		<item>
 			<title>记人生中前几次面试及思考</title>
-			<link>https://kcode.icu/posts/interview/2020-12-interview/</link>
+			<link>https://www.kcode.icu/posts/interview/2020-12-interview/</link>
 			<pubDate>Sun, 03 Jan 2021 21:18:13 +0000</pubDate>
 			
-			<guid>https://kcode.icu/posts/interview/2020-12-interview/</guid>
+			<guid>https://www.kcode.icu/posts/interview/2020-12-interview/</guid>
 			<description>写作背景 由于早早有了就业的想法，于是我在大三上学期快要结束的时候便早早地”物色“各大公司的实习了，也是希望能在就业前增加几段实习经历，丰富一下经验。这也是人生中我的第一次面试，感触颇多。特别记录下来自己的总结以及对于假期自己的学习规划。
 面试总结 这次我面试的总共有三家公司，跟谁学、字节跳动和腾讯，对我印象最深也是帮助最大的就是”字节跳动“。关于面试的准备大致有三块，简历、技术口述和手撕代码，下面分开说。
 简历 我个人使用的简历大致是这样的风格，简约并且色调一致。简历这块我倒没什么卡壳，简历没过的 我猜 都是因为学历等等硬性条件不合适，这也是没有办法的事情。这里需要确保这么几点：
@@ -117,10 +117,10 @@ CDN加速 如果你是国内的域名但是是国外的空间，就可以使用 
 		
 		<item>
 			<title>手写一个RPCg（上）</title>
-			<link>https://kcode.icu/posts/rpc/rpcg/</link>
+			<link>https://www.kcode.icu/posts/rpc/rpcg/</link>
 			<pubDate>Sat, 28 Nov 2020 15:45:13 +0000</pubDate>
 			
-			<guid>https://kcode.icu/posts/rpc/rpcg/</guid>
+			<guid>https://www.kcode.icu/posts/rpc/rpcg/</guid>
 			<description>须知 可能看到这里的一部分人还不知道什么是 RPC，也不知道为什么要用 RPC，内心：HTTP不香吗？那么你需要首先看一下这篇文章：
  你觉得HTTP哪都好用是因为你不知道RPC
  已经实现的 这篇文章我会带你手写一个简易版本的 RPC 框架，这个框架会支持如下这些功能：
@@ -178,10 +178,10 @@ CDN加速 如果你是国内的域名但是是国外的空间，就可以使用 
 		
 		<item>
 			<title>你觉得HTTP最香是因为你还不知道RPC</title>
-			<link>https://kcode.icu/posts/rpc/rpcvshttp/</link>
+			<link>https://www.kcode.icu/posts/rpc/rpcvshttp/</link>
 			<pubDate>Tue, 10 Nov 2020 21:30:13 +0000</pubDate>
 			
-			<guid>https://kcode.icu/posts/rpc/rpcvshttp/</guid>
+			<guid>https://www.kcode.icu/posts/rpc/rpcvshttp/</guid>
 			<description>我在动手写 RPCg 这个”框架“之前看了大量的文章阐述 RPC 与 HTTP，这篇文章是比较不错的一篇，我翻译过来和你分享一下 :)
 REST vs. RPC你要使用API去解决什么问题？ 有一则关于这个农民的笑话，他被问到”为什么他要尽量避免耕种出‘童话环’的形状“，他回答道，”因为如果我不那么做，我就会变成傻子“。（第一段的引用故事可暂时不关注）。
 许多人关于他们自己构建的 APIs 会说同样的话，事实上，去思考一下你要用你的 APIs 去解决什么问题这非常重要，因为你所创建的 API 的风格和你所使用的技术都依赖于你上面的回答。
@@ -199,10 +199,10 @@ REST vs. RPC你要使用API去解决什么问题？ 有一则关于这个农民�
 		
 		<item>
 			<title>一文搞懂ASCII、Unicode和UTF</title>
-			<link>https://kcode.icu/posts/ascii-unicode-utf/</link>
+			<link>https://www.kcode.icu/posts/ascii-unicode-utf/</link>
 			<pubDate>Fri, 18 Sep 2020 09:27:13 +0000</pubDate>
 			
-			<guid>https://kcode.icu/posts/ascii-unicode-utf/</guid>
+			<guid>https://www.kcode.icu/posts/ascii-unicode-utf/</guid>
 			<description>起因 最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在会用的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。
 什么是ASCII，为什么又要引入Unicode 都应该了解过 ASCII、Unicode、Unicode 码点、UTF-8等一系列名词。先说 ASCII（American Standard Code for Information Interchange: 美国信息交换标准代码），它是一种字符集，说白了就是一个字符和数字的一一对应关系，你想找这个字符怎么办，计算机又不认识字符？给出他的对应的数字就行了。最初只有美国等一些使用英文的国家使用，所以 128 个字符完全够用，它包含了标点符号、数字和字母等。但是随着世界上使用计算机的国家越来越多，这 128 个字符是完全不够用的。所以 Unicode 字符集 就出现了。Unicode 包含了世界上绝大多数的字符，给他们提供了一一对应关系，比如“知”字对应 30693，即 U+77e5（16 进制形式）。所以说白了 ASCII 和 Unicode 就是一种字符集，一种字符对应关系，Unicode 中每个字符被称为一个 Code Point（码点），而 Go 语言中的 rune 类型正是代表了这样一个单位，即一个 rune 代表了一个 unicode 字符。
 那么大家肯定都听说过 UTF-8，UTF-16 吧，那问题来了， UTF 又是什么呢，UTF-8 和 UTF-16 到底又有什么关系呢？
@@ -272,10 +272,10 @@ Process finished with <span class="nb">exit</span> code <span class="m">0</span>
 		
 		<item>
 			<title>OBS显示器捕获黑屏解决方案</title>
-			<link>https://kcode.icu/posts/chore/obs/</link>
+			<link>https://www.kcode.icu/posts/chore/obs/</link>
 			<pubDate>Sun, 26 Apr 2020 11:34:13 +0000</pubDate>
 			
-			<guid>https://kcode.icu/posts/chore/obs/</guid>
+			<guid>https://www.kcode.icu/posts/chore/obs/</guid>
 			<description>问题起因 由于我最近重新安装了系统，在重新下载 OBS 后发现捕获不到桌面。我之前解决方法就是直接在显卡控制面板里将 OBS 设置为集显就行了。但是这次设置了也不行，有可能是我下载的显卡驱动版本不对。。于是就找到了这个终极解决方案，基本电脑上有这个功能的都能解决。
 问题环境 操作系统：Win10 64位 专业版 - 1909
 CPU 集成显卡型号：Inter(R) UHD Graphics 630

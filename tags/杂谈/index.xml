@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>杂谈 on 失落</title>
-    <link>https://kcode.icu/tags/%E6%9D%82%E8%B0%88/</link>
+    <link>https://www.kcode.icu/tags/%E6%9D%82%E8%B0%88/</link>
     <description>Recent content in 杂谈 on 失落</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 06 Jan 2021 21:13:13 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E6%9D%82%E8%B0%88/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Jan 2021 21:13:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E6%9D%82%E8%B0%88/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>几经周折的博客变迁史</title>
-      <link>https://kcode.icu/posts/chore/blog_journey/</link>
+      <link>https://www.kcode.icu/posts/chore/blog_journey/</link>
       <pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate>
       
-      <guid>https://kcode.icu/posts/chore/blog_journey/</guid>
+      <guid>https://www.kcode.icu/posts/chore/blog_journey/</guid>
       <description>仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
  尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。 使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。 发现了国内访问速度更快的 Gitee Page。 再次购买域名，使用 CDN 加速国外空间，未果（下文说）&amp;hellip;&amp;hellip;  前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
 当时配置那个 A 记录，CNAME 记录啥的根本不知道是什么东西，也不知道 DNS 是什么，就是配，成功了就行，不成功就猜，一个个试呗。现在想想，真的是走了不少弯路，如果能系统地学一下多好。不过这些问题也都在我后来的实践以及学习过程中逐一解决了，现在遇到问题也不用像没头苍蝇一样乱撞了，这种感觉很不错 :)
