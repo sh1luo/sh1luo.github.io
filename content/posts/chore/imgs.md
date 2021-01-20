@@ -19,7 +19,7 @@ tags:
 
 ## GitHub/Gitee
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120131447841.png" alt="Gitee" style="zoom:67%;" />
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120131447841.png" alt="Gitee" style="zoom: 50%;" />
 
 [GitHub](https://github.com/) 和 [Gitee](https://gitee.com/) 是干什么的我就不多说了，它们也是可以作为图床使用的，前者境内访问较慢，后者较快。没有账号可以免费注册一个，然后随便创建一个公开仓库，把图片上传上去就可以获取它的 URL 了，比较简单粗暴。
 
@@ -31,7 +31,7 @@ tags:
 
 ## OSS
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120131946016.png" alt="aliyun OSS" style="zoom: 67%;" />
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120131946016.png" alt="aliyun OSS" style="zoom: 33%;" />
 
 OSS （Object Storage Service）即对象存储服务，用来做个人博客的图床有点小题大做，腾讯云、阿里云等等提供 OSS 的平台都可以，一般需要续费，一年 50G 左右话 10 块钱左右。
 
@@ -43,7 +43,7 @@ OSS （Object Storage Service）即对象存储服务，用来做个人博客的
 
 ## 不稳定第三方
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120132728890.png" alt="sm.ms图床" style="zoom:67%;" />
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120132728890.png" alt="sm.ms图床" style="zoom: 50%;" />
 
 也可以使用这种第三方的图床，没有任何操作步骤，上传完就拿到 URL，当然事物都有两面性，这种极致快捷带来的就是不稳定，就跟当年的新浪图床一样，你不知道什么时候它就没了。。
 
