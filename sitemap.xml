@@ -93,6 +93,16 @@
   </url>
   
   <url>
+    <loc>https://www.kcode.icu/tags/linux/</loc>
+    <lastmod>2020-11-04T18:15:13+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/chore/linux_df_du/</loc>
+    <lastmod>2020-11-04T18:15:13+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/ascii-unicode-utf/</loc>
     <lastmod>2020-09-18T09:27:13+00:00</lastmod>
   </url>
@@ -130,6 +140,10 @@
   <url>
     <loc>https://www.kcode.icu/about/</loc>
     <lastmod>2019-12-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/chore/imgs/</loc>
   </url>
   
 </urlset>
