@@ -19,7 +19,7 @@ tags:
 
 ## GitHub/Gitee
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120131447841.png" alt="Gitee" style="zoom: 50%;" />
+![Gitee](https://gitee.com/sh1luo/imgs/raw/master/imgs/123.png)
 
 [GitHub](https://github.com/) 和 [Gitee](https://gitee.com/) 是干什么的我就不多说了，它们也是可以作为图床使用的，前者境内访问较慢，后者较快。没有账号可以免费注册一个，然后随便创建一个公开仓库，把图片上传上去就可以获取它的 URL 了，比较简单粗暴。
 
@@ -31,7 +31,7 @@ tags:
 
 ## OSS
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120131946016.png" alt="aliyun OSS" style="zoom: 33%;" />
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120131946016.png" alt="aliyun OSS"  />
 
 OSS （Object Storage Service）即对象存储服务，用来做个人博客的图床有点小题大做，腾讯云、阿里云等等提供 OSS 的平台都可以，一般需要续费，一年 50G 左右话 10 块钱左右。
 
@@ -43,7 +43,7 @@ OSS （Object Storage Service）即对象存储服务，用来做个人博客的
 
 ## 不稳定第三方
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120132728890.png" alt="sm.ms图床" style="zoom: 50%;" />
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120132728890.png" alt="sm.ms图床" />
 
 也可以使用这种第三方的图床，没有任何操作步骤，上传完就拿到 URL，当然事物都有两面性，这种极致快捷带来的就是不稳定，就跟当年的新浪图床一样，你不知道什么时候它就没了。。
 
@@ -61,19 +61,19 @@ OSS （Object Storage Service）即对象存储服务，用来做个人博客的
 
 [typora](https://typora.io/) 是一款 Markdown 文本编辑软件，我相信写过 Markdown 的都听说过，它的特点是真正的实时显示，不左右分栏，扩展性强，灵活可配置。我个人平时写 Markdown 文本都是使用这个软件，具体可以去它的官网首页看，十分推荐。
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/GIF%202021-1-20%2018-44-01.gif" alt="实时显示" style="zoom:50%;" />
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/GIF%202021-1-20%2018-44-01.gif" alt="实时显示"  />
 
 ## PicGo
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120134735352.png" alt="image-20210120134735352" style="zoom: 50%;" />
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120134735352.png" alt="image-20210120134735352"  />
 
 [PicGo](https://github.com/Molunerfinn/PicGo) 是一款使用 Node + Electron 开发的跨平台可视化图片上传开源软件，支持 N 种图床平台，配置灵活简单，最重要的是它支持插件功能，理论上支持任意图床平台的使用（需要提供相应上传下载的 API），可以自行开发插件。操作也比较简单，把图片拖到框里就可以拿到 URL。这张图是 gitee 相关配置，其他平台类似，只需若干个必要参数即可：
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120135009612.png" style="zoom:50%;" />
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120135009612.png"  />
 
 ## 配合使用
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120135338066.png" alt="image-20210120135338066" style="zoom: 50%;" />
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120135338066.png" alt="image-20210120135338066"  />
 
 前面说的这两种工具可以结合使用快速进行写作，在 typora 主界面上方，文件->偏好设置->图像，修改 PicGo 路径为你安装的路径下的 exe 地址。这样就可以做到你在 typora 里编辑时直接粘贴图片到文档里一键点击上传，非常方便。当然了，如果你不需要 typora，或者使用的是别的 Markdown 编辑器，也可以只使用 PicGo。
 
