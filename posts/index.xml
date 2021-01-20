@@ -347,7 +347,7 @@ OBS 版本：25.0.4(64 bit)
 		<item>
 			<title>博客图床解决方案</title>
 			<link>https://www.kcode.icu/posts/chore/imgs/</link>
-			<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+			<pubDate>Mon, 20 Jan 2020 15:45:13 +0000</pubDate>
 			
 			<guid>https://www.kcode.icu/posts/chore/imgs/</guid>
 			<description>很多人应该都听说过来人说过要写博客进行总结记录，一是说自己学习过程的复盘，二是在某些时候向不认识自己的人间接显示自己的大致水平。不过如果没有人“手把手”教的话我相信还会遇到各种各样的问题的，这篇文章就介绍一下在博客中必不可少的图片网络地址解决方法，也就是图床。它的目标是在你写文章的过程中可以一键插入目标图片并自动上传到网络，就像你使用本地图片一样快捷。

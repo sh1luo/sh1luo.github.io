@@ -132,6 +132,34 @@ OBS 版本：25.0.4(64 bit)
     </item>
     
     <item>
+      <title>博客图床解决方案</title>
+      <link>https://www.kcode.icu/posts/chore/imgs/</link>
+      <pubDate>Mon, 20 Jan 2020 15:45:13 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/chore/imgs/</guid>
+      <description>很多人应该都听说过来人说过要写博客进行总结记录，一是说自己学习过程的复盘，二是在某些时候向不认识自己的人间接显示自己的大致水平。不过如果没有人“手把手”教的话我相信还会遇到各种各样的问题的，这篇文章就介绍一下在博客中必不可少的图片网络地址解决方法，也就是图床。它的目标是在你写文章的过程中可以一键插入目标图片并自动上传到网络，就像你使用本地图片一样快捷。
+图床的目的就是把你的本地图片上传上去，从而能获得它的网络地址。当然了，只使用图床也是可以的，但是需要配合对应的工具上传拿 URL（比如 OSS）或者纯手动（GitHub/Gitee），非常不方便 一点也不极客，所以需要配合其他工具一键快速拿到它对应的网络地址（URL），所以我在下面介绍了我使用到的工具，仅供参考。
+ 评估用的稳定性指你上传的图片会不会在某个不确定的时间突然挂掉，让你的文章出现大量图片 404 丢失的情况。
+ 图床 这里我介绍三种图床，列出优缺点。可以根据需要进行选择。
+GitHub/Gitee GitHub 和 Gitee 是干什么的我就不多说了，它们也是可以作为图床使用的，前者境内访问较慢，后者较快。没有账号可以免费注册一个，然后随便创建一个公开仓库，把图片上传上去就可以获取它的 URL 了，比较简单粗暴。
+优点：稳定性较好，空间无限，上手难度较简单
+缺点：无法阻止盗链，无法管理（原本目的就不是作为图床，没有统计流量等功能）。
+总结，如果你是新手，不担心自己的图片被别人轻易获取 ，随缘使用图床，这个是首选。
+OSS OSS （Object Storage Service）即对象存储服务，用来做个人博客的图床有点小题大做，腾讯云、阿里云等等提供 OSS 的平台都可以，一般需要续费，一年 50G 左右话 10 块钱左右。
+优点：可控性比较强，提供了专业的平台，你能想到的各种需求基本都有，包括防盗链，流量统计与分析等。
+缺点：对新手不友好，根据流量付费。
+总结，如果你未来博客流量会不断增大，出于可控考虑选这个，流量较小的新人不考虑。
+不稳定第三方 也可以使用这种第三方的图床，没有任何操作步骤，上传完就拿到 URL，当然事物都有两面性，这种极致快捷带来的就是不稳定，就跟当年的新浪图床一样，你不知道什么时候它就没了。。
+优点：简单快捷打开一键就用，免费
+缺点：不知道什么时候你的图片就被人家清了。。然后你的文章里的图片就全部 404 了。。
+总结，随缘党首选不解释，懂得都懂。
+工具 这里就介绍我使用的两个配合工具，其他的可以自行搜索。
+typora typora 是一款 Markdown 文本编辑软件，我相信写过 Markdown 的都听说过，它的特点是真正的实时显示，不左右分栏，扩展性强，灵活可配置。我个人平时写 Markdown 文本都是使用这个软件，具体可以去它的官网首页看，十分推荐。
+PicGo PicGo 是一款使用 Node + Electron 开发的跨平台可视化图片上传开源软件，支持 N 种图床平台，配置灵活简单，最重要的是它支持插件功能，理论上支持任意图床平台的使用（需要提供相应上传下载的 API），可以自行开发插件。操作也比较简单，把图片拖到框里就可以拿到 URL。这张图是 gitee 相关配置，其他平台类似，只需若干个必要参数即可：
+配合使用 前面说的这两种工具可以结合使用快速进行写作，在 typora 主界面上方，文件-&amp;gt;偏好设置-&amp;gt;图像，修改 PicGo 路径为你安装的路径下的 exe 地址。这样就可以做到你在 typora 里编辑时直接粘贴图片到文档里一键点击上传，非常方便。当然了，如果你不需要 typora，或者使用的是别的 Markdown 编辑器，也可以只使用 PicGo。</description>
+    </item>
+    
+    <item>
       <title>《一起学 Go》</title>
       <link>https://www.kcode.icu/go/</link>
       <pubDate>Sat, 21 Dec 2019 00:00:00 +0000</pubDate>
@@ -139,16 +167,6 @@ OBS 版本：25.0.4(64 bit)
       <guid>https://www.kcode.icu/go/</guid>
       <description>我不怎么喜欢左写写，右写写，因此总是在不知不觉中写了不少的内容，希望对你有所帮助。
  一：HTTP 应用  「连载一」Go 介绍与环境安装 「连载二」Gin搭建Blog API&amp;rsquo;s （一） 「连载三」Gin搭建Blog API&amp;rsquo;s （二） 「连载四」Gin搭建Blog API&amp;rsquo;s （三） 「连载五」使用 JWT 进行身份校验 「连载六」编写一个简单的文件日志 「连载七」优雅的重启服务  「连载八」为它加上Swagger 「连载九」将Golang应用部署到Docker 「连载十」定制 GORM Callbacks 「连载十一」Cron定时任务 「连载十二」优化配置结构及实现图片上传 「连载十三」优化你的应用结构和实现Redis缓存 「连载十四」实现导出、导入 Excel 「连载十五」生成二维码、合并海报 「连载十六」在图片上绘制文字 「连载十七」用Nginx部署Go应用 「番外」Golang 交叉编译 「番外」请入门 Makefile     二：gRPC 应用  「连载一」gRPC及相关介绍 「连载二」gRPC Client and Server 「连载三」gRPC Streaming, Client and Server 「连载四」TLS 证书认证 「连载五」基于 CA 的 TLS 证书认证 「连载六」Unary and Stream interceptor 「连载七」让你的服务同时提供 HTTP 接口 「连载八」对 RPC 方法做自定义认证 「连载九」gRPC Deadlines 「连载十」分布式链路追踪 gRPC + Opentracing + Zipkin   三：grpc+grpc-gateway 应用  「连载一」gRPC介绍与环境安装 「连载二」Hello World 「连载三」Swagger了解一下 「连载四」gRPC+gRPC Gateway 能不能不用证书？    我的公众号 暂不推广.</description>
-    </item>
-    
-    <item>
-      <title>《学习总结》</title>
-      <link>https://www.kcode.icu/summary/</link>
-      <pubDate>Mon, 16 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/summary/</guid>
-      <description>这里记录了我在学习过程中的总结感悟，在不断添加中。那么为什么要放出来呢，当然是为了催更自己。
-一文搞懂 ASCII、Unicode、rune 和 UTF 记人生中的前几次面试 RPC VS. HTTP 手写一个简单的RPC Framework  我的公众号 暂不推广.</description>
     </item>
     
   </channel>

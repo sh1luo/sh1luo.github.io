@@ -123,6 +123,11 @@
   </url>
   
   <url>
+    <loc>https://www.kcode.icu/posts/chore/imgs/</loc>
+    <lastmod>2020-01-20T15:45:13+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/go/</loc>
     <lastmod>2019-12-21T00:00:00+00:00</lastmod>
   </url>
@@ -140,10 +145,6 @@
   <url>
     <loc>https://www.kcode.icu/about/</loc>
     <lastmod>2019-12-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/posts/chore/imgs/</loc>
   </url>
   
 </urlset>
