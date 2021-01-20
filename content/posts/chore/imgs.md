@@ -59,9 +59,9 @@ OSS （Object Storage Service）即对象存储服务，用来做个人博客的
 
 ## typora
 
-![实时显示](https://gitee.com/sh1luo/imgs/raw/master/imgs/GIF%202021-1-20%2018-44-01.gif)
-
 [typora](https://typora.io/) 是一款 Markdown 文本编辑软件，我相信写过 Markdown 的都听说过，它的特点是真正的实时显示，不左右分栏，扩展性强，灵活可配置。我个人平时写 Markdown 文本都是使用这个软件，具体可以去它的官网首页看，十分推荐。
+
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/GIF%202021-1-20%2018-44-01.gif" alt="实时显示" style="zoom:50%;" />
 
 ## PicGo
 
