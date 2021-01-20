@@ -19,6 +19,19 @@ HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP）。</
     </item>
     
     <item>
+      <title>一些常见Go语言及面试问题的整理</title>
+      <link>https://www.kcode.icu/posts/interview/somequestions/</link>
+      <pubDate>Fri, 15 Jan 2021 21:10:55 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/interview/somequestions/</guid>
+      <description>哀伤的
+这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。
+Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
+线程有哪些状态 注册中心挂了怎么办？ N节点，raft一致性？
+反射底层原理？ 通过反射执行函数，拿结构体tag？ 锁机制？饥饿模式正常模式？锁底层原理？ channel使用，坑，底层原理？ </description>
+    </item>
+    
+    <item>
       <title>几经周折的博客变迁史</title>
       <link>https://www.kcode.icu/posts/chore/blog_journey/</link>
       <pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate>
@@ -157,16 +170,6 @@ OSS OSS （Object Storage Service）即对象存储服务，用来做个人博�
 typora typora 是一款 Markdown 文本编辑软件，我相信写过 Markdown 的都听说过，它的特点是真正的实时显示，不左右分栏，扩展性强，灵活可配置。我个人平时写 Markdown 文本都是使用这个软件，具体可以去它的官网首页看，十分推荐。
 PicGo PicGo 是一款使用 Node + Electron 开发的跨平台可视化图片上传开源软件，支持 N 种图床平台，配置灵活简单，最重要的是它支持插件功能，理论上支持任意图床平台的使用（需要提供相应上传下载的 API），可以自行开发插件。操作也比较简单，把图片拖到框里就可以拿到 URL。这张图是 gitee 相关配置，其他平台类似，只需若干个必要参数即可：
 配合使用 前面说的这两种工具可以结合使用快速进行写作，在 typora 主界面上方，文件-&amp;gt;偏好设置-&amp;gt;图像，修改 PicGo 路径为你安装的路径下的 exe 地址。这样就可以做到你在 typora 里编辑时直接粘贴图片到文档里一键点击上传，非常方便。当然了，如果你不需要 typora，或者使用的是别的 Markdown 编辑器，也可以只使用 PicGo。</description>
-    </item>
-    
-    <item>
-      <title>《一起学 Go》</title>
-      <link>https://www.kcode.icu/go/</link>
-      <pubDate>Sat, 21 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/go/</guid>
-      <description>我不怎么喜欢左写写，右写写，因此总是在不知不觉中写了不少的内容，希望对你有所帮助。
- 一：HTTP 应用  「连载一」Go 介绍与环境安装 「连载二」Gin搭建Blog API&amp;rsquo;s （一） 「连载三」Gin搭建Blog API&amp;rsquo;s （二） 「连载四」Gin搭建Blog API&amp;rsquo;s （三） 「连载五」使用 JWT 进行身份校验 「连载六」编写一个简单的文件日志 「连载七」优雅的重启服务  「连载八」为它加上Swagger 「连载九」将Golang应用部署到Docker 「连载十」定制 GORM Callbacks 「连载十一」Cron定时任务 「连载十二」优化配置结构及实现图片上传 「连载十三」优化你的应用结构和实现Redis缓存 「连载十四」实现导出、导入 Excel 「连载十五」生成二维码、合并海报 「连载十六」在图片上绘制文字 「连载十七」用Nginx部署Go应用 「番外」Golang 交叉编译 「番外」请入门 Makefile     二：gRPC 应用  「连载一」gRPC及相关介绍 「连载二」gRPC Client and Server 「连载三」gRPC Streaming, Client and Server 「连载四」TLS 证书认证 「连载五」基于 CA 的 TLS 证书认证 「连载六」Unary and Stream interceptor 「连载七」让你的服务同时提供 HTTP 接口 「连载八」对 RPC 方法做自定义认证 「连载九」gRPC Deadlines 「连载十」分布式链路追踪 gRPC + Opentracing + Zipkin   三：grpc+grpc-gateway 应用  「连载一」gRPC介绍与环境安装 「连载二」Hello World 「连载三」Swagger了解一下 「连载四」gRPC+gRPC Gateway 能不能不用证书？    我的公众号 暂不推广.</description>
     </item>
     
   </channel>
