@@ -424,8 +424,8 @@ PicGo PicGo 是一款使用 Node + Electron 开发的跨平台可视化图片上
 <h1 id="工具">工具</h1>
 <p>这里就介绍我使用的两个配合工具，其他的可以自行搜索。</p>
 <h2 id="typora">typora</h2>
-<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/GIF%202021-1-20%2018-44-01.gif" alt="实时显示"></p>
 <p><a href="https://typora.io/">typora</a> 是一款 Markdown 文本编辑软件，我相信写过 Markdown 的都听说过，它的特点是真正的实时显示，不左右分栏，扩展性强，灵活可配置。我个人平时写 Markdown 文本都是使用这个软件，具体可以去它的官网首页看，十分推荐。</p>
+<p><!-- raw HTML omitted --></p>
 <h2 id="picgo">PicGo</h2>
 <p><!-- raw HTML omitted --></p>
 <p><a href="https://github.com/Molunerfinn/PicGo">PicGo</a> 是一款使用 Node + Electron 开发的跨平台可视化图片上传开源软件，支持 N 种图床平台，配置灵活简单，最重要的是它支持插件功能，理论上支持任意图床平台的使用（需要提供相应上传下载的 API），可以自行开发插件。操作也比较简单，把图片拖到框里就可以拿到 URL。这张图是 gitee 相关配置，其他平台类似，只需若干个必要参数即可：</p>
