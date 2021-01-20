@@ -65,7 +65,7 @@ OSS （Object Storage Service）即对象存储服务，用来做个人博客的
 
 ## PicGo
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120134735352.png" alt="image-20210120134735352" style="zoom:67%;" />
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120134735352.png" alt="image-20210120134735352" style="zoom: 50%;" />
 
 [PicGo](https://github.com/Molunerfinn/PicGo) 是一款使用 Node + Electron 开发的跨平台可视化图片上传开源软件，支持 N 种图床平台，配置灵活简单，最重要的是它支持插件功能，理论上支持任意图床平台的使用（需要提供相应上传下载的 API），可以自行开发插件。操作也比较简单，把图片拖到框里就可以拿到 URL。这张图是 gitee 相关配置，其他平台类似，只需若干个必要参数即可：
 
