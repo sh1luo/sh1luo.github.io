@@ -15,4 +15,6 @@ date: "2019-12-15"
 
 ### 我的公众号
 
-暂时不推广
+平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号：
+
+![image](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/qrcode_for_gh_8b9d3fa3063c_344.jpg)
