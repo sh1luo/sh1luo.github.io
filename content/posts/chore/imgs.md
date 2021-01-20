@@ -73,7 +73,7 @@ OSS （Object Storage Service）即对象存储服务，用来做个人博客的
 
 ## 配合使用
 
-<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/test.png" alt="test" style="zoom:50%;" />
+<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/test.png" style="zoom:50%;" />
 
 前面说的这两种工具可以结合使用快速进行写作，在 typora 主界面上方，文件->偏好设置->图像，修改 PicGo 路径为你安装的路径下的 exe 地址。这样就可以做到你在 typora 里编辑时直接粘贴图片到文档里一键点击上传，非常方便。当然了，如果你不需要 typora，或者使用的是别的 Markdown 编辑器，也可以只使用 PicGo。
 
