@@ -37,6 +37,17 @@ PicGo PicGo 是一款使用 Node + Electron 开发的跨平台可视化图片上
     </item>
     
     <item>
+      <title>《一起了解 Go 语言》</title>
+      <link>https://www.kcode.icu/go/</link>
+      <pubDate>Sun, 17 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/go/</guid>
+      <description>我不太喜欢只看问题的表面，总是不经意间思考了这么多，希望对你有所帮助。
+标记的内容已经列入计划，正在赶工中。
+ 一：深入表象  「map」深入理解 Go map ，正在&amp;hellip; 「string」简单又有”东西“的字符串 ，正在&amp;hellip; 「slice」灵活高效的切片 ，正在&amp;hellip; 「string&amp;amp;slice」用理论驱动实践 ，正在&amp;hellip;   二：深入理解  「method」方法到底是什么 ，正在&amp;hellip;   三：深入灵魂  「GPM」Go 调度模型有多强 ，正在&amp;hellip; 「GC」入个 GC 算法的门？ ，正在&amp;hellip;    我的公众号 平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号：</description>
+    </item>
+    
+    <item>
       <title>聊聊你最常见的HTTP</title>
       <link>https://www.kcode.icu/posts/http/</link>
       <pubDate>Fri, 15 Jan 2021 23:10:22 +0000</pubDate>
@@ -151,24 +162,6 @@ df VS. du 看了这两个命令大致用法后，它们在使用场景是什么�
 那么大家肯定都听说过 UTF-8，UTF-16 吧，那问题来了， UTF 又是什么呢，UTF-8 和 UTF-16 到底又有什么关系呢？
 UTF（Unicode Transformation Format） 从字面上你就应该能看出来，这就是一个 Unicode 转换格式。什么是转换格式，为什么需要转换格式？上文说了 Unicode 就是提供了字符间的一一对应关系，比如“知”对应了 30693，那计算机怎么表示这个数（计算机只认识二进制）？它要做到：
 在很长的文本中准确获取到每个字符，不能找错 **Unicode 表示一个字符可以使用 1 - 4 个字节。**它的转换规则如下：</description>
-    </item>
-    
-    <item>
-      <title>OBS显示器捕获黑屏解决方案</title>
-      <link>https://www.kcode.icu/posts/chore/obs/</link>
-      <pubDate>Sun, 26 Apr 2020 11:34:13 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/chore/obs/</guid>
-      <description>问题起因 由于我最近重新安装了系统，在重新下载 OBS 后发现捕获不到桌面。我之前解决方法就是直接在显卡控制面板里将 OBS 设置为集显就行了。但是这次设置了也不行，有可能是我下载的显卡驱动版本不对。。于是就找到了这个终极解决方案，基本电脑上有这个功能的都能解决。
-问题环境 操作系统：Win10 64位 专业版 - 1909
-CPU 集成显卡型号：Inter(R) UHD Graphics 630
-独立显卡型号：NVIDIA GeForce GTX 1050
-OBS 版本：25.0.4(64 bit)
- 注：配置和我不一样也有可能解决，不用纠结
- 问题描述 在来源中添加显示器捕获后 ，是黑屏，无法捕获到显示器。
-问题分析 目前网上能搜集到的解决方案大部分是以下几种：
- 右键 OBS 属性 - 兼容性 - 兼容模式 - 以兼容模式运行这个程序（win7）设置 - 以管理员方式运行 桌面上右键打开 NVIDIA 控制面板，管理 3D 设置 - 程序设置，找到 OBS，设置为集成图形。  但是我都试了都解决不了，我就去搜了一下问题的原因，最终发现 OBS 只能捕捉到和自己跟自己使用相同显卡的应用，然后我右键打开任务管理器，发现笔记本桌面使用的是我的集显。所以就需要把 OBS 设置为应用集显。
-解决方法 左下角开始按钮 - 设置 - 系统 - 显示 - 图形设置 - 经典应用里浏览添加 OBS ，点击选项，设置为节能，节能就是使用集显。然后你再打开 OBS&amp;hellip;&amp;hellip;</description>
     </item>
     
   </channel>
