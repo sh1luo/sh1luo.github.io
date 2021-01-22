@@ -81,7 +81,7 @@ enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/func
   [[menu.main]]
     name = "标签"
     url = "tags/"
-    weight = 10
+    weight = 15
 
   [[menu.main]]
     name = "关于"
@@ -108,6 +108,3 @@ enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/func
     name = "Go系列"
     url = "go/"
     weight = 13
-
-
-
