@@ -96,15 +96,15 @@ enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/func
 
   [[menu.nav]]
     name = "总结"
-    url = "summary/"
+    url = "summary"
     weight = 11
 
   [[menu.nav]]
     name = "杂项"
-    url = "chore/"
+    url = "chore"
     weight = 12
 
   [[menu.nav]]
     name = "Go系列"
-    url = "go/"
+    url = "go"
     weight = 13
