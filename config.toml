@@ -100,8 +100,8 @@ enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/func
     weight = 11
 
   [[menu.nav]]
-    name = "生活"
-    url = "life/"
+    name = "杂项"
+    url = "chore/"
     weight = 12
 
   [[menu.nav]]
