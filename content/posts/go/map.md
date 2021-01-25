@@ -24,7 +24,7 @@ Go map 实现哈希表使用的是 **数组+链表** 的形式，也就是使用
 
 为了降低 map 操作的时间复杂度，引入了一个 [负载因子](https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L70) 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 **实际上最好只存** 多少个元素，而不是一直等到满载再处理，因为多到一定程度效率 **可能** 就低了。在 Go 语言里这个值被定义为 6.5。
 
-![separate chaining](https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg)
+<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg" alt="separate chaining" style="zoom:130%;" />
 
 ### 数据结构
 
