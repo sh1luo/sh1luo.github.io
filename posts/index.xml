@@ -33,6 +33,7 @@
 <h3 id="设计方式">设计方式</h3>
 <p>Go map 实现哈希表使用的是 <strong>数组+链表</strong> 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。</p>
 <p>为了降低 map 操作的时间复杂度，引入了一个 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L70">负载因子</a> 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 <strong>实际上最好只存</strong> 多少个元素，而不是一直等到满载再处理，因为多到一定程度效率 <strong>可能</strong> 就低了。在 Go 语言里这个值被定义为 6.5。</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg" alt="separate chaining"></p>
 <h3 id="数据结构">数据结构</h3>
 <p>当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L115">hmap</a> 的结构体，它定义在 <code>runtime/map.go</code> 文件下。 哈希表就是实现一个映射关系，给出自变量 x，能够通过平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x)，这里有个非常重要的限制：<strong>对于无限的输入，需要给出有限的输出</strong>。在哈希函数中这句话成立，在 Go map 中也成立，指的是只有有限的桶，怎么放无限的元素？所以我们需要考虑这个问题。</p>
 <h3 id="初始化">初始化</h3>
@@ -491,6 +492,281 @@ OBS 版本：25.0.4(64 bit)
 <p>这时候你就会发现你成功了。</p>
 <p>其他的推流软件也一样，比如什么 B 站直播姬等同理。</p>
 <p>以上。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>B站直播助手开发[下]</title>
+			<link>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</link>
+			<pubDate>Fri, 13 Mar 2020 13:22:23 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</guid>
+			<description>Go + QML 结合上节的分析，开发的思路的大致流程我画了个图，大概是这样：
+ 因为是需要面向用户的，又考虑到 Go 语言的特殊性（可以直接调用 C/C++ 代码，GUI 官方不支持），最后决定使用 Qml 来呈现前端，与 Go 语言利用插槽和信号进行通信。
+ 处理思路是创建一个协程池来处理不同类型的包数据。判断每个包内所有子包类型，将接收的未处理的字节数组直接送入对应协程池中的管道。因为代码也比较简单，就是简单的 WebSocket 通信。
+// 客户端实例 type Client struct { RoomID uint32	// 房间 ID 	Online uint32	// 用来判断人气是否变动 	Conn *websocket.Conn	// 连接后的对象 	IsConnected bool } // 使用了&amp;#34;github.com/gorilla/websocket&amp;#34;这个包，也可以自己升级 tcp 到 websocket u := url.URL{Scheme: &amp;#34;wss&amp;#34;, Host: DanMuServer, Path: &amp;#34;/sub&amp;#34;,} conn, _, err := websocket.DefaultDialer.Dial(u.String(), nil) if err != nil { return nil, err } // 发送包函数 func SendPackage(conn *websocket.</description>
+			<content type="html"><![CDATA[<h1 id="go--qml">Go + QML</h1>
+<p>结合上节的分析，开发的思路的大致流程我画了个图，大概是这样：</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/go_qml_flowchart.png" alt="流程图"></p>
+<blockquote>
+<p>因为是需要面向用户的，又考虑到 Go 语言的特殊性（可以直接调用 C/C++ 代码，GUI 官方不支持），最后决定使用 Qml 来呈现前端，与 Go 语言利用插槽和信号进行通信。</p>
+</blockquote>
+<p>处理思路是创建一个协程池来处理不同类型的包数据。判断每个包内所有子包类型，将接收的未处理的字节数组直接送入对应协程池中的管道。因为代码也比较简单，就是简单的 WebSocket 通信。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 客户端实例
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Client</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">RoomID</span>      <span class="kt">uint32</span>				<span class="c1">// 房间 ID
+</span><span class="c1"></span>	<span class="nx">Online</span>      <span class="kt">uint32</span>				<span class="c1">// 用来判断人气是否变动
+</span><span class="c1"></span>	<span class="nx">Conn</span>        <span class="o">*</span><span class="nx">websocket</span><span class="p">.</span><span class="nx">Conn</span>		<span class="c1">// 连接后的对象
+</span><span class="c1"></span>	<span class="nx">IsConnected</span> <span class="kt">bool</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 使用了&#34;github.com/gorilla/websocket&#34;这个包，也可以自己升级 tcp 到 websocket
+</span><span class="c1"></span><span class="nx">u</span> <span class="o">:=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">URL</span><span class="p">{</span><span class="nx">Scheme</span><span class="p">:</span> <span class="s">&#34;wss&#34;</span><span class="p">,</span> <span class="nx">Host</span><span class="p">:</span> <span class="nx">DanMuServer</span><span class="p">,</span> <span class="nx">Path</span><span class="p">:</span> <span class="s">&#34;/sub&#34;</span><span class="p">,}</span>
+<span class="nx">conn</span><span class="p">,</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">websocket</span><span class="p">.</span><span class="nx">DefaultDialer</span><span class="p">.</span><span class="nf">Dial</span><span class="p">(</span><span class="nx">u</span><span class="p">.</span><span class="nf">String</span><span class="p">(),</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+<span class="p">}</span>
+
+<span class="c1">// 发送包函数
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">SendPackage</span><span class="p">(</span><span class="nx">conn</span> <span class="o">*</span><span class="nx">websocket</span><span class="p">.</span><span class="nx">Conn</span><span class="p">,</span> <span class="nx">packetlen</span> <span class="kt">uint32</span><span class="p">,</span> <span class="nx">magic</span> <span class="kt">uint16</span><span class="p">,</span> <span class="nx">ver</span> <span class="kt">uint16</span><span class="p">,</span> <span class="nx">typeID</span> <span class="kt">uint32</span><span class="p">,</span> <span class="nx">param</span> <span class="kt">uint32</span><span class="p">,</span> <span class="nx">data</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">packetHead</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">bytes</span><span class="p">.</span><span class="nx">Buffer</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="nx">packetlen</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">packetlen</span> <span class="p">=</span> <span class="nb">uint32</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="o">+</span> <span class="mi">16</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="kd">var</span> <span class="nx">pdata</span> <span class="p">=</span> <span class="p">[]</span><span class="kd">interface</span><span class="p">{}{</span>
+		<span class="nx">packetlen</span><span class="p">,</span>
+		<span class="nx">magic</span><span class="p">,</span>
+		<span class="nx">ver</span><span class="p">,</span>
+		<span class="nx">typeID</span><span class="p">,</span>
+		<span class="nx">param</span><span class="p">,</span>
+	<span class="p">}</span>
+
+	<span class="c1">// 将包的头部信息以大端序，二进制形式写入字节数组
+</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">pdata</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">binary</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">packetHead</span><span class="p">,</span> <span class="nx">binary</span><span class="p">.</span><span class="nx">BigEndian</span><span class="p">,</span> <span class="nx">v</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">return</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="c1">// 将包内数据部分追加到数据包内
+</span><span class="c1"></span>	<span class="nx">sendData</span> <span class="o">:=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">packetHead</span><span class="p">.</span><span class="nf">Bytes</span><span class="p">(),</span> <span class="nx">data</span><span class="o">...</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">conn</span><span class="p">.</span><span class="nf">WriteMessage</span><span class="p">(</span><span class="nx">websocket</span><span class="p">.</span><span class="nx">BinaryMessage</span><span class="p">,</span> <span class="nx">sendData</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="c1">// fmt.Println(&#34;c.conn.Write err: &#34;, err)
+</span><span class="c1"></span>		<span class="k">return</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span>
+<span class="p">}</span>
+</code></pre></div><p>拼接 URL 是使用的官方提供的 url 包，发送包数据要注意的是发送的是二进制数据流，所以要用 binary.Write 以二进制，且在网络上传输是大端序方式写入字节数组。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/up.png" alt="心跳包上行"></p>
+<p>心跳包上行是通过发送两个空的对象，所以我把这个固定的数直接粘贴下来转为字节数组后，创建一个 go 协程，按照每 30 秒一次的时间间隔发送就好。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Client</span><span class="p">)</span> <span class="nf">HeartBeat</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">c</span><span class="p">.</span><span class="nx">IsConnected</span> <span class="p">{</span>
+			<span class="nx">obj</span> <span class="o">:=</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;5b6f626a656374204f626a6563745d&#34;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">util</span><span class="p">.</span><span class="nf">SendPackage</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">Conn</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">obj</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+				<span class="k">continue</span>
+			<span class="p">}</span>
+            <span class="c1">// 每 30 秒发一次
+</span><span class="c1"></span>			<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>心跳包下行是还是一个固定的包首部，只携带了一个 4 字节大小的实体就是直播间人气值，所以我只需要每次和 c.Online 进行比较，及时修改人气数就可以了。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/down.png" alt="心跳包下行"></p>
+<p>最后一个问题就是<strong>对每个包的所有子包依次进行判断，防止信息量过大的时候有漏掉的情况</strong>，思路是读取完第一个包后，根据第一个包的大小找到第二个包的偏移位置继续读取，直到达到末尾，里面的<code>ByteArrToDecimal</code>是自己写的一个将读取到的十进制字节数组转换为十进制表示数的方法函数，也附带在下方了，如果有更好的实现可以告诉我，我也是自己脑洞大开临时写的&hellip;.有可能有更简单的实现。。。。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">inflated</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+	<span class="nx">l</span> <span class="o">:=</span> <span class="nx">util</span><span class="p">.</span><span class="nf">ByteArrToDecimal</span><span class="p">(</span><span class="nx">inflated</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+	<span class="nx">c</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">inflated</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="nx">l</span><span class="p">],</span> <span class="s">&#34;cmd&#34;</span><span class="p">).</span><span class="nf">ToString</span><span class="p">()</span>
+	<span class="k">switch</span> <span class="nx">c</span> <span class="p">{</span>
+		<span class="k">case</span> <span class="s">&#34;DANMU_MSG&#34;</span><span class="p">:</span>
+			<span class="nx">p</span><span class="p">.</span><span class="nx">DanmuSrc</span> <span class="o">&lt;-</span> <span class="nb">string</span><span class="p">(</span><span class="nx">inflated</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="nx">l</span><span class="p">])</span>
+		<span class="k">case</span> <span class="s">&#34;SEND_GIFT&#34;</span><span class="p">:</span>
+			<span class="nx">p</span><span class="p">.</span><span class="nx">GiftSrc</span> <span class="o">&lt;-</span> <span class="nb">string</span><span class="p">(</span><span class="nx">inflated</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="nx">l</span><span class="p">])</span>
+		<span class="k">case</span> <span class="s">&#34;WELCOME&#34;</span><span class="p">,</span> <span class="s">&#34;WELCOME_GUARD&#34;</span><span class="p">:</span>
+			<span class="nx">p</span><span class="p">.</span><span class="nx">WelCome</span> <span class="o">&lt;-</span> <span class="nb">string</span><span class="p">(</span><span class="nx">inflated</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="nx">l</span><span class="p">])</span>
+	<span class="p">}</span>
+	<span class="nx">inflated</span> <span class="p">=</span> <span class="nx">inflated</span><span class="p">[</span><span class="nx">l</span><span class="p">:]</span>
+<span class="p">}</span>
+
+<span class="c1">// 返回十六进制字节数组表示数的十进制形式
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">ByteArrToDecimal</span><span class="p">(</span><span class="nx">src</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="nx">sum</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">src</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="mi">0</span>
+	<span class="p">}</span>
+    <span class="c1">// 将读取的十进制字节数组数据编码为字符串，再转换为字节数组，方便后续进行逐字节处理
+</span><span class="c1"></span>	<span class="nx">b</span> <span class="o">:=</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">src</span><span class="p">))</span>
+	<span class="nx">l</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+    <span class="c1">// 从低位开始
+</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="nx">l</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span> <span class="p">{</span>
+		<span class="nx">base</span> <span class="o">:=</span> <span class="nb">int</span><span class="p">(</span><span class="nx">math</span><span class="p">.</span><span class="nf">Pow</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">l</span><span class="o">-</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+		<span class="kd">var</span> <span class="nx">mul</span> <span class="kt">int</span>
+		<span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="nx">b</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">97</span> <span class="p">{</span>
+			<span class="nx">mul</span> <span class="p">=</span> <span class="nb">int</span><span class="p">(</span><span class="nx">b</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">-</span> <span class="mi">87</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="nx">mul</span> <span class="p">=</span> <span class="nb">int</span><span class="p">(</span><span class="nx">b</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">-</span> <span class="mi">48</span>
+		<span class="p">}</span>
+
+		<span class="nx">sum</span> <span class="o">+=</span> <span class="nx">base</span> <span class="o">*</span> <span class="nx">mul</span>
+	<span class="p">}</span>
+	<span class="k">return</span>
+<span class="p">}</span>
+</code></pre></div><p>其余的与 Qml 进行通信的第三方包用的是 qamel，也可以使用比较广泛，功能大而全的 therecipe/qt ，是因为这个库比较小巧，安装使用简单，所以采用了这个。通信部分非常简单，就是使用了信号和插槽，整个程序包括了弹幕礼物进场点歌功能一共 500+ 行，有些代码略冗余，还需要凝练。如果大家有任何想法都可以跟我交流，不限于博客写法，代码规范，开发思路等等，欢迎！</p>
+<h2 id="总结">总结</h2>
+<p>其实从有这个程序的想法到现在落地开发完成，也是走了不少的弯路的。一开始以为那些被压缩了的“乱码”是被加密的结果，自己又配置了 <code>sslkey.log</code>文件使用 Wireshark 解密，结果自然是白忙活一场。关键还是还是协议分析这块不够熟练，对网络理解不够。还有在连接弹幕服务器的时候尝试使用了 net 包下 net.Dial 进行通信，结果报错 <code>GetInfoW</code> 方法类找不到，当时只知道 ws 是基于 tcp，后来才知道单纯 tcp 根本无法与 ws 服务器连接，这一点说到底还是自己对连接过程理解不够。经过这个小项目，让自己对网络这一块的重要程度有了新的认识，决定要好好学习这些内容，还有 Go 语言的实操，协程池的使用，与 Qml 的通信。总体来说收获还是不小，以后还是要多上手练习。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>B站直播助手开发[上]</title>
+			<link>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8A/</link>
+			<pubDate>Thu, 05 Mar 2020 15:45:13 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8A/</guid>
+			<description>B站直播协议分析  上篇介绍协议分析，下篇介绍开发思路。
+ 项目缘由 假期在家，群里有几个朋友决定尝个新鲜开直播娱乐一下，后来发现B站官方提供的直播姬只有弹幕显示功能，并没有点歌等其他自定义功能，网上的项目也比较少，而且一些点歌机不维护了导致功能有缺陷，因此打算开发一个自定义的具有多功能的直播助手，初步包含弹幕礼物显示，点歌等功能。
+开发的思路是分析传输二进制包，从中找出我们想要的数据，以我们想要的方式显示出来。
+总体过程 随便打开一个直播间，按 F12，切换到 Network 的 WS 栏。可以看到它是首先连接弹幕服务器，并且通过观察发现这个地址并不是固定的（应该是负载均衡的结果）。
+然后发送一个握手包，携带了 Roomid，访问者 id，客户端版本等信息，最后还有一个 key，后来观察发现是通过请求某个接口获取的这个 key 值（就是 token）。
+重点就是分析协议包。不管是接收还是发送的二进制包都有一个固定大小 16 字节的首部。这个首部的组成我用一个表格来表示：
+   偏移 长度 内容     0 4 包的大小   4 4 未知（目前和分析无关）   8 4 包类型   12 4 未知（目前和分析无关）    除了首部之外的就是携带的数据部分了。在这里需要注意的一点是，由于瞬时信息量可能会很大，会把若干个包压缩为一个包发送，这个包组成是《包首部-包主体-下一个包首部-下一个包主体-&amp;hellip;..等等》，而且因为包类型为 5 的数量最多，传输信息量会很大，所以是用 gzip 压缩了的，这里要注意。这里随手拿一个包举例：
+...G............{&amp;#34;cmd&amp;#34;:&amp;#34;DANMU_MSG&amp;#34;,&amp;#34;info&amp;#34;:[[0,1,25,8322816,1584073975908,1584073720,0,&amp;#34;7905c3d4&amp;#34;,0,0,0],&amp;#34;(=・ω・=)&amp;#34;,[14006391,&amp;#34;桥本环零&amp;#34;,0,1,0,10000,1,&amp;#34;&amp;#34;],[17,&amp;#34;小糕兔&amp;#34;,&amp;#34;娜可糕糕&amp;#34;,294526,16752445,&amp;#34;&amp;#34;,0],[47,0,16746162,10074],[&amp;#34;title-179-1&amp;#34;,&amp;#34;title-179-1&amp;#34;],0,0,null,{&amp;#34;ts&amp;#34;:1584073975,&amp;#34;ct&amp;#34;:&amp;#34;B0A7DFE4&amp;#34;},0,0,null,null,0]}...h............{&amp;#34;cmd&amp;#34;:&amp;#34;DANMU_MSG&amp;#34;,&amp;#34;info&amp;#34;:[[0,1,25,16777215,1584073975938,1584073264,0,&amp;#34;21635747&amp;#34;,0,0,0],&amp;#34;包砸是我关注的up里唯一一个很可爱的&amp;#34;,[339865528,&amp;#34;兰博基尼鬼怪&amp;#34;,0,0,0,10000,1,&amp;#34;&amp;#34;],[3,&amp;#34;包崽铺&amp;#34;,&amp;#34;喝薄荷奶绿&amp;#34;,1506599,6406234,&amp;#34;&amp;#34;,0],[10,0,9868950,&amp;#34;\u003e50000&amp;#34;],[&amp;#34;&amp;#34;,&amp;#34;&amp;#34;],0,0,null,{&amp;#34;ts&amp;#34;:1584073975,&amp;#34;ct&amp;#34;:&amp;#34;657DC663&amp;#34;},0,0,null,null,0]} 可以看到这里就是瞬时有两条弹幕，变为了一个包。每个包都有自己的头部，可以自行格式化一下。
+也不是所有类型为 5 的包都被压缩，只有某些可能数据量很大才会被压缩，比如 DANMU_MSG，SEND_GIFT 等，并且类型为 5 的可能是用户弹幕，礼物，贵宾进场，房间关注变动等，就是依靠 “cmd” 这个字段值来判别的，目前我已知的 cmd 有这么几种，可以根据需求来利用：</description>
+			<content type="html"><![CDATA[<h1 id="b站直播协议分析">B站直播协议分析</h1>
+<blockquote>
+<p>上篇介绍协议分析，下篇介绍开发思路。</p>
+</blockquote>
+<h2 id="项目缘由">项目缘由</h2>
+<p>假期在家，群里有几个朋友决定尝个新鲜开直播娱乐一下，后来发现B站官方提供的直播姬只有弹幕显示功能，并没有点歌等其他自定义功能，网上的项目也比较少，而且一些点歌机不维护了导致功能有缺陷，因此打算开发一个自定义的具有多功能的直播助手，初步包含弹幕礼物显示，点歌等功能。</p>
+<p>开发的思路是<strong>分析传输二进制包，从中找出我们想要的数据，以我们想要的方式显示出来。</strong></p>
+<h2 id="总体过程">总体过程</h2>
+<p>随便打开一个直播间，按 F12，切换到 Network 的 WS 栏。可以看到它是首先连接弹幕服务器，并且通过观察发现这个地址并不是固定的（应该是负载均衡的结果）。</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210125220539933.png" alt="wss链接"></p>
+<p>然后发送一个握手包，携带了 Roomid，访问者 id，客户端版本等信息，最后还有一个 key，后来观察发现是通过请求某个接口获取的这个 key 值（就是 token）。</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210125220806540.png" alt="握手包"></p>
+<p>重点就是分析协议包。不管是接收还是发送的二进制包都有一个固定大小 16 字节的首部。这个首部的组成我用一个表格来表示：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">偏移</th>
+<th style="text-align:center">长度</th>
+<th style="text-align:center">内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">包的大小</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">未知（目前和分析无关）</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">包类型</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">未知（目前和分析无关）</td>
+</tr>
+</tbody>
+</table>
+<p>除了首部之外的就是携带的数据部分了。在这里需要注意的一点是，<strong>由于瞬时信息量可能会很大，会把若干个包压缩为一个包发送，这个包组成是《包首部-包主体-下一个包首部-下一个包主体-&hellip;..等等》</strong>，而且因为包类型为 5 的数量最多，传输信息量会很大，所以是用 gzip 压缩了的，这里要注意。这里随手拿一个包举例：</p>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">...G............</span><span class="p">{</span><span class="nt">&#34;cmd&#34;</span><span class="p">:</span><span class="s2">&#34;DANMU_MSG&#34;</span><span class="p">,</span><span class="nt">&#34;info&#34;</span><span class="p">:[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">8322816</span><span class="p">,</span><span class="mi">1584073975908</span><span class="p">,</span><span class="mi">1584073720</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s2">&#34;7905c3d4&#34;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="s2">&#34;(=・ω・=)&#34;</span><span class="p">,[</span><span class="mi">14006391</span><span class="p">,</span><span class="s2">&#34;桥本环零&#34;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10000</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s2">&#34;&#34;</span><span class="p">],[</span><span class="mi">17</span><span class="p">,</span><span class="s2">&#34;小糕兔&#34;</span><span class="p">,</span><span class="s2">&#34;娜可糕糕&#34;</span><span class="p">,</span><span class="mi">294526</span><span class="p">,</span><span class="mi">16752445</span><span class="p">,</span><span class="s2">&#34;&#34;</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">47</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">16746162</span><span class="p">,</span><span class="mi">10074</span><span class="p">],[</span><span class="s2">&#34;title-179-1&#34;</span><span class="p">,</span><span class="s2">&#34;title-179-1&#34;</span><span class="p">],</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="kc">null</span><span class="p">,{</span><span class="nt">&#34;ts&#34;</span><span class="p">:</span><span class="mi">1584073975</span><span class="p">,</span><span class="nt">&#34;ct&#34;</span><span class="p">:</span><span class="s2">&#34;B0A7DFE4&#34;</span><span class="p">},</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="kc">null</span><span class="p">,</span><span class="kc">null</span><span class="p">,</span><span class="mi">0</span><span class="p">]}</span><span class="err">...h............</span><span class="p">{</span><span class="nt">&#34;cmd&#34;</span><span class="p">:</span><span class="s2">&#34;DANMU_MSG&#34;</span><span class="p">,</span><span class="nt">&#34;info&#34;</span><span class="p">:[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">16777215</span><span class="p">,</span><span class="mi">1584073975938</span><span class="p">,</span><span class="mi">1584073264</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s2">&#34;21635747&#34;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="s2">&#34;包砸是我关注的up里唯一一个很可爱的&#34;</span><span class="p">,[</span><span class="mi">339865528</span><span class="p">,</span><span class="s2">&#34;兰博基尼鬼怪&#34;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10000</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s2">&#34;&#34;</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="s2">&#34;包崽铺&#34;</span><span class="p">,</span><span class="s2">&#34;喝薄荷奶绿&#34;</span><span class="p">,</span><span class="mi">1506599</span><span class="p">,</span><span class="mi">6406234</span><span class="p">,</span><span class="s2">&#34;&#34;</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">9868950</span><span class="p">,</span><span class="s2">&#34;\u003e50000&#34;</span><span class="p">],[</span><span class="s2">&#34;&#34;</span><span class="p">,</span><span class="s2">&#34;&#34;</span><span class="p">],</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="kc">null</span><span class="p">,{</span><span class="nt">&#34;ts&#34;</span><span class="p">:</span><span class="mi">1584073975</span><span class="p">,</span><span class="nt">&#34;ct&#34;</span><span class="p">:</span><span class="s2">&#34;657DC663&#34;</span><span class="p">},</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="kc">null</span><span class="p">,</span><span class="kc">null</span><span class="p">,</span><span class="mi">0</span><span class="p">]}</span>
+</code></pre></div><p>可以看到这里就是瞬时有两条弹幕，变为了一个包。每个包都有自己的头部，可以自行格式化一下。</p>
+<p>也<strong>不是所有类型为 5 的包都被压缩</strong>，只有某些可能数据量很大才会被压缩，比如 DANMU_MSG，SEND_GIFT 等，并且类型为 5 的可能是用户弹幕，礼物，贵宾进场，房间关注变动等，就是依靠 “cmd” 这个字段值来判别的，目前我已知的 cmd 有这么几种，可以根据需求来利用：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">cmd</th>
+<th style="text-align:center">内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">DANMU_MSG</td>
+<td style="text-align:center">用户弹幕</td>
+</tr>
+<tr>
+<td style="text-align:center">WELCOME</td>
+<td style="text-align:center">Vip，Svip进场（<strong>标注1</strong>）</td>
+</tr>
+<tr>
+<td style="text-align:center">WELCOME_GUARD</td>
+<td style="text-align:center">房管进场</td>
+</tr>
+<tr>
+<td style="text-align:center">ENTRY_EFFECT</td>
+<td style="text-align:center">提督，总督等头衔</td>
+</tr>
+<tr>
+<td style="text-align:center">SEND_GIFT</td>
+<td style="text-align:center">用户礼物</td>
+</tr>
+<tr>
+<td style="text-align:center">COMBO_SEND</td>
+<td style="text-align:center">礼物连击</td>
+</tr>
+<tr>
+<td style="text-align:center">COMBO_END</td>
+<td style="text-align:center">连击结束（<strong>标注2</strong>）</td>
+</tr>
+<tr>
+<td style="text-align:center">ROOMD_RANK</td>
+<td style="text-align:center">这个不太清楚是什么</td>
+</tr>
+<tr>
+<td style="text-align:center">NOTICE_MSG</td>
+<td style="text-align:center">所有直播间的通告消息</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>标注 1: 我不太了解 B 站 Vip 的等级划分，我仅知道提督，总督等，还有老爷这些，其他不知道了，老爷是被划分到这一栏的。</p>
+</blockquote>
+<blockquote>
+<p>标注 2: 如果送礼物连击是会有和《SEND_GIFT》不一样的特效的，连击结束也有提示，所以分开了。</p>
+</blockquote>
+<p>这里给出一些用到的接口，后续可能会更新失效，F12 打开找即可，截止博客发出时均有效。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">URL</th>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><a href="http://api.live.bilibili.com/room/v1/Room/room_init">http://api.live.bilibili.com/room/v1/Room/room_init</a></td>
+<td style="text-align:center">id</td>
+<td style="text-align:center">查询房间短id，长id等信息</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://api.live.bilibili.com/room/v1/Danmu/getConf">https://api.live.bilibili.com/room/v1/Danmu/getConf</a></td>
+<td style="text-align:center">room_id=xxx&amp;platform=pc&amp;player=web</td>
+<td style="text-align:center">查询可用弹幕服务器列表，握手包的key</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://api.bilibili.com/x/space/acc/info">https://api.bilibili.com/x/space/acc/info</a></td>
+<td style="text-align:center">mid=382297465&amp;jsonp=jsonp</td>
+<td style="text-align:center">根据userid查询用户个人信息</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom">https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom</a></td>
+<td style="text-align:center">room_id=xxx</td>
+<td style="text-align:center">查询房间信息，标题等</td>
+</tr>
+</tbody>
+</table>
+<p>到这里其实就已经结束了，<strong>我们可以模拟连接某个弹幕服务器，然后按照要求发送握手包，随后一直接收信息，根据首部的类型 ID 可以判定不同的包，然后根据 cmd 字段判定消息类型，获取我们想要的字段值就可以了。再结合其他的一些接口就可以完整的获取直播间的各种信息了。</strong></p>
+<p>分析完后，就可以根据流程去写程序了，下一节介绍如何使用 <a href="https://golang.org/">Go</a> 语言开发助手的后端部分。</p>
 ]]></content>
 		</item>
 		
