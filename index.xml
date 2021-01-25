@@ -7,7 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 20 Jan 2021 15:45:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Jan 2021 23:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>深入理解 Go map</title>
+      <link>https://www.kcode.icu/posts/go/map/</link>
+      <pubDate>Fri, 22 Jan 2021 23:35:20 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/go/map/</guid>
+      <description>哈希表 几乎所有语言都有 哈希表 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的”大神“。
+问题来源于实际，我们先看看这些问题 ：
+ 声明。当我使用 :=，var，make，甚至 new 声明 map 的时候，编译器帮我们做了什么事情，它们有什么区别？ 增删改查。使用 数组+链表 的情况下如何设计才能避免 O(n) 的最差情况？ 注意事项。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？  还有一个常识是 Go map 的遍历是随机的，即多次遍历输出的结果集不同。
+设计方式 Go map 实现哈希表使用的是 数组+链表 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。
+为了降低 map 操作的时间复杂度，引入了一个 负载因子 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 实际上最好只存 多少个元素，而不是一直等到满载再处理，因为多到一定程度效率 可能 就低了。在 Go 语言里这个值被定义为 6.5。
+数据结构 当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下。 哈希表就是实现一个映射关系，给出自变量 x，能够通过平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x)，这里有个非常重要的限制：对于无限的输入，需要给出有限的输出。在哈希函数中这句话成立，在 Go map 中也成立，指的是只有有限的桶，怎么放无限的元素？所以我们需要考虑这个问题。</description>
+    </item>
+    
     <item>
       <title>博客图床解决方案</title>
       <link>https://www.kcode.icu/posts/chore/imgs/</link>
@@ -43,18 +57,23 @@ PicGo PicGo 是一款使用 Node + Electron 开发的跨平台可视化图片上
       
       <guid>https://www.kcode.icu/go/</guid>
       <description>我不太喜欢只看问题的表面，总是不经意间思考了这么多，希望对你有所帮助。
-标记的内容已经列入计划，正在赶工中。
- 一：深入表象  「map」深入理解 Go map ，正在&amp;hellip; 「string」简单又有”东西“的字符串 ，正在&amp;hellip; 「slice」灵活高效的切片 ，正在&amp;hellip; 「string&amp;amp;slice」用理论驱动实践 ，正在&amp;hellip;   二：深入理解  「method」方法到底是什么 ，正在&amp;hellip;   三：深入灵魂  「GPM」Go 调度模型有多强 ，正在&amp;hellip; 「GC」入个 GC 算法的门？ ，正在&amp;hellip;    我的公众号 平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号：</description>
+我打算围绕 Go 的底层实现写一些自己的思考和探究，我在写之前参考了大量博客等”二手资料“，写时手边也拿着 Go 语言最新版源代码这样的”一手资料“，其一是因为官方源码和文档永远是我们最好的第一学习工具，其二是我个人在没看到源信息时有种不踏实的感觉（可能跟以前踩过坑有关），所以文中说到的任何知识点均会附带源码说明，由于 Go 语言特殊性，必要时还会附带汇编代码辅助，最后我还会通过理论来推动实践为你做个演示。
+标记的内容已经列入计划，正在赶工中 😄
+ 一：深入表象  「map」深入理解 Go map ，正在&amp;hellip; 「string」简单又有”东西“的字符串 ，正在&amp;hellip; 「slice」灵活高效的切片 ，正在&amp;hellip; 「string&amp;amp;slice」用理论驱动实践 ，正在&amp;hellip;   二：深入理解  「method」方法到底是什么 ，正在&amp;hellip;   三：深入灵魂  「GPM」Go 调度模型为什么这么特别？ ，正在&amp;hellip; 「GC」入个 GC 算法的门？ ，正在&amp;hellip;    我的公众号 平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号：</description>
     </item>
     
     <item>
-      <title>聊聊你最常见的HTTP</title>
+      <title></title>
       <link>https://www.kcode.icu/posts/http/</link>
       <pubDate>Fri, 15 Jan 2021 23:10:22 +0000</pubDate>
       
       <guid>https://www.kcode.icu/posts/http/</guid>
-      <description>标题的这句话我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
-HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP）。</description>
+      <description>标题的”最常见“我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
+这篇博客我想阐述除书本概念之外的一些个人理解，希望对你有所帮助。
+HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP），是一个应用层面上的，也就是软件双方通信的数据规则，不然你发给我一串 @#$%$%^$%^，只有你能看懂，我怎么知道你说的是什么玩意？双方按照这个规则去通信，有什么需求都在这个规范里写好了发给对方，对方就知道你想干什么，就可以也按照这个规范给你回过去，就是这么简单。只是因为随着技术的发展，所遇到的问题越来越多，安全、效率、可读性等等，不得不提出一系列的解决方案去完善，最终变得很”臃肿“罢了。但是你应该明白，这就是一个为应用程序通信所提出来的一个通信协议，站在这个角度上去理解我相信你能更容易明白。
+HTTP方法、状态码这些究竟是什么？ 我常看到有关于 HTTP：
+ ”get 和 post“方法有什么区别？ 状态码有哪些？  进阶的可能有：
+ HTTP 演变过程是什么，从原因到解决方案一步一步说。   演变过程 </description>
     </item>
     
     <item>
@@ -149,19 +168,6 @@ du du 就是 “disk usage” 的缩写，如果你需要计算某个特定目�
 df VS. du 看了这两个命令大致用法后，它们在使用场景是什么呢，众所周知不结合使用场景的技术都是耍流氓。大致可以这样总结：df 命令提供一个关于你整个文件系统的概览，比如你多少空间正在使用等等，du 命令更倾向于计算某个目录的精确快照。
 如果非要说哪个的结果更有用一点，我觉得是 du。举个例子，我在 /var 目录下安装一个第三方包时遇到了一个目录空间不足的错误，那么我就可以先跑一下 df 命令去看看这个目录的空间来确认一下这是不是真的。我如果看到 /var 有足够空间，那我会接着跑一下 du /var 去看看是它的哪个子目录因为空间不够报的错。这样我就可以一直通过 df  去缩小出错目录的范围，直到找到问题。
 理解这些命令的区别能让我们串联使用这些工具，从而更快的定位并解决我们所面临的绝大多数的问题。</description>
-    </item>
-    
-    <item>
-      <title>一文搞懂ASCII、Unicode和UTF</title>
-      <link>https://www.kcode.icu/posts/ascii-unicode-utf/</link>
-      <pubDate>Fri, 18 Sep 2020 09:27:13 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/ascii-unicode-utf/</guid>
-      <description>起因 最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在会用的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。
-什么是ASCII，为什么又要引入Unicode 都应该了解过 ASCII、Unicode、Unicode 码点、UTF-8等一系列名词。先说 ASCII（American Standard Code for Information Interchange: 美国信息交换标准代码），它是一种字符集，说白了就是一个字符和数字的一一对应关系，你想找这个字符怎么办，计算机又不认识字符？给出他的对应的数字就行了。最初只有美国等一些使用英文的国家使用，所以 128 个字符完全够用，它包含了标点符号、数字和字母等。但是随着世界上使用计算机的国家越来越多，这 128 个字符是完全不够用的。所以 Unicode 字符集 就出现了。Unicode 包含了世界上绝大多数的字符，给他们提供了一一对应关系，比如“知”字对应 30693，即 U+77e5（16 进制形式）。所以说白了 ASCII 和 Unicode 就是一种字符集，一种字符对应关系，Unicode 中每个字符被称为一个 Code Point（码点），而 Go 语言中的 rune 类型正是代表了这样一个单位，即一个 rune 代表了一个 unicode 字符。
-那么大家肯定都听说过 UTF-8，UTF-16 吧，那问题来了， UTF 又是什么呢，UTF-8 和 UTF-16 到底又有什么关系呢？
-UTF（Unicode Transformation Format） 从字面上你就应该能看出来，这就是一个 Unicode 转换格式。什么是转换格式，为什么需要转换格式？上文说了 Unicode 就是提供了字符间的一一对应关系，比如“知”对应了 30693，那计算机怎么表示这个数（计算机只认识二进制）？它要做到：
-在很长的文本中准确获取到每个字符，不能找错 **Unicode 表示一个字符可以使用 1 - 4 个字节。**它的转换规则如下：</description>
     </item>
     
   </channel>

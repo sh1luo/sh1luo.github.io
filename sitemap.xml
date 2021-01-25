@@ -3,13 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.kcode.icu/tags/go/</loc>
+    <lastmod>2021-01-22T23:35:20+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/</loc>
-    <lastmod>2021-01-20T15:45:13+00:00</lastmod>
+    <lastmod>2021-01-22T23:35:20+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.kcode.icu/tags/</loc>
-    <lastmod>2021-01-20T15:45:13+00:00</lastmod>
+    <lastmod>2021-01-22T23:35:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/</loc>
+    <lastmod>2021-01-22T23:35:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/go/map/</loc>
+    <lastmod>2021-01-22T23:35:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81/</loc>
+    <lastmod>2021-01-22T23:35:20+00:00</lastmod>
   </url>
   
   <url>
@@ -19,11 +39,6 @@
   
   <url>
     <loc>https://www.kcode.icu/posts/chore/imgs/</loc>
-    <lastmod>2021-01-20T15:45:13+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/</loc>
     <lastmod>2021-01-20T15:45:13+00:00</lastmod>
   </url>
   
@@ -38,6 +53,11 @@
   </url>
   
   <url>
+    <loc>https://www.kcode.icu/posts/http/</loc>
+    <lastmod>2021-01-15T23:10:22+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/http/</loc>
     <lastmod>2021-01-15T23:10:22+00:00</lastmod>
   </url>
@@ -45,16 +65,6 @@
   <url>
     <loc>https://www.kcode.icu/tags/%E5%8E%9F%E7%90%86/</loc>
     <lastmod>2021-01-15T23:10:22+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/posts/http/</loc>
-    <lastmod>2021-01-15T23:10:22+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/tags/go/</loc>
-    <lastmod>2021-01-15T21:10:55+00:00</lastmod>
   </url>
   
   <url>

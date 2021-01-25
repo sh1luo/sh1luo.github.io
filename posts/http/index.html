@@ -7,27 +7,39 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
-<meta itemprop="name" content="聊聊你最常见的HTTP">
-<meta itemprop="description" content="标题的这句话我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
-HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP）。">
+<meta itemprop="name" content="">
+<meta itemprop="description" content="标题的”最常见“我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
+这篇博客我想阐述除书本概念之外的一些个人理解，希望对你有所帮助。
+HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP），是一个应用层面上的，也就是软件双方通信的数据规则，不然你发给我一串 @#$%$%^$%^，只有你能看懂，我怎么知道你说的是什么玩意？双方按照这个规则去通信，有什么需求都在这个规范里写好了发给对方，对方就知道你想干什么，就可以也按照这个规范给你回过去，就是这么简单。只是因为随着技术的发展，所遇到的问题越来越多，安全、效率、可读性等等，不得不提出一系列的解决方案去完善，最终变得很”臃肿“罢了。但是你应该明白，这就是一个为应用程序通信所提出来的一个通信协议，站在这个角度上去理解我相信你能更容易明白。
+HTTP方法、状态码这些究竟是什么？ 我常看到有关于 HTTP：
+ ”get 和 post“方法有什么区别？ 状态码有哪些？  进阶的可能有：
+ HTTP 演变过程是什么，从原因到解决方案一步一步说。   演变过程 ">
 <meta itemprop="datePublished" content="2021-01-15T23:10:22+00:00" />
 <meta itemprop="dateModified" content="2021-01-15T23:10:22+00:00" />
-<meta itemprop="wordCount" content="10">
+<meta itemprop="wordCount" content="23">
 
 
 
 <meta itemprop="keywords" content="HTTP,原理," />
-<meta property="og:title" content="聊聊你最常见的HTTP" />
-<meta property="og:description" content="标题的这句话我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
-HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP）。" />
+<meta property="og:title" content="" />
+<meta property="og:description" content="标题的”最常见“我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
+这篇博客我想阐述除书本概念之外的一些个人理解，希望对你有所帮助。
+HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP），是一个应用层面上的，也就是软件双方通信的数据规则，不然你发给我一串 @#$%$%^$%^，只有你能看懂，我怎么知道你说的是什么玩意？双方按照这个规则去通信，有什么需求都在这个规范里写好了发给对方，对方就知道你想干什么，就可以也按照这个规范给你回过去，就是这么简单。只是因为随着技术的发展，所遇到的问题越来越多，安全、效率、可读性等等，不得不提出一系列的解决方案去完善，最终变得很”臃肿“罢了。但是你应该明白，这就是一个为应用程序通信所提出来的一个通信协议，站在这个角度上去理解我相信你能更容易明白。
+HTTP方法、状态码这些究竟是什么？ 我常看到有关于 HTTP：
+ ”get 和 post“方法有什么区别？ 状态码有哪些？  进阶的可能有：
+ HTTP 演变过程是什么，从原因到解决方案一步一步说。   演变过程 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.kcode.icu/posts/http/" />
 <meta property="article:published_time" content="2021-01-15T23:10:22+00:00" />
 <meta property="article:modified_time" content="2021-01-15T23:10:22+00:00" />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="聊聊你最常见的HTTP"/>
-<meta name="twitter:description" content="标题的这句话我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
-HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP）。"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="标题的”最常见“我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
+这篇博客我想阐述除书本概念之外的一些个人理解，希望对你有所帮助。
+HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP），是一个应用层面上的，也就是软件双方通信的数据规则，不然你发给我一串 @#$%$%^$%^，只有你能看懂，我怎么知道你说的是什么玩意？双方按照这个规则去通信，有什么需求都在这个规范里写好了发给对方，对方就知道你想干什么，就可以也按照这个规范给你回过去，就是这么简单。只是因为随着技术的发展，所遇到的问题越来越多，安全、效率、可读性等等，不得不提出一系列的解决方案去完善，最终变得很”臃肿“罢了。但是你应该明白，这就是一个为应用程序通信所提出来的一个通信协议，站在这个角度上去理解我相信你能更容易明白。
+HTTP方法、状态码这些究竟是什么？ 我常看到有关于 HTTP：
+ ”get 和 post“方法有什么区别？ 状态码有哪些？  进阶的可能有：
+ HTTP 演变过程是什么，从原因到解决方案一步一步说。   演变过程 "/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -36,7 +48,7 @@ HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP）。"/
 	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
 	<link rel="shortcut icon" href="/favicon.ico">
 
-	<title>聊聊你最常见的HTTP</title>
+	<title></title>
 	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
 	
 </head>
@@ -74,12 +86,25 @@ HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP）。"/
 		<article class="thin">
 			<header class="post-header">
 				<div class="post-meta"><span>Jan 15, 2021</span></div>
-				<h1>聊聊你最常见的HTTP</h1>
+				<h1></h1>
 			</header>
 			<div class="content">
-				<p>标题的这句话我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。</p>
+				<p>标题的”最常见“我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。</p>
+<p>这篇博客我想阐述除书本概念之外的一些个人理解，希望对你有所帮助。</p>
 <h2 id="http是什么">HTTP是什么<a href="#http是什么" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<p>超文本传输协议（Hypertext Transfer Protocol，HTTP）。</p>
+<p>超文本传输协议（Hypertext Transfer Protocol，HTTP），是一个应用层面上的，也就是软件双方通信的数据规则，不然你发给我一串 @#$%$%^$%^，只有你能看懂，我怎么知道你说的是什么玩意？双方按照这个规则去通信，有什么需求都在这个规范里写好了发给对方，对方就知道你想干什么，就可以也按照这个规范给你回过去，就是这么简单。只是因为随着技术的发展，所遇到的问题越来越多，安全、效率、可读性等等，不得不提出一系列的解决方案去完善，最终变得很”臃肿“罢了。但是你应该明白，这就是一个为应用程序通信所提出来的一个通信协议，站在这个角度上去理解我相信你能更容易明白。</p>
+<h2 id="http方法状态码这些究竟是什么">HTTP方法、状态码这些究竟是什么？<a href="#http方法状态码这些究竟是什么" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>我常看到有关于 HTTP：</p>
+<ul>
+<li>”get 和 post“方法有什么区别？</li>
+<li>状态码有哪些？</li>
+</ul>
+<p>进阶的可能有：</p>
+<ul>
+<li>HTTP 演变过程是什么，从原因到解决方案一步一步说。</li>
+<li></li>
+</ul>
+<h2 id="演变过程">演变过程<a href="#演变过程" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
 			</div>
 			<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.png"></div>
@@ -88,7 +113,7 @@ HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP）。"/
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/http">HTTP</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E5%8E%9F%E7%90%86">原理</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>10 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>23 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-01-15 23:10 &#43;0000</p>
 			</footer>
 		</article>
