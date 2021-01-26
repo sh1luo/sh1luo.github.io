@@ -29,27 +29,31 @@ tags:
 
 ## GitHub Page+自定义域名
 
-这种方案比较简单（因为GitHub 都帮我们做了），你首先需要创建一个名为 `<YourGitHubName>.github.io` 的仓库，比如 `sh1luo.github.io`，然后购买一个域名（国内国外都行，国内要备案），给他添加一条 [CNAME 记录](https://baike.baidu.com/item/CNAME/9845877?fr=aladdin) ，就像这样
+这种方案比较简单（因为GitHub 都帮我们做了），这也是我现在的方式，只不过我的域名是国外的，所以没办法使用 CDN 加速。
 
-![DNS记录](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210119101326692.png)
+你首先需要创建一个名为 `<YourGitHubName>.github.io` 的仓库，比如 `sh1luo.github.io`，然后购买一个域名（国内国外都行，国内要备案），因为我们是要使用 GitHub 的自定义域名，所以需要使用 [CNAME](https://baike.baidu.com/item/CNAME/9845877?fr=aladdin) 记录，在域名服务器处添加两条CNAME 记录 ，就像这样
 
-我是国外的域名，所以转为了国内的 [DNSPod](https://www.dnspod.cn/) 进行解析，希望快一点，做法也非常简单。就是把原域名服务器商的 NameServers 改成 新解析服务器提供的就好了，如上图的 hickory.dnspod.net 那两条。
+![DNS记录](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210126230446099.png)
 
+我是国外的域名，不能使用国内 CDN 加速，正好 CloudFlare 提供免费全球 CDN，虽然效果一般，但是它提供的免费功能也是非常的多，包括各种流量统计分析，也是很良心了。想使用 CloudFlare 当 DNS 服务器做法也非常简单。注册一个账号填上域名信息，然后会提供给我们两个 DNS 服务器域名，我们把原域名服务器商的 NameServers 改成新解析服务器提供的就好了。
 
+![](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210126231932450.png)
 
-![image-20210118183902580](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118183902580.png)
+当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加两条 CNAME 记录，然后在 GitHub Pages 仓库的发布分支放一个 CNAME 文件，文件内容就是你的 CNAME 地址就可以了，它会自动帮你设置为这个域名并搞定一切的:)
 
-当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加一条 CNAME 记录，然后在 GitHub Pages 那里设置上自定义域名就完事了，它会自动帮你部署 HTTPS 和一切的 :)
+最终应该是这样：
 
-<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118181726052.png" alt="image-20210118181726052"  />
+![](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210126232019604.png)
 
 ## CDN加速
 
 如果你是国内的域名但是是国外的空间，就可以使用 CDN 加速了，加速区域选国内。这里需要注意源站地址由于是 GitHub Pages ，而 GitHub Pages 有 4 个 IP。都写上一行一个，回源 HOST 写你自己地址就可以了。这个回源 HOST 实际上就是 HTTP 头里的 host 字段，如果同一台机器上有多个服务的话，用来标识是哪一个服务，比较常见就是一个 IP 地址上配置了多个域名，就是通过这种给 host 首部字段的方式区分的不同 Web 站点。
 
-<img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118184423991.png" alt="image-20210118184423991" style="zoom:67%;" />
+配置完源站信息后，会生成一个 CDN 域名，比如我的是 `kcode.icu.cdn.dnsv1.com` ，然后再添加一条 CNAME 记录指向这个域名就搞定。这样配置过，你的网站经过缓存后国内访问速度能达到非常恐怖的速度，可以试着 ping 一下哦。
 
-配置完源站信息后，会生成一个 CDN 域名，比如我的是 `kcode.icu.cdn.dnsv1.com` ，然后再添加一条 CNAME 记录指向这个域名就搞定。参考上面的 `DNS记录` 这张图。这样配置过，你的网站经过缓存后国内访问速度能达到非常恐怖的速度，可以试着 ping 一下哦。
+不过我这里是尝试了一下，发现国内都是不支持加速国外域名，所以放弃了。
+
+![](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118184423991.png)
 
 ## Actions自动化构建
 
@@ -57,16 +61,9 @@ tags:
 
 ## 说在最后
 
+这里说几点我个人看法。
 
-
-之前是在阿里云买的是国内域名并在阿里云备案，到期之后续费价格是之前 10 倍。。在这个期间还不小心把备案号主体（直到现在我也不知道是个啥，貌似还需要写个书面申请到当地管局）不小心删了，再次备案怎么也申请不过，左右摇头+上下点头了几十分钟脖子都酸了还不通过，于是直接去 [NameSilo](https://www.namesilo.com/) 上买的国外域名。这里没什么好说的就是付费就完事（手动狗头）。
-
-
-
-因为这是国外域名服务器，如果你想用国内域名服务器解析的话（比如国内的），就把 NameServers 设置为目标域名服务器提供的记录值就可以了，其实就是一条 NS 记录。我用的还是它默认的域名服务器，因为我的是国外域名，CDN 国内加速不了，必须要备案，下面会说。
-
-![hickory这个位置字段的这两条就是](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210117164512937.png)
-
-如果你要修改域名服务器的话，在目标网站上里创建域名后，就会为你生成若干条 NS 记录，回到原网站修改了就好了。
-
-> 买域名可以选择国内也可以选择国外，国内必须备案，国外不用。
+- 博客要注重内容，我看好多人把界面弄的 **过于花哨** 不注重内在，我觉得如果你内容很丰富的情况下可以适当美化，但是弄个 BGM 或者动态换图什么的还是不要了。
+- 多踩坑不一定是坏事，在大学这个试错成本很低的环境里就要多尝试，在踩坑的过程中把基础打牢，锻炼问题定位能力，多思考，多总结，日积月累肯定有所提升。
+- 写博客给别人看的同时要多去看别人的成果，尤其是大佬们的，进步很快。
+- 

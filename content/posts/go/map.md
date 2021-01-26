@@ -22,13 +22,13 @@ tags:
 
 Go map 实现哈希表使用的是 **数组+链表** 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。
 
-为了降低 map 操作的时间复杂度，引入了一个 [负载因子](https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L70) 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 **实际上最好只存** 多少个元素，而不是一直等到满载再处理，因为多到一定程度效率 **可能** 就低了。在 Go 语言里这个值被定义为 6.5。
+为了降低 map 操作的时间复杂度，引入了一个 [负载因子](https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L70) 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 **实际上最好只存** 多少比例的元素，而不是一直等到满载再处理，因为多到一定程度效率 **可能** 就低了。在 Go 语言里这个值被定义为 6.5，即每个桶里最多存 6.5 个，包括溢出桶。
 
-<img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg" alt="separate chaining" style="zoom:130%;" />
+![](https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg)
 
 ### 数据结构
 
-当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 [hmap](https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L115) 的结构体，它定义在 `runtime/map.go` 文件下。 哈希表就是实现一个映射关系，给出自变量 x，能够通过平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x)，这里有个非常重要的限制：**对于无限的输入，需要给出有限的输出**。在哈希函数中这句话成立，在 Go map 中也成立，指的是只有有限的桶，怎么放无限的元素？所以我们需要考虑这个问题。
+当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 [hmap](https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L115) 的结构体，它定义在 `runtime/map.go` 文件下。 哈希表就是实现一个映射关系，给出自变量 x，能够通过平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x)，这里有个非常重要的限制：**对于无限的输入，需要给出有限的输出**。在哈希函数中这句话成立，在 Go map 中也成立，指的是只有有限的桶，怎么放无限的元素？我们需要考虑这个问题。
 
 ### 初始化
 
