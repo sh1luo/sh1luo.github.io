@@ -20,7 +20,7 @@
 整个过程可以参考上图，证书的过程就是使用了加密和签名两种手段。">
 <meta itemprop="datePublished" content="2021-01-27T15:57:50+00:00" />
 <meta itemprop="dateModified" content="2021-01-27T15:57:50+00:00" />
-<meta itemprop="wordCount" content="100">
+<meta itemprop="wordCount" content="166">
 
 
 
@@ -134,12 +134,41 @@
 </code></pre><p>方式之一来查看本地根证书。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/Snipaste_2021-01-28_21-32-27.png" alt=""></p>
 <p>好了，你现在应该大致明白了证书的验证过程，再来一张图看总结一下。</p>
-<p><img src="../../../640.png" alt="640"></p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/640%20(1).png" alt="640 (1)"></p>
 <p>到现在，我们已经利用证书机制确保了通信双方的身份，解决了不安全的问题之一。</p>
-<h2 id="rsa">RSA<a href="#rsa" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<p>RSA 是非对称加密算法之一，传统的 TLS 都是使用的 RSA 加密算法。</p>
-<h2 id="tls12">TLS1.2<a href="#tls12" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<h2 id="tls13">TLS1.3<a href="#tls13" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h2 id="tls12rsa">TLS1.2/RSA<a href="#tls12rsa" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>RSA 是一种非对称加密算法，也是可以用来加密和签名的算法之一。TLS1.2 版本握手步骤为：</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/tls12.png" alt="tls12"></p>
+<ol>
+<li>客户端向服务端发送 Client Hello 消息，其中携带客户端支持的协议版本，加密套件，压缩算法以及客户端生成的随机数，不过安全的客户端一般不允许压缩，会传递一个 null 作为唯一的压缩算法，来避免 <a href="https://en.wikipedia.org/wiki/CRIME">CRIME attack</a> 。</li>
+</ol>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/640%20(2).png" alt="640 (2)"></p>
+<ol start="2">
+<li>服务端收到客户端发来的协议版本、加密算法等信息后：
+<ol>
+<li>向客户端发送 Server Hello 消息，并携带选择特定的协议版本、加密方法、会话 ID 以及<strong>服务端生成的随机数</strong>；</li>
+<li>向客户端发送 Certificate 消息，即服务端的证书链，其中包含证书支持的域名、发行方和有效期等信息；</li>
+<li>向客户端发送 Server Key Exchange 消息，传递<strong>公钥</strong>以及签名等信息；</li>
+<li>向客户端发送可选的消息 CertificateRequest，验证客户端的证书；</li>
+<li>向客户端发送 Server Hello Done 消息，通知服务端已经发送了全部的相关信息；</li>
+</ol>
+</li>
+<li>客户端收到服务端的协议版本、加密方法、会话 ID 以及证书等信息后，验证服务端的证书；
+<ol>
+<li>向服务端发送 Client Key Exchange 消息，包含<strong>使用服务端公钥加密后的随机字符串</strong>，即预主密钥（Pre Master Secret）；</li>
+<li>向服务端发送 Change Cipher Spec 消息，通知服务端后面的数据段会加密传输；</li>
+<li>向服务端发送 Finished 消息，其中包含加密后的握手信息；</li>
+</ol>
+</li>
+<li>服务端收到 Change Cipher Spec 和 Finished 消息后；
+<ol>
+<li>向客户端发送 Change Cipher Spec 消息，通知客户端后面的数据段会加密传输；</li>
+<li>向客户端发送 Finished 消息，验证客户端的 Finished 消息并完成 TLS 握手；</li>
+</ol>
+</li>
+</ol>
+<p>TLS 握手的关键在于利用通信双方生成的随机字符串和服务端的公钥生成一个双方经过协商后的密钥，通信的双方可以使用这个对称的密钥加密消息防止中间人的监听和攻击，保证通信的安全。</p>
+<h2 id="tls13ecdhe">TLS1.3/ECDHE<a href="#tls13ecdhe" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <h2 id="总结">总结<a href="#总结" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
 			</div>
@@ -149,7 +178,7 @@
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/http">HTTP</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E5%AE%89%E5%85%A8">安全</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>100 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>166 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-01-27 15:57 &#43;0000</p>
 			</footer>
 		</article>

@@ -16,7 +16,7 @@
 当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。">
 <meta itemprop="datePublished" content="2021-01-22T23:35:20+00:00" />
 <meta itemprop="dateModified" content="2021-01-22T23:35:20+00:00" />
-<meta itemprop="wordCount" content="92">
+<meta itemprop="wordCount" content="279">
 
 
 
@@ -102,7 +102,37 @@
 <p>Go map 实现哈希表使用的是 <strong>数组+链表</strong> 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。</p>
 <p>为了降低 map 操作的时间复杂度，引入了一个 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L70">负载因子</a> 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 <strong>实际上最好只存</strong> 多少比例的元素，而不是一直等到满载再处理，因为多到一定程度效率 <strong>可能</strong> 就低了。在 Go 语言里这个值被定义为 6.5，即每个桶里最多存 6.5 个，包括溢出桶。</p>
 <p>当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L115">hmap</a> 的结构体，它定义在 <code>runtime/map.go</code> 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。</p>
-<p>真正存储数据的地方被称为桶，map 可以有许多桶，但是每个桶只能存储 8 个键值对，多出来的就要找到一个溢出桶放进去，每个桶的数据结构都是一样的，tophash 是键值经过哈希函数后的值高八位。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">hmap</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">count</span>     <span class="kt">int</span> 		<span class="c1">// map的大小，len()的结果就是这个字段值
+</span><span class="c1"></span>	<span class="nx">flags</span>     <span class="kt">uint8</span>		<span class="c1">// map的状态，有四个
+</span><span class="c1"></span>	<span class="nx">B</span>         <span class="kt">uint8</span>  	<span class="c1">// 桶数量的log_2对数，如B=5，桶数量就是2^5=32
+</span><span class="c1"></span>	<span class="nx">noverflow</span> <span class="kt">uint16</span> 	<span class="c1">// approximate number of overflow buckets; see incrnoverflow for details
+</span><span class="c1"></span>	<span class="nx">hash0</span>     <span class="kt">uint32</span> 	<span class="c1">// 哈希种子
+</span><span class="c1"></span>
+	<span class="nx">buckets</span>    <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// 桶数组的底层地址
+</span><span class="c1"></span>	<span class="nx">oldbuckets</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// 旧桶数组的底层地址
+</span><span class="c1"></span>	<span class="nx">nevacuate</span>  <span class="kt">uintptr</span>        <span class="c1">// progress counter for evacuation (buckets less than this have been evacuated)
+</span><span class="c1"></span>
+	<span class="nx">extra</span> <span class="o">*</span><span class="nx">mapextra</span> <span class="c1">// optional fields
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="c1">// mapextra holds fields that are not present on all maps.
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">mapextra</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="c1">// If both key and elem do not contain pointers and are inline, then we mark bucket
+</span><span class="c1"></span>	<span class="c1">// type as containing no pointers. This avoids scanning such maps.
+</span><span class="c1"></span>	<span class="c1">// However, bmap.overflow is a pointer. In order to keep overflow buckets
+</span><span class="c1"></span>	<span class="c1">// alive, we store pointers to all overflow buckets in hmap.extra.overflow and hmap.extra.oldoverflow.
+</span><span class="c1"></span>	<span class="c1">// overflow and oldoverflow are only used if key and elem do not contain pointers.
+</span><span class="c1"></span>	<span class="c1">// overflow contains overflow buckets for hmap.buckets.
+</span><span class="c1"></span>	<span class="c1">// oldoverflow contains overflow buckets for hmap.oldbuckets.
+</span><span class="c1"></span>	<span class="c1">// The indirection allows to store a pointer to the slice in hiter.
+</span><span class="c1"></span>	<span class="nx">overflow</span>    <span class="o">*</span><span class="p">[]</span><span class="o">*</span><span class="nx">bmap</span>
+	<span class="nx">oldoverflow</span> <span class="o">*</span><span class="p">[]</span><span class="o">*</span><span class="nx">bmap</span>
+
+	<span class="c1">// nextOverflow holds a pointer to a free overflow bucket.
+</span><span class="c1"></span>	<span class="nx">nextOverflow</span> <span class="o">*</span><span class="nx">bmap</span>
+<span class="p">}</span>
+</code></pre></div><p>真正存储数据的地方被称为桶，map 可以有许多桶，但是每个桶只能存储 8 个键值对，多出来的就要找到一个溢出桶放进去，每个桶的数据结构都是一样的，tophash 是键值经过哈希函数后的值高八位。</p>
 <p>这里需要注意一点是，key 和 value 并没有按照 key1/key2/keyN，value1/value2/valueN 的方式存储，而是如图形式，是为了因为字节对齐造成的内存浪费，这一点在官方源代码里有说明。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg" alt=""></p>
 <h3 id="初始化">初始化<a href="#初始化" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
@@ -120,7 +150,7 @@
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81">源码</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>92 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>279 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-01-22 23:35 &#43;0000</p>
 			</footer>
 		</article>

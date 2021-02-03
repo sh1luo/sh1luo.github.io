@@ -58,12 +58,41 @@
 </code></pre><p>方式之一来查看本地根证书。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/Snipaste_2021-01-28_21-32-27.png" alt=""></p>
 <p>好了，你现在应该大致明白了证书的验证过程，再来一张图看总结一下。</p>
-<p><img src="../../../640.png" alt="640"></p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/640%20(1).png" alt="640 (1)"></p>
 <p>到现在，我们已经利用证书机制确保了通信双方的身份，解决了不安全的问题之一。</p>
-<h2 id="rsa">RSA</h2>
-<p>RSA 是非对称加密算法之一，传统的 TLS 都是使用的 RSA 加密算法。</p>
-<h2 id="tls12">TLS1.2</h2>
-<h2 id="tls13">TLS1.3</h2>
+<h2 id="tls12rsa">TLS1.2/RSA</h2>
+<p>RSA 是一种非对称加密算法，也是可以用来加密和签名的算法之一。TLS1.2 版本握手步骤为：</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/tls12.png" alt="tls12"></p>
+<ol>
+<li>客户端向服务端发送 Client Hello 消息，其中携带客户端支持的协议版本，加密套件，压缩算法以及客户端生成的随机数，不过安全的客户端一般不允许压缩，会传递一个 null 作为唯一的压缩算法，来避免 <a href="https://en.wikipedia.org/wiki/CRIME">CRIME attack</a> 。</li>
+</ol>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/640%20(2).png" alt="640 (2)"></p>
+<ol start="2">
+<li>服务端收到客户端发来的协议版本、加密算法等信息后：
+<ol>
+<li>向客户端发送 Server Hello 消息，并携带选择特定的协议版本、加密方法、会话 ID 以及<strong>服务端生成的随机数</strong>；</li>
+<li>向客户端发送 Certificate 消息，即服务端的证书链，其中包含证书支持的域名、发行方和有效期等信息；</li>
+<li>向客户端发送 Server Key Exchange 消息，传递<strong>公钥</strong>以及签名等信息；</li>
+<li>向客户端发送可选的消息 CertificateRequest，验证客户端的证书；</li>
+<li>向客户端发送 Server Hello Done 消息，通知服务端已经发送了全部的相关信息；</li>
+</ol>
+</li>
+<li>客户端收到服务端的协议版本、加密方法、会话 ID 以及证书等信息后，验证服务端的证书；
+<ol>
+<li>向服务端发送 Client Key Exchange 消息，包含<strong>使用服务端公钥加密后的随机字符串</strong>，即预主密钥（Pre Master Secret）；</li>
+<li>向服务端发送 Change Cipher Spec 消息，通知服务端后面的数据段会加密传输；</li>
+<li>向服务端发送 Finished 消息，其中包含加密后的握手信息；</li>
+</ol>
+</li>
+<li>服务端收到 Change Cipher Spec 和 Finished 消息后；
+<ol>
+<li>向客户端发送 Change Cipher Spec 消息，通知客户端后面的数据段会加密传输；</li>
+<li>向客户端发送 Finished 消息，验证客户端的 Finished 消息并完成 TLS 握手；</li>
+</ol>
+</li>
+</ol>
+<p>TLS 握手的关键在于利用通信双方生成的随机字符串和服务端的公钥生成一个双方经过协商后的密钥，通信的双方可以使用这个对称的密钥加密消息防止中间人的监听和攻击，保证通信的安全。</p>
+<h2 id="tls13ecdhe">TLS1.3/ECDHE</h2>
 <h2 id="总结">总结</h2>
 ]]></content>
 		</item>
@@ -93,7 +122,37 @@
 <p>Go map 实现哈希表使用的是 <strong>数组+链表</strong> 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。</p>
 <p>为了降低 map 操作的时间复杂度，引入了一个 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L70">负载因子</a> 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 <strong>实际上最好只存</strong> 多少比例的元素，而不是一直等到满载再处理，因为多到一定程度效率 <strong>可能</strong> 就低了。在 Go 语言里这个值被定义为 6.5，即每个桶里最多存 6.5 个，包括溢出桶。</p>
 <p>当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L115">hmap</a> 的结构体，它定义在 <code>runtime/map.go</code> 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。</p>
-<p>真正存储数据的地方被称为桶，map 可以有许多桶，但是每个桶只能存储 8 个键值对，多出来的就要找到一个溢出桶放进去，每个桶的数据结构都是一样的，tophash 是键值经过哈希函数后的值高八位。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">hmap</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">count</span>     <span class="kt">int</span> 		<span class="c1">// map的大小，len()的结果就是这个字段值
+</span><span class="c1"></span>	<span class="nx">flags</span>     <span class="kt">uint8</span>		<span class="c1">// map的状态，有四个
+</span><span class="c1"></span>	<span class="nx">B</span>         <span class="kt">uint8</span>  	<span class="c1">// 桶数量的log_2对数，如B=5，桶数量就是2^5=32
+</span><span class="c1"></span>	<span class="nx">noverflow</span> <span class="kt">uint16</span> 	<span class="c1">// approximate number of overflow buckets; see incrnoverflow for details
+</span><span class="c1"></span>	<span class="nx">hash0</span>     <span class="kt">uint32</span> 	<span class="c1">// 哈希种子
+</span><span class="c1"></span>
+	<span class="nx">buckets</span>    <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// 桶数组的底层地址
+</span><span class="c1"></span>	<span class="nx">oldbuckets</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// 旧桶数组的底层地址
+</span><span class="c1"></span>	<span class="nx">nevacuate</span>  <span class="kt">uintptr</span>        <span class="c1">// progress counter for evacuation (buckets less than this have been evacuated)
+</span><span class="c1"></span>
+	<span class="nx">extra</span> <span class="o">*</span><span class="nx">mapextra</span> <span class="c1">// optional fields
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="c1">// mapextra holds fields that are not present on all maps.
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">mapextra</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="c1">// If both key and elem do not contain pointers and are inline, then we mark bucket
+</span><span class="c1"></span>	<span class="c1">// type as containing no pointers. This avoids scanning such maps.
+</span><span class="c1"></span>	<span class="c1">// However, bmap.overflow is a pointer. In order to keep overflow buckets
+</span><span class="c1"></span>	<span class="c1">// alive, we store pointers to all overflow buckets in hmap.extra.overflow and hmap.extra.oldoverflow.
+</span><span class="c1"></span>	<span class="c1">// overflow and oldoverflow are only used if key and elem do not contain pointers.
+</span><span class="c1"></span>	<span class="c1">// overflow contains overflow buckets for hmap.buckets.
+</span><span class="c1"></span>	<span class="c1">// oldoverflow contains overflow buckets for hmap.oldbuckets.
+</span><span class="c1"></span>	<span class="c1">// The indirection allows to store a pointer to the slice in hiter.
+</span><span class="c1"></span>	<span class="nx">overflow</span>    <span class="o">*</span><span class="p">[]</span><span class="o">*</span><span class="nx">bmap</span>
+	<span class="nx">oldoverflow</span> <span class="o">*</span><span class="p">[]</span><span class="o">*</span><span class="nx">bmap</span>
+
+	<span class="c1">// nextOverflow holds a pointer to a free overflow bucket.
+</span><span class="c1"></span>	<span class="nx">nextOverflow</span> <span class="o">*</span><span class="nx">bmap</span>
+<span class="p">}</span>
+</code></pre></div><p>真正存储数据的地方被称为桶，map 可以有许多桶，但是每个桶只能存储 8 个键值对，多出来的就要找到一个溢出桶放进去，每个桶的数据结构都是一样的，tophash 是键值经过哈希函数后的值高八位。</p>
 <p>这里需要注意一点是，key 和 value 并没有按照 key1/key2/keyN，value1/value2/valueN 的方式存储，而是如图形式，是为了因为字节对齐造成的内存浪费，这一点在官方源代码里有说明。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg" alt=""></p>
 <h3 id="初始化">初始化</h3>
