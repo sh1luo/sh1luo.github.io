@@ -64,19 +64,43 @@ HTTP 是无状态协议，这一特性极大地增强了 HTTP 协议的灵活性
 
 好了，你现在应该大致明白了证书的验证过程，再来一张图看总结一下。
 
-![640](../../../640.png)
+![640 (1)](https://gitee.com/sh1luo/imgs/raw/master/imgs/640%20(1).png)
 
 到现在，我们已经利用证书机制确保了通信双方的身份，解决了不安全的问题之一。
 
-## RSA
+## TLS1.2/RSA
 
-RSA 是非对称加密算法之一，传统的 TLS 都是使用的 RSA 加密算法。
+RSA 是一种非对称加密算法，也是可以用来加密和签名的算法之一。TLS1.2 版本握手步骤为：
 
-## TLS1.2
+![tls12](https://gitee.com/sh1luo/imgs/raw/master/imgs/tls12.png)
+
+1. 客户端向服务端发送 Client Hello 消息，其中携带客户端支持的协议版本，加密套件，压缩算法以及客户端生成的随机数，不过安全的客户端一般不允许压缩，会传递一个 null 作为唯一的压缩算法，来避免 [CRIME attack](https://en.wikipedia.org/wiki/CRIME) 。
+
+![640 (2)](https://gitee.com/sh1luo/imgs/raw/master/imgs/640%20(2).png)
+
+2. 服务端收到客户端发来的协议版本、加密算法等信息后：
+   1. 向客户端发送 Server Hello 消息，并携带选择特定的协议版本、加密方法、会话 ID 以及**服务端生成的随机数**；
+   2. 向客户端发送 Certificate 消息，即服务端的证书链，其中包含证书支持的域名、发行方和有效期等信息；
+   3. 向客户端发送 Server Key Exchange 消息，传递**公钥**以及签名等信息；
+   4. 向客户端发送可选的消息 CertificateRequest，验证客户端的证书；
+   5. 向客户端发送 Server Hello Done 消息，通知服务端已经发送了全部的相关信息；
+3. 客户端收到服务端的协议版本、加密方法、会话 ID 以及证书等信息后，验证服务端的证书；
+   1. 向服务端发送 Client Key Exchange 消息，包含**使用服务端公钥加密后的随机字符串**，即预主密钥（Pre Master Secret）；
+   2. 向服务端发送 Change Cipher Spec 消息，通知服务端后面的数据段会加密传输；
+   3. 向服务端发送 Finished 消息，其中包含加密后的握手信息；
+4. 服务端收到 Change Cipher Spec 和 Finished 消息后；
+   1. 向客户端发送 Change Cipher Spec 消息，通知客户端后面的数据段会加密传输；
+   2. 向客户端发送 Finished 消息，验证客户端的 Finished 消息并完成 TLS 握手；
+
+TLS 握手的关键在于利用通信双方生成的随机字符串和服务端的公钥生成一个双方经过协商后的密钥，通信的双方可以使用这个对称的密钥加密消息防止中间人的监听和攻击，保证通信的安全。
 
 
 
-## TLS1.3
+
+
+
+
+## TLS1.3/ECDHE
 
 
 

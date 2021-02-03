@@ -26,6 +26,39 @@ Go map 实现哈希表使用的是 **数组+链表** 的形式，也就是使用
 
 当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 [hmap](https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L115) 的结构体，它定义在 `runtime/map.go` 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。
 
+```go
+type hmap struct {
+    count     int 		// map的大小，len()的结果就是这个字段值
+	flags     uint8		// map的状态，有四个
+	B         uint8  	// 桶数量的log_2对数，如B=5，桶数量就是2^5=32
+	noverflow uint16 	// approximate number of overflow buckets; see incrnoverflow for details
+	hash0     uint32 	// 哈希种子
+
+	buckets    unsafe.Pointer // 桶数组的底层地址
+	oldbuckets unsafe.Pointer // 旧桶数组的底层地址
+	nevacuate  uintptr        // progress counter for evacuation (buckets less than this have been evacuated)
+
+	extra *mapextra // optional fields
+}
+
+// mapextra holds fields that are not present on all maps.
+type mapextra struct {
+	// If both key and elem do not contain pointers and are inline, then we mark bucket
+	// type as containing no pointers. This avoids scanning such maps.
+	// However, bmap.overflow is a pointer. In order to keep overflow buckets
+	// alive, we store pointers to all overflow buckets in hmap.extra.overflow and hmap.extra.oldoverflow.
+	// overflow and oldoverflow are only used if key and elem do not contain pointers.
+	// overflow contains overflow buckets for hmap.buckets.
+	// oldoverflow contains overflow buckets for hmap.oldbuckets.
+	// The indirection allows to store a pointer to the slice in hiter.
+	overflow    *[]*bmap
+	oldoverflow *[]*bmap
+
+	// nextOverflow holds a pointer to a free overflow bucket.
+	nextOverflow *bmap
+}
+```
+
 真正存储数据的地方被称为桶，map 可以有许多桶，但是每个桶只能存储 8 个键值对，多出来的就要找到一个溢出桶放进去，每个桶的数据结构都是一样的，tophash 是键值经过哈希函数后的值高八位。
 
 这里需要注意一点是，key 和 value 并没有按照 key1/key2/keyN，value1/value2/valueN 的方式存储，而是如图形式，是为了因为字节对齐造成的内存浪费，这一点在官方源代码里有说明。
