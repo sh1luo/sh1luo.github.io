@@ -1,5 +1,5 @@
 ---
-title: B站直播助手开发[下]
+title: Go+QML开发的跨平台桌面直播助手[下]
 date: 2020-03-13 13:22:23
 tags:
   - WebSocket
