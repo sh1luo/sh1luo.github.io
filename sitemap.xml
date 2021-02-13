@@ -148,6 +148,21 @@
   </url>
   
   <url>
+    <loc>https://www.kcode.icu/posts/chore/staruml-3.2.x/</loc>
+    <lastmod>2020-05-20T22:11:13+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/uml/</loc>
+    <lastmod>2020-05-20T22:11:13+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2020-05-20T22:11:13+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/chore/obs/</loc>
     <lastmod>2020-04-26T11:34:13+00:00</lastmod>
   </url>
@@ -158,6 +173,36 @@
   </url>
   
   <url>
+    <loc>https://www.kcode.icu/posts/chore/go&#43;qamel/</loc>
+    <lastmod>2020-03-23T14:51:15+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/gui/</loc>
+    <lastmod>2020-03-23T14:51:15+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/qml/</loc>
+    <lastmod>2020-03-23T14:51:15+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/%E4%BC%98%E5%8C%96/</loc>
+    <lastmod>2020-03-16T16:46:08+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</loc>
+    <lastmod>2020-03-16T16:46:08+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/%E7%BF%BB%E8%AF%91/</loc>
+    <lastmod>2020-03-16T16:46:08+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</loc>
     <lastmod>2020-03-13T13:22:23+00:00</lastmod>
   </url>
@@ -165,6 +210,16 @@
   <url>
     <loc>https://www.kcode.icu/tags/websocket/</loc>
     <lastmod>2020-03-13T13:22:23+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</loc>
+    <lastmod>2020-03-11T22:49:51+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/%E5%AE%98%E6%96%B9%E5%BA%93/</loc>
+    <lastmod>2020-03-11T22:49:51+00:00</lastmod>
   </url>
   
   <url>
@@ -180,6 +235,26 @@
   <url>
     <loc>https://www.kcode.icu/tags/%E6%8A%93%E5%8C%85/</loc>
     <lastmod>2020-03-05T15:45:13+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/translation/20191204-contribute-beyond-code-open-source-for-everyone/</loc>
+    <lastmod>2020-02-14T21:21:55+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</loc>
+    <lastmod>2020-02-14T21:20:33+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/translation/20191002-go-how-does-the-garbage-collector-watch-your-application/</loc>
+    <lastmod>2020-01-01T20:43:19+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/translation/20191202-go-how-are-random-numbers-generated/</loc>
+    <lastmod>2019-12-29T21:14:55+00:00</lastmod>
   </url>
   
   <url>

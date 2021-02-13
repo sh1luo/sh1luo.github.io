@@ -22,5 +22,18 @@
 当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。</description>
     </item>
     
+    <item>
+      <title></title>
+      <link>https://www.kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</link>
+      <pubDate>Wed, 11 Mar 2020 22:49:51 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</guid>
+      <description>问题起因 问题的起因是最近需要写一个小工具，期间因为需要自己在服务器上搭建了一个 Web 服务来提供 RESTful API 接口，在请求接口的时候需要拼接 url，没有考虑到部分字符的编码问题，导致 400 Bad Request 错误。原来使用的是这样：
+// url := fmt.Sprintf(&amp;#34;%ssearch?keywords=%s %s&amp;amp;limit=1&amp;#34;, Mp3Server, name, singer) // resp,err := http.Get(url) // ... 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
+q := url.Values{} q.Set(&amp;#34;keywords&amp;#34;, name+&amp;#34; &amp;#34;+singer) q.Set(&amp;#34;limit&amp;#34;, &amp;#34;1&amp;#34;) u := url.URL{ Scheme: &amp;#34;http&amp;#34;, Host: &amp;#34;shiluo.design:3000&amp;#34;, Path: &amp;#34;search&amp;#34;, RawQuery: q.Encode(), // 关键在这 } resp, err := http.Get(u.String()) 问题解决的关键就是在 RawQuery: q.Encode() 。由于我一直有看源码的习惯，我就 ctrl+左键跟进去把处理逻辑看了几遍，收获不小，特别记录下来。
+整体处理逻辑 整个方法的主逻辑过程：
+// Encode encodes the values into ``URL encoded&amp;#39;&amp;#39; form // (&amp;#34;bar=baz&amp;amp;foo=quux&amp;#34;) sorted by key.</description>
+    </item>
+    
   </channel>
 </rss>
