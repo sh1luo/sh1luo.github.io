@@ -1,7 +1,7 @@
 baseURL = "https://www.kcode.icu/"
 languageCode = "zh-hans"
 defaultContentLanguage = "en"
-title = "失落"
+title = "wasabi"
 theme = "hermit"
 # enableGitInfo = true
 pygmentsCodefences  = true
@@ -14,7 +14,7 @@ enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/func
 # disqusShortname = "yourdiscussshortname"
 
 [author]
-  name = "失落"
+  name = "wasabi"
 
 [blackfriday]
   # hrefTargetBlank = true
@@ -35,7 +35,7 @@ enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/func
   dateformNumTime = "2006-01-02 15:04 -0700"
 
   # Metadata mostly used in document's head
-  description = "失落,博客,学习总结,go,golang,源码分析"
+  description = "博客,学习总结,go,golang,源码分析"
   # images = [""]
   themeColor = "#494f5c"
 
