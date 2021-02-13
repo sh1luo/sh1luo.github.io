@@ -12,9 +12,9 @@ tags:
 问题的起因是最近需要写一个小工具，期间因为需要自己在服务器上搭建了一个 Web 服务来提供 RESTful API 接口，在请求接口的时候需要拼接 url，没有考虑到部分字符的编码问题，导致 [400 Bad Request](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/400) 错误。原来使用的是这样：
 
 ```go
-// url := fmt.Sprintf("%ssearch?keywords=%s %s&limit=1", Mp3Server, name, singer)
-// resp,err := http.Get(url)
-// ...
+url := fmt.Sprintf("%ssearch?keywords=%s %s&limit=1", Mp3Server, name, singer)
+resp,err := http.Get(url)
+......
 ```
 
 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
