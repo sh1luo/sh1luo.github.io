@@ -9,20 +9,20 @@
 	<meta name="msapplication-TileColor" content="#494f5c">
 <meta itemprop="name" content="Go语言net/url包源码初探">
 <meta itemprop="description" content="问题起因 问题的起因是最近需要写一个小工具，期间因为需要自己在服务器上搭建了一个 Web 服务来提供 RESTful API 接口，在请求接口的时候需要拼接 url，没有考虑到部分字符的编码问题，导致 400 Bad Request 错误。原来使用的是这样：
-// url := fmt.Sprintf(&#34;%ssearch?keywords=%s %s&amp;limit=1&#34;, Mp3Server, name, singer) // resp,err := http.Get(url) // ... 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
+url := fmt.Sprintf(&#34;%ssearch?keywords=%s %s&amp;limit=1&#34;, Mp3Server, name, singer) resp,err := http.Get(url) ...... 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
 q := url.Values{} q.Set(&#34;keywords&#34;, name&#43;&#34; &#34;&#43;singer) q.Set(&#34;limit&#34;, &#34;1&#34;) u := url.URL{ Scheme: &#34;http&#34;, Host: &#34;shiluo.design:3000&#34;, Path: &#34;search&#34;, RawQuery: q.Encode(), // 关键在这 } resp, err := http.Get(u.String()) 问题解决的关键就是在 RawQuery: q.Encode() 。由于我一直有看源码的习惯，我就 ctrl&#43;左键跟进去把处理逻辑看了几遍，收获不小，特别记录下来。
 整体处理逻辑 整个方法的主逻辑过程：
 // Encode encodes the values into ``URL encoded&#39;&#39; form // (&#34;bar=baz&amp;foo=quux&#34;) sorted by key.">
 <meta itemprop="datePublished" content="2020-03-11T22:49:51+00:00" />
 <meta itemprop="dateModified" content="2020-03-11T22:49:51+00:00" />
-<meta itemprop="wordCount" content="824">
+<meta itemprop="wordCount" content="821">
 
 
 
 <meta itemprop="keywords" content="Go,源码,官方库," />
 <meta property="og:title" content="Go语言net/url包源码初探" />
 <meta property="og:description" content="问题起因 问题的起因是最近需要写一个小工具，期间因为需要自己在服务器上搭建了一个 Web 服务来提供 RESTful API 接口，在请求接口的时候需要拼接 url，没有考虑到部分字符的编码问题，导致 400 Bad Request 错误。原来使用的是这样：
-// url := fmt.Sprintf(&#34;%ssearch?keywords=%s %s&amp;limit=1&#34;, Mp3Server, name, singer) // resp,err := http.Get(url) // ... 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
+url := fmt.Sprintf(&#34;%ssearch?keywords=%s %s&amp;limit=1&#34;, Mp3Server, name, singer) resp,err := http.Get(url) ...... 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
 q := url.Values{} q.Set(&#34;keywords&#34;, name&#43;&#34; &#34;&#43;singer) q.Set(&#34;limit&#34;, &#34;1&#34;) u := url.URL{ Scheme: &#34;http&#34;, Host: &#34;shiluo.design:3000&#34;, Path: &#34;search&#34;, RawQuery: q.Encode(), // 关键在这 } resp, err := http.Get(u.String()) 问题解决的关键就是在 RawQuery: q.Encode() 。由于我一直有看源码的习惯，我就 ctrl&#43;左键跟进去把处理逻辑看了几遍，收获不小，特别记录下来。
 整体处理逻辑 整个方法的主逻辑过程：
 // Encode encodes the values into ``URL encoded&#39;&#39; form // (&#34;bar=baz&amp;foo=quux&#34;) sorted by key." />
@@ -33,7 +33,7 @@ q := url.Values{} q.Set(&#34;keywords&#34;, name&#43;&#34; &#34;&#43;singer) q.S
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Go语言net/url包源码初探"/>
 <meta name="twitter:description" content="问题起因 问题的起因是最近需要写一个小工具，期间因为需要自己在服务器上搭建了一个 Web 服务来提供 RESTful API 接口，在请求接口的时候需要拼接 url，没有考虑到部分字符的编码问题，导致 400 Bad Request 错误。原来使用的是这样：
-// url := fmt.Sprintf(&#34;%ssearch?keywords=%s %s&amp;limit=1&#34;, Mp3Server, name, singer) // resp,err := http.Get(url) // ... 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
+url := fmt.Sprintf(&#34;%ssearch?keywords=%s %s&amp;limit=1&#34;, Mp3Server, name, singer) resp,err := http.Get(url) ...... 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
 q := url.Values{} q.Set(&#34;keywords&#34;, name&#43;&#34; &#34;&#43;singer) q.Set(&#34;limit&#34;, &#34;1&#34;) u := url.URL{ Scheme: &#34;http&#34;, Host: &#34;shiluo.design:3000&#34;, Path: &#34;search&#34;, RawQuery: q.Encode(), // 关键在这 } resp, err := http.Get(u.String()) 问题解决的关键就是在 RawQuery: q.Encode() 。由于我一直有看源码的习惯，我就 ctrl&#43;左键跟进去把处理逻辑看了几遍，收获不小，特别记录下来。
 整体处理逻辑 整个方法的主逻辑过程：
 // Encode encodes the values into ``URL encoded&#39;&#39; form // (&#34;bar=baz&amp;foo=quux&#34;) sorted by key."/>
@@ -88,10 +88,10 @@ q := url.Values{} q.Set(&#34;keywords&#34;, name&#43;&#34; &#34;&#43;singer) q.S
 			<div class="content">
 				<h2 id="问题起因">问题起因<a href="#问题起因" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>问题的起因是最近需要写一个小工具，期间因为需要自己在服务器上搭建了一个 Web 服务来提供 RESTful API 接口，在请求接口的时候需要拼接 url，没有考虑到部分字符的编码问题，导致 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status/400">400 Bad Request</a> 错误。原来使用的是这样：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// url := fmt.Sprintf(&#34;%ssearch?keywords=%s %s&amp;limit=1&#34;, Mp3Server, name, singer)
-</span><span class="c1">// resp,err := http.Get(url)
-</span><span class="c1">// ...
-</span></code></pre></div><p>这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">url</span> <span class="o">:=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%ssearch?keywords=%s %s&amp;limit=1&#34;</span><span class="p">,</span> <span class="nx">Mp3Server</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">singer</span><span class="p">)</span>
+<span class="nx">resp</span><span class="p">,</span><span class="nx">err</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+<span class="o">......</span>
+</code></pre></div><p>这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">q</span> <span class="o">:=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">Values</span><span class="p">{}</span>
 <span class="nx">q</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="s">&#34;keywords&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="o">+</span><span class="s">&#34; &#34;</span><span class="o">+</span><span class="nx">singer</span><span class="p">)</span>
 <span class="nx">q</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="s">&#34;limit&#34;</span><span class="p">,</span> <span class="s">&#34;1&#34;</span><span class="p">)</span>
@@ -279,7 +279,7 @@ q := url.Values{} q.Set(&#34;keywords&#34;, name&#43;&#34; &#34;&#43;singer) q.S
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81">源码</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E5%AE%98%E6%96%B9%E5%BA%93">官方库</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>824 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>821 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-03-11 22:49 &#43;0000</p>
 			</footer>
 		</article>
