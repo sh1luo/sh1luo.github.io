@@ -213,10 +213,10 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 			<guid>https://www.kcode.icu/posts/go/map/</guid>
 			<description>哈希表 几乎所有语言都有 哈希表 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的”大神“。
 问题来源于实际，我们先看看这些问题 ：
- 声明。当我使用 :=，var，make，甚至 new 声明 map 的时候，编译器帮我们做了什么事情，它们有什么区别？ 增删改查。使用 数组+链表 的情况下如何设计才能避免 O(n) 的最差情况？ 注意事项。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？  还有一个常识是 Go map 的遍历是随机的，即多次遍历输出的结果集不同。
+ 声明。当我使用 :=，var，make，甚至 new 声明 map 的时候，编译器帮我们做了什么事情，它们有什么区别？ 增删改查。使用 数组+链表 的情况下如何设计才能避免 O(n) 的最差情况？ 注意事项。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？  还有一个常识是 Go map 的 遍历是随机的，即多次遍历输出的结果集不同，这个的原因会在后面提到。
 设计方式/数据结构 Go map 实现哈希表使用的是 数组+链表 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。
 为了降低 map 操作的时间复杂度，引入了一个 负载因子 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 实际上最好只存 多少比例的元素，而不是一直等到满载再处理，因为多到一定程度效率 可能 就低了。在 Go 语言里这个值被定义为 6.5，即每个桶里最多存 6.5 个，包括溢出桶。
-当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。</description>
+当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过 平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。</description>
 			<content type="html"><![CDATA[<h2 id="哈希表">哈希表</h2>
 <p>几乎所有语言都有 <a href="https://en.wikipedia.org/wiki/Hash_table">哈希表</a> 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的”大神“。</p>
 <p>问题来源于实际，我们先看看这些问题 ：</p>
@@ -225,23 +225,23 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 <li><strong>增删改查</strong>。使用 数组+链表 的情况下如何设计才能避免 O(n) 的最差情况？</li>
 <li><strong>注意事项</strong>。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？</li>
 </ul>
-<p>还有一个常识是 Go map 的<strong>遍历是随机的</strong>，即多次遍历输出的结果集不同。</p>
+<p>还有一个常识是 Go map 的 <strong>遍历是随机的</strong>，即多次遍历输出的结果集不同，这个的原因会在后面提到。</p>
 <h3 id="设计方式数据结构">设计方式/数据结构</h3>
 <p>Go map 实现哈希表使用的是 <strong>数组+链表</strong> 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。</p>
 <p>为了降低 map 操作的时间复杂度，引入了一个 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L70">负载因子</a> 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 <strong>实际上最好只存</strong> 多少比例的元素，而不是一直等到满载再处理，因为多到一定程度效率 <strong>可能</strong> 就低了。在 Go 语言里这个值被定义为 6.5，即每个桶里最多存 6.5 个，包括溢出桶。</p>
-<p>当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L115">hmap</a> 的结构体，它定义在 <code>runtime/map.go</code> 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。</p>
+<p>当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L115">hmap</a> 的结构体，它定义在 <code>runtime/map.go</code> 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过 <strong>平均</strong> O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">hmap</span> <span class="kd">struct</span> <span class="p">{</span>
     <span class="nx">count</span>     <span class="kt">int</span> 		<span class="c1">// map的大小，len()的结果就是这个字段值
 </span><span class="c1"></span>	<span class="nx">flags</span>     <span class="kt">uint8</span>		<span class="c1">// map的状态，有四个
 </span><span class="c1"></span>	<span class="nx">B</span>         <span class="kt">uint8</span>  	<span class="c1">// 桶数量的log_2对数，如B=5，桶数量就是2^5=32
-</span><span class="c1"></span>	<span class="nx">noverflow</span> <span class="kt">uint16</span> 	<span class="c1">// approximate number of overflow buckets; see incrnoverflow for details
+</span><span class="c1"></span>	<span class="nx">noverflow</span> <span class="kt">uint16</span> 	<span class="c1">// 溢出桶的数量
 </span><span class="c1"></span>	<span class="nx">hash0</span>     <span class="kt">uint32</span> 	<span class="c1">// 哈希种子
 </span><span class="c1"></span>
 	<span class="nx">buckets</span>    <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// 桶数组的底层地址
 </span><span class="c1"></span>	<span class="nx">oldbuckets</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// 旧桶数组的底层地址
-</span><span class="c1"></span>	<span class="nx">nevacuate</span>  <span class="kt">uintptr</span>        <span class="c1">// progress counter for evacuation (buckets less than this have been evacuated)
+</span><span class="c1"></span>	<span class="nx">nevacuate</span>  <span class="kt">uintptr</span>        <span class="c1">// 迁移进度
 </span><span class="c1"></span>
-	<span class="nx">extra</span> <span class="o">*</span><span class="nx">mapextra</span> <span class="c1">// optional fields
+	<span class="nx">extra</span> <span class="o">*</span><span class="nx">mapextra</span> <span class="c1">// 溢出桶
 </span><span class="c1"></span><span class="p">}</span>
 
 <span class="c1">// mapextra holds fields that are not present on all maps.
@@ -257,19 +257,98 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 </span><span class="c1"></span>	<span class="nx">overflow</span>    <span class="o">*</span><span class="p">[]</span><span class="o">*</span><span class="nx">bmap</span>
 	<span class="nx">oldoverflow</span> <span class="o">*</span><span class="p">[]</span><span class="o">*</span><span class="nx">bmap</span>
 
-	<span class="c1">// nextOverflow holds a pointer to a free overflow bucket.
+	<span class="c1">// 指向下一个空闲溢出桶
 </span><span class="c1"></span>	<span class="nx">nextOverflow</span> <span class="o">*</span><span class="nx">bmap</span>
 <span class="p">}</span>
 </code></pre></div><p>真正存储数据的地方被称为桶，map 可以有许多桶，但是每个桶只能存储 8 个键值对，多出来的就要找到一个溢出桶放进去，每个桶的数据结构都是一样的，tophash 是键值经过哈希函数后的值高八位。</p>
-<p>这里需要注意一点是，key 和 value 并没有按照 key1/key2/keyN，value1/value2/valueN 的方式存储，而是如图形式，是为了因为字节对齐造成的内存浪费，这一点在官方源代码里有说明。</p>
+<p>这里需要注意一点是，key 和 value 并没有按照 key1/key2/keyN，value1/value2/valueN 的方式存储，而是如图形式，是为了因为字节对齐造成的内存浪费，这一点在官方源代码里的 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L148">bmap</a> 结构体注释中有说明。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg" alt=""></p>
 <h3 id="初始化">初始化</h3>
+<p>Go 语言初始化 map 的方式有两种，字面量和运行时。</p>
+<h4 id="字面量-">字面量 &ldquo;:=&rdquo;</h4>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">m</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="kt">string</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s">&#34;go&#34;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s">&#34;lang&#34;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div><p>几乎所有语言都会提供字面量的方式进行初始化，Go 语言里的字面量初始化是使用了 &ldquo;:=&rdquo; 符号，这样来代表创建一个局部变量。Go 语言里的 map 也可以通过这种方式初始化，但是需要注意的是，还有一种初始化方式 <code>var m map[Type]Type</code> ，如果仅仅这样声明后就直接使用 <code>m[key] = value</code> 来写入是会 panic 的，因为没有分配实际内存。</p>
+<p>通过这种方式初始化的 map 会调用 <a href="https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/cmd/compile/internal/gc/sinit.go#L753">maplit</a> 函数来执行具体的创建逻辑：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">maplit</span><span class="p">(</span><span class="nx">n</span> <span class="o">*</span><span class="nx">Node</span><span class="p">,</span> <span class="nx">m</span> <span class="o">*</span><span class="nx">Node</span><span class="p">,</span> <span class="nx">init</span> <span class="o">*</span><span class="nx">Nodes</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">a</span> <span class="o">:=</span> <span class="nf">nod</span><span class="p">(</span><span class="nx">OMAKE</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+	<span class="nx">a</span><span class="p">.</span><span class="nx">Esc</span> <span class="p">=</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Esc</span>
+	<span class="nx">a</span><span class="p">.</span><span class="nx">List</span><span class="p">.</span><span class="nf">Set2</span><span class="p">(</span><span class="nf">typenod</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">Type</span><span class="p">),</span> <span class="nf">nodintconst</span><span class="p">(</span><span class="nb">int64</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">List</span><span class="p">.</span><span class="nf">Len</span><span class="p">())))</span>
+	<span class="nf">litas</span><span class="p">(</span><span class="nx">m</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">init</span><span class="p">)</span>
+
+	<span class="nx">entries</span> <span class="o">:=</span> <span class="nx">n</span><span class="p">.</span><span class="nx">List</span><span class="p">.</span><span class="nf">Slice</span><span class="p">()</span>
+
+    <span class="c1">// ...
+</span><span class="c1"></span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">entries</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">25</span> <span class="p">{</span>
+		<span class="c1">// 如果数量非常多（指大于25个），就放进数组中循环处理。
+</span><span class="c1"></span>
+		<span class="c1">// 构建 [count]Tindex 和 [count]Tvalue
+</span><span class="c1"></span>		<span class="nx">tk</span> <span class="o">:=</span> <span class="nx">types</span><span class="p">.</span><span class="nf">NewArray</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">Type</span><span class="p">.</span><span class="nf">Key</span><span class="p">(),</span> <span class="nb">int64</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">entries</span><span class="p">)))</span>
+		<span class="nx">te</span> <span class="o">:=</span> <span class="nx">types</span><span class="p">.</span><span class="nf">NewArray</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">Type</span><span class="p">.</span><span class="nf">Elem</span><span class="p">(),</span> <span class="nb">int64</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">entries</span><span class="p">)))</span>
+        
+        <span class="c1">// 后续循环插入，类似
+</span><span class="c1"></span>        <span class="c1">// for i = 0; i &lt; len(vstatk); i++ {
+</span><span class="c1"></span>		<span class="c1">//	 map[vstatk[i]] = vstate[i]
+</span><span class="c1"></span>		<span class="c1">// }
+</span><span class="c1"></span>        
+        <span class="o">...</span>
+    <span class="p">}</span>
+</code></pre></div><p>不管是哪种情况，最终都会通过 make 来创建哈希表数据结构并且通过 map[key] = value 的形式插入数据。</p>
+<h4 id="运行时-make">运行时 &ldquo;make&rdquo;</h4>
+<p>使用 make 创建 map 时有两种情况，一种是不给出大小，或者大小小于 8 的时候，会调用 <a href="https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L292">makemap_small</a> 来快速初始化一个 map：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">makemap_small</span><span class="p">()</span> <span class="o">*</span><span class="nx">hmap</span> <span class="p">{</span>
+	<span class="nx">h</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">hmap</span><span class="p">)</span>
+	<span class="nx">h</span><span class="p">.</span><span class="nx">hash0</span> <span class="p">=</span> <span class="nf">fastrand</span><span class="p">()</span>
+	<span class="k">return</span> <span class="nx">h</span>
+<span class="p">}</span>
+</code></pre></div><p>显而易见，这种的方式的 map 是声明在堆上的。除了这种方式之外，map 会通过 <a href="https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L282">makemap64</a> 来将 map 的大小设置为 int32 后再调用 makemap 函数进行创建的主要逻辑：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">makemap</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">maptype</span><span class="p">,</span> <span class="nx">hint</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">h</span> <span class="o">*</span><span class="nx">hmap</span><span class="p">)</span> <span class="o">*</span><span class="nx">hmap</span> <span class="p">{</span>
+	<span class="nx">mem</span><span class="p">,</span> <span class="nx">overflow</span> <span class="o">:=</span> <span class="nx">math</span><span class="p">.</span><span class="nf">MulUintptr</span><span class="p">(</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">hint</span><span class="p">),</span> <span class="nx">t</span><span class="p">.</span><span class="nx">bucket</span><span class="p">.</span><span class="nx">size</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">overflow</span> <span class="o">||</span> <span class="nx">mem</span> <span class="p">&gt;</span> <span class="nx">maxAlloc</span> <span class="p">{</span>
+		<span class="nx">hint</span> <span class="p">=</span> <span class="mi">0</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="nx">h</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">h</span> <span class="p">=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">hmap</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">h</span><span class="p">.</span><span class="nx">hash0</span> <span class="p">=</span> <span class="nf">fastrand</span><span class="p">()</span>
+
+	<span class="nx">B</span> <span class="o">:=</span> <span class="nb">uint8</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+	<span class="k">for</span> <span class="nf">overLoadFactor</span><span class="p">(</span><span class="nx">hint</span><span class="p">,</span> <span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">B</span><span class="o">++</span>
+	<span class="p">}</span>
+	<span class="nx">h</span><span class="p">.</span><span class="nx">B</span> <span class="p">=</span> <span class="nx">B</span>
+
+	<span class="k">if</span> <span class="nx">h</span><span class="p">.</span><span class="nx">B</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">nextOverflow</span> <span class="o">*</span><span class="nx">bmap</span>
+		<span class="nx">h</span><span class="p">.</span><span class="nx">buckets</span><span class="p">,</span> <span class="nx">nextOverflow</span> <span class="p">=</span> <span class="nf">makeBucketArray</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">h</span><span class="p">.</span><span class="nx">B</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">nextOverflow</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="nx">h</span><span class="p">.</span><span class="nx">extra</span> <span class="p">=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">mapextra</span><span class="p">)</span>
+			<span class="nx">h</span><span class="p">.</span><span class="nx">extra</span><span class="p">.</span><span class="nx">nextOverflow</span> <span class="p">=</span> <span class="nx">nextOverflow</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="nx">h</span>
+<span class="p">}</span>
+</code></pre></div><p>这个函数做了这几件事：</p>
+<ul>
+<li>用桶的个数*8，判断内存够不够，会不会溢出，如果会的话就置 0。</li>
+<li>声明一个 map 结构体变量，初始化一个随机数。</li>
+<li>用 hint 判断出需要多少个桶，转换为对数存到 B 中。</li>
+<li>如果 B 是 0 的话，就不分配内存，后续用的时候懒加载分配，所以从这里我们也能明白为什么提前给出 map 的大小后续使用速度更快了。如果不是 0，就调用 <a href="https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L344">makeBucketArray</a> 分配底层的桶内存。</li>
+</ul>
 <h3 id="读写操作">读写操作</h3>
 <h4 id="访问">访问</h4>
 <h4 id="写入">写入</h4>
 <h4 id="删除">删除</h4>
 <h4 id="扩容">扩容</h4>
 <h3 id="总结">总结</h3>
+<p>Go 语言的 map 使用了数组+链表实现的哈希表，引入了溢出桶的概念来减少桶的扩容，实现了平均 O(1) 的时间复杂度内访问元素，基本不会出现最坏的情况。经过哈希计算后，用低 B 位确定桶位置，高 8 位比对找到 tophash，再通过偏移找到 key/value，或者执行插入或者新增溢出桶等等逻辑。</p>
+<p>不管你使用字面量的方式还是 make 的方式声明 map，都是对应底层的 hmap 结构，获得了一个指向 hmap 的指针，并且 Go 语言针对不给出初始大小的 map 还进行了快速初始化的优化，针对 map 的大小过大（hmap.B 大于4），提前建立溢出桶的优化。</p>
+<p>Go 提供了两种方式访问 map 中的元素，可以获得两个返回值，第二个返回值可以忽略，这用于空键值对的判断，类似于数据库中的 NULL，不和任何值冲突。并且 map 的遍历访问是随机的，这是因为每次遍历时会通过 fastrand 生成一个随机数，随机选择一个桶，再随机选择桶中的一个元素，先遍历完该桶，再顺次遍历后续的桶。map 是可以并发访问的，因为这并不会有任何冲突发生。</p>
 ]]></content>
 		</item>
 		
