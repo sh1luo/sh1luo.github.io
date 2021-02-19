@@ -41,16 +41,7 @@ type hmap struct {
 	extra *mapextra // 溢出桶
 }
 
-// mapextra holds fields that are not present on all maps.
 type mapextra struct {
-	// If both key and elem do not contain pointers and are inline, then we mark bucket
-	// type as containing no pointers. This avoids scanning such maps.
-	// However, bmap.overflow is a pointer. In order to keep overflow buckets
-	// alive, we store pointers to all overflow buckets in hmap.extra.overflow and hmap.extra.oldoverflow.
-	// overflow and oldoverflow are only used if key and elem do not contain pointers.
-	// overflow contains overflow buckets for hmap.buckets.
-	// oldoverflow contains overflow buckets for hmap.oldbuckets.
-	// The indirection allows to store a pointer to the slice in hiter.
 	overflow    *[]*bmap
 	oldoverflow *[]*bmap
 
@@ -59,9 +50,21 @@ type mapextra struct {
 }
 ```
 
-真正存储数据的地方被称为桶，map 可以有许多桶，但是每个桶只能存储 8 个键值对，多出来的就要找到一个溢出桶放进去，每个桶的数据结构都是一样的，tophash 是键值经过哈希函数后的值高八位。
+需要注意的是，如果 map 的键值都不包含指针并且是内联的，那么我们就会标注 map 为 ”不含指针类型“，这样就可以避免 GC 扫描 map，从而避免在 map 过大时由于指针过多造成的 GC 缓慢的问题。所以将所有关于溢出桶的指针都放在了 extra 字段中。mapextra 字段保存了与溢出桶相关的信息，`overflow` 指向当前桶 `hmap.buckets` 的溢出桶，`oldoverflow` 指向旧桶 `hmap.oldbuckets` 的溢出桶。
 
-这里需要注意一点是，key 和 value 并没有按照 key1/key2/keyN，value1/value2/valueN 的方式存储，而是如图形式，是为了因为字节对齐造成的内存浪费，这一点在官方源代码里的 [bmap](https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L148) 结构体注释中有说明。
+真正存储数据的地方是 [bmap](https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L149)，map 至少有 2^B 个 bmap，但是每个 bmap 只能存储 8 个键值对，多出来的就要找到一个溢出桶放进去，每个桶的数据结构都是一样的，tophash 是键值经过哈希函数后的值高八位。
+
+```go
+// A bucket for a Go map.
+type bmap struct {
+	// tophash generally contains the top byte of the hash value
+	// for each key in this bucket. If tophash[0] < minTopHash,
+	// tophash[0] is a bucket evacuation state instead.
+	tophash [bucketCnt]uint8
+}
+```
+
+这里需要注意一点是，key 和 value 并没有按照 key1/value1、key2/value2、...、keyN/valueN 的方式存储，而是如图形式，是为了避免因为字节对齐造成的内存浪费，也是因为 CPU 从内存中读取数据是每次读取固定大小的块（因为数据总线条数固定），这块内存也并不是连续的，这里不展开说了，总之，如果采用 key1/value1、key2/value2、...、keyN/valueN 的方式，如果 map 是 map[int64]int8 的时候，每个键值对就会由于内存不对齐造成 7 字节的内存浪费，其实也并不一定浪费，现在很多 CPU 也可以读取多块内存然后拼接组合成最终的数据，但是这样性能并不好。这一点在官方源代码里的 [bmap](https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L148) 结构体注释中有说明。
 
 ![](https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg)
 
@@ -161,9 +164,15 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {
 这个函数做了这几件事：
 
 - 用桶的个数*8，判断内存够不够，会不会溢出，如果会的话就置 0。
+
 - 声明一个 map 结构体变量，初始化一个随机数。
+
 - 用 hint 判断出需要多少个桶，转换为对数存到 B 中。
-- 如果 B 是 0 的话，就不分配内存，后续用的时候懒加载分配，所以从这里我们也能明白为什么提前给出 map 的大小后续使用速度更快了。如果不是 0，就调用 [makeBucketArray](https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L344) 分配底层的桶内存。
+
+- 如果 B 是 0 的话，就不分配内存，后续用的时候懒加载分配，所以从这里我们也能明白为什么提前给出 map 的大小后续使用速度更快了。如果不是 0，就调用 [makeBucketArray](https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L344) 分配底层的桶内存和溢出桶内存。
+
+
+这里会有一个判断 `nextOverflow != nil` ，这里就涉及在什么情况下初始化时要提前分配溢出桶，Go 语言是这样解决的：如果 B 大于 4，那么就认为后续使用溢出桶的概率比较大，就会预先分配 `2^(B-4)` 个溢出桶。然后分配专门用来描述溢出桶的结构 `hmap.extra`，其中指向下一个溢出桶地址的 `nextOverflow `字段就指向分配好的溢出桶首地址。
 
 ### 读写操作
 
