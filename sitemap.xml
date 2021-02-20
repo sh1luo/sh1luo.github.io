@@ -3,6 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.kcode.icu/tags/go/</loc>
+    <lastmod>2021-02-15T23:35:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/</loc>
+    <lastmod>2021-02-15T23:35:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/</loc>
+    <lastmod>2021-02-15T23:35:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/</loc>
+    <lastmod>2021-02-15T23:35:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string/</loc>
+    <lastmod>2021-02-15T23:35:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81/</loc>
+    <lastmod>2021-02-15T23:35:20+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/https/</loc>
     <lastmod>2021-01-27T15:57:50+00:00</lastmod>
   </url>
@@ -13,37 +43,22 @@
   </url>
   
   <url>
-    <loc>https://www.kcode.icu/posts/</loc>
-    <lastmod>2021-01-27T15:57:50+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/tags/</loc>
-    <lastmod>2021-01-27T15:57:50+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/</loc>
-    <lastmod>2021-01-27T15:57:50+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.kcode.icu/tags/%E5%AE%89%E5%85%A8/</loc>
     <lastmod>2021-01-27T15:57:50+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.kcode.icu/tags/go/</loc>
+    <loc>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</loc>
+    <lastmod>2021-01-25T23:35:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</loc>
     <lastmod>2021-01-22T23:35:20+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.kcode.icu/posts/go/map/</loc>
-    <lastmod>2021-01-22T23:35:20+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81/</loc>
+    <loc>https://www.kcode.icu/posts/go/2021-01-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-go-slice/</loc>
     <lastmod>2021-01-22T23:35:20+00:00</lastmod>
   </url>
   

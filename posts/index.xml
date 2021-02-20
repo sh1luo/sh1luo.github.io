@@ -6,8 +6,18 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-hans</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Wed, 27 Jan 2021 15:57:50 +0000</lastBuildDate>
+		<lastBuildDate>Mon, 15 Feb 2021 23:35:20 +0000</lastBuildDate>
 		<atom:link href="https://www.kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>深入理解Go string</title>
+			<link>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string/</link>
+			<pubDate>Mon, 15 Feb 2021 23:35:20 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string/</guid>
+			<description></description>
+			<content type="html"><![CDATA[]]></content>
+		</item>
 		
 		<item>
 			<title>https为什么安全</title>
@@ -206,11 +216,21 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 		</item>
 		
 		<item>
+			<title>Go结构体与内存对齐</title>
+			<link>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</link>
+			<pubDate>Mon, 25 Jan 2021 23:35:20 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</guid>
+			<description></description>
+			<content type="html"><![CDATA[]]></content>
+		</item>
+		
+		<item>
 			<title>深入理解 Go map</title>
-			<link>https://www.kcode.icu/posts/go/map/</link>
+			<link>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</link>
 			<pubDate>Fri, 22 Jan 2021 23:35:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/go/map/</guid>
+			<guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</guid>
 			<description>哈希表 几乎所有语言都有 哈希表 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的”大神“。
 问题来源于实际，我们先看看这些问题 ：
  声明。当我使用 :=，var，make，甚至 new 声明 map 的时候，编译器帮我们做了什么事情，它们有什么区别？ 增删改查。使用 数组+链表 的情况下如何设计才能避免 O(n) 的最差情况？ 注意事项。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？  还有一个常识是 Go map 的 遍历是随机的，即多次遍历输出的结果集不同，这个的原因会在后面提到。
@@ -431,6 +451,16 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 <p>不管你使用字面量的方式还是 make 的方式声明 map，都是对应底层的 hmap 结构，获得了一个指向 hmap 的指针，并且 Go 语言针对不给出初始大小的 map 还进行了快速初始化的优化，针对 map 的大小过大（hmap.B 大于4），提前建立溢出桶的优化。</p>
 <p>Go 提供了两种方式访问 map 中的元素，可以获得两个返回值，第二个返回值可以忽略，这用于空键值对的判断，类似于数据库中的 NULL，不和任何值冲突。并且 map 的遍历访问是随机的，这是因为每次遍历时会通过 fastrand 生成一个随机数，随机选择一个桶，再随机选择桶中的一个元素，先遍历完该桶，再顺次遍历后续的桶。map 是可以并发访问的，因为这并不会有任何冲突发生。</p>
 ]]></content>
+		</item>
+		
+		<item>
+			<title>深入理解 Go slice</title>
+			<link>https://www.kcode.icu/posts/go/2021-01-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-go-slice/</link>
+			<pubDate>Fri, 22 Jan 2021 23:35:20 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/go/2021-01-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-go-slice/</guid>
+			<description></description>
+			<content type="html"><![CDATA[]]></content>
 		</item>
 		
 		<item>
