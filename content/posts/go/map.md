@@ -50,21 +50,17 @@ type mapextra struct {
 }
 ```
 
-需要注意的是，如果 map 的键值都不包含指针并且是内联的，那么我们就会标注 map 为 ”不含指针类型“，这样就可以避免 GC 扫描 map，从而避免在 map 过大时由于指针过多造成的 GC 缓慢的问题。所以将所有关于溢出桶的指针都放在了 extra 字段中。mapextra 字段保存了与溢出桶相关的信息，`overflow` 指向当前桶 `hmap.buckets` 的溢出桶，`oldoverflow` 指向旧桶 `hmap.oldbuckets` 的溢出桶。
+需要注意的是，如果 map 的键值都不包含指针并且是内联的，那么我们就会标注 map 为 ”不含指针类型“，这样就可以避免 GC 扫描 map，从而避免在 map 在过大时由于指针过多造成的 GC 扫描对象过多而缓慢的问题。所以将所有关于溢出桶的指针都放在了 extra 字段中。mapextra 字段保存了与溢出桶相关的信息，`overflow` 指向当前桶 `hmap.buckets` 的溢出桶，`oldoverflow` 指向旧桶 `hmap.oldbuckets` 的溢出桶。
 
-真正存储数据的地方是 [bmap](https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L149)，map 至少有 2^B 个 bmap，但是每个 bmap 只能存储 8 个键值对，多出来的就要找到一个溢出桶放进去，每个桶的数据结构都是一样的，tophash 是键值经过哈希函数后的值高八位。
+真正存储数据的地方是 [bmap](https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L149)，map 有 2^B 个 bmap，但是每个 bmap 只能存储 8 个键值对，多出来的就要找到一个溢出桶放进去，每个桶的数据结构都是一样的，bmap 结构只有 tophash 字段是因为 map 的 key 和 value 是需要 **在编译时计算确定**，所以需要在编译时动态构造桶结构。唯一的 tophash 字段是键值经过哈希函数计算后的值高八位。
 
 ```go
-// A bucket for a Go map.
 type bmap struct {
-	// tophash generally contains the top byte of the hash value
-	// for each key in this bucket. If tophash[0] < minTopHash,
-	// tophash[0] is a bucket evacuation state instead.
 	tophash [bucketCnt]uint8
 }
 ```
 
-这里需要注意一点是，key 和 value 并没有按照 key1/value1、key2/value2、...、keyN/valueN 的方式存储，而是如图形式，是为了避免因为字节对齐造成的内存浪费，也是因为 CPU 从内存中读取数据是每次读取固定大小的块（因为数据总线条数固定），这块内存也并不是连续的，这里不展开说了，总之，如果采用 key1/value1、key2/value2、...、keyN/valueN 的方式，如果 map 是 map[int64]int8 的时候，每个键值对就会由于内存不对齐造成 7 字节的内存浪费，其实也并不一定浪费，现在很多 CPU 也可以读取多块内存然后拼接组合成最终的数据，但是这样性能并不好。这一点在官方源代码里的 [bmap](https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L148) 结构体注释中有说明。
+此外，动态运行时构造的 key 和 value 键值对并没有按照 key1/value1、key2/value2、...、keyN/valueN 的方式存储，而是如图形式，是为了避免因为字节对齐造成的内存浪费，也是因为 CPU 从内存中读取数据是每次读取固定大小的块（因为数据总线条数固定），这块内存也并不是连续的，这里不展开说了，总之，如果采用 key1/value1、key2/value2、...、keyN/valueN 的方式，如果 map 是 map[int64]int8 的时候，每个键值对就会由于内存不对齐造成 7 字节的内存浪费，其实也并不一定浪费，现在很多 CPU 也可以读取多块内存然后拼接组合成最终的数据，但是这样性能并不好。这一点在官方源代码里的 [bmap](https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L148) 结构体注释中有说明。
 
 ![](https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg)
 
@@ -161,22 +157,118 @@ func makemap(t *maptype, hint int, h *hmap) *hmap {
 }
 ```
 
-这个函数做了这几件事：
+[makemap](https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L303) 函数做了这几件事：
 
-- 用桶的个数*8，判断内存够不够，会不会溢出，如果会的话就置 0。
+- 用桶的个数*8，判断内存是否足够分配，会不会溢出，如果会的话就置 0。
 
-- 声明一个 map 结构体变量，初始化一个随机数。
+- 声明一个 map 结构体变量，初始化一个随机数用于哈希函数的计算。
 
-- 用 hint 判断出需要多少个桶，转换为对数存到 B 中。
+- 用 make 内置函数的第二个参数 hint 判断出需要多少个桶，转换为对数存到 B 中。
 
-- 如果 B 是 0 的话，就不分配内存，后续用的时候懒加载分配，所以从这里我们也能明白为什么提前给出 map 的大小后续使用速度更快了。如果不是 0，就调用 [makeBucketArray](https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L344) 分配底层的桶内存和溢出桶内存。
+- 如果 B 是 0 的话，就不分配内存，后续用的时候懒加载分配，所以从这里我们也能明白为什么平时说提前给出 map 的大小后续使用速度更快了。如果不是 0，就调用 [makeBucketArray](https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L344) 分配底层的桶内存和溢出桶内存。
 
+这里会有一个判断 `nextOverflow != nil` ，这里就涉及在什么情况下初始化时要提前分配溢出桶，Go 语言是这样解决的：如果 B 大于 4，那么就认为后续使用溢出桶的概率比较大，就会预先分配 `2^(B-4)` 个溢出桶。然后分配专门用来描述溢出桶的结构 `hmap.extra`，其中指向下一个溢出桶地址的  `nextOverflow ` 字段就指向分配好的溢出桶首地址。
 
-这里会有一个判断 `nextOverflow != nil` ，这里就涉及在什么情况下初始化时要提前分配溢出桶，Go 语言是这样解决的：如果 B 大于 4，那么就认为后续使用溢出桶的概率比较大，就会预先分配 `2^(B-4)` 个溢出桶。然后分配专门用来描述溢出桶的结构 `hmap.extra`，其中指向下一个溢出桶地址的 `nextOverflow `字段就指向分配好的溢出桶首地址。
+正常桶和溢出桶的地址是连续的，只是被不同的字段引用而已，如果溢出桶不够用，会调用 [runtime/newobject](runtime/newobject) 分配新的溢出桶。直到达到元素数量过多需要全量扩容或者重新哈希等量扩容，这个问题下文会详说。
 
 ### 读写操作
 
+Go 内置数据类型 map 是并发不安全的，也就是说多个 goroutine 同时对 map 执行写入操作会导致程序发生 panic 中断。官方解释说这是因为大多数情况下 map 并不需要并发安全，如果为所有 map 都加上并发操作的特性会使得大多数场景性能下降，为此 Go 在 1.9 版本引入了一种并发安全的 map 类型 [sync/map](https://github.com/golang/go/blob/41d8e61a6b/src/sync/map.go#L27) ，留给读者自行探索。
+
 #### 访问
+
+map 的访问有两种形式：
+
+```go
+value := m["I'm a Key"]
+```
+
+Or
+
+```go
+value, ok := m["I'm a Key"]
+```
+
+第二种方式的第二个返回值是个布尔类型，代表该键在 map 中是否存在，类似于数据库或者其他概念中的 NULL 值，目的是为了不和所有该类型值冲突。两种方式的底层调用分别对应着 [runtime/mapaccess1](https://github.com/golang/go/blob/ac0ba6707c/src/runtime/map.go#L389) 和 [runtime/mapaccess2](https://github.com/golang/go/blob/ac0ba6707c/src/runtime/map.go#L452) ，Go 语言会在运行时决定使用哪种方式。
+
+```go
+func mapaccess1(t *maptype, h *hmap, key unsafe.Pointer) unsafe.Pointer {
+    // ...
+	hash := t.hasher(key, uintptr(h.hash0))
+	m := bucketMask(h.B)
+	b := (*bmap)(add(h.buckets, (hash&m)*uintptr(t.bucketsize)))
+    // ...
+	top := tophash(hash)
+bucketloop:
+	for ; b != nil; b = b.overflow(t) {
+		for i := uintptr(0); i < bucketCnt; i++ {
+			if b.tophash[i] != top {
+				if b.tophash[i] == emptyRest {
+					break bucketloop
+				}
+				continue
+			}
+			k := add(unsafe.Pointer(b), dataOffset+i*uintptr(t.keysize))
+			if t.indirectkey() {
+				k = *((*unsafe.Pointer)(k))
+			}
+			if t.key.equal(key, k) {
+				e := add(unsafe.Pointer(b), dataOffset+bucketCnt*uintptr(t.keysize)+i*uintptr(t.elemsize))
+				if t.indirectelem() {
+					e = *((*unsafe.Pointer)(e))
+				}
+				return e
+			}
+		}
+	}
+	return unsafe.Pointer(&zeroVal[0])
+}
+```
+
+mapaccess1 的返回值是一个指向目标值的指针，如果不存在的话会返回该类型的零值而不会返回 nil。
+
+依次做了这些事：
+
+- 通过 map 最开始初始化的哈希种子，用哈希函数计算出该键的哈希值 `hash`，这里的哈希函数使用了依赖注入的方式，并不固定。
+- 计算桶的位掩码 `m`，也就是 B-1，用于后续做与运算确定该键位于哪个桶中。
+- 与运算找到桶，桶的首地址+桶序号*桶大小动态计算出目标桶地址 `b`，取高八位哈希值 `tophash`，这里是通过位运算的方式取高位的，因为除法代价太高。
+- 最后从桶的第一个 cell 开始，到最后一个溢出桶的最后一个 cell 为止遍历，先比较 tophash，如果一致了就用 tophash 值的下标和 map key 的大小计算出该 key 的位置，再比较一次，这样可以加速查找，
+
+```go
+func mapaccess1(t *maptype, h *hmap, key unsafe.Pointer) unsafe.Pointer {
+    // ...
+	hash := t.hasher(key, uintptr(h.hash0))
+	m := bucketMask(h.B)
+	b := (*bmap)(add(h.buckets, (hash&m)*uintptr(t.bucketsize)))
+    // ...
+	top := tophash(hash)
+bucketloop:
+	for ; b != nil; b = b.overflow(t) {
+		for i := uintptr(0); i < bucketCnt; i++ {
+			if b.tophash[i] != top {
+				if b.tophash[i] == emptyRest {
+					break bucketloop
+				}
+				continue
+			}
+			k := add(unsafe.Pointer(b), dataOffset+i*uintptr(t.keysize))
+			if t.indirectkey() {
+				k = *((*unsafe.Pointer)(k))
+			}
+			if t.key.equal(key, k) {
+				e := add(unsafe.Pointer(b), dataOffset+bucketCnt*uintptr(t.keysize)+i*uintptr(t.elemsize))
+				if t.indirectelem() {
+					e = *((*unsafe.Pointer)(e))
+				}
+				return e
+			}
+		}
+	}
+	return unsafe.Pointer(&zeroVal[0])
+}
+```
+
+
 
 #### 写入
 
