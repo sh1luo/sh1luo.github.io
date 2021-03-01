@@ -12,24 +12,20 @@
 url := fmt.Sprintf(&#34;%ssearch?keywords=%s %s&amp;limit=1&#34;, Mp3Server, name, singer) resp,err := http.Get(url) ...... 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
 q := url.Values{} q.Set(&#34;keywords&#34;, name&#43;&#34; &#34;&#43;singer) q.Set(&#34;limit&#34;, &#34;1&#34;) u := url.URL{ Scheme: &#34;http&#34;, Host: &#34;shiluo.design:3000&#34;, Path: &#34;search&#34;, RawQuery: q.Encode(), // 关键在这 } resp, err := http.Get(u.String()) 问题解决的关键就是在 RawQuery: q.Encode() 。由于我一直有看源码的习惯，我就 ctrl&#43;左键跟进去把处理逻辑看了几遍，收获不小，特别记录下来。
 整体处理逻辑 整个方法的主逻辑过程：
-// Encode encodes the values into ``URL encoded&#39;&#39; form // (&#34;bar=baz&amp;foo=quux&#34;) sorted by key.">
-<meta itemprop="datePublished" content="2020-03-11T22:49:51+00:00" />
-<meta itemprop="dateModified" content="2020-03-11T22:49:51+00:00" />
+// Encode encodes the values into ``URL encoded&#39;&#39; form // (&#34;bar=baz&amp;foo=quux&#34;) sorted by key."><meta itemprop="datePublished" content="2020-03-11T22:49:51&#43;00:00" />
+<meta itemprop="dateModified" content="2020-03-11T22:49:51&#43;00:00" />
 <meta itemprop="wordCount" content="821">
-
-
-
-<meta itemprop="keywords" content="Go,源码,官方库," />
-<meta property="og:title" content="Go语言net/url包源码初探" />
+<meta itemprop="keywords" content="Go,源码,官方库," /><meta property="og:title" content="Go语言net/url包源码初探" />
 <meta property="og:description" content="问题起因 问题的起因是最近需要写一个小工具，期间因为需要自己在服务器上搭建了一个 Web 服务来提供 RESTful API 接口，在请求接口的时候需要拼接 url，没有考虑到部分字符的编码问题，导致 400 Bad Request 错误。原来使用的是这样：
 url := fmt.Sprintf(&#34;%ssearch?keywords=%s %s&amp;limit=1&#34;, Mp3Server, name, singer) resp,err := http.Get(url) ...... 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
 q := url.Values{} q.Set(&#34;keywords&#34;, name&#43;&#34; &#34;&#43;singer) q.Set(&#34;limit&#34;, &#34;1&#34;) u := url.URL{ Scheme: &#34;http&#34;, Host: &#34;shiluo.design:3000&#34;, Path: &#34;search&#34;, RawQuery: q.Encode(), // 关键在这 } resp, err := http.Get(u.String()) 问题解决的关键就是在 RawQuery: q.Encode() 。由于我一直有看源码的习惯，我就 ctrl&#43;左键跟进去把处理逻辑看了几遍，收获不小，特别记录下来。
 整体处理逻辑 整个方法的主逻辑过程：
 // Encode encodes the values into ``URL encoded&#39;&#39; form // (&#34;bar=baz&amp;foo=quux&#34;) sorted by key." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/" />
-<meta property="article:published_time" content="2020-03-11T22:49:51+00:00" />
-<meta property="article:modified_time" content="2020-03-11T22:49:51+00:00" />
+<meta property="og:url" content="https://www.kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-03-11T22:49:51&#43;00:00" />
+<meta property="article:modified_time" content="2020-03-11T22:49:51&#43;00:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Go语言net/url包源码初探"/>
 <meta name="twitter:description" content="问题起因 问题的起因是最近需要写一个小工具，期间因为需要自己在服务器上搭建了一个 Web 服务来提供 RESTful API 接口，在请求接口的时候需要拼接 url，没有考虑到部分字符的编码问题，导致 400 Bad Request 错误。原来使用的是这样：
@@ -46,7 +42,7 @@ q := url.Values{} q.Set(&#34;keywords&#34;, name&#43;&#34; &#34;&#43;singer) q.S
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>Go语言net/url包源码初探</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.b21595ccbc2181c24e6a019eb9b89ca67727675a14634f9cbdb25e7a4f556601.css">
 	
 </head>
 
@@ -310,7 +306,7 @@ q := url.Values{} q.Set(&#34;keywords&#34;, name&#43;&#34; &#34;&#43;singer) q.S
 	</footer>
 
 
-	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+	<script src="https://www.kcode.icu/js/main.min.3b8561d63aeee77aa04e677df95581a230b4b43adf7b208b8d671433e446cfc1.js"></script>
 
 </body>
 

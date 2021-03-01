@@ -27,15 +27,10 @@ OSS OSS （Object Storage Service）即对象存储服务，用来做个人博�
 工具 这里就介绍我使用的两个配合工具，其他的可以自行搜索。
 typora typora 是一款 Markdown 文本编辑软件，我相信写过 Markdown 的都听说过，它的特点是真正的实时显示，不左右分栏，扩展性强，灵活可配置。我个人平时写 Markdown 文本都是使用这个软件，具体可以去它的官网首页看，十分推荐。
 PicGo PicGo 是一款使用 Node &#43; Electron 开发的跨平台可视化图片上传开源软件，支持 N 种图床平台，配置灵活简单，最重要的是它支持插件功能，理论上支持任意图床平台的使用（需要提供相应上传下载的 API），可以自行开发插件。操作也比较简单，把图片拖到框里就可以拿到 URL。这张图是 gitee 相关配置，其他平台类似，只需若干个必要参数即可：
-配合使用 前面说的这两种工具可以结合使用快速进行写作，在 typora 主界面上方，文件-&gt;偏好设置-&gt;图像，修改 PicGo 路径为你安装的路径下的 exe 地址。这样就可以做到你在 typora 里编辑时直接粘贴图片到文档里一键点击上传，非常方便。当然了，如果你不需要 typora，或者使用的是别的 Markdown 编辑器，也可以只使用 PicGo。">
-<meta itemprop="datePublished" content="2021-01-20T15:45:13+00:00" />
-<meta itemprop="dateModified" content="2021-01-20T15:45:13+00:00" />
+配合使用 前面说的这两种工具可以结合使用快速进行写作，在 typora 主界面上方，文件-&gt;偏好设置-&gt;图像，修改 PicGo 路径为你安装的路径下的 exe 地址。这样就可以做到你在 typora 里编辑时直接粘贴图片到文档里一键点击上传，非常方便。当然了，如果你不需要 typora，或者使用的是别的 Markdown 编辑器，也可以只使用 PicGo。"><meta itemprop="datePublished" content="2021-01-20T15:45:13&#43;00:00" />
+<meta itemprop="dateModified" content="2021-01-20T15:45:13&#43;00:00" />
 <meta itemprop="wordCount" content="93">
-
-
-
-<meta itemprop="keywords" content="杂谈,博客," />
-<meta property="og:title" content="在线博客的图床解决方案" />
+<meta itemprop="keywords" content="杂谈,博客," /><meta property="og:title" content="在线博客的图床解决方案" />
 <meta property="og:description" content="很多人应该都听说过来人说过要写博客进行总结记录，一是说自己学习过程的复盘，二是在某些时候向不认识自己的人间接显示自己的大致水平。不过如果没有人“手把手”教的话我相信还会遇到各种各样的问题的，这篇文章就介绍一下在博客中必不可少的图片网络地址解决方法，也就是图床。它的目标是在你写文章的过程中可以一键插入目标图片并自动上传到网络，就像你使用本地图片一样快捷。
 图床的目的就是把你的本地图片上传上去，从而能获得它的网络地址。当然了，只使用图床也是可以的，但是需要配合对应的工具上传拿 URL（比如 OSS）或者纯手动（GitHub/Gitee），非常不方便 一点也不极客，所以需要配合其他工具一键快速拿到它对应的网络地址（URL），所以我在下面介绍了我使用到的工具，仅供参考。
  评估用的稳定性指你上传的图片会不会在某个不确定的时间突然挂掉，让你的文章出现大量图片 404 丢失的情况。
@@ -57,9 +52,10 @@ typora typora 是一款 Markdown 文本编辑软件，我相信写过 Markdown �
 PicGo PicGo 是一款使用 Node &#43; Electron 开发的跨平台可视化图片上传开源软件，支持 N 种图床平台，配置灵活简单，最重要的是它支持插件功能，理论上支持任意图床平台的使用（需要提供相应上传下载的 API），可以自行开发插件。操作也比较简单，把图片拖到框里就可以拿到 URL。这张图是 gitee 相关配置，其他平台类似，只需若干个必要参数即可：
 配合使用 前面说的这两种工具可以结合使用快速进行写作，在 typora 主界面上方，文件-&gt;偏好设置-&gt;图像，修改 PicGo 路径为你安装的路径下的 exe 地址。这样就可以做到你在 typora 里编辑时直接粘贴图片到文档里一键点击上传，非常方便。当然了，如果你不需要 typora，或者使用的是别的 Markdown 编辑器，也可以只使用 PicGo。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/chore/blog_imgs/" />
-<meta property="article:published_time" content="2021-01-20T15:45:13+00:00" />
-<meta property="article:modified_time" content="2021-01-20T15:45:13+00:00" />
+<meta property="og:url" content="https://www.kcode.icu/posts/chore/blog_imgs/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-01-20T15:45:13&#43;00:00" />
+<meta property="article:modified_time" content="2021-01-20T15:45:13&#43;00:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在线博客的图床解决方案"/>
 <meta name="twitter:description" content="很多人应该都听说过来人说过要写博客进行总结记录，一是说自己学习过程的复盘，二是在某些时候向不认识自己的人间接显示自己的大致水平。不过如果没有人“手把手”教的话我相信还会遇到各种各样的问题的，这篇文章就介绍一下在博客中必不可少的图片网络地址解决方法，也就是图床。它的目标是在你写文章的过程中可以一键插入目标图片并自动上传到网络，就像你使用本地图片一样快捷。
@@ -91,7 +87,7 @@ PicGo PicGo 是一款使用 Node &#43; Electron 开发的跨平台可视化图�
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>在线博客的图床解决方案</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.b21595ccbc2181c24e6a019eb9b89ca67727675a14634f9cbdb25e7a4f556601.css">
 	
 </head>
 
@@ -202,8 +198,8 @@ PicGo PicGo 是一款使用 Node &#43; Electron 开发的跨平台可视化图�
 </nav>
 		</aside>
 		<div class="post-nav thin">
-			<a class="next-post" href="https://www.kcode.icu/posts/go/2021-01-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-go-slice/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>深入理解 Go slice</span>
+			<a class="next-post" href="https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>深入理解 Go map</span>
 			</a>
 			<a class="prev-post" href="https://www.kcode.icu/posts/http/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>谈谈最常见的 HTTP</span>
@@ -228,7 +224,7 @@ PicGo PicGo 是一款使用 Node &#43; Electron 开发的跨平台可视化图�
 	</footer>
 
 
-	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+	<script src="https://www.kcode.icu/js/main.min.3b8561d63aeee77aa04e677df95581a230b4b43adf7b208b8d671433e446cfc1.js"></script>
 
 </body>
 

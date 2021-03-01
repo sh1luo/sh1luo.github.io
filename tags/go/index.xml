@@ -9,16 +9,22 @@
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Mon, 15 Feb 2021 23:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>深入理解Go string</title>
-      <link>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string/</link>
+      <title>深入理解 Go string与slice</title>
+      <link>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</link>
       <pubDate>Mon, 15 Feb 2021 23:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string/</guid>
-      <description></description>
+      <guid>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</guid>
+      <description>123
+数据结构 我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 reflect/value.go 中，分别对应着 StringHeader 和 SliceHeader 。
+type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data uintptr Len int Cap int } 定义非常简单，Data 表示底层数据的地址，Len 表示长度，Cap 表示容量。容量评估了当前切片最多能容纳多少字节元素，而长度表示当前已经存储多少个字节了，切片只是对底层数据的引用：
+[图片]
+字符串就是字符的数组，我们先来看个小程序的例子：
+package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 go tool compile -S main.go 使用自带工具包查看汇编代码，可以看到有这样一段信息：
+... go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=3 0x0000 61 62 63 abc ... 很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
     </item>
     
     <item>
-      <title>Go结构体与内存对齐</title>
+      <title>Go 结构体与内存对齐</title>
       <link>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</link>
       <pubDate>Mon, 25 Jan 2021 23:35:20 +0000</pubDate>
       
@@ -38,15 +44,6 @@
 设计方式/数据结构 Go map 实现哈希表使用的是 数组+链表 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。
 为了降低 map 操作的时间复杂度，引入了一个 负载因子 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 实际上最好只存 多少比例的元素，而不是一直等到满载再处理，因为多到一定程度效率 可能 就低了。在 Go 语言里这个值被定义为 6.5，即每个桶里最多存 6.5 个，包括溢出桶。
 当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过 平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。</description>
-    </item>
-    
-    <item>
-      <title>深入理解 Go slice</title>
-      <link>https://www.kcode.icu/posts/go/2021-01-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-go-slice/</link>
-      <pubDate>Fri, 22 Jan 2021 23:35:20 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/go/2021-01-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-go-slice/</guid>
-      <description></description>
     </item>
     
     <item>
@@ -134,6 +131,26 @@ url := fmt.Sprintf(&amp;#34;%ssearch?keywords=%s %s&amp;amp;limit=1&amp;#34;, Mp
 q := url.Values{} q.Set(&amp;#34;keywords&amp;#34;, name+&amp;#34; &amp;#34;+singer) q.Set(&amp;#34;limit&amp;#34;, &amp;#34;1&amp;#34;) u := url.URL{ Scheme: &amp;#34;http&amp;#34;, Host: &amp;#34;shiluo.design:3000&amp;#34;, Path: &amp;#34;search&amp;#34;, RawQuery: q.Encode(), // 关键在这 } resp, err := http.Get(u.String()) 问题解决的关键就是在 RawQuery: q.Encode() 。由于我一直有看源码的习惯，我就 ctrl+左键跟进去把处理逻辑看了几遍，收获不小，特别记录下来。
 整体处理逻辑 整个方法的主逻辑过程：
 // Encode encodes the values into ``URL encoded&amp;#39;&amp;#39; form // (&amp;#34;bar=baz&amp;amp;foo=quux&amp;#34;) sorted by key.</description>
+    </item>
+    
+    <item>
+      <title>Go语言内存管理与内存清理</title>
+      <link>https://www.kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</link>
+      <pubDate>Fri, 14 Feb 2020 21:20:33 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</guid>
+      <description>Go：内存管理与内存清理 清理内存是一个过程，它能够让 Go 知道哪些内存段最近可用于分配。但是，它并不会使用将位置 0 的方式来清理内存。
+将内存置0 将内存置 0 的过程 —— 就是把内存段中的所有位赋值为 0 —— 是在分配过程中即时执行的。
+然后，第一个分配就开始了：
+分配过程将会再一次出现，之后， GC 将会启动去释放不再被使用的内存。在标记期间，GC 会用一个位图gcmarkBits 来跟踪在使用中的内存。让我们通过我们运行的程序以相同的示例为例，在第一个块不再被使用的地方。
+ 有关更多关于标记和着色阶段的信息，我建议你阅读我的这篇文章 Go：GC 是如何标记内存的？
+ 现在，我们可以使用 gomarkBits精确查看可用于分配的内存。Go 现在也使用gomarkBits 代替了allocBits ，这个操作就是内存清理：
+清理阶段 Go 提供了两种方式来清理内存：
+ 使用一个工作程序在后台等待，一个一个的清理这些范围。 当分配需要一个范围的时候即时执行。  关于后台工作程序，当开始运行程序时，Go 将设置一个后台运行的 Worker（唯一的任务就是去清理内存），它将进入睡眠状态并等待内存段扫描：
+与 GC 周期的冲突 正如之前看到的，由于后台只有一个 worker 在清理内存块，清理过程可能会花费一些时间。但是，我们可能想知道如果另一个 GC 周期在一次清理过程中启动会发生什么。在这种情况下，这个运行 GC 的 goroutine 就会在开始标记阶段前去协助完成剩余的清理工作。让我们举个例子看一下连续调用两次 GC，包含数千个对象的内存分配的过程。
+ via：来源链接
+作者：Vincent Blanchon 译者：sh1luo 校对：[](https://github.com/
+本文由 GCTT 原创编译，Go中文网 荣誉推出</description>
     </item>
     
   </channel>

@@ -17,15 +17,10 @@
  GitHub Page&#43;自定义域名 这种方案比较简单（因为GitHub 都帮我们做了），这也是我现在的方式，只不过我的域名是国外的，所以没办法使用 CDN 加速。
 你首先需要创建一个名为 &lt;YourGitHubName&gt;.github.io 的仓库，比如 sh1luo.github.io，然后购买一个域名（国内国外都行，国内要备案），因为我们是要使用 GitHub 的自定义域名，所以需要使用 CNAME 记录，在域名服务器处添加两条CNAME 记录 ，就像这样
 我是国外的域名，不能使用国内 CDN 加速，正好 CloudFlare 提供免费全球 CDN，虽然效果一般，但是它提供的免费功能也是非常的多，包括各种流量统计分析，也是很良心了。想使用 CloudFlare 当 DNS 服务器做法也非常简单。注册一个账号填上域名信息，然后会提供给我们两个 DNS 服务器域名，我们把原域名服务器商的 NameServers 改成新解析服务器提供的就好了。
-当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加两条 CNAME 记录，然后在 GitHub Pages 仓库的发布分支放一个 CNAME 文件，文件内容就是你的 CNAME 地址就可以了，它会自动帮你设置为这个域名并搞定一切的:)">
-<meta itemprop="datePublished" content="2021-01-06T21:13:13+00:00" />
-<meta itemprop="dateModified" content="2021-01-06T21:13:13+00:00" />
+当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加两条 CNAME 记录，然后在 GitHub Pages 仓库的发布分支放一个 CNAME 文件，文件内容就是你的 CNAME 地址就可以了，它会自动帮你设置为这个域名并搞定一切的:)"><meta itemprop="datePublished" content="2021-01-06T21:13:13&#43;00:00" />
+<meta itemprop="dateModified" content="2021-01-06T21:13:13&#43;00:00" />
 <meta itemprop="wordCount" content="120">
-
-
-
-<meta itemprop="keywords" content="博客,CDN,杂谈," />
-<meta property="og:title" content="几经周折的博客变迁史" />
+<meta itemprop="keywords" content="博客,CDN,杂谈," /><meta property="og:title" content="几经周折的博客变迁史" />
 <meta property="og:description" content="仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
  尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。 使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。 发现了国内访问速度更快的 Gitee Page。 再次购买域名，使用 CDN 加速国外空间，未果（下文说）&hellip;&hellip;  前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
 当时配置那个 A 记录，CNAME 记录啥的根本不知道是什么东西，也不知道 DNS 是什么，就是配，成功了就行，不成功就猜，一个个试呗。现在想想，真的是走了不少弯路，如果能系统地学一下多好。不过这些问题也都在我后来的实践以及学习过程中逐一解决了，现在遇到问题也不用像没头苍蝇一样乱撞了，这种感觉很不错 :)
@@ -37,9 +32,10 @@
 我是国外的域名，不能使用国内 CDN 加速，正好 CloudFlare 提供免费全球 CDN，虽然效果一般，但是它提供的免费功能也是非常的多，包括各种流量统计分析，也是很良心了。想使用 CloudFlare 当 DNS 服务器做法也非常简单。注册一个账号填上域名信息，然后会提供给我们两个 DNS 服务器域名，我们把原域名服务器商的 NameServers 改成新解析服务器提供的就好了。
 当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加两条 CNAME 记录，然后在 GitHub Pages 仓库的发布分支放一个 CNAME 文件，文件内容就是你的 CNAME 地址就可以了，它会自动帮你设置为这个域名并搞定一切的:)" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/chore/blog_journey/" />
-<meta property="article:published_time" content="2021-01-06T21:13:13+00:00" />
-<meta property="article:modified_time" content="2021-01-06T21:13:13+00:00" />
+<meta property="og:url" content="https://www.kcode.icu/posts/chore/blog_journey/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-01-06T21:13:13&#43;00:00" />
+<meta property="article:modified_time" content="2021-01-06T21:13:13&#43;00:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="几经周折的博客变迁史"/>
 <meta name="twitter:description" content="仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
@@ -61,7 +57,7 @@
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>几经周折的博客变迁史</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.b21595ccbc2181c24e6a019eb9b89ca67727675a14634f9cbdb25e7a4f556601.css">
 	
 </head>
 
@@ -189,7 +185,7 @@
 	</footer>
 
 
-	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+	<script src="https://www.kcode.icu/js/main.min.3b8561d63aeee77aa04e677df95581a230b4b43adf7b208b8d671433e446cfc1.js"></script>
 
 </body>
 

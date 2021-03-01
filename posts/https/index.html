@@ -15,15 +15,10 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 证书 不管什么版本的 SSL/TLS，只使用对称加密和非对称加密也是不够的，因为无法解决 中间人攻击，都需要配合证书来完成整个验证过程。所以在说明各个阶段的 HTTPS 之前有必要介绍一下证书的几个概念。
 证书的作用有两个：
  确保通信目标的身份。 确认你的身份。  其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：
-加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。">
-<meta itemprop="datePublished" content="2021-01-27T15:57:50+00:00" />
-<meta itemprop="dateModified" content="2021-01-27T15:57:50+00:00" />
+加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。"><meta itemprop="datePublished" content="2021-01-27T15:57:50&#43;00:00" />
+<meta itemprop="dateModified" content="2021-01-27T15:57:50&#43;00:00" />
 <meta itemprop="wordCount" content="457">
-
-
-
-<meta itemprop="keywords" content="HTTPS,安全," />
-<meta property="og:title" content="https为什么安全" />
+<meta itemprop="keywords" content="HTTPS,安全," /><meta property="og:title" content="https为什么安全" />
 <meta property="og:description" content="截图均使用了 Wireshark 工具进行抓包分析。
  HTTPS 并不是一种新的协议，而是 HTTP over SSL/TLS，也就是使用了 SSL/TLS 加密的 HTTP，解决了 HTTP 不安全的问题。SSL（Secure Sockets Layer） 是 TLS（Transport Layer Security） 的前身，它们都处在 OSI 七层模型中的会话层。SSL 经历了三个版本的变迁，后来升级为了 TLS，TLS 主要有 1.0、1.1、1.2 和 1.3，现在大部分正在从 1.1 到 1.2 的迁移，部分使用 1.3，我们可以使用 Wireshark 过滤一下进行简单查看。
 需要注意的是，应用了 HTTPS 后通信效率会变低，毕竟需要进行额外的握手，加解密步骤。
@@ -33,9 +28,10 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
  确保通信目标的身份。 确认你的身份。  其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：
 加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/https/" />
-<meta property="article:published_time" content="2021-01-27T15:57:50+00:00" />
-<meta property="article:modified_time" content="2021-01-27T15:57:50+00:00" />
+<meta property="og:url" content="https://www.kcode.icu/posts/https/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-01-27T15:57:50&#43;00:00" />
+<meta property="article:modified_time" content="2021-01-27T15:57:50&#43;00:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="https为什么安全"/>
 <meta name="twitter:description" content="截图均使用了 Wireshark 工具进行抓包分析。
@@ -55,7 +51,7 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>https为什么安全</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.b21595ccbc2181c24e6a019eb9b89ca67727675a14634f9cbdb25e7a4f556601.css">
 	
 </head>
 
@@ -287,11 +283,11 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 			</footer>
 		</article>
 		<div class="post-nav thin">
-			<a class="next-post" href="https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>深入理解Go string</span>
+			<a class="next-post" href="https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>深入理解 Go string与slice</span>
 			</a>
 			<a class="prev-post" href="https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Go结构体与内存对齐</span>
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Go 结构体与内存对齐</span>
 			</a>
 		</div>
 		<div id="comments" class="thin">
@@ -313,7 +309,7 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 	</footer>
 
 
-	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+	<script src="https://www.kcode.icu/js/main.min.3b8561d63aeee77aa04e677df95581a230b4b43adf7b208b8d671433e446cfc1.js"></script>
 
 </body>
 

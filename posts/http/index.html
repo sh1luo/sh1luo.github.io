@@ -16,15 +16,10 @@ HTTP方法有什么“实际区别” 你可能听说过类似 “GET 和 POST �
 各个版本之间的发展史 HTTP 比较重要的几个发展时间节点是 0.9、1.0、1.1、2.0 和 3.0，每一次的版本变迁都是为了解决前一个版本的性能不足或者功能不完善，我不推荐死记硬背，即使它被称为计算机八股文。
 http 0.9和1.1 在 HTTP 0.9 的时候只有 GET 方法，1.0 补充了 POST，DEL 方法完善语义，还添加了几个首部，这个阶段的 HTTP 主要就是完善功能。
 1.0 和 1.1 的最大区别就是长短连接了。在 HTTP 1.1 将长连接设置为了默认，也就是：
-Connection: keep-alive 在这之前这个字段的默认是 close，长连接的好处是显而易见的，由于 HTTP 是基于 tcp，如果总共传输三个文件，1.">
-<meta itemprop="datePublished" content="2021-01-15T23:10:22+00:00" />
-<meta itemprop="dateModified" content="2021-01-15T23:10:22+00:00" />
+Connection: keep-alive 在这之前这个字段的默认是 close，长连接的好处是显而易见的，由于 HTTP 是基于 tcp，如果总共传输三个文件，1."><meta itemprop="datePublished" content="2021-01-15T23:10:22&#43;00:00" />
+<meta itemprop="dateModified" content="2021-01-15T23:10:22&#43;00:00" />
 <meta itemprop="wordCount" content="131">
-
-
-
-<meta itemprop="keywords" content="HTTP," />
-<meta property="og:title" content="谈谈最常见的 HTTP" />
+<meta itemprop="keywords" content="HTTP," /><meta property="og:title" content="谈谈最常见的 HTTP" />
 <meta property="og:description" content="标题的”最常见“我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
 这篇博客我想阐述除书本概念之外的一些可能你 理解不深刻 的问题的 个人理解，希望对你有所帮助。
 HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP），是一个应用层面上的，也就是软件双方通信的数据规则，是通信的基石。不然你发给我一串 @#$%$%^$%^，只有你能看懂，我怎么知道你说的是什么玩意？双方按照这个规则去通信，有什么需求都在这个规范里写好了发给对方，对方就知道你想干什么，就可以也按照这个规范给你回过去，就是这么简单。只是因为随着技术的发展，所遇到的问题越来越多，从功能需求，再到安全、效率、可读性等等，不得不提出一系列的解决方案去完善，最终变得很 ”臃肿“ 罢了。但是你应该明白，这就是一个为应用程序通信所提出来的一个基础通信协议。
@@ -35,9 +30,10 @@ http 0.9和1.1 在 HTTP 0.9 的时候只有 GET 方法，1.0 补充了 POST，DE
 1.0 和 1.1 的最大区别就是长短连接了。在 HTTP 1.1 将长连接设置为了默认，也就是：
 Connection: keep-alive 在这之前这个字段的默认是 close，长连接的好处是显而易见的，由于 HTTP 是基于 tcp，如果总共传输三个文件，1." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/http/" />
-<meta property="article:published_time" content="2021-01-15T23:10:22+00:00" />
-<meta property="article:modified_time" content="2021-01-15T23:10:22+00:00" />
+<meta property="og:url" content="https://www.kcode.icu/posts/http/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-01-15T23:10:22&#43;00:00" />
+<meta property="article:modified_time" content="2021-01-15T23:10:22&#43;00:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="谈谈最常见的 HTTP"/>
 <meta name="twitter:description" content="标题的”最常见“我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
@@ -58,7 +54,7 @@ Connection: keep-alive 在这之前这个字段的默认是 close，长连接的
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>谈谈最常见的 HTTP</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.b21595ccbc2181c24e6a019eb9b89ca67727675a14634f9cbdb25e7a4f556601.css">
 	
 </head>
 
@@ -169,7 +165,7 @@ Connection: keep-alive 在这之前这个字段的默认是 close，长连接的
 	</footer>
 
 
-	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+	<script src="https://www.kcode.icu/js/main.min.3b8561d63aeee77aa04e677df95581a230b4b43adf7b208b8d671433e446cfc1.js"></script>
 
 </body>
 
