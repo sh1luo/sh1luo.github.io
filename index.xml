@@ -126,7 +126,7 @@ PicGo PicGo 是一款使用 Node + Electron 开发的跨平台可视化图片上
       <description>我不太喜欢只看问题的表面，总是不经意间思考了这么多，希望对你有所帮助。
 我打算围绕 Go 的底层实现写一些自己的思考和探究，我在写之前参考了大量博客等”二手资料“，写时手边也拿着 Go 语言最新版源代码这样的”一手资料“，其一是因为官方源码和文档永远是我们最好的第一学习工具，其二是我个人在没看到源信息时有种不踏实的感觉（可能跟以前踩过坑有关），所以文中说到的任何知识点均会附带源码说明，由于 Go 语言特殊性，必要时还会附带汇编代码辅助，最后我还会通过理论来推动实践为你做个演示。
 标记的内容已经列入计划，正在赶工中 😄
- 一：深入表象  「map」深入理解 Go map ，正在&amp;hellip; 「string」简单又有”东西“的字符串 ，正在&amp;hellip; 「slice」灵活高效的切片 ，正在&amp;hellip; 「string&amp;amp;slice」用理论驱动实践 ，正在&amp;hellip;   二：深入理解  「method」方法到底是什么 ，正在&amp;hellip;   三：深入灵魂  「GPM」Go 调度模型为什么这么特别？ ，正在&amp;hellip; 「GC」入个 GC 算法的门？ ，正在&amp;hellip;    我的公众号 平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号：</description>
+ 一：深入表象  「map」深入理解 Go map，正在&amp;hellip; 「string」简单又有”东西“的字符串，正在&amp;hellip; 「slice」灵活高效的切片，正在&amp;hellip; 「string&amp;amp;slice」用理论驱动实践，正在&amp;hellip;   二：深入理解  「method」方法到底是什么，正在&amp;hellip;   三：深入灵魂  「GPM」Go 调度模型为什么这么特别？，正在&amp;hellip; 「GC」入个 GC 算法的门？，正在&amp;hellip;    我的公众号 平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号：</description>
     </item>
     
     <item>
