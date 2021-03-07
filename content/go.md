@@ -24,4 +24,4 @@ date: "2021-01-17"
 
 平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号：
 
-![image](qrcode_for_gh.jpg)
+![image](https://github.com/sh1luo/sh1luo.github.io/blob/master/qrcode_for_gh.jpg)
