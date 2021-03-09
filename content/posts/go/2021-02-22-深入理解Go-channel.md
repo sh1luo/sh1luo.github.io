@@ -16,7 +16,7 @@ Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，�
 
 在其他语言中，面对并发访问或者需要同步异步的问题，你可能设置一个变量，通过对它加锁的方式来告诉其他试图操作这个变量的其他 “用户”（线程、进程等其他实体）一些信息，比如正在读写，这便是通过共享内存来通信，也就是过程使用了同一个变量，并且传递了信息。还有另一种方式，你可以给这个 “用户” 发一条消息，比如 “我在写这个变量呢，等会你再来” 或者 “我给你发过去了一条消息，你收一下”，也可以不使用这个 “中间变量”，也就是锁。这个传递信息的媒介在 Go 语言中叫 channel，上述这种方式就是通过通信来共享内存。
 
-上面是形象的介绍，这被称为一种并发模型名为 CSP（Communicating Sequential processes），即通信顺序进程。
+上面是形象的介绍，这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
 
 ![image](https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper-%E7%AC%AC%202%20%E9%A1%B5.svg)
 
@@ -24,7 +24,7 @@ Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，�
 
 
 
-
+![](https://gitee.com/sh1luo/imgs/raw/master/imgs/csp.svg)
 
 
 
