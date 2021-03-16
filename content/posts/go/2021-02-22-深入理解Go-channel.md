@@ -18,5 +18,6 @@ Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，�
 
 上面是形象的介绍，其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
 
-![image](https://raw.githubusercontent.com/sh1luo/CDN/master/imagescsp.svg)
+![image](https://raw.githubusercontent.com/sh1luo/CDN/641b376a00bb5b57536906244c1a64163bb3de1b/imagescsp.svg)
 
+两个实体 goroutine 通过 channel 
