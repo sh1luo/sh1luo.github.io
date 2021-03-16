@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 25 Feb 2021 19:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Mar 2021 13:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2021-03-14-Go unsafe.Pointer、uintptr与指针</title>
+      <link>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
+      <pubDate>Sun, 14 Mar 2021 13:35:20 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
+      <description>说在前面 前几天见到了一个问题，对我来说可真是 ”灵魂拷问“：
+说说 uintptr与unsafe.Pointer 有什么区别？ </description>
+    </item>
+    
     <item>
       <title>深入理解 Go channel</title>
       <link>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</link>
@@ -16,7 +26,8 @@
       <guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</guid>
       <description>Channel   Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
 在其他语言中，面对并发访问或者需要同步异步的问题，你可能设置一个变量，通过对它加锁的方式来告诉其他试图操作这个变量的其他 “用户”（线程、进程等其他实体）一些信息，比如正在读写，这便是通过共享内存来通信，也就是过程使用了同一个变量，并且传递了信息。还有另一种方式，你可以给这个 “用户” 发一条消息，比如 “我在写这个变量，等会你再来” 或者 “我给你发过去了一条消息，你收一下”，也可以不使用这个 “中间变量”，也就是锁。这个传递信息的媒介在 Go 语言中叫 channel，上述这种方式就是通过通信来共享内存。
-上面是形象的介绍，其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。</description>
+上面是形象的介绍，其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
+两个实体 goroutine 通过 channel</description>
     </item>
     
     <item>

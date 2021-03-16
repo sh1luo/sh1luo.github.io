@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 25 Feb 2021 19:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Mar 2021 13:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2021-03-14-Go unsafe.Pointer、uintptr与指针</title>
+      <link>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
+      <pubDate>Sun, 14 Mar 2021 13:35:20 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
+      <description>说在前面 前几天见到了一个问题，对我来说可真是 ”灵魂拷问“：
+说说 uintptr与unsafe.Pointer 有什么区别？ </description>
+    </item>
+    
     <item>
       <title>深入理解 Go channel</title>
       <link>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</link>
@@ -16,7 +26,8 @@
       <guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</guid>
       <description>Channel   Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
 在其他语言中，面对并发访问或者需要同步异步的问题，你可能设置一个变量，通过对它加锁的方式来告诉其他试图操作这个变量的其他 “用户”（线程、进程等其他实体）一些信息，比如正在读写，这便是通过共享内存来通信，也就是过程使用了同一个变量，并且传递了信息。还有另一种方式，你可以给这个 “用户” 发一条消息，比如 “我在写这个变量，等会你再来” 或者 “我给你发过去了一条消息，你收一下”，也可以不使用这个 “中间变量”，也就是锁。这个传递信息的媒介在 Go 语言中叫 channel，上述这种方式就是通过通信来共享内存。
-上面是形象的介绍，其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。</description>
+上面是形象的介绍，其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
+两个实体 goroutine 通过 channel</description>
     </item>
     
     <item>
@@ -141,18 +152,6 @@ HTTP方法有什么“实际区别” 你可能听说过类似 “GET 和 POST �
 http 0.9和1.1 在 HTTP 0.9 的时候只有 GET 方法，1.0 补充了 POST，DEL 方法完善语义，还添加了几个首部，这个阶段的 HTTP 主要就是完善功能。
 1.0 和 1.1 的最大区别就是长短连接了。在 HTTP 1.1 将长连接设置为了默认，也就是：
 Connection: keep-alive 在这之前这个字段的默认是 close，长连接的好处是显而易见的，由于 HTTP 是基于 tcp，如果总共传输三个文件，1.</description>
-    </item>
-    
-    <item>
-      <title>一些常见Go语言及面试问题的整理</title>
-      <link>https://www.kcode.icu/posts/interview/somequestions/</link>
-      <pubDate>Fri, 15 Jan 2021 21:10:55 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/interview/somequestions/</guid>
-      <description>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家，等待更新中。
-Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
-线程有哪些状态 注册中心挂了怎么办？ N节点，raft一致性？
-反射底层原理？ 通过反射执行函数，拿结构体tag？ 锁机制？饥饿模式正常模式？锁底层原理？ channel使用，坑，底层原理？ </description>
     </item>
     
   </channel>
