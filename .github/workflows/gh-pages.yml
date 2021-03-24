@@ -21,7 +21,7 @@ jobs:
           extended: true
 
       - name: Build
-        run: hugo && echo www.kcode.icu > ./public/CNAME && cp -r ./webpushr-sw.js ./._webpushr-sw.js ./public
+        run: hugo && echo www.kcode.icu > ./public/CNAME
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
