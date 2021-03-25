@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HTTPS on wasabi</title>
+    <link>https://www.kcode.icu/tags/https/</link>
+    <description>Recent content in HTTPS on wasabi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Wed, 27 Jan 2021 15:57:50 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/https/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>https为什么安全</title>
+      <link>https://www.kcode.icu/posts/https/</link>
+      <pubDate>Wed, 27 Jan 2021 15:57:50 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/https/</guid>
+      <description>截图均使用了 Wireshark 工具进行抓包分析。
+ HTTPS 并不是一种新的协议，而是 HTTP over SSL/TLS，也就是使用了 SSL/TLS 加密的 HTTP，解决了 HTTP 不安全的问题。SSL（Secure Sockets Layer） 是 TLS（Transport Layer Security） 的前身，它们都处在 OSI 七层模型中的会话层。SSL 经历了三个版本的变迁，后来升级为了 TLS，TLS 主要有 1.0、1.1、1.2 和 1.3，现在大部分正在从 1.1 到 1.2 的迁移，部分使用 1.3，我们可以使用 Wireshark 过滤一下进行简单查看。
+需要注意的是，应用了 HTTPS 后通信效率会变低，毕竟需要进行额外的握手，加解密步骤。
+SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加密的密钥用于后续加密通信。主要可以分为两种方式，RSA 和 ECDH。RSA 方式也在 TLS/1.3 中正式被废除。下面我们分别来看。
+证书 不管什么版本的 SSL/TLS，只使用对称加密和非对称加密也是不够的，因为无法解决 中间人攻击，都需要配合证书来完成整个验证过程。所以在说明各个阶段的 HTTPS 之前有必要介绍一下证书的几个概念。
+证书的作用有两个：
+ 确保通信目标的身份。 确认你的身份。  其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：
+加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。</description>
+    </item>
+    
+  </channel>
+</rss>
