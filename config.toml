@@ -40,11 +40,6 @@ enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/func
   themeColor = "#494f5c"
 
   homeSubtitle = "Summary, Thinking, Life"
-  # footerCopyright = ' &#183; <a href="http://www.beian.miit.gov.cn/">粤ICP备19076352号</a>'
-  # bgImg = ""  # Homepage background-image URL
-
-  # Prefix of link to the git commit detail page. GitInfo must be enabled.
-  #gitUrl = "https://github.com/eddycjy/blog/commit/"
 
   # Toggling this option needs to rebuild SCSS, requires Hugo extended version
   justifyContent = false  # Set "text-align: justify" to `.content`.
