@@ -14,10 +14,15 @@ df df 就是 “disk free” 的缩写，一般是用来快速浏览你的文件
 du du 就是 “disk usage” 的缩写，如果你需要计算某个特定目录大小的时候非常好用。一般搭配 -sh 参数让结果更易读，比如这样：
 df VS. du 看了这两个命令大致用法后，它们在使用场景是什么呢，众所周知不结合使用场景的技术都是耍流氓。大致可以这样总结：df 命令提供一个关于你整个文件系统的概览，比如你多少空间正在使用等等，du 命令更倾向于计算某个目录的精确快照。
 如果非要说哪个的结果更有用一点，我觉得是 du。举个例子，我在 /var 目录下安装一个第三方包时遇到了一个目录空间不足的错误，那么我就可以先跑一下 df 命令去看看这个目录的空间来确认一下这是不是真的。我如果看到 /var 有足够空间，那我会接着跑一下 du /var 去看看是它的哪个子目录因为空间不够报的错。这样我就可以一直通过 df  去缩小出错目录的范围，直到找到问题。
-理解这些命令的区别能让我们串联使用这些工具，从而更快的定位并解决我们所面临的绝大多数的问题。"><meta itemprop="datePublished" content="2020-11-04T18:15:13&#43;00:00" />
-<meta itemprop="dateModified" content="2020-11-04T18:15:13&#43;00:00" />
+理解这些命令的区别能让我们串联使用这些工具，从而更快的定位并解决我们所面临的绝大多数的问题。">
+<meta itemprop="datePublished" content="2020-11-04T18:15:13+00:00" />
+<meta itemprop="dateModified" content="2020-11-04T18:15:13+00:00" />
 <meta itemprop="wordCount" content="58">
-<meta itemprop="keywords" content="Linux,杂谈," /><meta property="og:title" content="Linux du/df命令总结" />
+
+
+
+<meta itemprop="keywords" content="Linux,杂谈," />
+<meta property="og:title" content="Linux du/df命令总结" />
 <meta property="og:description" content="linux 在我们日常学习中用的非常多，连接远程 linux 服务器，使用各种 linux 命令，或者物理机就是 linux 系统或者 MacOS。如果你想要学习进阶知识，linux 已经是必不可少的一个组件了。这篇博客记录一下 linux 下常被混淆的 du/df 命令。
 df df 就是 “disk free” 的缩写，一般是用来快速浏览你的文件系统，会显示所有磁盘的大小，使用空间，剩余空间，使用百分比还有磁盘挂载到哪个分区上了。使用的时候一般要带上 -h 参数来增加可读性。这些数据都是从挂载点或者文件系统级别计算出来的，比较 “宏观”。
 而且，-h 标记会使你的数据四舍五入更方便显示，比如它显示 3G 的大小，实际上可能是 2.9G 或者 3.1G，并不确定。
@@ -26,10 +31,9 @@ df VS. du 看了这两个命令大致用法后，它们在使用场景是什么�
 如果非要说哪个的结果更有用一点，我觉得是 du。举个例子，我在 /var 目录下安装一个第三方包时遇到了一个目录空间不足的错误，那么我就可以先跑一下 df 命令去看看这个目录的空间来确认一下这是不是真的。我如果看到 /var 有足够空间，那我会接着跑一下 du /var 去看看是它的哪个子目录因为空间不够报的错。这样我就可以一直通过 df  去缩小出错目录的范围，直到找到问题。
 理解这些命令的区别能让我们串联使用这些工具，从而更快的定位并解决我们所面临的绝大多数的问题。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/chore/linux_df_du/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-11-04T18:15:13&#43;00:00" />
-<meta property="article:modified_time" content="2020-11-04T18:15:13&#43;00:00" />
-
+<meta property="og:url" content="https://www.kcode.icu/posts/chore/linux_df_du/" />
+<meta property="article:published_time" content="2020-11-04T18:15:13+00:00" />
+<meta property="article:modified_time" content="2020-11-04T18:15:13+00:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux du/df命令总结"/>
 <meta name="twitter:description" content="linux 在我们日常学习中用的非常多，连接远程 linux 服务器，使用各种 linux 命令，或者物理机就是 linux 系统或者 MacOS。如果你想要学习进阶知识，linux 已经是必不可少的一个组件了。这篇博客记录一下 linux 下常被混淆的 du/df 命令。
@@ -48,8 +52,8 @@ df VS. du 看了这两个命令大致用法后，它们在使用场景是什么�
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>Linux du/df命令总结</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.b21595ccbc2181c24e6a019eb9b89ca67727675a14634f9cbdb25e7a4f556601.css">
-
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	
 </head>
 
 <body id="page">
@@ -68,8 +72,7 @@ df VS. du 看了这两个命令大致用法后，它们在使用场景是什么�
 				</nav>
 			</div>
 			<div class="hdr-right hdr-icons">
-				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BDCnknrdqLBbt9stROpubm-0GJRriKSUrRQb6hZRUqBz37ar76Fr-BRVcobQLMoL13fQY-iiEuIZHnOsGLglnak' });</script></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
 			</div>
 		</div>
 	</header>
@@ -82,118 +85,65 @@ df VS. du 看了这两个命令大致用法后，它们在使用场景是什么�
 	</div>
 
 
-<main class="site-main section-inner animated fadeIn faster">
-	<article class="thin">
-		<header class="post-header">
-			<div class="post-meta"><span>Nov 4, 2020</span></div>
-			<h1>Linux du/df命令总结</h1>
-		</header>
-		<div class="content">
-			<p>linux 在我们日常学习中用的非常多，连接远程 linux 服务器，使用各种 linux 命令，或者物理机就是 linux 系统或者 MacOS。如果你想要学习进阶知识，linux 已经是必不可少的一个组件了。这篇博客记录一下 linux 下常被混淆的 du/df 命令。</p>
-<h2 id="df">df<a href="#df" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h2>
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Nov 4, 2020</span></div>
+				<h1>Linux du/df命令总结</h1>
+			</header>
+			<div class="content">
+				<p>linux 在我们日常学习中用的非常多，连接远程 linux 服务器，使用各种 linux 命令，或者物理机就是 linux 系统或者 MacOS。如果你想要学习进阶知识，linux 已经是必不可少的一个组件了。这篇博客记录一下 linux 下常被混淆的 du/df 命令。</p>
+<h2 id="df">df<a href="#df" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>df 就是 “disk free” 的缩写，一般是用来快速浏览你的文件系统，会显示所有磁盘的大小，使用空间，剩余空间，使用百分比还有磁盘挂载到哪个分区上了。使用的时候一般要带上 <code>-h</code> 参数来增加可读性。这些数据都是从挂载点或者文件系统级别计算出来的，比较 “宏观”。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/sh.png" alt="df -h"></p>
 <p>而且，<code>-h</code> 标记会使你的数据四舍五入更方便显示，比如它显示 3G 的大小，实际上可能是 2.9G 或者  3.1G，并不确定。</p>
-<h2 id="du">du<a href="#du" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h2>
+<h2 id="du">du<a href="#du" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>du 就是 “disk usage” 的缩写，如果你需要计算某个特定目录大小的时候非常好用。一般搭配 <code>-sh</code> 参数让结果更易读，比如这样：</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/du.png" alt="du"></p>
-<h2 id="df-vs-du">df VS. du<a href="#df-vs-du" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h2>
+<h2 id="df-vs-du">df VS. du<a href="#df-vs-du" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>看了这两个命令大致用法后，它们在使用场景是什么呢，众所周知不结合使用场景的技术都是耍流氓。大致可以这样总结：<code>df</code> 命令提供一个关于你整个文件系统的概览，比如你多少空间正在使用等等，<code>du</code> 命令更倾向于计算某个目录的精确快照。</p>
 <p>如果非要说哪个的结果更有用一点，我觉得是 <code>du</code>。举个例子，我在 <code>/var</code> 目录下安装一个第三方包时遇到了一个目录空间不足的错误，那么我就可以先跑一下 <code>df</code> 命令去看看这个目录的空间来确认一下这是不是真的。我如果看到 <code>/var</code> 有足够空间，那我会接着跑一下 <code>du /var</code> 去看看是它的哪个子目录因为空间不够报的错。这样我就可以一直通过 <code>df </code> 去缩小出错目录的范围，直到找到问题。</p>
 <p>理解这些命令的区别能让我们串联使用这些工具，从而更快的定位并解决我们所面临的绝大多数的问题。</p>
 
+			</div>
+			<div class="content"><br><img src="https://image.eddycjy.com/8c23cb407498f8446af59e43fb95ac62.png"></div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/linux">Linux</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%9D%82%E8%B0%88">杂谈</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>58 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-11-05 02:15 &#43;0800</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://www.kcode.icu/posts/rpc/rpcvshttp/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>你觉得HTTP最香是因为你还不知道RPC</span>
+			</a>
+			<a class="prev-post" href="https://www.kcode.icu/posts/ascii-unicode-utf/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>一文搞懂ASCII、Unicode和UTF</span>
+			</a>
 		</div>
-		<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.png"></div>
-		<hr class="post-end">
-		<footer class="post-info">
-			<p>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-tag meta-icon">
-					<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-					<line x1="7" y1="7" x2="7" y2="7"></line>
-				</svg><span class="tag"><a href="https://www.kcode.icu/%20tags/linux">Linux</a></span><span class="tag"><a href="https://www.kcode.icu/%20tags/%E6%9D%82%E8%B0%88">杂谈</a></span>
-			</p>
-			<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-file-text">
-					<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-					<polyline points="14 2 14 8 20 8"></polyline>
-					<line x1="16" y1="13" x2="8" y2="13"></line>
-					<line x1="16" y1="17" x2="8" y2="17"></line>
-					<polyline points="10 9 9 9 8 9"></polyline>
-				</svg>58 Words</p>
-			<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-calendar">
-					<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-					<line x1="16" y1="2" x2="16" y2="6"></line>
-					<line x1="8" y1="2" x2="8" y2="6"></line>
-					<line x1="3" y1="10" x2="21" y2="10"></line>
-				</svg>2020-11-04 18:15 &#43;0000</p>
-		</footer>
-	</article>
-	<div class="post-nav thin">
-		<a class="next-post" href="https://www.kcode.icu/posts/rpc/rpcvshttp/">
-			<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-					viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-					stroke-linejoin="round" class="feather feather-arrow-left">
-					<line x1="19" y1="12" x2="5" y2="12"></line>
-					<polyline points="12 19 5 12 12 5"></polyline>
-				</svg>&nbsp;Newer</span><br><span>你觉得HTTP最香是因为你还不知道RPC</span>
-		</a>
-		<a class="prev-post" href="https://www.kcode.icu/posts/ascii-unicode-utf/">
-			<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24"
-					height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-					stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-					<line x1="5" y1="12" x2="19" y2="12"></line>
-					<polyline points="12 5 19 12 12 19"></polyline>
-				</svg></span><br><span>一文搞懂ASCII、Unicode和UTF</span>
-		</a>
-	</div>
-	<div id="comments" class="thin">
-		<script src="https://utteranc.es/client.js" 
-		repo="sh1luo/sh1luo" 
-		issue-term="pathname" 
-		theme="github-light"
-		crossorigin="anonymous" 
-		async>
-</script>
-	</div>
-	<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BDCnknrdqLBbt9stROpubm-0GJRriKSUrRQb6hZRUqBz37ar76Fr-BRVcobQLMoL13fQY-iiEuIZHnOsGLglnak' });</script>
+		<div id="comments" class="thin">
+						<script src="https://utteranc.es/client.js"
+							repo="eddycjy/blog"
+							issue-term="pathname"
+							theme="github-light"
+							crossorigin="anonymous"
+							async>
+			</script>
+		</div>
+	</main>
 
-</main>
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
 
-<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-	<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
-	<p>
-		Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a
-			href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/%20post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-				viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-				stroke-linejoin="round" class="feather feather-rss">
-				<path d="M4 11a9 9 0 0 1 9 9"></path>
-				<path d="M4 4a16 16 0 0 1 16 16"></path>
-				<circle cx="5" cy="19" r="1"></circle>
-			</svg></a>
-	</p>
-</footer>
 
-	<script src="https://www.kcode.icu/js/main.min.3b8561d63aeee77aa04e677df95581a230b4b43adf7b208b8d671433e446cfc1.js"></script>
+	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
 
 </body>
 

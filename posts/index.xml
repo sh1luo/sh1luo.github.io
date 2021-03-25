@@ -6,20 +6,95 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-hans</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Sun, 14 Mar 2021 13:35:20 +0000</lastBuildDate>
+		<lastBuildDate>Sat, 20 Mar 2021 20:30:20 +0000</lastBuildDate>
 		<atom:link href="https://www.kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
 		
 		<item>
-			<title>Go unsafe.Pointer、uintptr、Pointer之间的区别和联系</title>
+			<title>Go 函数调用栈帧汇编分析</title>
+			<link>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</link>
+			<pubDate>Sat, 20 Mar 2021 20:30:20 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</guid>
+			<description>123
+这是Go 函数调用栈帧汇编分析文章。。
+ 待更新
+ </description>
+			<content type="html"><![CDATA[<p>123</p>
+<p>这是Go 函数调用栈帧汇编分析文章。。</p>
+<blockquote>
+<p>待更新</p>
+</blockquote>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</title>
 			<link>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
 			<pubDate>Sun, 14 Mar 2021 13:35:20 +0000</pubDate>
 			
 			<guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
 			<description>前几天见到了一个问题：
-uintptr与unsafe.Pointer 有什么区别？ </description>
+uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
+type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
+fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&amp;hellip;），那你再看一段代码：
+//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要任何内存，因为他们共享底层数据空间。
+函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048B，是写死在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</description>
 			<content type="html"><![CDATA[<p>前几天见到了一个问题：</p>
-<pre><code>uintptr与unsafe.Pointer 有什么区别？
-</code></pre>]]></content>
+<pre><code>uintptr与 unsafe.Pointer 有什么区别？
+</code></pre><p>你可能曾经看到过类似这样的代码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">T</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">a</span> <span class="kt">uint8</span>
+    <span class="nx">b</span> <span class="kt">bool</span>
+    <span class="nx">c</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="nx">t</span> <span class="o">:=</span> <span class="nx">T</span><span class="p">{</span><span class="nx">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">b</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">c</span><span class="p">:</span> <span class="s">&#34;goooo&#34;</span><span class="p">}</span>
+<span class="nx">Tc</span> <span class="o">:=</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="kt">string</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">a</span><span class="p">))</span> <span class="o">+</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Offsetof</span><span class="p">(</span><span class="nx">T</span><span class="p">{}.</span><span class="nx">c</span><span class="p">)))</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">Tc</span><span class="p">)</span>
+</code></pre></div><p>这一行代码看似实现的功能非常复杂，其实它就是等价于：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">c</span><span class="p">)</span>
+</code></pre></div><p>从某种意义上来说，这好像没什么用（确实没啥作用&hellip;），那你再看一段代码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">//go:nosplit
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Bytes2String</span><span class="p">(</span><span class="nx">bs</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="kt">string</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">bs</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="c1">//go:nosplit
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">String2Bytes</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
+    <span class="nx">ss</span> <span class="o">:=</span> <span class="o">*</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">s</span><span class="p">))</span>
+    <span class="nx">b</span> <span class="o">:=</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="kt">uintptr</span><span class="p">{</span><span class="nx">ss</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">ss</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">ss</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="p">[]</span><span class="kt">byte</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">b</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div><p>这两个函数实现了 []Byte 与 string 的互转，并且不需要任何内存，因为他们共享底层数据空间。</p>
+<p>函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048B，是写死在源码中的。而 <code>go:nosplit</code> 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</p>
+<h2 id="unsafe包">unsafe包</h2>
+<p><code>Go</code> 语言本身由于类型系统的原因，不支持指针的运算操作，对于指针的使用进行了极大的限制，不像 <code>C/C++</code> 语言那样对指针 “为所欲为”，也不像 <code>Java</code> 语言中那样根本不提供指针，采取了一种折中方案，只支持常见的取址（&amp;），取值（*）操作。但是为了有些场合的需要，还是提供了一个用来直接无视类型系统而直接操作的特性，这便是 <code>unsafe</code> 包提供的能力。</p>
+<p><code>unsafe</code> 包开放了一个类型，三个函数，分别是：</p>
+<ul>
+<li>Pointer ，任意指针类型</li>
+<li>Alignof 函数，计算变量内存对齐边界大小</li>
+<li>Sizeof 函数，计算该类型所占用内存大小，不包含底层数据大小</li>
+<li>Offsetof 函数，计算该变量相对于结构体首地址的地址偏移</li>
+</ul>
+<blockquote>
+<p>看源码过程中可能会看到  <code>ArbitraryType</code> 类型，而 <code>Pointer</code> 就是 <code>ArbitraryType</code> 类型，不必疑惑，这个类型没有任何实际意义，仅仅代表了它可以是任意 <code>Go</code> 语言类型，不是 <code>unsafe</code> 包的组成部分。</p>
+</blockquote>
+<p>Go 语言类型系统的限制，不允许进行指针运算，比如：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">a</span> <span class="o">:=</span> <span class="mi">1</span>
+<span class="nx">pa</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">a</span>
+<span class="nx">pa</span><span class="o">++</span>
+</code></pre></div><p>编译器无法通过这种写法，会报不支持这种运算的错误：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="err">#</span> <span class="nx">command</span><span class="o">-</span><span class="nx">line</span><span class="o">-</span><span class="nx">arguments</span>
+<span class="p">.</span><span class="err">\</span><span class="nx">notify</span><span class="p">.</span><span class="k">go</span><span class="p">:</span><span class="mi">17</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span> <span class="nx">invalid</span> <span class="nx">operation</span><span class="p">:</span> <span class="nx">pa</span><span class="o">++</span> <span class="p">(</span><span class="nx">non</span><span class="o">-</span><span class="nx">numeric</span> <span class="kd">type</span> <span class="o">*</span><span class="kt">int</span><span class="p">)</span>
+</code></pre></div><p>这 “一类型，三函数” 所提供的能力就是直接无视这个限制，直接进行地址运算，下面详细介绍这些能力。</p>
+<h3 id="pointer">Pointer</h3>
+<p><code>Pointer</code> 类型提供了 <code>uintptr</code> 与类型指针之间的转换中介，通过 Pointer 类型，这三者之间可以任意转换。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/pointer_uintptr.svg" alt="pointer_uintptr"></p>
+<p>不过需要遵循几个固定的规则。</p>
+<h3 id="alignof">Alignof</h3>
+<h3 id="sizeof">Sizeof</h3>
+<h3 id="offsetof">Offsetof</h3>
+]]></content>
 		</item>
 		
 		<item>
@@ -51,7 +126,7 @@ uintptr与unsafe.Pointer 有什么区别？ </description>
 			<guid>https://www.kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/</guid>
 			<description>秉承着 “软件均使用最新版本，学习均从文档入手” 的理念，学习使用 MySQL 我也是在使用最新的大版本 MySQL 8，而在技术发展过程中，一个不可忽视的因素就是兼容性，在保证新特性无误的同时必须确保以前的功能不受影响，如果不能保证这一点，那么许多使用者在迁移的时候就需要考虑很多改动成本，除非不是大改动，一般都会考虑到这一点，比如 HTTP/2 、TLS/1.3 等等。
 错误描述及分析 最近为学校写一个选课平台时关系型数据库使用的是 MySQL 8+，使用 Group by 时报了这个错误：
-ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column &#39;mydb.t.address&#39; which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by 意思是说 select 列表中包含了非聚合列，其并不函数依赖于 Group by 子句中的列。并且和 sql_mode 这个配置项的 only_full_group_by 值冲突。不过这篇文章并不只是单纯说解决方法，如果想要解决方法请直接移步文末。
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column &#39;mydb.t.address&#39; which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by意思是说 select 列表中包含了非聚合列，其并不函数依赖于 Group by 子句中的列。并且和 sql_mode 这个配置项的 only_full_group_by 值冲突。不过这篇文章并不只是单纯说解决方法，如果想要解决方法请直接移步文末。
 可以确定的是同样的使用了 Group by 的 SQL 查询语句在低版本中是正常的但是高版本却不行，猜测可能是版本差异造成的，而且还是因为这个配置项导致的。
 所以虽然我们一开始可能看不懂这个报错信息，但是我们通过一些分析已经定位了问题，并且报错的错误码明显（ERROR 1055(42000)），报错提示信息清楚，并不难找到解决方法。</description>
 			<content type="html"><![CDATA[<p>秉承着 “软件均使用最新版本，学习均从文档入手” 的理念，学习使用 MySQL 我也是在使用最新的大版本 MySQL 8，而在技术发展过程中，一个不可忽视的因素就是兼容性，在保证新特性无误的同时必须确保以前的功能不受影响，如果不能保证这一点，那么许多使用者在迁移的时候就需要考虑很多改动成本，除非不是大改动，一般都会考虑到这一点，比如 HTTP/2 、TLS/1.3 等等。</p>
@@ -112,7 +187,7 @@ type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data
 [图片]
 字符串就是字符的数组，我们先来看个小程序的例子：
 package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 go tool compile -S main.go 使用自带工具包查看汇编代码，可以看到有这样一段信息：
-... go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=3 0x0000 61 62 63 abc ... 很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
+...go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=30x0000 61 62 63 abc...很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
 			<content type="html"><![CDATA[<p>123</p>
 <h2 id="数据结构">数据结构</h2>
 <p>我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 <code>reflect/value.go</code> 中，分别对应着 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/reflect/value.go#L1983">StringHeader</a> 和 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/reflect/value.go#L1994">SliceHeader</a> 。</p>
@@ -640,7 +715,7 @@ HTTP方法有什么“实际区别” 你可能听说过类似 “GET 和 POST �
 各个版本之间的发展史 HTTP 比较重要的几个发展时间节点是 0.9、1.0、1.1、2.0 和 3.0，每一次的版本变迁都是为了解决前一个版本的性能不足或者功能不完善，我不推荐死记硬背，即使它被称为计算机八股文。
 http 0.9和1.1 在 HTTP 0.9 的时候只有 GET 方法，1.0 补充了 POST，DEL 方法完善语义，还添加了几个首部，这个阶段的 HTTP 主要就是完善功能。
 1.0 和 1.1 的最大区别就是长短连接了。在 HTTP 1.1 将长连接设置为了默认，也就是：
-Connection: keep-alive 在这之前这个字段的默认是 close，长连接的好处是显而易见的，由于 HTTP 是基于 tcp，如果总共传输三个文件，1.</description>
+Connection: keep-alive在这之前这个字段的默认是 close，长连接的好处是显而易见的，由于 HTTP 是基于 tcp，如果总共传输三个文件，1.</description>
 			<content type="html"><![CDATA[<p>标题的”最常见“我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。</p>
 <p>这篇博客我想阐述除书本概念之外的一些可能你 <strong>理解不深刻</strong> 的问题的 <strong>个人理解</strong>，希望对你有所帮助。</p>
 <h2 id="http是什么">HTTP是什么</h2>
@@ -925,7 +1000,7 @@ df VS. du 看了这两个命令大致用法后，它们在使用场景是什么�
 什么是ASCII，为什么又要引入Unicode 都应该了解过 ASCII、Unicode、Unicode 码点、UTF-8等一系列名词。先说 ASCII（American Standard Code for Information Interchange: 美国信息交换标准代码），它是一种字符集，说白了就是一个字符和数字的一一对应关系，你想找这个字符怎么办，计算机又不认识字符？给出他的对应的数字就行了。最初只有美国等一些使用英文的国家使用，所以 128 个字符完全够用，它包含了标点符号、数字和字母等。但是随着世界上使用计算机的国家越来越多，这 128 个字符是完全不够用的。所以 Unicode 字符集 就出现了。Unicode 包含了世界上绝大多数的字符，给他们提供了一一对应关系，比如“知”字对应 30693，即 U+77e5（16 进制形式）。所以说白了 ASCII 和 Unicode 就是一种字符集，一种字符对应关系，Unicode 中每个字符被称为一个 Code Point（码点），而 Go 语言中的 rune 类型正是代表了这样一个单位，即一个 rune 代表了一个 unicode 字符。
 那么大家肯定都听说过 UTF-8，UTF-16 吧，那问题来了， UTF 又是什么呢，UTF-8 和 UTF-16 到底又有什么关系呢？
 UTF（Unicode Transformation Format） 从字面上你就应该能看出来，这就是一个 Unicode 转换格式。什么是转换格式，为什么需要转换格式？上文说了 Unicode 就是提供了字符间的一一对应关系，比如“知”对应了 30693，那计算机怎么表示这个数（计算机只认识二进制）？它要做到：
-在很长的文本中准确获取到每个字符，不能找错 **Unicode 表示一个字符可以使用 1 - 4 个字节。**它的转换规则如下：</description>
+在很长的文本中准确获取到每个字符，不能找错**Unicode 表示一个字符可以使用 1 - 4 个字节。**它的转换规则如下：</description>
 			<content type="html"><![CDATA[<h2 id="起因">起因</h2>
 <p>最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在<strong>会用</strong>的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。</p>
 <h2 id="什么是ascii为什么又要引入unicode">什么是ASCII，为什么又要引入Unicode</h2>
@@ -1002,8 +1077,8 @@ StarUML版本：3.2.2
 具体做法 下载安装 node 如果不会，自（bie）行（lai）解（zhao）决（wo）。
 使用 cnpm 包管理工具下载 asar 由于众所周知的原因，用 cnpm 下载，先安装 cnpm并使用淘宝镜像源：
 npm install -g cnpm --registry=https://registry.npm.taobao.org	// 下载 asar cnpm install -g asar // 安装 asar 解压 asar 文件，修改源代码 找到 StarUML 安装目录里 resource 文件夹下的 app.asar 文件，执行解压：
-asar extract app.asar app 坑点一、解压盘符问题 由于 StarUML 默认安装位置是 C 盘，直接在 StarUML 的安装目录下执行会有权限问题，会报类似这种错误：
-$ asar extract app.asar app internal/fs/utils.js:230 throw err; ^ Error: EPERM: operation not permitted, open &#39;app\package.</description>
+asar extract app.asar app坑点一、解压盘符问题 由于 StarUML 默认安装位置是 C 盘，直接在 StarUML 的安装目录下执行会有权限问题，会报类似这种错误：
+$ asar extract app.asar appinternal/fs/utils.js:230throw err;^Error: EPERM: operation not permitted, open &#39;app\package.</description>
 			<content type="html"><![CDATA[<p>由于软件工程基础课需要，搜索发现这个工具还算毕竟好用的，下载了这个工具发现需要注册码，遂进行一番查找，最后确定如下方法。之所以写博客记录下来是因为<strong>有两个坑点</strong>。</p>
 <blockquote>
 <p>OS：Windows 10 专业版。</p>
@@ -1958,8 +2033,8 @@ Go 实现了两个包来产生随机数：
  在包 math/rand 的一个伪随机数生成器（ PRNG ） 在包 crypto/rand 中实现的加密伪随机数生成器（ CPRNG ）  如果这两个包都产生了随机数，则将基于真正的随机数和性能之间取舍
 确定的结果 Go 的rand包会使用相同的源来产生一个确定的伪随机数序列。这个源会产生一个不变的数列，稍后在执行期间使用。将你的程序运行多次将会读到一个完全相同的序列并产生相同的结果。让我们用一个简单的例子来尝试一下：
 func main() { for i := 0; i &amp;lt; 4; i++ { println(rand.Intn(100)) } } 多次运行这个程序将会产生相同的结果：
-81 87 47 59 由于源代码已经发布到 Go 的官方标准库中，因此任何运行此程序的计算机都会得到相同的结果。但是，由于 Go 仅保留一个生成的数字序列，我们可能想知道 Go 是如何管理用户请求的时间间隔的。Go 实际上使用此数字序列来播种一个产生这个随机数的源，然后获取其请求间隔的模。例如，运行相同的程序，最大值为 10，则模 10 的结果相同。
-1 7 7 9 让我们来看一下如何在每次运行我们的程序时得到不同的序列。
+81874759由于源代码已经发布到 Go 的官方标准库中，因此任何运行此程序的计算机都会得到相同的结果。但是，由于 Go 仅保留一个生成的数字序列，我们可能想知道 Go 是如何管理用户请求的时间间隔的。Go 实际上使用此数字序列来播种一个产生这个随机数的源，然后获取其请求间隔的模。例如，运行相同的程序，最大值为 10，则模 10 的结果相同。
+1779让我们来看一下如何在每次运行我们的程序时得到不同的序列。
 播种 Go 提供一个方法， Seed(see int64) ，该方法能让你初始化这个默认序列。默认情况下，它会使用变量 1。使用另一个变量将会提供一个新的序列，但会保持确定性：
 func main() { rand.Seed(2) for i := 0; i &amp;lt; 4; i++ { println(rand.</description>
 			<content type="html"><![CDATA[<h1 id="go随机数是怎样产生的">Go：随机数是怎样产生的？</h1>

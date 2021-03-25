@@ -7,15 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 14 Mar 2021 13:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Mar 2021 20:30:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Go unsafe.Pointer、uintptr、Pointer之间的区别和联系</title>
+      <title>Go 函数调用栈帧汇编分析</title>
+      <link>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</link>
+      <pubDate>Sat, 20 Mar 2021 20:30:20 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</guid>
+      <description>123
+这是Go 函数调用栈帧汇编分析文章。。
+ 待更新
+ </description>
+    </item>
+    
+    <item>
+      <title>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</title>
       <link>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
       <pubDate>Sun, 14 Mar 2021 13:35:20 +0000</pubDate>
       
       <guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
       <description>前几天见到了一个问题：
-uintptr与unsafe.Pointer 有什么区别？ </description>
+uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
+type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
+fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&amp;hellip;），那你再看一段代码：
+//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要任何内存，因为他们共享底层数据空间。
+函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048B，是写死在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</description>
     </item>
     
     <item>
@@ -42,7 +58,7 @@ type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data
 [图片]
 字符串就是字符的数组，我们先来看个小程序的例子：
 package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 go tool compile -S main.go 使用自带工具包查看汇编代码，可以看到有这样一段信息：
-... go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=3 0x0000 61 62 63 abc ... 很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
+...go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=30x0000 61 62 63 abc...很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
     </item>
     
     <item>

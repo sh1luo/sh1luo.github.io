@@ -16,10 +16,15 @@
 首先，我们将 Go 升级到最新的稳定版本（这是软件生命周期中的关键一步）。我们是用的 Go 1.12.4版本，最新的是 1.13.8。根据 文档 ，Go 1.13 发行版在运行时库方面和一些其他主要利用内存使用的组件方面已经有了长足的进步。总之，使用最新的稳定版本能帮助我们节省许多工作。
 因此，内存消耗由大约 800 MB 降低到了仅 180 MB。
 第二，为了更好的理解我们的流程以及弄清楚我们应该在哪花费时间和资源，我们开始去进行分析。
-分析不同的服务和程序语言可能看起来很复杂并且令人望而生畏，但是对于 Go 来说它实际上十分容易，仅仅几个命令就能够描述清楚。Go 有一个专门的工具叫“pprof”，它通过监听一个路由（默认端口6060）能够应用在你的 app 上，并且使用 Go 的包来管理 HTTP 连接："><meta itemprop="datePublished" content="2020-03-16T16:46:08&#43;00:00" />
-<meta itemprop="dateModified" content="2020-03-16T16:46:08&#43;00:00" />
+分析不同的服务和程序语言可能看起来很复杂并且令人望而生畏，但是对于 Go 来说它实际上十分容易，仅仅几个命令就能够描述清楚。Go 有一个专门的工具叫“pprof”，它通过监听一个路由（默认端口6060）能够应用在你的 app 上，并且使用 Go 的包来管理 HTTP 连接：">
+<meta itemprop="datePublished" content="2020-03-16T16:46:08+00:00" />
+<meta itemprop="dateModified" content="2020-03-16T16:46:08+00:00" />
 <meta itemprop="wordCount" content="267">
-<meta itemprop="keywords" content="翻译,优化,Go," /><meta property="og:title" content="优化Golang服务减少40%以上的CPU" />
+
+
+
+<meta itemprop="keywords" content="翻译,优化,Go," />
+<meta property="og:title" content="优化Golang服务减少40%以上的CPU" />
 <meta property="og:description" content="优化 Golang 服务来减少 40% 以上的 CPU 十年前，谷歌正在面临一个由 C&#43;&#43; 编译时间过长所造成的严重瓶颈，并且需要一个全新的方式来解决这个问题。谷歌的工程师们通过创造了一种新的被称作 Go （又名 Golang）的语言来应对挑战。这个新语言 Go 带来了 C&#43;&#43; 最好的部分（最主要的是它的性能和稳定性），又与 Python 的速度相结合，使得 Go 能够在实现并发的同时快速地使用多核心。
 在 Coralogix（译者注：一个提供全面日志分析的服务产品，官网），我们为了去给我们的客户提供关于他们日志实时的分析、警报和元数据，要去解析他们的日志。在解析阶段，我们需要非常快速地解析包含多个复杂规则的服务日志，这个目标是促使我们决定使用 Golang 的原因之一。
 这项新的服务现在就全天候的跑在生产阶段，尽管我们看到了非常好的结果，但是它也需要跑在高性能的机器上。这项 Go 的服务跑在一台 AWS m4.2xlarge 实例上 ，带有 8 CPUs 和 36 GB 的配置，每天要解析几十亿的日志。
@@ -30,10 +35,9 @@
 第二，为了更好的理解我们的流程以及弄清楚我们应该在哪花费时间和资源，我们开始去进行分析。
 分析不同的服务和程序语言可能看起来很复杂并且令人望而生畏，但是对于 Go 来说它实际上十分容易，仅仅几个命令就能够描述清楚。Go 有一个专门的工具叫“pprof”，它通过监听一个路由（默认端口6060）能够应用在你的 app 上，并且使用 Go 的包来管理 HTTP 连接：" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-03-16T16:46:08&#43;00:00" />
-<meta property="article:modified_time" content="2020-03-16T16:46:08&#43;00:00" />
-
+<meta property="og:url" content="https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/" />
+<meta property="article:published_time" content="2020-03-16T16:46:08+00:00" />
+<meta property="article:modified_time" content="2020-03-16T16:46:08+00:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="优化Golang服务减少40%以上的CPU"/>
 <meta name="twitter:description" content="优化 Golang 服务来减少 40% 以上的 CPU 十年前，谷歌正在面临一个由 C&#43;&#43; 编译时间过长所造成的严重瓶颈，并且需要一个全新的方式来解决这个问题。谷歌的工程师们通过创造了一种新的被称作 Go （又名 Golang）的语言来应对挑战。这个新语言 Go 带来了 C&#43;&#43; 最好的部分（最主要的是它的性能和稳定性），又与 Python 的速度相结合，使得 Go 能够在实现并发的同时快速地使用多核心。
@@ -54,8 +58,8 @@
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>优化Golang服务减少40%以上的CPU</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.b21595ccbc2181c24e6a019eb9b89ca67727675a14634f9cbdb25e7a4f556601.css">
-
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	
 </head>
 
 <body id="page">
@@ -74,8 +78,7 @@
 				</nav>
 			</div>
 			<div class="hdr-right hdr-icons">
-				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BDCnknrdqLBbt9stROpubm-0GJRriKSUrRQb6hZRUqBz37ar76Fr-BRVcobQLMoL13fQY-iiEuIZHnOsGLglnak' });</script></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
 			</div>
 		</div>
 	</header>
@@ -88,19 +91,14 @@
 	</div>
 
 
-<main class="site-main section-inner animated fadeIn faster">
-	<article class="thin">
-		<header class="post-header">
-			<div class="post-meta"><span>Mar 16, 2020</span></div>
-			<h1>优化Golang服务减少40%以上的CPU</h1>
-		</header>
-		<div class="content">
-			<h1 id="优化-golang-服务来减少-40-以上的-cpu">优化 Golang 服务来减少 40% 以上的 CPU<a href="#优化-golang-服务来减少-40-以上的-cpu" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h1>
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Mar 16, 2020</span></div>
+				<h1>优化Golang服务减少40%以上的CPU</h1>
+			</header>
+			<div class="content">
+				<h1 id="优化-golang-服务来减少-40-以上的-cpu">优化 Golang 服务来减少 40% 以上的 CPU<a href="#优化-golang-服务来减少-40-以上的-cpu" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 <p>十年前，谷歌正在面临一个由 C++ 编译时间过长所造成的严重瓶颈，并且需要一个全新的方式来解决这个问题。谷歌的工程师们通过创造了一种新的被称作 Go （又名 Golang）的语言来应对挑战。这个新语言 Go 带来了 C++ 最好的部分（最主要的是它的性能和稳定性），又与 Python 的速度相结合，使得 Go 能够在实现并发的同时快速地使用多核心。</p>
 <p>在 Coralogix（译者注：一个提供全面日志分析的服务产品，<a href="https://coralogix.com/">官网</a>），我们为了去给我们的客户提供关于他们日志实时的分析、警报和元数据，要去解析他们的日志。在解析阶段，我们需要非常快速地解析包含多个复杂规则的服务日志，这个目标是促使我们决定使用 Golang 的原因之一。</p>
 <p>这项新的服务现在就全天候的跑在生产阶段，尽管我们看到了非常好的结果，但是它也需要跑在高性能的机器上。这项 Go 的服务跑在一台 AWS m4.2xlarge 实例上 ，带有 8 CPUs 和 36 GB 的配置，每天要解析几十亿的日志。</p>
@@ -151,12 +149,7 @@
 <p>这并不是一个显著的改进，但是总体来说为我们节省了另一个 GC 的活动，说的更具体一点就是节省了大约 1% 的 CPU。</p>
 <p>最终的状态就是下面的截图：</p>
 <p><img src="http://cdn.shiluo.design/5.png" alt=""></p>
-<h2 id="最终结果">最终结果<a href="#最终结果" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h2>
+<h2 id="最终结果">最终结果<a href="#最终结果" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p><strong>1) 内存使用：大约 1.3 GB -&gt; 大约 2.7 GB</strong></p>
 <p><strong>2) CPU 使用：大约 2.55 avg 和 大约 5.05 峰值期 -&gt; 大约 2.13 avg 和 大约 2.9 峰值期。</strong></p>
 <p>在我们 Golang 优化前的 CPU：</p>
@@ -164,12 +157,7 @@
 <p>在我们 Golang 优化后的CPU：</p>
 <p><img src="http://cdn.shiluo.design/7.png" alt=""></p>
 <p>总体来说，我们可以看到主要的改进是在每秒日志处理量增加时的高峰时间。这就意味着我们的基础架构不仅不需要再为了异常值进行调整，而且变得更加稳定了。</p>
-<h2 id="总结">总结<a href="#总结" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h2>
+<h2 id="总结">总结<a href="#总结" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>通过对我们的 Go 解析服务进行性能测试，我们能够查明有问题的地方，更好的理解我们的服务并且确定在哪里（如果有的话）投资时间进行改进。大多数性能分析工作都会以一些基础数值或配置的调整，更合适你的使用情况并且最终展现更好的性能而结束。</p>
 <hr>
 <p>via：https://medium.com/coralogix-engineering/optimizing-a-golang-service-to-reduce-over-40-cpu-366b67c67ef9</p>
@@ -178,83 +166,45 @@
 校对：<a href="https://github.com/unknwon">@unknwon</a></p>
 <p>本文由 <a href="https://github.com/studygolang/GCTT">GCTT</a> 原创编译，<a href="https://studygolang.com/">Go中文网</a> 荣誉推出</p>
 
+			</div>
+			<div class="content"><br><img src="https://image.eddycjy.com/8c23cb407498f8446af59e43fb95ac62.png"></div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/%E7%BF%BB%E8%AF%91">翻译</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E4%BC%98%E5%8C%96">优化</a></span><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>267 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-03-17 00:46 &#43;0800</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://www.kcode.icu/posts/chore/go&#43;qamel/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Go&#43;QML构建桌面应用</span>
+			</a>
+			<a class="prev-post" href="https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Go&#43;QML开发的跨平台桌面直播助手[下]</span>
+			</a>
 		</div>
-		<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.png"></div>
-		<hr class="post-end">
-		<footer class="post-info">
-			<p>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-tag meta-icon">
-					<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-					<line x1="7" y1="7" x2="7" y2="7"></line>
-				</svg><span class="tag"><a href="https://www.kcode.icu/%20tags/%E7%BF%BB%E8%AF%91">翻译</a></span><span class="tag"><a href="https://www.kcode.icu/%20tags/%E4%BC%98%E5%8C%96">优化</a></span><span class="tag"><a href="https://www.kcode.icu/%20tags/go">Go</a></span>
-			</p>
-			<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-file-text">
-					<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-					<polyline points="14 2 14 8 20 8"></polyline>
-					<line x1="16" y1="13" x2="8" y2="13"></line>
-					<line x1="16" y1="17" x2="8" y2="17"></line>
-					<polyline points="10 9 9 9 8 9"></polyline>
-				</svg>267 Words</p>
-			<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-calendar">
-					<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-					<line x1="16" y1="2" x2="16" y2="6"></line>
-					<line x1="8" y1="2" x2="8" y2="6"></line>
-					<line x1="3" y1="10" x2="21" y2="10"></line>
-				</svg>2020-03-16 16:46 &#43;0000</p>
-		</footer>
-	</article>
-	<div class="post-nav thin">
-		<a class="next-post" href="https://www.kcode.icu/posts/chore/go&#43;qamel/">
-			<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-					viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-					stroke-linejoin="round" class="feather feather-arrow-left">
-					<line x1="19" y1="12" x2="5" y2="12"></line>
-					<polyline points="12 19 5 12 12 5"></polyline>
-				</svg>&nbsp;Newer</span><br><span>Go&#43;QML构建桌面应用</span>
-		</a>
-		<a class="prev-post" href="https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/">
-			<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24"
-					height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-					stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-					<line x1="5" y1="12" x2="19" y2="12"></line>
-					<polyline points="12 5 19 12 12 19"></polyline>
-				</svg></span><br><span>Go&#43;QML开发的跨平台桌面直播助手[下]</span>
-		</a>
-	</div>
-	<div id="comments" class="thin">
-		<script src="https://utteranc.es/client.js" 
-		repo="sh1luo/sh1luo" 
-		issue-term="pathname" 
-		theme="github-light"
-		crossorigin="anonymous" 
-		async>
-</script>
-	</div>
-	<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BDCnknrdqLBbt9stROpubm-0GJRriKSUrRQb6hZRUqBz37ar76Fr-BRVcobQLMoL13fQY-iiEuIZHnOsGLglnak' });</script>
+		<div id="comments" class="thin">
+						<script src="https://utteranc.es/client.js"
+							repo="eddycjy/blog"
+							issue-term="pathname"
+							theme="github-light"
+							crossorigin="anonymous"
+							async>
+			</script>
+		</div>
+	</main>
 
-</main>
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
 
-<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-	<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
-	<p>
-		Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a
-			href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/%20post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-				viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-				stroke-linejoin="round" class="feather feather-rss">
-				<path d="M4 11a9 9 0 0 1 9 9"></path>
-				<path d="M4 4a16 16 0 0 1 16 16"></path>
-				<circle cx="5" cy="19" r="1"></circle>
-			</svg></a>
-	</p>
-</footer>
 
-	<script src="https://www.kcode.icu/js/main.min.3b8561d63aeee77aa04e677df95581a230b4b43adf7b208b8d671433e446cfc1.js"></script>
+	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
 
 </body>
 

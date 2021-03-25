@@ -13,10 +13,15 @@
  声明。当我使用 :=，var，make，甚至 new 声明 map 的时候，编译器帮我们做了什么事情，它们有什么区别？ 增删改查。使用 数组&#43;链表 的情况下如何设计才能避免 O(n) 的最差情况？ 注意事项。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？  还有一个常识是 Go map 的 遍历是随机的，即多次遍历输出的结果不同，这个的原因会在后面提到。
 设计方式/数据结构 Go map 实现哈希表使用的是 数组&#43;链表 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。
 为了降低 map 操作的时间复杂度，引入了一个 负载因子 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 实际上最好只存 多少比例的元素，而不是一直等到满载再处理，因为多到一定程度效率 可能 就低了。在 Go 语言里这个值被定义为 6.5，即每个桶里最多存 6.5 个，包括溢出桶。
-当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过 平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。"><meta itemprop="datePublished" content="2021-01-22T23:35:20&#43;00:00" />
-<meta itemprop="dateModified" content="2021-01-22T23:35:20&#43;00:00" />
+当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过 平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。">
+<meta itemprop="datePublished" content="2021-01-22T23:35:20+00:00" />
+<meta itemprop="dateModified" content="2021-01-22T23:35:20+00:00" />
 <meta itemprop="wordCount" content="710">
-<meta itemprop="keywords" content="Go,源码," /><meta property="og:title" content="深入理解 Go map" />
+
+
+
+<meta itemprop="keywords" content="Go,源码," />
+<meta property="og:title" content="深入理解 Go map" />
 <meta property="og:description" content="哈希表 几乎所有语言都有 哈希表 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度内增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的 ”大神“。
 问题来源于实际，我们先看看这些实际问题 ：
  声明。当我使用 :=，var，make，甚至 new 声明 map 的时候，编译器帮我们做了什么事情，它们有什么区别？ 增删改查。使用 数组&#43;链表 的情况下如何设计才能避免 O(n) 的最差情况？ 注意事项。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？  还有一个常识是 Go map 的 遍历是随机的，即多次遍历输出的结果不同，这个的原因会在后面提到。
@@ -24,10 +29,9 @@
 为了降低 map 操作的时间复杂度，引入了一个 负载因子 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 实际上最好只存 多少比例的元素，而不是一直等到满载再处理，因为多到一定程度效率 可能 就低了。在 Go 语言里这个值被定义为 6.5，即每个桶里最多存 6.5 个，包括溢出桶。
 当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过 平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-01-22T23:35:20&#43;00:00" />
-<meta property="article:modified_time" content="2021-01-22T23:35:20&#43;00:00" />
-
+<meta property="og:url" content="https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/" />
+<meta property="article:published_time" content="2021-01-22T23:35:20+00:00" />
+<meta property="article:modified_time" content="2021-01-22T23:35:20+00:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="深入理解 Go map"/>
 <meta name="twitter:description" content="哈希表 几乎所有语言都有 哈希表 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度内增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的 ”大神“。
@@ -45,8 +49,8 @@
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>深入理解 Go map</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.b21595ccbc2181c24e6a019eb9b89ca67727675a14634f9cbdb25e7a4f556601.css">
-
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	
 </head>
 
 <body id="page">
@@ -65,8 +69,7 @@
 				</nav>
 			</div>
 			<div class="hdr-right hdr-icons">
-				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BDCnknrdqLBbt9stROpubm-0GJRriKSUrRQb6hZRUqBz37ar76Fr-BRVcobQLMoL13fQY-iiEuIZHnOsGLglnak' });</script></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
 			</div>
 		</div>
 	</header>
@@ -79,19 +82,14 @@
 	</div>
 
 
-<main class="site-main section-inner animated fadeIn faster">
-	<article class="thin">
-		<header class="post-header">
-			<div class="post-meta"><span>Jan 22, 2021</span></div>
-			<h1>深入理解 Go map</h1>
-		</header>
-		<div class="content">
-			<h2 id="哈希表">哈希表<a href="#哈希表" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h2>
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jan 22, 2021</span></div>
+				<h1>深入理解 Go map</h1>
+			</header>
+			<div class="content">
+				<h2 id="哈希表">哈希表<a href="#哈希表" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>几乎所有语言都有 <a href="https://en.wikipedia.org/wiki/Hash_table">哈希表</a> 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度内增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的 ”大神“。</p>
 <p>问题来源于实际，我们先看看这些实际问题 ：</p>
 <ul>
@@ -100,12 +98,7 @@
 <li><strong>注意事项</strong>。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？</li>
 </ul>
 <p>还有一个常识是 Go map 的 <strong>遍历是随机的</strong>，即多次遍历输出的结果不同，这个的原因会在后面提到。</p>
-<h3 id="设计方式数据结构">设计方式/数据结构<a href="#设计方式数据结构" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h3>
+<h3 id="设计方式数据结构">设计方式/数据结构<a href="#设计方式数据结构" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p>Go map 实现哈希表使用的是 <strong>数组+链表</strong> 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。</p>
 <p>为了降低 map 操作的时间复杂度，引入了一个 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L70">负载因子</a> 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 <strong>实际上最好只存</strong> 多少比例的元素，而不是一直等到满载再处理，因为多到一定程度效率 <strong>可能</strong> 就低了。在 Go 语言里这个值被定义为 6.5，即每个桶里最多存 6.5 个，包括溢出桶。</p>
 <p>当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L115">hmap</a> 的结构体，它定义在 <code>runtime/map.go</code> 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过 <strong>平均</strong> O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。</p>
@@ -137,19 +130,9 @@
 <span class="p">}</span>
 </code></pre></div><p>此外，动态运行时构造的 key 和 value 键值对并没有按照 key1/value1、key2/value2、&hellip;、keyN/valueN 的方式存储，而是如图形式，是为了避免因为字节对齐造成的内存浪费，也是因为 CPU 从内存中读取数据是每次读取固定大小的块（因为数据总线条数固定），这块内存也并不是连续的，这里不展开说了，总之，如果采用 key1/value1、key2/value2、&hellip;、keyN/valueN 的方式，如果 map 是 map[int64]int8 的时候，每个键值对就会由于内存不对齐造成 7 字节的内存浪费，其实也并不一定浪费，现在很多 CPU 也可以读取多块内存然后拼接组合成最终的数据，但是这样性能并不好。这一点在官方源代码里的 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/map.go#L148">bmap</a> 结构体注释中有说明。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg" alt=""></p>
-<h3 id="初始化">初始化<a href="#初始化" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h3>
+<h3 id="初始化">初始化<a href="#初始化" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p>Go 语言初始化 map 的方式有两种，字面量和运行时。</p>
-<h4 id="字面量-">字面量 &ldquo;:=&rdquo;<a href="#字面量-" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h4>
+<h4 id="字面量-">字面量 &ldquo;:=&rdquo;<a href="#字面量-" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">m</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="kt">string</span> <span class="p">{</span>
     <span class="mi">1</span><span class="p">:</span> <span class="s">&#34;go&#34;</span><span class="p">,</span>
     <span class="mi">2</span><span class="p">:</span> <span class="s">&#34;lang&#34;</span><span class="p">,</span>
@@ -181,12 +164,7 @@
         <span class="o">...</span>
     <span class="p">}</span>
 </code></pre></div><p>不管是哪种情况，最终都会通过 make 来创建哈希表数据结构并且通过 map[key] = value 的形式插入数据。</p>
-<h4 id="运行时-make">运行时 &ldquo;make&rdquo;<a href="#运行时-make" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h4>
+<h4 id="运行时-make">运行时 &ldquo;make&rdquo;<a href="#运行时-make" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
 <p>使用 make 创建 map 时有两种情况，一种是不给出大小，或者大小小于 8 的时候，会调用 <a href="https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L292">makemap_small</a> 来快速初始化一个 map：</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">makemap_small</span><span class="p">()</span> <span class="o">*</span><span class="nx">hmap</span> <span class="p">{</span>
 	<span class="nx">h</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">hmap</span><span class="p">)</span>
@@ -239,19 +217,9 @@
 </ul>
 <p>这里会有一个判断 <code>nextOverflow != nil</code> ，这里就涉及在什么情况下初始化时要提前分配溢出桶，Go 语言是这样解决的：如果 B 大于 4，那么就认为后续使用溢出桶的概率比较大，就会预先分配 <code>2^(B-4)</code> 个溢出桶。然后分配专门用来描述溢出桶的结构 <code>hmap.extra</code>，其中指向下一个溢出桶地址的  <code>nextOverflow </code> 字段就指向分配好的溢出桶首地址。</p>
 <p>正常桶和溢出桶的地址是连续的，只是被不同的字段引用而已，如果溢出桶不够用，会调用 <a href="runtime/newobject">runtime/newobject</a> 分配新的溢出桶。直到达到元素数量过多需要全量扩容或者重新哈希等量扩容，这个问题下文会详说。</p>
-<h3 id="读写操作">读写操作<a href="#读写操作" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h3>
+<h3 id="读写操作">读写操作<a href="#读写操作" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p>Go 内置数据类型 map 是并发不安全的，也就是说多个 goroutine 同时对 map 执行写入操作会导致程序发生 panic 中断。官方解释说这是因为大多数情况下 map 并不需要并发安全，如果为所有 map 都加上并发操作的特性会使得大多数场景性能下降，为此 Go 在 1.9 版本引入了一种并发安全的 map 类型 <a href="https://github.com/golang/go/blob/41d8e61a6b/src/sync/map.go#L27">sync/map</a> ，留给读者自行探索。</p>
-<h4 id="访问">访问<a href="#访问" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h4>
+<h4 id="访问">访问<a href="#访问" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
 <p>map 的访问有两种形式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">value</span> <span class="o">:=</span> <span class="nx">m</span><span class="p">[</span><span class="s">&#34;I&#39;m a Key&#34;</span><span class="p">]</span>
 </code></pre></div><p>Or</p>
@@ -304,111 +272,53 @@
 	<span class="p">}</span>
 	<span class="k">return</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">zeroVal</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="kc">false</span>
 </code></pre></div><p>还有一个函数 <a href="https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L511">mapaccessK</a> ，返回的是 map 的 key 和 value，用于 map 的 range 函数遍历，过程类似，不赘述了。</p>
-<h4 id="写入">写入<a href="#写入" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h4>
-<h4 id="删除">删除<a href="#删除" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h4>
-<h4 id="扩容">扩容<a href="#扩容" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h4>
-<h3 id="总结">总结<a href="#总结" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h3>
+<h4 id="写入">写入<a href="#写入" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
+<h4 id="删除">删除<a href="#删除" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
+<h4 id="扩容">扩容<a href="#扩容" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
+<h3 id="总结">总结<a href="#总结" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p>Go 语言的 map 使用了数组+链表实现的哈希表，引入了溢出桶的概念来减少桶的扩容，实现了平均 O(1) 的时间复杂度内访问元素，基本不会出现最坏的情况。经过哈希计算后，用低 B 位确定桶位置，高 8 位比对找到 tophash，再通过偏移找到 key/value，或者执行插入或者新增溢出桶等等逻辑。</p>
 <p>不管你使用字面量的方式还是 make 的方式声明 map，都是对应底层的 hmap 结构，获得了一个指向 hmap 的指针，并且 Go 语言针对不给出初始大小的 map 还进行了快速初始化的优化，针对 map 的大小过大（hmap.B 大于4），提前建立溢出桶的优化。</p>
 <p>Go 提供了两种方式访问 map 中的元素，可以获得两个返回值，第二个返回值可以忽略，这用于空键值对的判断，类似于数据库中的 NULL，不和任何值冲突。并且 map 的遍历访问是随机的，这是因为每次遍历时会通过 fastrand 生成一个随机数，随机选择一个桶，再随机选择桶中的一个元素，先遍历完该桶，再顺次遍历后续的桶。map 是可以并发访问的，因为这并不会有任何冲突发生。</p>
 
+			</div>
+			<div class="content"><br><img src="https://image.eddycjy.com/8c23cb407498f8446af59e43fb95ac62.png"></div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81">源码</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>710 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-01-23 07:35 &#43;0800</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Go 结构体与内存对齐</span>
+			</a>
+			<a class="prev-post" href="https://www.kcode.icu/posts/chore/blog_imgs/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>在线博客的图床解决方案</span>
+			</a>
 		</div>
-		<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.png"></div>
-		<hr class="post-end">
-		<footer class="post-info">
-			<p>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-tag meta-icon">
-					<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-					<line x1="7" y1="7" x2="7" y2="7"></line>
-				</svg><span class="tag"><a href="https://www.kcode.icu/%20tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/%20tags/%E6%BA%90%E7%A0%81">源码</a></span>
-			</p>
-			<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-file-text">
-					<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-					<polyline points="14 2 14 8 20 8"></polyline>
-					<line x1="16" y1="13" x2="8" y2="13"></line>
-					<line x1="16" y1="17" x2="8" y2="17"></line>
-					<polyline points="10 9 9 9 8 9"></polyline>
-				</svg>710 Words</p>
-			<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-calendar">
-					<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-					<line x1="16" y1="2" x2="16" y2="6"></line>
-					<line x1="8" y1="2" x2="8" y2="6"></line>
-					<line x1="3" y1="10" x2="21" y2="10"></line>
-				</svg>2021-01-22 23:35 &#43;0000</p>
-		</footer>
-	</article>
-	<div class="post-nav thin">
-		<a class="next-post" href="https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/">
-			<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-					viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-					stroke-linejoin="round" class="feather feather-arrow-left">
-					<line x1="19" y1="12" x2="5" y2="12"></line>
-					<polyline points="12 19 5 12 12 5"></polyline>
-				</svg>&nbsp;Newer</span><br><span>Go 结构体与内存对齐</span>
-		</a>
-		<a class="prev-post" href="https://www.kcode.icu/posts/chore/blog_imgs/">
-			<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24"
-					height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-					stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-					<line x1="5" y1="12" x2="19" y2="12"></line>
-					<polyline points="12 5 19 12 12 19"></polyline>
-				</svg></span><br><span>在线博客的图床解决方案</span>
-		</a>
-	</div>
-	<div id="comments" class="thin">
-		<script src="https://utteranc.es/client.js" 
-		repo="sh1luo/sh1luo" 
-		issue-term="pathname" 
-		theme="github-light"
-		crossorigin="anonymous" 
-		async>
-</script>
-	</div>
-	<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BDCnknrdqLBbt9stROpubm-0GJRriKSUrRQb6hZRUqBz37ar76Fr-BRVcobQLMoL13fQY-iiEuIZHnOsGLglnak' });</script>
+		<div id="comments" class="thin">
+						<script src="https://utteranc.es/client.js"
+							repo="eddycjy/blog"
+							issue-term="pathname"
+							theme="github-light"
+							crossorigin="anonymous"
+							async>
+			</script>
+		</div>
+	</main>
 
-</main>
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
 
-<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-	<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
-	<p>
-		Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a
-			href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/%20post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-				viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-				stroke-linejoin="round" class="feather feather-rss">
-				<path d="M4 11a9 9 0 0 1 9 9"></path>
-				<path d="M4 4a16 16 0 0 1 16 16"></path>
-				<circle cx="5" cy="19" r="1"></circle>
-			</svg></a>
-	</p>
-</footer>
 
-	<script src="https://www.kcode.icu/js/main.min.3b8561d63aeee77aa04e677df95581a230b4b43adf7b208b8d671433e446cfc1.js"></script>
+	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
 
 </body>
 

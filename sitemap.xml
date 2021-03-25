@@ -1,188 +1,315 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
   <url>
     <loc>https://www.kcode.icu/tags/go/</loc>
-    <lastmod>2021-03-14T13:35:20+00:00</lastmod>
-  </url><url>
+    <lastmod>2021-03-20T20:30:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2021-03-20T20:30:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/</loc>
+    <lastmod>2021-03-20T20:30:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/</loc>
+    <lastmod>2021-03-20T20:30:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/</loc>
+    <lastmod>2021-03-20T20:30:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81/</loc>
+    <lastmod>2021-03-20T20:30:20+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</loc>
     <lastmod>2021-03-14T13:35:20+00:00</lastmod>
-  </url><url>
-    <loc>https://www.kcode.icu/posts/</loc>
-    <lastmod>2021-03-14T13:35:20+00:00</lastmod>
-  </url><url>
-    <loc>https://www.kcode.icu/tags/</loc>
-    <lastmod>2021-03-14T13:35:20+00:00</lastmod>
-  </url><url>
-    <loc>https://www.kcode.icu/</loc>
-    <lastmod>2021-03-14T13:35:20+00:00</lastmod>
-  </url><url>
-    <loc>https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81/</loc>
-    <lastmod>2021-03-14T13:35:20+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</loc>
     <lastmod>2021-02-25T19:35:20+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/mysql/</loc>
     <lastmod>2021-02-24T15:15:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2021-02-24T15:15:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/</loc>
     <lastmod>2021-02-24T15:15:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</loc>
     <lastmod>2021-02-15T23:35:20+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/https/</loc>
     <lastmod>2021-01-27T15:57:50+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/https/</loc>
     <lastmod>2021-01-27T15:57:50+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E5%AE%89%E5%85%A8/</loc>
     <lastmod>2021-01-27T15:57:50+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</loc>
     <lastmod>2021-01-25T23:35:20+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</loc>
     <lastmod>2021-01-22T23:35:20+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E5%8D%9A%E5%AE%A2/</loc>
     <lastmod>2021-01-20T15:45:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/chore/blog_imgs/</loc>
     <lastmod>2021-01-20T15:45:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E6%9D%82%E8%B0%88/</loc>
     <lastmod>2021-01-20T15:45:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/go/</loc>
     <lastmod>2021-01-17T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/http/</loc>
     <lastmod>2021-01-15T23:10:22+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/http/</loc>
     <lastmod>2021-01-15T23:10:22+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/interview/somequestions/</loc>
     <lastmod>2021-01-15T21:10:55+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E9%9D%A2%E8%AF%95/</loc>
     <lastmod>2021-01-15T21:10:55+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/cdn/</loc>
     <lastmod>2021-01-06T21:13:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/chore/blog_journey/</loc>
     <lastmod>2021-01-06T21:13:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/interview/2020-12-interview/</loc>
     <lastmod>2021-01-03T21:18:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/rpc/</loc>
     <lastmod>2020-11-28T15:45:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/rpc/rpcg/</loc>
     <lastmod>2020-11-28T15:45:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E6%A1%86%E6%9E%B6/</loc>
     <lastmod>2020-11-28T15:45:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/rest/</loc>
     <lastmod>2020-11-10T21:30:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/rpc/rpcvshttp/</loc>
     <lastmod>2020-11-10T21:30:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/linux/</loc>
     <lastmod>2020-11-04T18:15:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/chore/linux_df_du/</loc>
     <lastmod>2020-11-04T18:15:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/ascii-unicode-utf/</loc>
     <lastmod>2020-09-18T09:27:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E5%AD%97%E7%AC%A6%E9%9B%86/</loc>
     <lastmod>2020-09-18T09:27:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/chore/staruml-3.2.x/</loc>
     <lastmod>2020-05-20T22:11:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/uml/</loc>
     <lastmod>2020-05-20T22:11:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E5%B7%A5%E5%85%B7/</loc>
     <lastmod>2020-05-20T22:11:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/chore/obs/</loc>
     <lastmod>2020-04-26T11:34:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E8%B8%A9%E5%9D%91/</loc>
     <lastmod>2020-04-26T11:34:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/chore/go&#43;qamel/</loc>
     <lastmod>2020-03-23T14:51:15+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/gui/</loc>
     <lastmod>2020-03-23T14:51:15+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/qml/</loc>
     <lastmod>2020-03-23T14:51:15+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E4%BC%98%E5%8C%96/</loc>
     <lastmod>2020-03-16T16:46:08+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</loc>
     <lastmod>2020-03-16T16:46:08+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E7%BF%BB%E8%AF%91/</loc>
     <lastmod>2020-03-16T16:46:08+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</loc>
     <lastmod>2020-03-13T13:22:23+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/websocket/</loc>
     <lastmod>2020-03-13T13:22:23+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</loc>
     <lastmod>2020-03-11T22:49:51+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E5%AE%98%E6%96%B9%E5%BA%93/</loc>
     <lastmod>2020-03-11T22:49:51+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8A/</loc>
     <lastmod>2020-03-05T15:45:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E5%8D%8F%E8%AE%AE/</loc>
     <lastmod>2020-03-05T15:45:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/%E6%8A%93%E5%8C%85/</loc>
     <lastmod>2020-03-05T15:45:13+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/translation/20191204-contribute-beyond-code-open-source-for-everyone/</loc>
     <lastmod>2020-02-14T21:21:55+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</loc>
     <lastmod>2020-02-14T21:20:33+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/translation/20191002-go-how-does-the-garbage-collector-watch-your-application/</loc>
     <lastmod>2020-01-01T20:43:19+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/posts/translation/20191202-go-how-are-random-numbers-generated/</loc>
     <lastmod>2019-12-29T21:14:55+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/summary/</loc>
     <lastmod>2019-12-16T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/chore/</loc>
     <lastmod>2019-12-16T00:00:00+00:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/about/</loc>
     <lastmod>2019-12-15T00:00:00+00:00</lastmod>
   </url>
+  
 </urlset>

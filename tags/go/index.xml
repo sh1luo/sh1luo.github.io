@@ -7,15 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 14 Mar 2021 13:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Mar 2021 20:30:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Go unsafe.Pointer、uintptr、Pointer之间的区别和联系</title>
+      <title>Go 函数调用栈帧汇编分析</title>
+      <link>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</link>
+      <pubDate>Sat, 20 Mar 2021 20:30:20 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</guid>
+      <description>123
+这是Go 函数调用栈帧汇编分析文章。。
+ 待更新
+ </description>
+    </item>
+    
+    <item>
+      <title>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</title>
       <link>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
       <pubDate>Sun, 14 Mar 2021 13:35:20 +0000</pubDate>
       
       <guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
       <description>前几天见到了一个问题：
-uintptr与unsafe.Pointer 有什么区别？ </description>
+uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
+type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
+fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&amp;hellip;），那你再看一段代码：
+//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要任何内存，因为他们共享底层数据空间。
+函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048B，是写死在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</description>
     </item>
     
     <item>
@@ -42,7 +58,7 @@ type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data
 [图片]
 字符串就是字符的数组，我们先来看个小程序的例子：
 package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 go tool compile -S main.go 使用自带工具包查看汇编代码，可以看到有这样一段信息：
-... go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=3 0x0000 61 62 63 abc ... 很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
+...go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=30x0000 61 62 63 abc...很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
     </item>
     
     <item>
@@ -128,18 +144,6 @@ Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时�
 因此，内存消耗由大约 800 MB 降低到了仅 180 MB。
 第二，为了更好的理解我们的流程以及弄清楚我们应该在哪花费时间和资源，我们开始去进行分析。
 分析不同的服务和程序语言可能看起来很复杂并且令人望而生畏，但是对于 Go 来说它实际上十分容易，仅仅几个命令就能够描述清楚。Go 有一个专门的工具叫“pprof”，它通过监听一个路由（默认端口6060）能够应用在你的 app 上，并且使用 Go 的包来管理 HTTP 连接：</description>
-    </item>
-    
-    <item>
-      <title>Go&#43;QML开发的跨平台桌面直播助手[下]</title>
-      <link>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</link>
-      <pubDate>Fri, 13 Mar 2020 13:22:23 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</guid>
-      <description>Go + QML 结合上节的分析，开发的思路的大致流程我画了个图，大概是这样：
- 因为是需要面向用户的，又考虑到 Go 语言的特殊性（可以直接调用 C/C++ 代码，GUI 官方不支持），最后决定使用 Qml 来呈现前端，与 Go 语言利用插槽和信号进行通信。
- 处理思路是创建一个协程池来处理不同类型的包数据。判断每个包内所有子包类型，将接收的未处理的字节数组直接送入对应协程池中的管道。因为代码也比较简单，就是简单的 WebSocket 通信。
-// 客户端实例 type Client struct { RoomID uint32	// 房间 ID 	Online uint32	// 用来判断人气是否变动 	Conn *websocket.Conn	// 连接后的对象 	IsConnected bool } // 使用了&amp;#34;github.com/gorilla/websocket&amp;#34;这个包，也可以自己升级 tcp 到 websocket u := url.URL{Scheme: &amp;#34;wss&amp;#34;, Host: DanMuServer, Path: &amp;#34;/sub&amp;#34;,} conn, _, err := websocket.DefaultDialer.Dial(u.String(), nil) if err != nil { return nil, err } // 发送包函数 func SendPackage(conn *websocket.</description>
     </item>
     
   </channel>

@@ -15,10 +15,15 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 证书 不管什么版本的 SSL/TLS，只使用对称加密和非对称加密也是不够的，因为无法解决 中间人攻击，都需要配合证书来完成整个验证过程。所以在说明各个阶段的 HTTPS 之前有必要介绍一下证书的几个概念。
 证书的作用有两个：
  确保通信目标的身份。 确认你的身份。  其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：
-加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。"><meta itemprop="datePublished" content="2021-01-27T15:57:50&#43;00:00" />
-<meta itemprop="dateModified" content="2021-01-27T15:57:50&#43;00:00" />
+加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。">
+<meta itemprop="datePublished" content="2021-01-27T15:57:50+00:00" />
+<meta itemprop="dateModified" content="2021-01-27T15:57:50+00:00" />
 <meta itemprop="wordCount" content="457">
-<meta itemprop="keywords" content="HTTPS,安全," /><meta property="og:title" content="https为什么安全" />
+
+
+
+<meta itemprop="keywords" content="HTTPS,安全," />
+<meta property="og:title" content="https为什么安全" />
 <meta property="og:description" content="截图均使用了 Wireshark 工具进行抓包分析。
  HTTPS 并不是一种新的协议，而是 HTTP over SSL/TLS，也就是使用了 SSL/TLS 加密的 HTTP，解决了 HTTP 不安全的问题。SSL（Secure Sockets Layer） 是 TLS（Transport Layer Security） 的前身，它们都处在 OSI 七层模型中的会话层。SSL 经历了三个版本的变迁，后来升级为了 TLS，TLS 主要有 1.0、1.1、1.2 和 1.3，现在大部分正在从 1.1 到 1.2 的迁移，部分使用 1.3，我们可以使用 Wireshark 过滤一下进行简单查看。
 需要注意的是，应用了 HTTPS 后通信效率会变低，毕竟需要进行额外的握手，加解密步骤。
@@ -28,10 +33,9 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
  确保通信目标的身份。 确认你的身份。  其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：
 加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/https/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-01-27T15:57:50&#43;00:00" />
-<meta property="article:modified_time" content="2021-01-27T15:57:50&#43;00:00" />
-
+<meta property="og:url" content="https://www.kcode.icu/posts/https/" />
+<meta property="article:published_time" content="2021-01-27T15:57:50+00:00" />
+<meta property="article:modified_time" content="2021-01-27T15:57:50+00:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="https为什么安全"/>
 <meta name="twitter:description" content="截图均使用了 Wireshark 工具进行抓包分析。
@@ -51,8 +55,8 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>https为什么安全</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.b21595ccbc2181c24e6a019eb9b89ca67727675a14634f9cbdb25e7a4f556601.css">
-
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	
 </head>
 
 <body id="page">
@@ -71,8 +75,7 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 				</nav>
 			</div>
 			<div class="hdr-right hdr-icons">
-				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BDCnknrdqLBbt9stROpubm-0GJRriKSUrRQb6hZRUqBz37ar76Fr-BRVcobQLMoL13fQY-iiEuIZHnOsGLglnak' });</script></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
 			</div>
 		</div>
 	</header>
@@ -85,26 +88,21 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 	</div>
 
 
-<main class="site-main section-inner animated fadeIn faster">
-	<article class="thin">
-		<header class="post-header">
-			<div class="post-meta"><span>Jan 27, 2021</span></div>
-			<h1>https为什么安全</h1>
-		</header>
-		<div class="content">
-			<blockquote>
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jan 27, 2021</span></div>
+				<h1>https为什么安全</h1>
+			</header>
+			<div class="content">
+				<blockquote>
 <p>截图均使用了 <a href="https://www.wireshark.org/">Wireshark</a> 工具进行抓包分析。</p>
 </blockquote>
 <p>HTTPS  并不是一种新的协议，而是 <code>HTTP over SSL/TLS</code>，也就是使用了 SSL/TLS 加密的 HTTP，解决了 HTTP 不安全的问题。SSL（Secure Sockets Layer） 是 TLS（Transport Layer Security） 的前身，它们都处在 OSI 七层模型中的会话层。SSL 经历了三个版本的变迁，后来升级为了 TLS，TLS 主要有 1.0、1.1、1.2 和 1.3，现在大部分正在从 1.1 到 1.2 的迁移，部分使用 1.3，我们可以使用 Wireshark 过滤一下进行简单查看。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/640.png" alt="Wireshark截图"></p>
 <p>需要注意的是，应用了 HTTPS 后通信效率会变低，毕竟需要进行额外的握手，加解密步骤。</p>
 <p>SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加密的密钥用于后续加密通信。主要可以分为两种方式，RSA 和 ECDH。RSA 方式也在 TLS/1.3 中正式被废除。下面我们分别来看。</p>
-<h2 id="证书">证书<a href="#证书" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h2>
+<h2 id="证书">证书<a href="#证书" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>不管什么版本的 SSL/TLS，只使用对称加密和非对称加密也是不够的，因为无法解决 <strong>中间人攻击</strong>，都需要配合证书来完成整个验证过程。所以在说明各个阶段的 HTTPS 之前有必要介绍一下证书的几个概念。</p>
 <p>证书的作用有两个：</p>
 <ul>
@@ -113,12 +111,7 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 </ul>
 <p>其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/ca.png" alt="ca"></p>
-<h3 id="加密与签名">加密与签名<a href="#加密与签名" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h3>
+<h3 id="加密与签名">加密与签名<a href="#加密与签名" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p>这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 <strong>加密</strong> 和 <strong>签名</strong> ，很多人容易搞混。不过需要记住不变的是 <strong>私钥永远需要保密</strong>，不能公布。</p>
 <ul>
 <li>前者是使用公钥加密，私钥解密。将公钥发布出去，只有自己才能获得加密信息，用于 <strong>保护信息</strong>。</li>
@@ -126,12 +119,7 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 </ul>
 <p>加密很好理解，签名可以这样理解：私钥加密的签名其他人无法伪造（其他人没有私钥），而你将经过私钥加密的信息和未加密明文还有公钥一起交付，对方就可以用公钥去解密（公钥是公开的），然后比对，如果一致了就说明信息没有被篡改，否则已经被改过了，抛弃。</p>
 <p>整个过程可以参考上图，证书验证的过程就是使用了加密和签名两种手段。</p>
-<h3 id="信任链">信任链<a href="#信任链" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h3>
+<h3 id="信任链">信任链<a href="#信任链" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p>在你申请到 CA 的证书并部署，在客户端请求时返回后，客户端的验证过程是有信任链验证的。你可以随便打开一个部署了 HTTPS 的站点，点击锁图标查看证书路径。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210129114612091.png" alt=""></p>
 <p>可以看到你的证书是处于最下级，也就是三级证书，这个证书是由上一级证书机构 Secure Site CA G2 签发的，由于它不是根证书，无法认为它可靠，所以要再向上级寻找直到根证书。然后使用根证书公钥验证二级证书，依次向下，直到目标服务器的证书。</p>
@@ -143,12 +131,7 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 <p>好了，你现在应该大致明白了证书的验证过程，再来一张图看总结一下。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/640%20(1).png" alt="640 (1)"></p>
 <p>至此，我们已经利用证书机制确保了通信双方的身份，解决了不安全的问题之一。</p>
-<h2 id="tls12ecdhe">TLS1.2/ECDHE<a href="#tls12ecdhe" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h2>
+<h2 id="tls12ecdhe">TLS1.2/ECDHE<a href="#tls12ecdhe" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>先来看一下最常见的 ECDHE 方式握手步骤图：</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/tls-hs-ecdhe.png" alt="tls-hs-ecdhe"></p>
 <p>TLS/1.2 的共需要 4 次握手，花费两个 RTT（Round-Trip Time，RTT），如果加上 TCP 握手就是一共 7 次握手，再加上 HTTP 的一次报文交换，一共需要 4.5 个 RTT。</p>
@@ -224,21 +207,11 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 </ul>
 </li>
 </ul>
-<h2 id="传统rsa">传统RSA<a href="#传统rsa" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h2>
+<h2 id="传统rsa">传统RSA<a href="#传统rsa" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>之所以说是传统 RSA，是因为使用了 RSA 公钥加密预主密钥（Pre-Master Key）。流程和 ECDH 的方式差不多，少了服务端的 <strong>Server Key Exchange</strong> 消息。这种方式的缺点是因为不具备 <strong>前向保密性</strong>，也就是说如果黑客一直收集你的加密信息，如果在未来某一个你的私钥泄露或者被计算出来了，你以前所有的加密信息都会被破解。</p>
 <p>这也是为什么 ECDHE 算法最终在 TLS1.3 被保留，它在加密过程中使用临时产生的随机数作为椭圆曲线的参数来生成主密钥，这样就算私钥泄露，由于拿不到当时的随机密钥，也是没用的。主要流程如下：</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/rsa.png" alt="rsa"></p>
-<h2 id="tls13">TLS1.3<a href="#tls13" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h2>
+<h2 id="tls13">TLS1.3<a href="#tls13" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>TLS1.3 为了解决向下兼容的问题，不能直接修改协议报文里的协议版本字段，这样会引起识别错误，导致 TLS 握手失败。所以就通过扩展字段来解决兼容问题：</p>
 <pre><code>Handshake Protocol: Client Hello
     Version: TLS 1.2 (0x0303)
@@ -246,12 +219,7 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
         Supported Version: TLS 1.3 (0x0304)
         Supported Version: TLS 1.2 (0x0303)
 </code></pre><p>主要优化有两个方面。</p>
-<h3 id="增强安全">增强安全<a href="#增强安全" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h3>
+<h3 id="增强安全">增强安全<a href="#增强安全" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p>TLS/1.3 精简了许多选项：</p>
 <ul>
 <li>只保留 AES、ChaCha20 对称加密算法</li>
@@ -266,12 +234,7 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 </blockquote>
 <p>加密套件只剩下 5 种了，看看之前的十几个套件。。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/new_suit.jpg" alt="new_suit"></p>
-<h3 id="优化性能">优化性能<a href="#优化性能" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h3>
+<h3 id="优化性能">优化性能<a href="#优化性能" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p>客户端第一次握手：</p>
 <pre><code>Handshake Protocol: Client Hello
     Version: TLS 1.2 (0x0303)
@@ -307,93 +270,50 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 <p>客户端第一次握手就发送自己这边的椭圆曲线参数，服务端也回复自己的参数。然后就可以生成主密钥了。</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/tls13.png" alt="tls13"></p>
 <p>TLS1.3 还多了一个 Vertificate Verify，也就是服务端用自己的私钥把以前的椭圆曲线参数等信息签名，确保消息没有被篡改。</p>
-<h2 id="总结">总结<a href="#总结" class="anchor"
-					aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-						<line x1="8" y1="12" x2="16" y2="12"></line>
-					</svg></a></h2>
+<h2 id="总结">总结<a href="#总结" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>说了这么多，我们回到最初的问题，https 为什么安全，我想可以大致总结如下：</p>
 <p>整体上通过引入第三方 CA 和证书机制验证双方身份，加密确保消息不会被窃听，签名确保消息不会被篡改解决了 HTTP 三大不安全问题。</p>
 <p>如果你从 HTTP -&gt; 传统RSA -&gt; TLS1.2 -&gt; TLS1.3 一路看过来就会发现，技术的变化也是需要时间的，有许多设计并不是一开始就完美无缺，<strong>方案总是需要实践的检验才能被人们认可</strong>。</p>
 
+			</div>
+			<div class="content"><br><img src="https://image.eddycjy.com/8c23cb407498f8446af59e43fb95ac62.png"></div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/https">HTTPS</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E5%AE%89%E5%85%A8">安全</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>457 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-01-27 23:57 &#43;0800</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>深入理解 Go string与slice</span>
+			</a>
+			<a class="prev-post" href="https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Go 结构体与内存对齐</span>
+			</a>
 		</div>
-		<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.png"></div>
-		<hr class="post-end">
-		<footer class="post-info">
-			<p>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-tag meta-icon">
-					<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-					<line x1="7" y1="7" x2="7" y2="7"></line>
-				</svg><span class="tag"><a href="https://www.kcode.icu/%20tags/https">HTTPS</a></span><span class="tag"><a href="https://www.kcode.icu/%20tags/%E5%AE%89%E5%85%A8">安全</a></span>
-			</p>
-			<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-file-text">
-					<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-					<polyline points="14 2 14 8 20 8"></polyline>
-					<line x1="16" y1="13" x2="8" y2="13"></line>
-					<line x1="16" y1="17" x2="8" y2="17"></line>
-					<polyline points="10 9 9 9 8 9"></polyline>
-				</svg>457 Words</p>
-			<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-					stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-					class="feather feather-calendar">
-					<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-					<line x1="16" y1="2" x2="16" y2="6"></line>
-					<line x1="8" y1="2" x2="8" y2="6"></line>
-					<line x1="3" y1="10" x2="21" y2="10"></line>
-				</svg>2021-01-27 15:57 &#43;0000</p>
-		</footer>
-	</article>
-	<div class="post-nav thin">
-		<a class="next-post" href="https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/">
-			<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-					viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-					stroke-linejoin="round" class="feather feather-arrow-left">
-					<line x1="19" y1="12" x2="5" y2="12"></line>
-					<polyline points="12 19 5 12 12 5"></polyline>
-				</svg>&nbsp;Newer</span><br><span>深入理解 Go string与slice</span>
-		</a>
-		<a class="prev-post" href="https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/">
-			<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24"
-					height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-					stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-					<line x1="5" y1="12" x2="19" y2="12"></line>
-					<polyline points="12 5 19 12 12 19"></polyline>
-				</svg></span><br><span>Go 结构体与内存对齐</span>
-		</a>
-	</div>
-	<div id="comments" class="thin">
-		<script src="https://utteranc.es/client.js" 
-		repo="sh1luo/sh1luo" 
-		issue-term="pathname" 
-		theme="github-light"
-		crossorigin="anonymous" 
-		async>
-</script>
-	</div>
-	<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BDCnknrdqLBbt9stROpubm-0GJRriKSUrRQb6hZRUqBz37ar76Fr-BRVcobQLMoL13fQY-iiEuIZHnOsGLglnak' });</script>
+		<div id="comments" class="thin">
+						<script src="https://utteranc.es/client.js"
+							repo="eddycjy/blog"
+							issue-term="pathname"
+							theme="github-light"
+							crossorigin="anonymous"
+							async>
+			</script>
+		</div>
+	</main>
 
-</main>
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
 
-<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-	<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
-	<p>
-		Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a
-			href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/%20post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-				viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-				stroke-linejoin="round" class="feather feather-rss">
-				<path d="M4 11a9 9 0 0 1 9 9"></path>
-				<path d="M4 4a16 16 0 0 1 16 16"></path>
-				<circle cx="5" cy="19" r="1"></circle>
-			</svg></a>
-	</p>
-</footer>
 
-	<script src="https://www.kcode.icu/js/main.min.3b8561d63aeee77aa04e677df95581a230b4b43adf7b208b8d671433e446cfc1.js"></script>
+	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
 
 </body>
 
