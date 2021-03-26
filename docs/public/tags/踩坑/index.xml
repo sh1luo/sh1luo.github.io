@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>踩坑 on wasabi</title>
+    <link>https://www.kcode.icu/tags/%E8%B8%A9%E5%9D%91/</link>
+    <description>Recent content in 踩坑 on wasabi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 26 Apr 2020 11:34:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E8%B8%A9%E5%9D%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OBS显示器捕获黑屏解决方案</title>
+      <link>https://www.kcode.icu/posts/chore/obs/</link>
+      <pubDate>Sun, 26 Apr 2020 11:34:13 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/chore/obs/</guid>
+      <description>问题起因 由于我最近重新安装了系统，在重新下载 OBS 后发现捕获不到桌面。我之前解决方法就是直接在显卡控制面板里将 OBS 设置为集显就行了。但是这次设置了也不行，有可能是我下载的显卡驱动版本不对。。于是就找到了这个终极解决方案，基本电脑上有这个功能的都能解决。
+问题环境 操作系统：Win10 64位 专业版 - 1909
+CPU 集成显卡型号：Inter(R) UHD Graphics 630
+独立显卡型号：NVIDIA GeForce GTX 1050
+OBS 版本：25.0.4(64 bit)
+ 注：配置和我不一样也有可能解决，不用纠结
+ 问题描述 在来源中添加显示器捕获后 ，是黑屏，无法捕获到显示器。
+问题分析 目前网上能搜集到的解决方案大部分是以下几种：
+ 右键 OBS 属性 - 兼容性 - 兼容模式 - 以兼容模式运行这个程序（win7）设置 - 以管理员方式运行 桌面上右键打开 NVIDIA 控制面板，管理 3D 设置 - 程序设置，找到 OBS，设置为集成图形。  但是我都试了都解决不了，我就去搜了一下问题的原因，最终发现 OBS 只能捕捉到和自己跟自己使用相同显卡的应用，然后我右键打开任务管理器，发现笔记本桌面使用的是我的集显。所以就需要把 OBS 设置为应用集显。
+解决方法 左下角开始按钮 - 设置 - 系统 - 显示 - 图形设置 - 经典应用里浏览添加 OBS ，点击选项，设置为节能，节能就是使用集显。然后你再打开 OBS&amp;hellip;&amp;hellip;</description>
+    </item>
+    
+  </channel>
+</rss>
