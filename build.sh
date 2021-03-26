@@ -1,1 +1,3 @@
-hugo && echo www.kcode.icu >> CNAME
+hugo && 
+echo www.kcode.icu >> ./public/CNAME &&
+mv public docs
