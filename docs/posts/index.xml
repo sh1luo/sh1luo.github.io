@@ -89,7 +89,7 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
 </code></pre></div><p>这 “一类型，三函数” 所提供的能力就是直接无视这个限制，直接进行地址运算，下面详细介绍这些能力。</p>
 <h3 id="pointer">Pointer</h3>
 <p><code>Pointer</code> 类型提供了 <code>uintptr</code> 与类型指针之间的转换中介，通过 Pointer 类型，这三者之间可以任意转换。</p>
-<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/pointer_uintptr.svg" alt="pointer_uintptr"></p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/unsafe_uintptr_p.svg" alt=""></p>
 <p>不过需要遵循几个固定的规则。</p>
 <h3 id="alignof">Alignof</h3>
 <h3 id="sizeof">Sizeof</h3>
@@ -421,8 +421,9 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 			<pubDate>Mon, 25 Jan 2021 23:35:20 +0000</pubDate>
 			
 			<guid>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</guid>
-			<description></description>
-			<content type="html"><![CDATA[]]></content>
+			<description>123</description>
+			<content type="html"><![CDATA[<p>123</p>
+]]></content>
 		</item>
 		
 		<item>

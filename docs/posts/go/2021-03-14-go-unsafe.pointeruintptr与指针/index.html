@@ -139,7 +139,7 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
 </code></pre></div><p>这 “一类型，三函数” 所提供的能力就是直接无视这个限制，直接进行地址运算，下面详细介绍这些能力。</p>
 <h3 id="pointer">Pointer<a href="#pointer" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p><code>Pointer</code> 类型提供了 <code>uintptr</code> 与类型指针之间的转换中介，通过 Pointer 类型，这三者之间可以任意转换。</p>
-<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/pointer_uintptr.svg" alt="pointer_uintptr"></p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/unsafe_uintptr_p.svg" alt=""></p>
 <p>不过需要遵循几个固定的规则。</p>
 <h3 id="alignof">Alignof<a href="#alignof" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <h3 id="sizeof">Sizeof<a href="#sizeof" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
