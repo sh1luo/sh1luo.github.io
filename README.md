@@ -1,14 +1,10 @@
-# 失落的迷之博客
-
-这是我的项目地址：<https://github.com/sh1luo>
-
 ## 在线阅读
 
 - <https://kcode.icu/>
 
 ## 我的公众号
 
-暂不推广
+![](https://github.com/sh1luo/sh1luo.github.io/blob/master/qrcode_for_gh.jpg?raw=true)
 
 ## ？
 
