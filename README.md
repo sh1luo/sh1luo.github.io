@@ -4,7 +4,7 @@
 
 ## 我的公众号
 
-![](https://github.com/sh1luo/sh1luo.github.io/blob/master/qrcode_for_gh.jpg?raw=true)
+![](https://gitee.com/sh1luo/imgs/raw/master/imgs/qrcode_for_gh_8b9d3fa3063c_344%20(1).jpg)
 
 ## ？
 
