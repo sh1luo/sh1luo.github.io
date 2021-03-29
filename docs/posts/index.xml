@@ -88,10 +88,22 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
 <span class="p">.</span><span class="err">\</span><span class="nx">notify</span><span class="p">.</span><span class="k">go</span><span class="p">:</span><span class="mi">17</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span> <span class="nx">invalid</span> <span class="nx">operation</span><span class="p">:</span> <span class="nx">pa</span><span class="o">++</span> <span class="p">(</span><span class="nx">non</span><span class="o">-</span><span class="nx">numeric</span> <span class="kd">type</span> <span class="o">*</span><span class="kt">int</span><span class="p">)</span>
 </code></pre></div><p>这 “一类型，三函数” 所提供的能力就是直接无视这个限制，直接进行地址运算，下面详细介绍这些能力。</p>
 <h3 id="pointer">Pointer</h3>
-<p><code>Pointer</code> 类型提供了 <code>uintptr</code> 与类型指针之间的转换中介，通过 Pointer 类型，这三者之间可以任意转换。</p>
+<p><code>Pointer</code> 类型提供了 <code>uintptr</code> 与类型指针之间的转换中介，要想将任意指针类型 *p 转为 uintptr 来进行指针运算，需要先转换为 <code>Pointer</code> 类型，再转换为 <code>uintptr</code> 类型。</p>
 <p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/unsafe_uintptr_p.svg" alt=""></p>
-<p>不过需要遵循几个固定的规则。</p>
-<h3 id="alignof">Alignof</h3>
+<h4 id="类型介绍">类型介绍</h4>
+<p>unsafe.Pointer 类型的定义非常简单，就是一个任意类型的指针表示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">ArbitraryType</span> <span class="kt">int</span>
+<span class="kd">type</span> <span class="nx">Pointer</span> <span class="o">*</span><span class="nx">ArbitraryType</span>
+</code></pre></div><p>自定义了一个命名类型 <code>ArbitraryType</code>，这个类型并没有什么实际含义，只是表示任意类型，在代码文档中使用。正如字面意思，<code>Pointer</code> 的含义就是 “任意类型的指针”。</p>
+<h4 id="使用规则">使用规则</h4>
+<p>除了上图描述的这个类型间转换规则外，还需要遵循几个固定的规则。</p>
+<h5 id="uintptr变量无法保持对变量的引用">uintptr变量无法保持对变量的引用</h5>
+<p>你不能这么做：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">i</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">1</span>
+<span class="nx">up</span> <span class="o">:=</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">i</span><span class="p">))</span>
+<span class="c1">// after some time...
+</span><span class="c1"></span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="c1">// maybe panic!
+</span></code></pre></div><h3 id="alignof">Alignof</h3>
 <h3 id="sizeof">Sizeof</h3>
 <h3 id="offsetof">Offsetof</h3>
 ]]></content>
