@@ -103,7 +103,8 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
 <span class="nx">up</span> <span class="o">:=</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">i</span><span class="p">))</span>
 <span class="c1">// after some time...
 </span><span class="c1"></span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="c1">// maybe panic!
-</span></code></pre></div><h3 id="alignof">Alignof</h3>
+</span></code></pre></div><p>uintptr</p>
+<h3 id="alignof">Alignof</h3>
 <h3 id="sizeof">Sizeof</h3>
 <h3 id="offsetof">Offsetof</h3>
 ]]></content>
