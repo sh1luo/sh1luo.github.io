@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
-<meta itemprop="name" content="深入理解 Go string与slice">
+<meta itemprop="name" content="深入理解 Go string 与 slice">
 <meta itemprop="description" content="123
 数据结构 我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 reflect/value.go 中，分别对应着 StringHeader 和 SliceHeader 。
 type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data uintptr Len int Cap int } 定义非常简单，Data 表示底层数据的地址，Len 表示长度，Cap 表示容量。容量评估了当前切片最多能容纳多少字节元素，而长度表示当前已经存储多少个字节了，切片只是对底层数据的引用：
@@ -22,7 +22,7 @@ package main func main() { s := &#34;abc&#34; println(s) } 我们执行 go tool 
 
 
 <meta itemprop="keywords" content="Go,源码," />
-<meta property="og:title" content="深入理解 Go string与slice" />
+<meta property="og:title" content="深入理解 Go string 与 slice" />
 <meta property="og:description" content="123
 数据结构 我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 reflect/value.go 中，分别对应着 StringHeader 和 SliceHeader 。
 type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data uintptr Len int Cap int } 定义非常简单，Data 表示底层数据的地址，Len 表示长度，Cap 表示容量。容量评估了当前切片最多能容纳多少字节元素，而长度表示当前已经存储多少个字节了，切片只是对底层数据的引用：
@@ -35,7 +35,7 @@ package main func main() { s := &#34;abc&#34; println(s) } 我们执行 go tool 
 <meta property="article:published_time" content="2021-02-15T23:35:20+00:00" />
 <meta property="article:modified_time" content="2021-02-15T23:35:20+00:00" />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="深入理解 Go string与slice"/>
+<meta name="twitter:title" content="深入理解 Go string 与 slice"/>
 <meta name="twitter:description" content="123
 数据结构 我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 reflect/value.go 中，分别对应着 StringHeader 和 SliceHeader 。
 type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data uintptr Len int Cap int } 定义非常简单，Data 表示底层数据的地址，Len 表示长度，Cap 表示容量。容量评估了当前切片最多能容纳多少字节元素，而长度表示当前已经存储多少个字节了，切片只是对底层数据的引用：
@@ -51,7 +51,7 @@ package main func main() { s := &#34;abc&#34; println(s) } 我们执行 go tool 
 	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
 	<link rel="shortcut icon" href="/favicon.ico">
 
-	<title>深入理解 Go string与slice</title>
+	<title>深入理解 Go string 与 slice</title>
 	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
 	
 </head>
@@ -89,7 +89,7 @@ package main func main() { s := &#34;abc&#34; println(s) } 我们执行 go tool 
 		<article class="thin">
 			<header class="post-header">
 				<div class="post-meta"><span>Feb 15, 2021</span></div>
-				<h1>深入理解 Go string与slice</h1>
+				<h1>深入理解 Go string 与 slice</h1>
 			</header>
 			<div class="content">
 				<p>123</p>

@@ -47,7 +47,7 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
     </item>
     
     <item>
-      <title>深入理解 Go string与slice</title>
+      <title>深入理解 Go string 与 slice</title>
       <link>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</link>
       <pubDate>Mon, 15 Feb 2021 23:35:20 +0000</pubDate>
       

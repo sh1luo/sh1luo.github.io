@@ -100,7 +100,7 @@ ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and c
     </item>
     
     <item>
-      <title>深入理解 Go string与slice</title>
+      <title>深入理解 Go string 与 slice</title>
       <link>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</link>
       <pubDate>Mon, 15 Feb 2021 23:35:20 +0000</pubDate>
       

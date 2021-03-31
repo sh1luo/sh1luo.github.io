@@ -16,7 +16,7 @@
 当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过 平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。">
 <meta itemprop="datePublished" content="2021-01-22T23:35:20+00:00" />
 <meta itemprop="dateModified" content="2021-01-22T23:35:20+00:00" />
-<meta itemprop="wordCount" content="716">
+<meta itemprop="wordCount" content="1145">
 
 
 
@@ -273,8 +273,135 @@
 	<span class="k">return</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">zeroVal</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="kc">false</span>
 </code></pre></div><p>还有一个函数 <a href="https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L511">mapaccessK</a> ，返回的是 map 的 key 和 value，用于 map 的 range 函数遍历，过程类似，不赘述了。</p>
 <h4 id="写入">写入<a href="#写入" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-<p>map 的写入操作对应底层 <a href="https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L571">runtime/map.go.mapassign</a> 函数。</p>
-<h4 id="删除">删除<a href="#删除" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
+<p>map 的写入操作对应底层 <a href="https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L571">runtime/map.go.mapassign</a> 函数。这个函数的签名如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">mapassign</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">maptype</span><span class="p">,</span> <span class="nx">h</span> <span class="o">*</span><span class="nx">hmap</span><span class="p">,</span> <span class="nx">key</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span>
+</code></pre></div><p>签名中并没有看到写入 key 所对应的 value 值表达式，唯一相关的返回值是一个指向任意类型的指针类型，可能有人就迷惑了，map 写入是依靠这个函数，我都没传 value 怎么写入呢？</p>
+<p>答案是写入操作并没有写在标准库源码中，而是在汇编代码中。</p>
+<pre><code class="language-assembly" data-lang="assembly">...
+0x008e 00142 (notify.go:5)      CALL    runtime.mapassign_fast64(SB)
+0x0093 00147 (notify.go:5)      MOVQ    24(SP), AX
+0x0098 00152 (notify.go:5)      MOVQ    $666, (AX)
+...
+</code></pre><blockquote>
+<p>学习 Go 底层原理时，时常要借助汇编代码一起分析，Go 官方也为我们提供了完整的工具包，其中 <code>go tool compile -S</code> 就十分有用，上面这些信息就是通过这个工具得到的。</p>
+</blockquote>
+<p><code>mapassign_fast64</code> 是针对不同类型的 key 做出的编译时优化，为了增加效率。</p>
+<p>下面看一下这个函数的源码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">mapassign</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">maptype</span><span class="p">,</span> <span class="nx">h</span> <span class="o">*</span><span class="nx">hmap</span><span class="p">,</span> <span class="nx">key</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="p">{</span>
+    <span class="c1">// 向空map中写入会panic，比如仅仅通过
+</span><span class="c1"></span>    <span class="c1">// var mp map[int]int
+</span><span class="c1"></span>    <span class="c1">// mp[1] = 2 // panic!
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">h</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nb">panic</span><span class="p">(</span><span class="nf">plainError</span><span class="p">(</span><span class="s">&#34;assignment to entry in nil map&#34;</span><span class="p">))</span>
+	<span class="p">}</span>
+	<span class="o">...</span>
+    <span class="c1">// 写map时会把flags标志位写位置1，写入时如果检测到已经置1，
+</span><span class="c1"></span>    <span class="c1">// 说明并发写入，语言不支持，会panic
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">h</span><span class="p">.</span><span class="nx">flags</span><span class="o">&amp;</span><span class="nx">hashWriting</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nf">throw</span><span class="p">(</span><span class="s">&#34;concurrent map writes&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">hash</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">hasher</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">hash0</span><span class="p">))</span>
+
+    <span class="c1">// 这个要在t.hasher之后，因为hasher调用可能panic，导致写入失败，没必要把写入位置1
+</span><span class="c1"></span>	<span class="nx">h</span><span class="p">.</span><span class="nx">flags</span> <span class="p">^=</span> <span class="nx">hashWriting</span>
+
+    <span class="c1">// 如果还没有桶就new一个
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">h</span><span class="p">.</span><span class="nx">buckets</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">h</span><span class="p">.</span><span class="nx">buckets</span> <span class="p">=</span> <span class="nf">newobject</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">bucket</span><span class="p">)</span> <span class="c1">// newarray(t.bucket, 1)
+</span><span class="c1"></span>	<span class="p">}</span>
+
+<span class="nx">again</span><span class="p">:</span>
+	<span class="nx">bucket</span> <span class="o">:=</span> <span class="nx">hash</span> <span class="o">&amp;</span> <span class="nf">bucketMask</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span>	<span class="c1">// 与低B位确定在哪个桶
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">h</span><span class="p">.</span><span class="nf">growing</span><span class="p">()</span> <span class="p">{</span>	<span class="c1">// 这个函数只有一行代码，h.oldbuckets != nil，判断是否迁移完毕
+</span><span class="c1"></span>		<span class="nf">growWork</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">bucket</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">b</span> <span class="o">:=</span> <span class="p">(</span><span class="o">*</span><span class="nx">bmap</span><span class="p">)(</span><span class="nf">add</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">buckets</span><span class="p">,</span> <span class="nx">bucket</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">bucketsize</span><span class="p">)))</span><span class="c1">// 用首地址+桶编号*单个桶大小定位到目标桶的地址
+</span><span class="c1"></span>	<span class="nx">top</span> <span class="o">:=</span> <span class="nf">tophash</span><span class="p">(</span><span class="nx">hash</span><span class="p">)</span> <span class="c1">// 计算tophash哈希值，用于找到key value
+</span><span class="c1"></span>
+    <span class="c1">// 完成了上面的各种判断，才会进行下面双重循环的判断，按照所有桶，每个桶里的8个位，按顺序遍历
+</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">inserti</span> <span class="o">*</span><span class="kt">uint8</span>
+	<span class="kd">var</span> <span class="nx">insertk</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span>
+	<span class="kd">var</span> <span class="nx">elem</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span>
+<span class="nx">bucketloop</span><span class="p">:</span>
+	<span class="k">for</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="nb">uintptr</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">bucketCnt</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="nx">b</span><span class="p">.</span><span class="nx">tophash</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">!=</span> <span class="nx">top</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="nf">isEmpty</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">tophash</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">inserti</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+					<span class="nx">inserti</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">b</span><span class="p">.</span><span class="nx">tophash</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+					<span class="nx">insertk</span> <span class="p">=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">b</span><span class="p">),</span> <span class="nx">dataOffset</span><span class="o">+</span><span class="nx">i</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">keysize</span><span class="p">))</span>
+					<span class="nx">elem</span> <span class="p">=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">b</span><span class="p">),</span> <span class="nx">dataOffset</span><span class="o">+</span><span class="nx">bucketCnt</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">keysize</span><span class="p">)</span><span class="o">+</span><span class="nx">i</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">elemsize</span><span class="p">))</span>
+				<span class="p">}</span>
+				<span class="k">if</span> <span class="nx">b</span><span class="p">.</span><span class="nx">tophash</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">==</span> <span class="nx">emptyRest</span> <span class="p">{</span>
+					<span class="k">break</span> <span class="nx">bucketloop</span>
+				<span class="p">}</span>
+				<span class="k">continue</span>
+			<span class="p">}</span>
+			<span class="nx">k</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">b</span><span class="p">),</span> <span class="nx">dataOffset</span><span class="o">+</span><span class="nx">i</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">keysize</span><span class="p">))</span>
+			<span class="k">if</span> <span class="nx">t</span><span class="p">.</span><span class="nf">indirectkey</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">k</span> <span class="p">=</span> <span class="o">*</span><span class="p">((</span><span class="o">*</span><span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)(</span><span class="nx">k</span><span class="p">))</span>
+			<span class="p">}</span>
+			<span class="k">if</span> <span class="p">!</span><span class="nx">t</span><span class="p">.</span><span class="nx">key</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">k</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">continue</span>
+			<span class="p">}</span>
+			<span class="c1">// already have a mapping for key. Update it.
+</span><span class="c1"></span>			<span class="k">if</span> <span class="nx">t</span><span class="p">.</span><span class="nf">needkeyupdate</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nf">typedmemmove</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
+			<span class="p">}</span>
+			<span class="nx">elem</span> <span class="p">=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">b</span><span class="p">),</span> <span class="nx">dataOffset</span><span class="o">+</span><span class="nx">bucketCnt</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">keysize</span><span class="p">)</span><span class="o">+</span><span class="nx">i</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">elemsize</span><span class="p">))</span>
+			<span class="k">goto</span> <span class="nx">done</span>
+		<span class="p">}</span>
+		<span class="nx">ovf</span> <span class="o">:=</span> <span class="nx">b</span><span class="p">.</span><span class="nf">overflow</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">ovf</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">break</span>
+		<span class="p">}</span>
+		<span class="nx">b</span> <span class="p">=</span> <span class="nx">ovf</span>
+	<span class="p">}</span>
+
+	<span class="c1">// Did not find mapping for key. Allocate new cell &amp; add entry.
+</span><span class="c1"></span>
+	<span class="c1">// If we hit the max load factor or we have too many overflow buckets,
+</span><span class="c1"></span>	<span class="c1">// and we&#39;re not already in the middle of growing, start growing.
+</span><span class="c1"></span>	<span class="k">if</span> <span class="p">!</span><span class="nx">h</span><span class="p">.</span><span class="nf">growing</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nf">overLoadFactor</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">count</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nx">h</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="o">||</span> <span class="nf">tooManyOverflowBuckets</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">noverflow</span><span class="p">,</span> <span class="nx">h</span><span class="p">.</span><span class="nx">B</span><span class="p">))</span> <span class="p">{</span>
+		<span class="nf">hashGrow</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">h</span><span class="p">)</span>
+		<span class="k">goto</span> <span class="nx">again</span> <span class="c1">// Growing the table invalidates everything, so try again
+</span><span class="c1"></span>	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="nx">inserti</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="c1">// The current bucket and all the overflow buckets connected to it are full, allocate a new one.
+</span><span class="c1"></span>		<span class="nx">newb</span> <span class="o">:=</span> <span class="nx">h</span><span class="p">.</span><span class="nf">newoverflow</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+		<span class="nx">inserti</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">newb</span><span class="p">.</span><span class="nx">tophash</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="nx">insertk</span> <span class="p">=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">newb</span><span class="p">),</span> <span class="nx">dataOffset</span><span class="p">)</span>
+		<span class="nx">elem</span> <span class="p">=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">insertk</span><span class="p">,</span> <span class="nx">bucketCnt</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">keysize</span><span class="p">))</span>
+	<span class="p">}</span>
+
+	<span class="c1">// store new key/elem at insert position
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">t</span><span class="p">.</span><span class="nf">indirectkey</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">kmem</span> <span class="o">:=</span> <span class="nf">newobject</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span>
+		<span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)(</span><span class="nx">insertk</span><span class="p">)</span> <span class="p">=</span> <span class="nx">kmem</span>
+		<span class="nx">insertk</span> <span class="p">=</span> <span class="nx">kmem</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="nx">t</span><span class="p">.</span><span class="nf">indirectelem</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">vmem</span> <span class="o">:=</span> <span class="nf">newobject</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">elem</span><span class="p">)</span>
+		<span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)(</span><span class="nx">elem</span><span class="p">)</span> <span class="p">=</span> <span class="nx">vmem</span>
+	<span class="p">}</span>
+	<span class="nf">typedmemmove</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="nx">insertk</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
+	<span class="o">*</span><span class="nx">inserti</span> <span class="p">=</span> <span class="nx">top</span>
+	<span class="nx">h</span><span class="p">.</span><span class="nx">count</span><span class="o">++</span>
+
+<span class="nx">done</span><span class="p">:</span>
+	<span class="k">if</span> <span class="nx">h</span><span class="p">.</span><span class="nx">flags</span><span class="o">&amp;</span><span class="nx">hashWriting</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nf">throw</span><span class="p">(</span><span class="s">&#34;concurrent map writes&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">h</span><span class="p">.</span><span class="nx">flags</span> <span class="o">&amp;^=</span> <span class="nx">hashWriting</span>
+	<span class="k">if</span> <span class="nx">t</span><span class="p">.</span><span class="nf">indirectelem</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">elem</span> <span class="p">=</span> <span class="o">*</span><span class="p">((</span><span class="o">*</span><span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)(</span><span class="nx">elem</span><span class="p">))</span>
+	<span class="p">}</span>
+    
+    <span class="c1">// 返回elem地址，由汇编代码负责执行真正的写入操作
+</span><span class="c1"></span>	<span class="k">return</span> <span class="nx">elem</span>
+<span class="p">}</span>
+</code></pre></div><h4 id="删除">删除<a href="#删除" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
+<p>删除对应的底层函数是 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/runtime/map.go#L685">runtime/map.go.mapdelete</a> ，处理的思路非常相似，也是先判断各种情况，最后进行双重循环定位目标 cell，不再赘述了。</p>
 <h4 id="扩容">扩容<a href="#扩容" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
 <h3 id="总结">总结<a href="#总结" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p>Go 语言的 map 使用了数组+链表实现的哈希表，引入了溢出桶的概念来减少桶的扩容，实现了平均 O(1) 的时间复杂度内访问元素，基本不会出现最坏的情况。经过哈希计算后，用低 B 位确定桶位置，高 8 位比对找到 tophash，再通过偏移找到 key/value，或者执行插入或者新增溢出桶等等逻辑。</p>
@@ -288,7 +415,7 @@
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81">源码</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>716 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1145 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-01-23 07:35 &#43;0800</p>
 			</footer>
 		</article>

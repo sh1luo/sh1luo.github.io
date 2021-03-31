@@ -1,5 +1,5 @@
 ---
-title: "深入理解 Go string与slice"
+title: "深入理解 Go string 与 slice"
 date: 2021-02-15 23:35:20
 tags:
   - Go

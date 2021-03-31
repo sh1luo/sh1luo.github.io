@@ -55,15 +55,65 @@ tags:
 
 ![](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118184423991.png)
 
-## Actions自动化构建
+## 自动化构建
 
+自动化构建意思是说你只需要完成博客内容部分，其他生成静态页面，打包，发布部署等功能都交给一套脚本去完成。这里介绍我曾经体验过的几种。
 
+### Github Actions
+
+这是 Github 提供的功能较为全面的自动化部署解决方案，使用方法有两种，一是在 `.git` 文件的同级目录下创建一个 `.github/workflow` 目录，然后新建 `gh-pages.yaml` 文件，另一个是在 Web端登录进入你 `yourname.github.io` 仓库， `Code` 栏右侧的 `Action` ，点进去图形化创建并编辑文件即可，这里展示我的 action 脚本：
+
+```yaml
+name: Deploy Hugo
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: latest
+          extended: true
+      - name: Build
+        run: hugo && echo www.kcode.icu > ./public/CNAME
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.personal_token }} # personal_token 这里新建一个 https://github.com/settings/tokens
+          PUBLISH_BRANCH: gh-pages # 推送到当前 gh-pages 分支
+          PUBLISH_DIR: ./public # hugo 生成到 public 作为跟目录
+          commit_message: ${{ github.event.head_commit.message }}
+```
+
+也比较好理解，就是执行 `hugo` 命令然后创建一个 CNAME 文件用于自动设置一个自定义域名，然后推到 `gh-pages` 分支。
+
+这种方案的优点是自定义程度高，缺点相对就是需要自己全权控制写一个控制脚本，有一定学习成本。
+
+这是我的自动化构建执行结果：
+
+![image-20210331160251498](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331160251498.png)
+
+### Gitee Page
+
+Gitee 提供了常见的几个博客框架的自动化部署功能，Hugo，Hexo 和 Jekyll。也就是说，只要你根目录下有对应框架的 `yaml` 配置文件，在你每次将最新内容推至仓库时就会自动执行自动化构建，并把最新页面推到前端页面上，比较省心。
+
+优点是国内速度比 Github 快，毕竟服务器近，缺点是每次推完还要手动点更新，自动的一年 99RMB。
+
+![image-20210331155953211](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331155953211.png)
 
 ## 说在最后
 
 这里说几点我个人看法。
 
-- 博客要注重内容，我看好多人把界面弄的 **过于花哨** 不注重内在，我觉得如果你内容很丰富的情况下可以适当美化，但是弄个 BGM 或者动态换图什么的还是不要了。
+- 博客要**注重内容**，我看好多人把界面弄的 **过于花哨** 不注重实际内容，我觉得如果你内容很丰富的情况下可以适当美化，但是弄个 BGM 或者动态换图什么的还是不要了。
 - 多踩坑不一定是坏事，在大学这个试错成本很低的环境里就要多尝试，在踩坑的过程中把基础打牢，锻炼问题定位能力，多思考，多总结，日积月累肯定有所提升。
 - 写博客给别人看的同时要多去看别人的成果，尤其是大佬们的，进步很快。
-- 
+- 最后一点也是最重要的，不要主要依靠别人的博客学习，大部分博客不系统，甚至有的博主不理解就生搬硬套，很容易给新人带来误解。努力学习一手资料，官方文档、书籍都是不错的选择，其次才是较为系统阐述的博客、零散的博客。
