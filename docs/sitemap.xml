@@ -3,27 +3,37 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.kcode.icu/posts/</loc>
+    <lastmod>2021-03-30T17:20:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/</loc>
+    <lastmod>2021-03-30T17:20:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/</loc>
+    <lastmod>2021-03-30T17:20:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/interview/2021-3-nowcoder/</loc>
+    <lastmod>2021-03-30T17:20:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/%E9%9D%A2%E7%BB%8F/</loc>
+    <lastmod>2021-03-30T17:20:20+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/go/</loc>
     <lastmod>2021-03-20T20:30:20+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2021-03-20T20:30:20+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/posts/</loc>
-    <lastmod>2021-03-20T20:30:20+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/tags/</loc>
-    <lastmod>2021-03-20T20:30:20+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/</loc>
     <lastmod>2021-03-20T20:30:20+00:00</lastmod>
   </url>
   
