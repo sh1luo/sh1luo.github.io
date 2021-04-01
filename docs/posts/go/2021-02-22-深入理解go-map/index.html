@@ -16,7 +16,7 @@
 当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过 平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。">
 <meta itemprop="datePublished" content="2021-01-22T23:35:20+00:00" />
 <meta itemprop="dateModified" content="2021-01-22T23:35:20+00:00" />
-<meta itemprop="wordCount" content="1145">
+<meta itemprop="wordCount" content="1146">
 
 
 
@@ -403,6 +403,7 @@
 </code></pre></div><h4 id="删除">删除<a href="#删除" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
 <p>删除对应的底层函数是 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/runtime/map.go#L685">runtime/map.go.mapdelete</a> ，处理的思路非常相似，也是先判断各种情况，最后进行双重循环定位目标 cell，不再赘述了。</p>
 <h4 id="扩容">扩容<a href="#扩容" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
+<p>扩容过程较为复杂</p>
 <h3 id="总结">总结<a href="#总结" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <p>Go 语言的 map 使用了数组+链表实现的哈希表，引入了溢出桶的概念来减少桶的扩容，实现了平均 O(1) 的时间复杂度内访问元素，基本不会出现最坏的情况。经过哈希计算后，用低 B 位确定桶位置，高 8 位比对找到 tophash，再通过偏移找到 key/value，或者执行插入或者新增溢出桶等等逻辑。</p>
 <p>不管你使用字面量的方式还是 make 的方式声明 map，都是对应底层的 hmap 结构，获得了一个指向 hmap 的指针，并且 Go 语言针对不给出初始大小的 map 还进行了快速初始化的优化，针对 map 的大小过大（hmap.B 大于4），提前建立溢出桶的优化。</p>
@@ -415,7 +416,7 @@
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81">源码</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1145 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1146 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-01-23 07:35 &#43;0800</p>
 			</footer>
 		</article>
