@@ -582,13 +582,75 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 		</item>
 		
 		<item>
-			<title>Go 结构体与内存对齐</title>
-			<link>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</link>
+			<title>深入理解 Go defer 版本差异与底层特性</title>
+			<link>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</link>
 			<pubDate>Mon, 25 Jan 2021 23:35:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</guid>
-			<description>123</description>
-			<content type="html"><![CDATA[<p>123</p>
+			<guid>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</guid>
+			<description>defer 简介 defer 的作用是使某个/某些执行延时执行，常用在资源使用后的释放等场景，例如：
+func DbInit() (sql.DB, error) { db, err := sql.Open() if err != nil { return nil, err } defer db.Close() ... } defer 有一些熟知的特性：
+ “先进后出”，也就是说如果使用了多个 defer，最先使用 的 defer 后的函数体 最后执行。 一定会执行，即 panic 后依然有效。 执行体参数在注册 defer 时确定。 &amp;hellip;  我们先来看看为什么。
+结构定义 先来看看标准库中 runtime/runtime2.defer 的定义。
+type _defer struct { siz int32	// 函数参数和返回值的大小 	started bool heap bool	// 是否分配在堆上  openDefer bool	// 是否经过开放编码的优化 	sp uintptr // defer函数体的栈顶指针 	pc uintptr // 下一条指令地址 	fn *funcval // 执行函数地址，如果是开放编码可以为空 	_panic *_panic // 与之相关的panic链表 	link *_defer	// defer链表  .</description>
+			<content type="html"><![CDATA[<h2 id="defer-简介">defer 简介</h2>
+<p>defer 的作用是使某个/某些执行延时执行，常用在资源使用后的释放等场景，例如：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">DbInit</span><span class="p">()</span> <span class="p">(</span><span class="nx">sql</span><span class="p">.</span><span class="nx">DB</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">db</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sql</span><span class="p">.</span><span class="nf">Open</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+    <span class="p">}</span>
+    <span class="k">defer</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</code></pre></div><p>defer 有一些熟知的特性：</p>
+<ul>
+<li>“先进后出”，也就是说如果使用了多个 defer，<strong>最先使用</strong> 的 defer 后的函数体 <strong>最后执行</strong>。</li>
+<li>一定会执行，即 panic 后依然有效。</li>
+<li>执行体参数在注册 defer 时确定。</li>
+<li>&hellip;</li>
+</ul>
+<p>我们先来看看为什么。</p>
+<h3 id="结构定义">结构定义</h3>
+<p>先来看看标准库中 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/runtime2.go#L907">runtime/runtime2.defer</a> 的定义。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">_defer</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">siz</span>     <span class="kt">int32</span>	<span class="c1">// 函数参数和返回值的大小
+</span><span class="c1"></span>	<span class="nx">started</span> <span class="kt">bool</span>
+	<span class="nx">heap</span>    <span class="kt">bool</span>	<span class="c1">// 是否分配在堆上
+</span><span class="c1"></span>
+	<span class="nx">openDefer</span> <span class="kt">bool</span>	<span class="c1">// 是否经过开放编码的优化
+</span><span class="c1"></span>	<span class="nx">sp</span>        <span class="kt">uintptr</span>  <span class="c1">// defer函数体的栈顶指针
+</span><span class="c1"></span>	<span class="nx">pc</span>        <span class="kt">uintptr</span>  <span class="c1">// 下一条指令地址
+</span><span class="c1"></span>	<span class="nx">fn</span>        <span class="o">*</span><span class="nx">funcval</span> <span class="c1">// 执行函数地址，如果是开放编码可以为空
+</span><span class="c1"></span>	<span class="nx">_panic</span>    <span class="o">*</span><span class="nx">_panic</span>  <span class="c1">// 与之相关的panic链表
+</span><span class="c1"></span>	<span class="nx">link</span>      <span class="o">*</span><span class="nx">_defer</span>	<span class="c1">// defer链表
+</span><span class="c1"></span>
+	<span class="o">...</span>
+<span class="p">}</span>
+</code></pre></div><p>除堆分配和开放编码相关字段之外，其余字段很容易理解。这两个特性是在 1.13 与 1.14 引入的，重点解决 defer 性能问题，放在下文。还有一些字段是关于 gc 的，理解较为复杂，暂不讨论。</p>
+<p>除此之外，有两个字段比较重要，<code>link</code> 与 <code>_panic</code>。前者将注册的许多 defer 串成链表，在执行的时候按预先定义的顺序访问，先恢复执行体函数所需的栈信息等操作，跳转到函数地址处执行；后者将 defer 与 panic 进行关联，确保发生 panic 后按序执行所有注册过的 defer 函数。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">state</span><span class="p">)</span> <span class="nf">stmt</span><span class="p">(</span><span class="nx">n</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="k">switch</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Op</span> <span class="p">{</span>
+        <span class="o">...</span>
+        <span class="k">case</span> <span class="nx">ODEFER</span><span class="p">:</span>
+			<span class="o">...</span>
+			<span class="k">if</span> <span class="nx">s</span><span class="p">.</span><span class="nx">hasOpenDefers</span> <span class="p">{</span>
+				<span class="nx">s</span><span class="p">.</span><span class="nf">openDeferRecord</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">Left</span><span class="p">)</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nx">d</span> <span class="o">:=</span> <span class="nx">callDefer</span>
+				<span class="k">if</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Esc</span> <span class="o">==</span> <span class="nx">EscNever</span> <span class="p">{</span>
+					<span class="nx">d</span> <span class="p">=</span> <span class="nx">callDeferStack</span>
+				<span class="p">}</span>
+				<span class="nx">s</span><span class="p">.</span><span class="nf">callResult</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">Left</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span>
+			<span class="p">}</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+
+</code></pre></div><h3 id="现象背后的原因">现象背后的原因</h3>
+<h2 id="版本差异">版本差异</h2>
+<h2 id="总结">总结</h2>
 ]]></content>
 		</item>
 		
