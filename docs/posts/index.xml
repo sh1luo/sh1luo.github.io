@@ -628,6 +628,7 @@ type _defer struct { siz int32	// 函数参数和返回值的大小 	started boo
 <span class="p">}</span>
 </code></pre></div><p>除堆分配和开放编码相关字段之外，其余字段很容易理解。这两个特性是在 1.13 与 1.14 引入的，重点解决 defer 性能问题，放在下文。还有一些字段是关于 gc 的，理解较为复杂，暂不讨论。</p>
 <p>除此之外，有两个字段比较重要，<code>link</code> 与 <code>_panic</code>。前者将注册的许多 defer 串成链表，在执行的时候按预先定义的顺序访问，先恢复执行体函数所需的栈信息等操作，跳转到函数地址处执行；后者将 defer 与 panic 进行关联，确保发生 panic 后按序执行所有注册过的 defer 函数。</p>
+<p>编译阶段会把 defer 关键字分为三种状态，分别是开放编码，栈分配，堆分配。</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">state</span><span class="p">)</span> <span class="nf">stmt</span><span class="p">(</span><span class="nx">n</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="p">{</span>
     <span class="o">...</span>
     <span class="k">switch</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Op</span> <span class="p">{</span>
@@ -635,12 +636,12 @@ type _defer struct { siz int32	// 函数参数和返回值的大小 	started boo
         <span class="k">case</span> <span class="nx">ODEFER</span><span class="p">:</span>
 			<span class="o">...</span>
 			<span class="k">if</span> <span class="nx">s</span><span class="p">.</span><span class="nx">hasOpenDefers</span> <span class="p">{</span>
-				<span class="nx">s</span><span class="p">.</span><span class="nf">openDeferRecord</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">Left</span><span class="p">)</span>
-			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-				<span class="nx">d</span> <span class="o">:=</span> <span class="nx">callDefer</span>
-				<span class="k">if</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Esc</span> <span class="o">==</span> <span class="nx">EscNever</span> <span class="p">{</span>
-					<span class="nx">d</span> <span class="p">=</span> <span class="nx">callDeferStack</span>
-				<span class="p">}</span>
+				<span class="nx">s</span><span class="p">.</span><span class="nf">openDeferRecord</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">Left</span><span class="p">)</span>	<span class="c1">// 开放编码
+</span><span class="c1"></span>			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nx">d</span> <span class="o">:=</span> <span class="nx">callDefer</span>	<span class="c1">// 堆分配
+</span><span class="c1"></span>				<span class="k">if</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Esc</span> <span class="o">==</span> <span class="nx">EscNever</span> <span class="p">{</span>
+					<span class="nx">d</span> <span class="p">=</span> <span class="nx">callDeferStack</span>	<span class="c1">// 栈分配
+</span><span class="c1"></span>				<span class="p">}</span>
 				<span class="nx">s</span><span class="p">.</span><span class="nf">callResult</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">Left</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span>
 			<span class="p">}</span>
         <span class="o">...</span>
@@ -648,7 +649,9 @@ type _defer struct { siz int32	// 函数参数和返回值的大小 	started boo
     <span class="o">...</span>
 <span class="p">}</span>
 
-</code></pre></div><h3 id="现象背后的原因">现象背后的原因</h3>
+</code></pre></div><p>早起的 Go （1.13 之前）会把 defer 所需内存全部分配在堆上，性能较差，在 1.13 时通过调用分析可选择分配在栈上以增加性能，提升了大约 30%，1.14 又增加了开放编码方式，使 defer 的调用损耗可以忽略不计（&lt;10ms）。</p>
+<h3 id="现象背后的原因">现象背后的原因</h3>
+<p>先讨论表象背后的底层原理。</p>
 <h2 id="版本差异">版本差异</h2>
 <h2 id="总结">总结</h2>
 ]]></content>
