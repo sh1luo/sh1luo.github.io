@@ -386,7 +386,7 @@ go.string.&quot;abc&quot; SRODATA dupok size=3
 		</item>
 		
 		<item>
-			<title>https为什么安全</title>
+			<title>https 为什么安全</title>
 			<link>https://www.kcode.icu/posts/https/</link>
 			<pubDate>Wed, 27 Jan 2021 15:57:50 +0000</pubDate>
 			
@@ -651,7 +651,7 @@ type _defer struct { siz int32	// 函数参数和返回值的大小 	started boo
 
 </code></pre></div><p>早起的 Go （1.13 之前）会把 defer 所需内存全部分配在堆上，性能较差，在 1.13 时通过调用分析可选择分配在栈上以增加性能，提升了大约 30%，1.14 又增加了开放编码方式，使 defer 的调用损耗可以忽略不计（&lt;10ms）。</p>
 <h3 id="现象背后的原因">现象背后的原因</h3>
-<p>先讨论表象背后的底层原理。</p>
+<p>先讨论表象背后的底层原理，即</p>
 <h2 id="版本差异">版本差异</h2>
 <h2 id="总结">总结</h2>
 ]]></content>
@@ -1113,7 +1113,7 @@ Connection: keep-alive在这之前这个字段的默认是 close，长连接的
 		</item>
 		
 		<item>
-			<title>一些常见Go语言及面试问题的整理</title>
+			<title>一些常见 Go 语言及面试问题的整理</title>
 			<link>https://www.kcode.icu/posts/interview/somequestions/</link>
 			<pubDate>Fri, 15 Jan 2021 21:10:55 +0000</pubDate>
 			
