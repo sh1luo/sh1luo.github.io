@@ -7,19 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 20 Mar 2021 20:30:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/go/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Go 使用的 plan9 汇编初探、与 Inter 常见汇编差异与函数调用栈帧汇编分析</title>
-      <link>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</link>
-      <pubDate>Sat, 20 Mar 2021 20:30:20 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</guid>
-      <description>123
-这是Go 函数调用栈帧汇编分析文章。。
- 待更新
- </description>
-    </item>
-    
+    <lastBuildDate>Sun, 14 Mar 2021 13:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</title>
       <link>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
@@ -148,6 +136,18 @@ Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时�
 因此，内存消耗由大约 800 MB 降低到了仅 180 MB。
 第二，为了更好的理解我们的流程以及弄清楚我们应该在哪花费时间和资源，我们开始去进行分析。
 分析不同的服务和程序语言可能看起来很复杂并且令人望而生畏，但是对于 Go 来说它实际上十分容易，仅仅几个命令就能够描述清楚。Go 有一个专门的工具叫“pprof”，它通过监听一个路由（默认端口6060）能够应用在你的 app 上，并且使用 Go 的包来管理 HTTP 连接：</description>
+    </item>
+    
+    <item>
+      <title>Go&#43;QML开发的跨平台桌面直播助手[下]</title>
+      <link>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</link>
+      <pubDate>Fri, 13 Mar 2020 13:22:23 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</guid>
+      <description>Go + QML 结合上节的分析，开发的思路的大致流程我画了个图，大概是这样：
+ 因为是需要面向用户的，又考虑到 Go 语言的特殊性（可以直接调用 C/C++ 代码，GUI 官方不支持），最后决定使用 Qml 来呈现前端，与 Go 语言利用插槽和信号进行通信。
+ 处理思路是创建一个协程池来处理不同类型的包数据。判断每个包内所有子包类型，将接收的未处理的字节数组直接送入对应协程池中的管道。因为代码也比较简单，就是简单的 WebSocket 通信。
+// 客户端实例 type Client struct { RoomID uint32	// 房间 ID 	Online uint32	// 用来判断人气是否变动 	Conn *websocket.Conn	// 连接后的对象 	IsConnected bool } // 使用了&amp;#34;github.com/gorilla/websocket&amp;#34;这个包，也可以自己升级 tcp 到 websocket u := url.URL{Scheme: &amp;#34;wss&amp;#34;, Host: DanMuServer, Path: &amp;#34;/sub&amp;#34;,} conn, _, err := websocket.DefaultDialer.Dial(u.String(), nil) if err != nil { return nil, err } // 发送包函数 func SendPackage(conn *websocket.</description>
     </item>
     
   </channel>
