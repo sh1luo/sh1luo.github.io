@@ -6,8 +6,51 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-hans</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Tue, 30 Mar 2021 17:20:20 +0000</lastBuildDate>
+		<lastBuildDate>Sun, 04 Apr 2021 20:30:20 +0000</lastBuildDate>
 		<atom:link href="https://www.kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Go 使用的 plan9 汇编初探、与传统汇编差异与函数调用栈帧汇编分析</title>
+			<link>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</link>
+			<pubDate>Sun, 04 Apr 2021 20:30:20 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</guid>
+			<description>了解plan9汇编 plan9 汇编不同于 intel 家族的汇编，开发者是 unix 操作系统的同一批作者，bell 实验室所开发的，go语言最初的三个开发者之一 ken 正是其中之一，其实 plan9 是一个操作系统，只是我们主要关注它的汇编。
+go 语言早在 1.5 版本就实现了自举，即使用 go 语言去写 go语言。go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 intel 家族汇编，它与 intel 系汇编有几个不同点：
+ 没有push，pop等栈操作，栈的增缩是通过对sp栈顶寄存器的加减实现的，例如 +8（sp） 操作数的大小不是通过区分操作数来实现的，而是通过限制操作码的后缀后缀，例如复制ax寄存器低1字节到第二子节，在intel x86汇编中是通过 mov ah, al，而在 plan9 中则是通过 movb al, ah  b w d q分别代表1 2 4 8byte，含义是byte，word，doubledouble word，quatury。   操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条 。。。  我们学习plan9汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可
+但是为什么plan9不与intel系兼容呢，大概是unix团队也不屑于商业化
+从一个简单的程序出发 package main func add(x, y int) (sum int) { z := x + y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main。go 查看plan9汇编代码：</description>
+			<content type="html"><![CDATA[<h2 id="了解plan9汇编">了解plan9汇编</h2>
+<p>plan9 汇编不同于 intel 家族的汇编，开发者是 unix 操作系统的同一批作者，bell 实验室所开发的，go语言最初的三个开发者之一 ken 正是其中之一，其实 plan9 是一个操作系统，只是我们主要关注它的汇编。</p>
+<p>go 语言早在 1.5 版本就实现了自举，即使用 go 语言去写 go语言。go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 intel 家族汇编，它与 intel 系汇编有几个不同点：</p>
+<ul>
+<li>没有push，pop等栈操作，栈的增缩是通过对sp栈顶寄存器的加减实现的，例如 +8（sp）</li>
+<li>操作数的大小不是通过区分操作数来实现的，而是通过限制操作码的后缀后缀，例如复制ax寄存器低1字节到第二子节，在intel x86汇编中是通过 <code>mov ah, al</code>，而在 plan9 中则是通过 <code>movb al, ah</code>
+<ul>
+<li>b w d q分别代表1 2 4 8byte，含义是byte，word，doubledouble word，quatury。</li>
+</ul>
+</li>
+<li>操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条</li>
+<li>。。。</li>
+</ul>
+<p>我们学习plan9汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可</p>
+<p>但是为什么plan9不与intel系兼容呢，大概是unix团队也不屑于商业化</p>
+<h2 id="从一个简单的程序出发">从一个简单的程序出发</h2>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">sum</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">z</span> <span class="o">:=</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span>
+  <span class="k">return</span> <span class="nx">z</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">c</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><p>在命令行中执行 <code>go tool compile -s main。go</code> 查看plan9汇编代码：</p>
+<pre><code class="language-masm" data-lang="masm">mov eax
+</code></pre><p>我们只关注 main 函数调用 add 函数的过程：</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>大三实习求职之旅</title>
@@ -137,7 +180,7 @@ go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来�
 			
 			<guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
 			<description>前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
+uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
 fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&amp;hellip;），那你再看一段代码：
 //go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
@@ -274,7 +317,7 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
 			<guid>https://www.kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/</guid>
 			<description>秉承着 “软件均使用最新版本，学习均从文档入手” 的理念，学习使用 MySQL 我也是在使用最新的大版本 MySQL 8，而在技术发展过程中，一个不可忽视的因素就是兼容性，在保证新特性无误的同时必须确保以前的功能不受影响，如果不能保证这一点，那么许多使用者在迁移的时候就需要考虑很多改动成本，除非不是大改动，一般都会考虑到这一点，比如 HTTP/2 、TLS/1.3 等等。
 错误描述及分析 最近为学校写一个选课平台时关系型数据库使用的是 MySQL 8+，使用 Group by 时报了这个错误：
-ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column &#39;mydb.t.address&#39; which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by意思是说 select 列表中包含了非聚合列，其并不函数依赖于 Group by 子句中的列。并且和 sql_mode 这个配置项的 only_full_group_by 值冲突。不过这篇文章并不只是单纯说解决方法，如果想要解决方法请直接移步文末。
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column &#39;mydb.t.address&#39; which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by 意思是说 select 列表中包含了非聚合列，其并不函数依赖于 Group by 子句中的列。并且和 sql_mode 这个配置项的 only_full_group_by 值冲突。不过这篇文章并不只是单纯说解决方法，如果想要解决方法请直接移步文末。
 可以确定的是同样的使用了 Group by 的 SQL 查询语句在低版本中是正常的但是高版本却不行，猜测可能是版本差异造成的，而且还是因为这个配置项导致的。
 所以虽然我们一开始可能看不懂这个报错信息，但是我们通过一些分析已经定位了问题，并且报错的错误码明显（ERROR 1055(42000)），报错提示信息清楚，并不难找到解决方法。</description>
 			<content type="html"><![CDATA[<p>秉承着 “软件均使用最新版本，学习均从文档入手” 的理念，学习使用 MySQL 我也是在使用最新的大版本 MySQL 8，而在技术发展过程中，一个不可忽视的因素就是兼容性，在保证新特性无误的同时必须确保以前的功能不受影响，如果不能保证这一点，那么许多使用者在迁移的时候就需要考虑很多改动成本，除非不是大改动，一般都会考虑到这一点，比如 HTTP/2 、TLS/1.3 等等。</p>
@@ -335,7 +378,7 @@ type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data
 [图片]
 字符串就是字符的数组，我们先来看个小程序的例子：
 package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 go tool compile -S main.go 使用自带工具包查看汇编代码，可以看到有这样一段信息：
-...go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=30x0000 61 62 63 abc...很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
+... go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=3 0x0000 61 62 63 abc ... 很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
 			<content type="html"><![CDATA[<p>123</p>
 <h2 id="数据结构">数据结构</h2>
 <p>我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 <code>reflect/value.go</code> 中，分别对应着 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/reflect/value.go#L1983">StringHeader</a> 和 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/reflect/value.go#L1994">SliceHeader</a> 。</p>
@@ -963,13 +1006,35 @@ type _defer struct { siz int32	// 函数参数和返回值的大小 	started boo
 </span><span class="c1"></span>	<span class="k">return</span> <span class="nx">elem</span>
 <span class="p">}</span>
 </code></pre></div><h4 id="删除">删除</h4>
-<p>删除对应的底层函数是 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/runtime/map.go#L685">runtime/map.go.mapdelete</a> ，处理的思路非常相似，也是先判断各种情况，最后进行双重循环定位目标 cell，不再赘述了。</p>
+<p>删除对应的底层函数是 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/runtime/map.go#L685">runtime/map.mapdelete</a> ，处理的思路非常相似，也是先判断各种情况，最后进行双重循环定位目标 cell，不再赘述了。</p>
 <h4 id="扩容">扩容</h4>
-<p>扩容过程较为复杂</p>
-<h3 id="总结">总结</h3>
-<p>Go 语言的 map 使用了数组+链表实现的哈希表，引入了溢出桶的概念来减少桶的扩容，实现了平均 O(1) 的时间复杂度内访问元素，基本不会出现最坏的情况。经过哈希计算后，用低 B 位确定桶位置，高 8 位比对找到 tophash，再通过偏移找到 key/value，或者执行插入或者新增溢出桶等等逻辑。</p>
+<p>扩容过程较为复杂，总的来说，扩容分为 增量扩容 与 等量扩容，前者有两种情况触发，一是在桶不够用时，即容量到达扩容因子时，二是在，后者是在桶空间较为稀疏时触发，作用不同。</p>
+<p>需要注意的一点是，扩容并不是一次性完成的，而是渐进式的，在每次进行写入操作时搬运一部分元素，主要目的也是为了防止瞬时的性能抖动对整个应用造成影响。</p>
+<h5 id="等量扩容">等量扩容</h5>
+<p>等量扩容的目的是使得桶的数据密度不至于过小，想象一种极端场景，一个哈希表有1个位置，拉链出了100个bucket，但只有一个元素，它在最后一个桶（正常桶+溢出桶）的最后一个位置上，我们每次访问这个元素，都需要从头到尾扫描这n个桶，直到找到这个元素，显而易见，这样效率非常低，所以go语言运行时会动态修改这个大小，进行数据的紧缩，使得数据密度增大增大，既增加了效率，也减少了所需空间。</p>
+<p>等量扩容的代码在 xxxxx，</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">
+</code></pre></div><p>主要做了这些事：</p>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<h5 id="增量扩容">增量扩容</h5>
+<p>增量扩容的出现场景就是桶不够用，即容量到达了负载因子的限制大小，需要进行扩大，具体与hmap。b的大小有关：</p>
+<ul>
+<li>当b《=15时，如果桶大小一旦超过这个值扩容</li>
+<li>当b》15，如果桶大小大于2…………15次方就扩容</li>
+</ul>
+<p>扩容时由于b的大小+1，所以掩码的低位位数会+1，最高位的0和1会把所有元素分到两个部分，在go中这两部分被命名为 evaluatex，evaluatey，</p>
+<p>具体代码放在 xxxx，</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">
+</code></pre></div><h3 id="总结">总结</h3>
+<p>Go 语言的 map 使用了数组+链表实现的哈希表，引入了溢出桶的概念以及触发扩容的条件机制来减少桶的扩容，实现了平均 O(1) 的时间复杂度内访问元素，基本不会出现最坏的情况。</p>
+<p>访问元素的大致流程时：经过哈希计算后，用低 B 位确定桶位置，高 8 位比对 tophash 找到偏移，再通过偏移找到 key/value，或者执行插入或者新增溢出桶等等逻辑。</p>
 <p>不管你使用字面量的方式还是 make 的方式声明 map，都是对应底层的 hmap 结构，获得了一个指向 hmap 的指针，并且 Go 语言针对不给出初始大小的 map 还进行了快速初始化的优化，针对 map 的大小过大（hmap.B 大于4），提前建立溢出桶的优化。</p>
-<p>Go 提供了两种方式访问 map 中的元素，可以获得两个返回值，第二个返回值可以忽略，这用于空键值对的判断，类似于数据库中的 NULL，不和任何值冲突。并且 map 的遍历访问是随机的，这是因为每次遍历时会通过 fastrand 生成一个随机数，随机选择一个桶，再随机选择桶中的一个元素，先遍历完该桶，再顺次遍历后续的桶。map 是可以并发访问的，因为这并不会有任何冲突发生。</p>
+<p>Go 提供了两种方式访问 map 中的元素，可以获得两个返回值，第二个返回值可以忽略，这用于空键值对的判断，类似于数据库中的 NULL，不和任何值冲突。并且 map 的遍历访问是随机的，这是因为每次遍历时会通过 fastrand 生成一个随机数，随机选择一个桶，再随机选择桶中的一个元素，先遍历完该桶，再顺次遍历后续的桶。map 是可以并发访问（指读）的，因为这并不会有任何冲突发生。</p>
 ]]></content>
 		</item>
 		
@@ -1058,7 +1123,7 @@ HTTP方法有什么“实际区别” 你可能听说过类似 “GET 和 POST �
 各个版本之间的发展史 HTTP 比较重要的几个发展时间节点是 0.9、1.0、1.1、2.0 和 3.0，每一次的版本变迁都是为了解决前一个版本的性能不足或者功能不完善，我不推荐死记硬背，即使它被称为计算机八股文。
 http 0.9和1.1 在 HTTP 0.9 的时候只有 GET 方法，1.0 补充了 POST，DEL 方法完善语义，还添加了几个首部，这个阶段的 HTTP 主要就是完善功能。
 1.0 和 1.1 的最大区别就是长短连接了。在 HTTP 1.1 将长连接设置为了默认，也就是：
-Connection: keep-alive在这之前这个字段的默认是 close，长连接的好处是显而易见的，由于 HTTP 是基于 tcp，如果总共传输三个文件，1.</description>
+Connection: keep-alive 在这之前这个字段的默认是 close，长连接的好处是显而易见的，由于 HTTP 是基于 tcp，如果总共传输三个文件，1.</description>
 			<content type="html"><![CDATA[<p>标题的”最常见“我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。</p>
 <p>这篇博客我想阐述除书本概念之外的一些可能你 <strong>理解不深刻</strong> 的问题的 <strong>个人理解</strong>，希望对你有所帮助。</p>
 <h2 id="http是什么">HTTP是什么</h2>
@@ -1100,12 +1165,26 @@ Connection: keep-alive在这之前这个字段的默认是 close，长连接的
 			<pubDate>Fri, 15 Jan 2021 21:10:55 +0000</pubDate>
 			
 			<guid>https://www.kcode.icu/posts/interview/somequestions/</guid>
-			<description>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家，等待更新中。
-Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
+			<description>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。
+ 待完成
+ Go make和new的区别，使用和底层？ 两者都可以声明变量，例如 map，channelchannel，slice，以及结构体等等，我们常用make来初始化map，channel，而常用new 来初始化普通类型变量和结构体。
+区别是make会分配底层所需的空间，而new只会分配该结构头部的空间。如果首部中并没有引用其他内存地址，那么new 和make是一样。
+举个例子，当我们声明 map 时，实际上说获得了一个 hmap 类型的指针，指向 hmap结构体：
+如果我们使用make（map[type]type, 10），就会为map底层所使用的空间分配足够使用的bucket，如果使用new，则只分配hmap结构体所需内存，并不会分配底层所使用的空间，使用map也就无从谈起了。常见的一个错误示范就是通过 var m map[int]int 声明，然后直接 m[1]=1 来使用，这样就会直接因为空指针引用而panic！
+Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
 线程有哪些状态 注册中心挂了怎么办？ N节点，raft一致性？
 反射底层原理？ 通过反射执行函数，拿结构体tag？ 锁机制？饥饿模式正常模式？锁底层原理？ channel使用，坑，底层原理？ </description>
-			<content type="html"><![CDATA[<p>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家，等待更新中。</p>
+			<content type="html"><![CDATA[<p>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。</p>
+<blockquote>
+<p>待完成</p>
+</blockquote>
 <h2 id="go-make和new的区别使用和底层">Go make和new的区别，使用和底层？</h2>
+<p>两者都可以声明变量，例如 map，channelchannel，slice，以及结构体等等，我们常用make来初始化map，channel，而常用new 来初始化普通类型变量和结构体。</p>
+<p>区别是make会分配底层所需的空间，而new只会分配该结构头部的空间。如果首部中并没有引用其他内存地址，那么new 和make是一样。</p>
+<p>举个例子，当我们声明 map 时，实际上说获得了一个 hmap 类型的指针，指向 hmap结构体：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">
+
+</code></pre></div><p>如果我们使用make（map[type]type, 10），就会为map底层所使用的空间分配足够使用的bucket，如果使用new，则只分配hmap结构体所需内存，并不会分配底层所使用的空间，使用map也就无从谈起了。常见的一个错误示范就是通过 <code>var m map[int]int</code> 声明，然后直接 <code>m[1]=1</code> 来使用，这样就会直接因为空指针引用而panic！</p>
 <h2 id="go内存管理">Go内存管理</h2>
 <h2 id="goroutine-什么时候会阻塞">goroutine 什么时候会阻塞？</h2>
 <h2 id="goroutine有几种状态">goroutine有几种状态？</h2>
@@ -1381,7 +1460,7 @@ df VS. du 看了这两个命令大致用法后，它们在使用场景是什么�
 什么是ASCII，为什么又要引入Unicode 都应该了解过 ASCII、Unicode、Unicode 码点、UTF-8等一系列名词。先说 ASCII（American Standard Code for Information Interchange: 美国信息交换标准代码），它是一种字符集，说白了就是一个字符和数字的一一对应关系，你想找这个字符怎么办，计算机又不认识字符？给出他的对应的数字就行了。最初只有美国等一些使用英文的国家使用，所以 128 个字符完全够用，它包含了标点符号、数字和字母等。但是随着世界上使用计算机的国家越来越多，这 128 个字符是完全不够用的。所以 Unicode 字符集 就出现了。Unicode 包含了世界上绝大多数的字符，给他们提供了一一对应关系，比如“知”字对应 30693，即 U+77e5（16 进制形式）。所以说白了 ASCII 和 Unicode 就是一种字符集，一种字符对应关系，Unicode 中每个字符被称为一个 Code Point（码点），而 Go 语言中的 rune 类型正是代表了这样一个单位，即一个 rune 代表了一个 unicode 字符。
 那么大家肯定都听说过 UTF-8，UTF-16 吧，那问题来了， UTF 又是什么呢，UTF-8 和 UTF-16 到底又有什么关系呢？
 UTF（Unicode Transformation Format） 从字面上你就应该能看出来，这就是一个 Unicode 转换格式。什么是转换格式，为什么需要转换格式？上文说了 Unicode 就是提供了字符间的一一对应关系，比如“知”对应了 30693，那计算机怎么表示这个数（计算机只认识二进制）？它要做到：
-在很长的文本中准确获取到每个字符，不能找错**Unicode 表示一个字符可以使用 1 - 4 个字节。**它的转换规则如下：</description>
+在很长的文本中准确获取到每个字符，不能找错 **Unicode 表示一个字符可以使用 1 - 4 个字节。**它的转换规则如下：</description>
 			<content type="html"><![CDATA[<h2 id="起因">起因</h2>
 <p>最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在<strong>会用</strong>的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。</p>
 <h2 id="什么是ascii为什么又要引入unicode">什么是ASCII，为什么又要引入Unicode</h2>
@@ -1458,8 +1537,8 @@ StarUML版本：3.2.2
 具体做法 下载安装 node 如果不会，自（bie）行（lai）解（zhao）决（wo）。
 使用 cnpm 包管理工具下载 asar 由于众所周知的原因，用 cnpm 下载，先安装 cnpm并使用淘宝镜像源：
 npm install -g cnpm --registry=https://registry.npm.taobao.org	// 下载 asar cnpm install -g asar // 安装 asar 解压 asar 文件，修改源代码 找到 StarUML 安装目录里 resource 文件夹下的 app.asar 文件，执行解压：
-asar extract app.asar app坑点一、解压盘符问题 由于 StarUML 默认安装位置是 C 盘，直接在 StarUML 的安装目录下执行会有权限问题，会报类似这种错误：
-$ asar extract app.asar appinternal/fs/utils.js:230throw err;^Error: EPERM: operation not permitted, open &#39;app\package.</description>
+asar extract app.asar app 坑点一、解压盘符问题 由于 StarUML 默认安装位置是 C 盘，直接在 StarUML 的安装目录下执行会有权限问题，会报类似这种错误：
+$ asar extract app.asar app internal/fs/utils.js:230 throw err; ^ Error: EPERM: operation not permitted, open &#39;app\package.</description>
 			<content type="html"><![CDATA[<p>由于软件工程基础课需要，搜索发现这个工具还算毕竟好用的，下载了这个工具发现需要注册码，遂进行一番查找，最后确定如下方法。之所以写博客记录下来是因为<strong>有两个坑点</strong>。</p>
 <blockquote>
 <p>OS：Windows 10 专业版。</p>
@@ -2414,8 +2493,8 @@ Go 实现了两个包来产生随机数：
  在包 math/rand 的一个伪随机数生成器（ PRNG ） 在包 crypto/rand 中实现的加密伪随机数生成器（ CPRNG ）  如果这两个包都产生了随机数，则将基于真正的随机数和性能之间取舍
 确定的结果 Go 的rand包会使用相同的源来产生一个确定的伪随机数序列。这个源会产生一个不变的数列，稍后在执行期间使用。将你的程序运行多次将会读到一个完全相同的序列并产生相同的结果。让我们用一个简单的例子来尝试一下：
 func main() { for i := 0; i &amp;lt; 4; i++ { println(rand.Intn(100)) } } 多次运行这个程序将会产生相同的结果：
-81874759由于源代码已经发布到 Go 的官方标准库中，因此任何运行此程序的计算机都会得到相同的结果。但是，由于 Go 仅保留一个生成的数字序列，我们可能想知道 Go 是如何管理用户请求的时间间隔的。Go 实际上使用此数字序列来播种一个产生这个随机数的源，然后获取其请求间隔的模。例如，运行相同的程序，最大值为 10，则模 10 的结果相同。
-1779让我们来看一下如何在每次运行我们的程序时得到不同的序列。
+81 87 47 59 由于源代码已经发布到 Go 的官方标准库中，因此任何运行此程序的计算机都会得到相同的结果。但是，由于 Go 仅保留一个生成的数字序列，我们可能想知道 Go 是如何管理用户请求的时间间隔的。Go 实际上使用此数字序列来播种一个产生这个随机数的源，然后获取其请求间隔的模。例如，运行相同的程序，最大值为 10，则模 10 的结果相同。
+1 7 7 9 让我们来看一下如何在每次运行我们的程序时得到不同的序列。
 播种 Go 提供一个方法， Seed(see int64) ，该方法能让你初始化这个默认序列。默认情况下，它会使用变量 1。使用另一个变量将会提供一个新的序列，但会保持确定性：
 func main() { rand.Seed(2) for i := 0; i &amp;lt; 4; i++ { println(rand.</description>
 			<content type="html"><![CDATA[<h1 id="go随机数是怎样产生的">Go：随机数是怎样产生的？</h1>

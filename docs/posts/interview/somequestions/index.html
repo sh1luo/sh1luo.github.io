@@ -8,20 +8,30 @@
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
 <meta itemprop="name" content="一些常见 Go 语言及面试问题的整理">
-<meta itemprop="description" content="这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家，等待更新中。
-Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
+<meta itemprop="description" content="这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。
+ 待完成
+ Go make和new的区别，使用和底层？ 两者都可以声明变量，例如 map，channelchannel，slice，以及结构体等等，我们常用make来初始化map，channel，而常用new 来初始化普通类型变量和结构体。
+区别是make会分配底层所需的空间，而new只会分配该结构头部的空间。如果首部中并没有引用其他内存地址，那么new 和make是一样。
+举个例子，当我们声明 map 时，实际上说获得了一个 hmap 类型的指针，指向 hmap结构体：
+如果我们使用make（map[type]type, 10），就会为map底层所使用的空间分配足够使用的bucket，如果使用new，则只分配hmap结构体所需内存，并不会分配底层所使用的空间，使用map也就无从谈起了。常见的一个错误示范就是通过 var m map[int]int 声明，然后直接 m[1]=1 来使用，这样就会直接因为空指针引用而panic！
+Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
 线程有哪些状态 注册中心挂了怎么办？ N节点，raft一致性？
 反射底层原理？ 通过反射执行函数，拿结构体tag？ 锁机制？饥饿模式正常模式？锁底层原理？ channel使用，坑，底层原理？ ">
 <meta itemprop="datePublished" content="2021-01-15T21:10:55+00:00" />
 <meta itemprop="dateModified" content="2021-01-15T21:10:55+00:00" />
-<meta itemprop="wordCount" content="17">
+<meta itemprop="wordCount" content="37">
 
 
 
 <meta itemprop="keywords" content="杂谈,Go,面试," />
 <meta property="og:title" content="一些常见 Go 语言及面试问题的整理" />
-<meta property="og:description" content="这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家，等待更新中。
-Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
+<meta property="og:description" content="这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。
+ 待完成
+ Go make和new的区别，使用和底层？ 两者都可以声明变量，例如 map，channelchannel，slice，以及结构体等等，我们常用make来初始化map，channel，而常用new 来初始化普通类型变量和结构体。
+区别是make会分配底层所需的空间，而new只会分配该结构头部的空间。如果首部中并没有引用其他内存地址，那么new 和make是一样。
+举个例子，当我们声明 map 时，实际上说获得了一个 hmap 类型的指针，指向 hmap结构体：
+如果我们使用make（map[type]type, 10），就会为map底层所使用的空间分配足够使用的bucket，如果使用new，则只分配hmap结构体所需内存，并不会分配底层所使用的空间，使用map也就无从谈起了。常见的一个错误示范就是通过 var m map[int]int 声明，然后直接 m[1]=1 来使用，这样就会直接因为空指针引用而panic！
+Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
 线程有哪些状态 注册中心挂了怎么办？ N节点，raft一致性？
 反射底层原理？ 通过反射执行函数，拿结构体tag？ 锁机制？饥饿模式正常模式？锁底层原理？ channel使用，坑，底层原理？ " />
 <meta property="og:type" content="article" />
@@ -30,8 +40,13 @@ Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时�
 <meta property="article:modified_time" content="2021-01-15T21:10:55+00:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="一些常见 Go 语言及面试问题的整理"/>
-<meta name="twitter:description" content="这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家，等待更新中。
-Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
+<meta name="twitter:description" content="这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。
+ 待完成
+ Go make和new的区别，使用和底层？ 两者都可以声明变量，例如 map，channelchannel，slice，以及结构体等等，我们常用make来初始化map，channel，而常用new 来初始化普通类型变量和结构体。
+区别是make会分配底层所需的空间，而new只会分配该结构头部的空间。如果首部中并没有引用其他内存地址，那么new 和make是一样。
+举个例子，当我们声明 map 时，实际上说获得了一个 hmap 类型的指针，指向 hmap结构体：
+如果我们使用make（map[type]type, 10），就会为map底层所使用的空间分配足够使用的bucket，如果使用new，则只分配hmap结构体所需内存，并不会分配底层所使用的空间，使用map也就无从谈起了。常见的一个错误示范就是通过 var m map[int]int 声明，然后直接 m[1]=1 来使用，这样就会直接因为空指针引用而panic！
+Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
 线程有哪些状态 注册中心挂了怎么办？ N节点，raft一致性？
 反射底层原理？ 通过反射执行函数，拿结构体tag？ 锁机制？饥饿模式正常模式？锁底层原理？ channel使用，坑，底层原理？ "/>
 
@@ -83,8 +98,17 @@ Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时�
 				<h1>一些常见 Go 语言及面试问题的整理</h1>
 			</header>
 			<div class="content">
-				<p>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家，等待更新中。</p>
+				<p>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。</p>
+<blockquote>
+<p>待完成</p>
+</blockquote>
 <h2 id="go-make和new的区别使用和底层">Go make和new的区别，使用和底层？<a href="#go-make和new的区别使用和底层" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>两者都可以声明变量，例如 map，channelchannel，slice，以及结构体等等，我们常用make来初始化map，channel，而常用new 来初始化普通类型变量和结构体。</p>
+<p>区别是make会分配底层所需的空间，而new只会分配该结构头部的空间。如果首部中并没有引用其他内存地址，那么new 和make是一样。</p>
+<p>举个例子，当我们声明 map 时，实际上说获得了一个 hmap 类型的指针，指向 hmap结构体：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">
+
+</code></pre></div><p>如果我们使用make（map[type]type, 10），就会为map底层所使用的空间分配足够使用的bucket，如果使用new，则只分配hmap结构体所需内存，并不会分配底层所使用的空间，使用map也就无从谈起了。常见的一个错误示范就是通过 <code>var m map[int]int</code> 声明，然后直接 <code>m[1]=1</code> 来使用，这样就会直接因为空指针引用而panic！</p>
 <h2 id="go内存管理">Go内存管理<a href="#go内存管理" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <h2 id="goroutine-什么时候会阻塞">goroutine 什么时候会阻塞？<a href="#goroutine-什么时候会阻塞" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <h2 id="goroutine有几种状态">goroutine有几种状态？<a href="#goroutine有几种状态" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
@@ -104,7 +128,7 @@ Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时�
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/%E6%9D%82%E8%B0%88">杂谈</a></span><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E9%9D%A2%E8%AF%95">面试</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>17 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>37 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-01-16 05:10 &#43;0800</p>
 			</footer>
 		</article>

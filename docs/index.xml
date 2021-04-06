@@ -7,7 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Tue, 30 Mar 2021 17:20:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 04 Apr 2021 20:30:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go 使用的 plan9 汇编初探、与传统汇编差异与函数调用栈帧汇编分析</title>
+      <link>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</link>
+      <pubDate>Sun, 04 Apr 2021 20:30:20 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</guid>
+      <description>了解plan9汇编 plan9 汇编不同于 intel 家族的汇编，开发者是 unix 操作系统的同一批作者，bell 实验室所开发的，go语言最初的三个开发者之一 ken 正是其中之一，其实 plan9 是一个操作系统，只是我们主要关注它的汇编。
+go 语言早在 1.5 版本就实现了自举，即使用 go 语言去写 go语言。go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 intel 家族汇编，它与 intel 系汇编有几个不同点：
+ 没有push，pop等栈操作，栈的增缩是通过对sp栈顶寄存器的加减实现的，例如 +8（sp） 操作数的大小不是通过区分操作数来实现的，而是通过限制操作码的后缀后缀，例如复制ax寄存器低1字节到第二子节，在intel x86汇编中是通过 mov ah, al，而在 plan9 中则是通过 movb al, ah  b w d q分别代表1 2 4 8byte，含义是byte，word，doubledouble word，quatury。   操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条 。。。  我们学习plan9汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可
+但是为什么plan9不与intel系兼容呢，大概是unix团队也不屑于商业化
+从一个简单的程序出发 package main func add(x, y int) (sum int) { z := x + y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main。go 查看plan9汇编代码：</description>
+    </item>
+    
     <item>
       <title>大三实习求职之旅</title>
       <link>https://www.kcode.icu/posts/interview/2021-3-nowcoder/</link>
@@ -55,7 +68,7 @@ go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来�
       
       <guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
       <description>前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
+uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
 fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&amp;hellip;），那你再看一段代码：
 //go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
@@ -82,7 +95,7 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
       <guid>https://www.kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/</guid>
       <description>秉承着 “软件均使用最新版本，学习均从文档入手” 的理念，学习使用 MySQL 我也是在使用最新的大版本 MySQL 8，而在技术发展过程中，一个不可忽视的因素就是兼容性，在保证新特性无误的同时必须确保以前的功能不受影响，如果不能保证这一点，那么许多使用者在迁移的时候就需要考虑很多改动成本，除非不是大改动，一般都会考虑到这一点，比如 HTTP/2 、TLS/1.3 等等。
 错误描述及分析 最近为学校写一个选课平台时关系型数据库使用的是 MySQL 8+，使用 Group by 时报了这个错误：
-ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column &#39;mydb.t.address&#39; which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by意思是说 select 列表中包含了非聚合列，其并不函数依赖于 Group by 子句中的列。并且和 sql_mode 这个配置项的 only_full_group_by 值冲突。不过这篇文章并不只是单纯说解决方法，如果想要解决方法请直接移步文末。
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column &#39;mydb.t.address&#39; which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by 意思是说 select 列表中包含了非聚合列，其并不函数依赖于 Group by 子句中的列。并且和 sql_mode 这个配置项的 only_full_group_by 值冲突。不过这篇文章并不只是单纯说解决方法，如果想要解决方法请直接移步文末。
 可以确定的是同样的使用了 Group by 的 SQL 查询语句在低版本中是正常的但是高版本却不行，猜测可能是版本差异造成的，而且还是因为这个配置项导致的。
 所以虽然我们一开始可能看不懂这个报错信息，但是我们通过一些分析已经定位了问题，并且报错的错误码明显（ERROR 1055(42000)），报错提示信息清楚，并不难找到解决方法。</description>
     </item>
@@ -99,7 +112,7 @@ type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data
 [图片]
 字符串就是字符的数组，我们先来看个小程序的例子：
 package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 go tool compile -S main.go 使用自带工具包查看汇编代码，可以看到有这样一段信息：
-...go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=30x0000 61 62 63 abc...很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
+... go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=3 0x0000 61 62 63 abc ... 很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
     </item>
     
     <item>
@@ -171,18 +184,6 @@ OSS OSS （Object Storage Service）即对象存储服务，用来做个人博�
 typora typora 是一款 Markdown 文本编辑软件，我相信写过 Markdown 的都听说过，它的特点是真正的实时显示，不左右分栏，扩展性强，灵活可配置。我个人平时写 Markdown 文本都是使用这个软件，具体可以去它的官网首页看，十分推荐。
 PicGo PicGo 是一款使用 Node + Electron 开发的跨平台可视化图片上传开源软件，支持 N 种图床平台，配置灵活简单，最重要的是它支持插件功能，理论上支持任意图床平台的使用（需要提供相应上传下载的 API），可以自行开发插件。操作也比较简单，把图片拖到框里就可以拿到 URL。这张图是 gitee 相关配置，其他平台类似，只需若干个必要参数即可：
 配合使用 前面说的这两种工具可以结合使用快速进行写作，在 typora 主界面上方，文件-&amp;gt;偏好设置-&amp;gt;图像，修改 PicGo 路径为你安装的路径下的 exe 地址。这样就可以做到你在 typora 里编辑时直接粘贴图片到文档里一键点击上传，非常方便。当然了，如果你不需要 typora，或者使用的是别的 Markdown 编辑器，也可以只使用 PicGo。</description>
-    </item>
-    
-    <item>
-      <title>《一起了解 Go 语言》</title>
-      <link>https://www.kcode.icu/go/</link>
-      <pubDate>Sun, 17 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/go/</guid>
-      <description>我不太喜欢只看问题的表面，总是不经意间思考了这么多，希望对你有所帮助。
-我打算围绕 Go 的底层实现写一些自己的思考和探究，我在写之前参考了大量博客等”二手资料“，写时手边也拿着 Go 语言最新版源代码这样的”一手资料“，其一是因为官方源码和文档永远是我们最好的第一学习工具，其二是我个人在没看到源信息时有种不踏实的感觉（可能跟以前踩过坑有关），所以文中说到的任何知识点均会附带源码说明，由于 Go 语言特殊性，必要时还会附带汇编代码辅助，最后我还会通过理论来推动实践为你做个演示。
-标记的内容已经列入计划，正在赶工中 😄
- 一：深入表象  「map」深入理解 Go map，正在&amp;hellip; 「string」简单又有”东西“的字符串，正在&amp;hellip; 「slice」灵活高效的切片，正在&amp;hellip; 「string&amp;amp;slice」用理论驱动实践，正在&amp;hellip;   二：深入理解  「method」方法到底是什么，正在&amp;hellip;   三：深入灵魂  「GPM」Go 调度模型为什么这么特别？，正在&amp;hellip; 「GC」入个 GC 算法的门？，正在&amp;hellip;    我的公众号 平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号：</description>
     </item>
     
   </channel>
