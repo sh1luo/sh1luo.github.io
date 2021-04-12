@@ -10,12 +10,12 @@
 <meta itemprop="name" content="Go 使用的 plan9 汇编初探、与传统汇编差异与函数调用栈帧汇编分析">
 <meta itemprop="description" content="了解plan9汇编 plan9 汇编不同于 intel 家族的汇编，开发者是 unix 操作系统的同一批作者，bell 实验室所开发的，go语言最初的三个开发者之一 ken 正是其中之一，其实 plan9 是一个操作系统，只是我们主要关注它的汇编。
 go 语言早在 1.5 版本就实现了自举，即使用 go 语言去写 go语言。go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 intel 家族汇编，它与 intel 系汇编有几个不同点：
- 没有push，pop等栈操作，栈的增缩是通过对sp栈顶寄存器的加减实现的，例如 &#43;8（sp） 操作数的大小不是通过区分操作数来实现的，而是通过限制操作码的后缀后缀，例如复制ax寄存器低1字节到第二子节，在intel x86汇编中是通过 mov ah, al，而在 plan9 中则是通过 movb al, ah  b w d q分别代表1 2 4 8byte，含义是byte，word，doubledouble word，quatury。   操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条 。。。  我们学习plan9汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可
-但是为什么plan9不与intel系兼容呢，大概是unix团队也不屑于商业化
-从一个简单的程序出发 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main。go 查看plan9汇编代码：">
+ 没有push，pop等栈操作，栈的增缩是通过对sp栈顶寄存器的加减实现的，例如 &#43;8（sp） 操作数的大小不是通过区分操作数来实现的，而是通过限制操作码的后缀后缀，例如复制ax寄存器低1字节到第二子节，在intel x86汇编中是通过 mov ah, al，而在 plan9 中则是通过 movb al, ah  b w d q分别代表1 2 4 8byte，含义是byte，word，double word，quatury。   操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条 。。。  我们学习plan9汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可
+但是为什么 plan9 不与 intel 系兼容呢，貌似是因为 unix 团队也不屑于商业化。
+从一个简单的程序出发 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main.">
 <meta itemprop="datePublished" content="2021-04-04T20:30:20+00:00" />
 <meta itemprop="dateModified" content="2021-04-04T20:30:20+00:00" />
-<meta itemprop="wordCount" content="90">
+<meta itemprop="wordCount" content="96">
 
 
 
@@ -23,20 +23,20 @@ go 语言早在 1.5 版本就实现了自举，即使用 go 语言去写 go语�
 <meta property="og:title" content="Go 使用的 plan9 汇编初探、与传统汇编差异与函数调用栈帧汇编分析" />
 <meta property="og:description" content="了解plan9汇编 plan9 汇编不同于 intel 家族的汇编，开发者是 unix 操作系统的同一批作者，bell 实验室所开发的，go语言最初的三个开发者之一 ken 正是其中之一，其实 plan9 是一个操作系统，只是我们主要关注它的汇编。
 go 语言早在 1.5 版本就实现了自举，即使用 go 语言去写 go语言。go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 intel 家族汇编，它与 intel 系汇编有几个不同点：
- 没有push，pop等栈操作，栈的增缩是通过对sp栈顶寄存器的加减实现的，例如 &#43;8（sp） 操作数的大小不是通过区分操作数来实现的，而是通过限制操作码的后缀后缀，例如复制ax寄存器低1字节到第二子节，在intel x86汇编中是通过 mov ah, al，而在 plan9 中则是通过 movb al, ah  b w d q分别代表1 2 4 8byte，含义是byte，word，doubledouble word，quatury。   操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条 。。。  我们学习plan9汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可
-但是为什么plan9不与intel系兼容呢，大概是unix团队也不屑于商业化
-从一个简单的程序出发 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main。go 查看plan9汇编代码：" />
+ 没有push，pop等栈操作，栈的增缩是通过对sp栈顶寄存器的加减实现的，例如 &#43;8（sp） 操作数的大小不是通过区分操作数来实现的，而是通过限制操作码的后缀后缀，例如复制ax寄存器低1字节到第二子节，在intel x86汇编中是通过 mov ah, al，而在 plan9 中则是通过 movb al, ah  b w d q分别代表1 2 4 8byte，含义是byte，word，double word，quatury。   操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条 。。。  我们学习plan9汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可
+但是为什么 plan9 不与 intel 系兼容呢，貌似是因为 unix 团队也不屑于商业化。
+从一个简单的程序出发 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/" />
+<meta property="og:url" content="https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E5%88%9D%E6%8E%A2%E4%B8%8E%E4%BC%A0%E7%BB%9F%E6%B1%87%E7%BC%96%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/" />
 <meta property="article:published_time" content="2021-04-04T20:30:20+00:00" />
 <meta property="article:modified_time" content="2021-04-04T20:30:20+00:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Go 使用的 plan9 汇编初探、与传统汇编差异与函数调用栈帧汇编分析"/>
 <meta name="twitter:description" content="了解plan9汇编 plan9 汇编不同于 intel 家族的汇编，开发者是 unix 操作系统的同一批作者，bell 实验室所开发的，go语言最初的三个开发者之一 ken 正是其中之一，其实 plan9 是一个操作系统，只是我们主要关注它的汇编。
 go 语言早在 1.5 版本就实现了自举，即使用 go 语言去写 go语言。go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 intel 家族汇编，它与 intel 系汇编有几个不同点：
- 没有push，pop等栈操作，栈的增缩是通过对sp栈顶寄存器的加减实现的，例如 &#43;8（sp） 操作数的大小不是通过区分操作数来实现的，而是通过限制操作码的后缀后缀，例如复制ax寄存器低1字节到第二子节，在intel x86汇编中是通过 mov ah, al，而在 plan9 中则是通过 movb al, ah  b w d q分别代表1 2 4 8byte，含义是byte，word，doubledouble word，quatury。   操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条 。。。  我们学习plan9汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可
-但是为什么plan9不与intel系兼容呢，大概是unix团队也不屑于商业化
-从一个简单的程序出发 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main。go 查看plan9汇编代码："/>
+ 没有push，pop等栈操作，栈的增缩是通过对sp栈顶寄存器的加减实现的，例如 &#43;8（sp） 操作数的大小不是通过区分操作数来实现的，而是通过限制操作码的后缀后缀，例如复制ax寄存器低1字节到第二子节，在intel x86汇编中是通过 mov ah, al，而在 plan9 中则是通过 movb al, ah  b w d q分别代表1 2 4 8byte，含义是byte，word，double word，quatury。   操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条 。。。  我们学习plan9汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可
+但是为什么 plan9 不与 intel 系兼容呢，貌似是因为 unix 团队也不屑于商业化。
+从一个简单的程序出发 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -93,14 +93,14 @@ go 语言早在 1.5 版本就实现了自举，即使用 go 语言去写 go语�
 <li>没有push，pop等栈操作，栈的增缩是通过对sp栈顶寄存器的加减实现的，例如 +8（sp）</li>
 <li>操作数的大小不是通过区分操作数来实现的，而是通过限制操作码的后缀后缀，例如复制ax寄存器低1字节到第二子节，在intel x86汇编中是通过 <code>mov ah, al</code>，而在 plan9 中则是通过 <code>movb al, ah</code>
 <ul>
-<li>b w d q分别代表1 2 4 8byte，含义是byte，word，doubledouble word，quatury。</li>
+<li>b w d q分别代表1 2 4 8byte，含义是byte，word，double word，quatury。</li>
 </ul>
 </li>
 <li>操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条</li>
 <li>。。。</li>
 </ul>
 <p>我们学习plan9汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可</p>
-<p>但是为什么plan9不与intel系兼容呢，大概是unix团队也不屑于商业化</p>
+<p>但是为什么 plan9 不与 intel 系兼容呢，貌似是因为 unix 团队也不屑于商业化。</p>
 <h2 id="从一个简单的程序出发">从一个简单的程序出发<a href="#从一个简单的程序出发" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
@@ -112,7 +112,7 @@ go 语言早在 1.5 版本就实现了自举，即使用 go 语言去写 go语�
 <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">c</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="p">}</span>
-</code></pre></div><p>在命令行中执行 <code>go tool compile -s main。go</code> 查看plan9汇编代码：</p>
+</code></pre></div><p>在命令行中执行 <code>go tool compile -s main.go</code> 查看plan9汇编代码：</p>
 <pre><code class="language-masm" data-lang="masm">mov eax
 </code></pre><p>我们只关注 main 函数调用 add 函数的过程：</p>
 
@@ -123,7 +123,7 @@ go 语言早在 1.5 版本就实现了自举，即使用 go 语言去写 go语�
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81">源码</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>90 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>96 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-04-05 04:30 &#43;0800</p>
 			</footer>
 		</article>
