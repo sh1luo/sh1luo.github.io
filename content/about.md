@@ -7,6 +7,8 @@ date: "2019-12-15"
 
 业余会定期翻译外文，参与 GCTT 翻译工作。
 
+> 如果你打开我的博客较慢，可能是因为部署服务器和所用域名均在国外，使用了 Github Page 与 Cloudflare NS 托管，望理解~
+
 ### 联系方式
 
 - Github：<https://github.com/sh1luo>
