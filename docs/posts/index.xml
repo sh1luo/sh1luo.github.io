@@ -6,8 +6,23 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-hans</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Sun, 04 Apr 2021 20:30:20 +0000</lastBuildDate>
+		<lastBuildDate>Sun, 25 Apr 2021 23:35:20 +0000</lastBuildDate>
 		<atom:link href="https://www.kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>MIT 6.828 课程学习记录</title>
+			<link>https://www.kcode.icu/posts/os/mitos/</link>
+			<pubDate>Sun, 25 Apr 2021 23:35:20 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/os/mitos/</guid>
+			<description>介绍 好多人推荐这个国外的课程，就找了一下课程，下载了一份讲义，打开第一眼就看到大名鼎鼎的 rsc 大佬，偶像啊，Go 的当下掌舵人。就冲这名必须得看完了（狗头😄）。 开个玩笑，我个人对计算机基础最感兴趣的就是组成原理、操作系统和汇编语言，除此之外就是分布式了，等搞定这个之后也去跟一下 MIT 6.824 分布式部分（开新坑🕳️ ）
+待更&amp;hellip;.</description>
+			<content type="html"><![CDATA[<h2 id="介绍">介绍</h2>
+<p>好多人推荐这个国外的课程，就找了一下课程，下载了一份讲义，打开第一眼就看到大名鼎鼎的 <a href="https://github.com/rsc">rsc</a> 大佬，偶像啊，Go 的当下掌舵人。就冲这名必须得看完了（狗头😄）。 开个玩笑，我个人对计算机基础最感兴趣的就是组成原理、操作系统和汇编语言，除此之外就是分布式了，等搞定这个之后也去跟一下 MIT 6.824 分布式部分（开新坑🕳️ ）</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210425171314612.png" alt="image-20210425171314612"></p>
+<p>待更&hellip;.</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Go 使用的 plan9 汇编初探、与传统汇编差异与函数调用栈帧汇编分析</title>
