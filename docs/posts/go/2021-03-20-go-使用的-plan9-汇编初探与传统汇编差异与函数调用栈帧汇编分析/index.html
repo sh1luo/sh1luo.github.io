@@ -11,12 +11,11 @@
 <meta itemprop="description" content="plan9汇编初探 plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
 Go 语言早在 1.5 版本就实现了自举，即使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，放在下文 与传统汇编差异 解释。
 我们从最简单的例子出发。
-看一个最简单的程序 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main.go 查看plan9汇编代码：
-mov eax 我们只关注 main 函数调用 add 函数的过程：
-与传统汇编的差异 函数调用栈帧汇编 指令差异  没有 push，pop 等栈操作，栈的增缩是通过对 sp 栈顶寄存器的加减实现的，例如 &#43;8（sp） 操作数的大小不是通过区分操作码来实现的，而是通过操作码的后缀实现，例如复制 ax 寄存器低 1 字节到第二字节，在 x86 汇编中是通过 mov ah,al，而在 plan9 中则是通过 movb al,ah  b w d q分别代表1 2 4 8 Byte，含义是byte，word，double word，quatury。   操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条   我们学习 plan9 汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可。">
+一个简单的程序 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main.go 查看 plan9 的汇编代码，我们目前只关注 add 函数 ：
+&quot;&quot;.add STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0 0x0000 00000 (notify.">
 <meta itemprop="datePublished" content="2021-04-04T20:30:20+00:00" />
 <meta itemprop="dateModified" content="2021-04-04T20:30:20+00:00" />
-<meta itemprop="wordCount" content="110">
+<meta itemprop="wordCount" content="310">
 
 
 
@@ -25,9 +24,8 @@ mov eax 我们只关注 main 函数调用 add 函数的过程：
 <meta property="og:description" content="plan9汇编初探 plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
 Go 语言早在 1.5 版本就实现了自举，即使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，放在下文 与传统汇编差异 解释。
 我们从最简单的例子出发。
-看一个最简单的程序 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main.go 查看plan9汇编代码：
-mov eax 我们只关注 main 函数调用 add 函数的过程：
-与传统汇编的差异 函数调用栈帧汇编 指令差异  没有 push，pop 等栈操作，栈的增缩是通过对 sp 栈顶寄存器的加减实现的，例如 &#43;8（sp） 操作数的大小不是通过区分操作码来实现的，而是通过操作码的后缀实现，例如复制 ax 寄存器低 1 字节到第二字节，在 x86 汇编中是通过 mov ah,al，而在 plan9 中则是通过 movb al,ah  b w d q分别代表1 2 4 8 Byte，含义是byte，word，double word，quatury。   操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条   我们学习 plan9 汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可。" />
+一个简单的程序 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main.go 查看 plan9 的汇编代码，我们目前只关注 add 函数 ：
+&quot;&quot;.add STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0 0x0000 00000 (notify." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E5%88%9D%E6%8E%A2%E4%B8%8E%E4%BC%A0%E7%BB%9F%E6%B1%87%E7%BC%96%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/" />
 <meta property="article:published_time" content="2021-04-04T20:30:20+00:00" />
@@ -37,9 +35,8 @@ mov eax 我们只关注 main 函数调用 add 函数的过程：
 <meta name="twitter:description" content="plan9汇编初探 plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
 Go 语言早在 1.5 版本就实现了自举，即使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，放在下文 与传统汇编差异 解释。
 我们从最简单的例子出发。
-看一个最简单的程序 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main.go 查看plan9汇编代码：
-mov eax 我们只关注 main 函数调用 add 函数的过程：
-与传统汇编的差异 函数调用栈帧汇编 指令差异  没有 push，pop 等栈操作，栈的增缩是通过对 sp 栈顶寄存器的加减实现的，例如 &#43;8（sp） 操作数的大小不是通过区分操作码来实现的，而是通过操作码的后缀实现，例如复制 ax 寄存器低 1 字节到第二字节，在 x86 汇编中是通过 mov ah,al，而在 plan9 中则是通过 movb al,ah  b w d q分别代表1 2 4 8 Byte，含义是byte，word，double word，quatury。   操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条   我们学习 plan9 汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可。"/>
+一个简单的程序 package main func add(x, y int) (sum int) { z := x &#43; y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main.go 查看 plan9 的汇编代码，我们目前只关注 add 函数 ：
+&quot;&quot;.add STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0 0x0000 00000 (notify."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -93,7 +90,7 @@ mov eax 我们只关注 main 函数调用 add 函数的过程：
 <p>plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。</p>
 <p>Go 语言早在 1.5 版本就实现了自举，即使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，放在下文 <code>与传统汇编差异</code> 解释。</p>
 <p>我们从最简单的例子出发。</p>
-<h3 id="看一个最简单的程序">看一个最简单的程序<a href="#看一个最简单的程序" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<h3 id="一个简单的程序">一个简单的程序<a href="#一个简单的程序" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">sum</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
@@ -104,9 +101,61 @@ mov eax 我们只关注 main 函数调用 add 函数的过程：
 <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">c</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="p">}</span>
-</code></pre></div><p>在命令行中执行 <code>go tool compile -s main.go</code> 查看plan9汇编代码：</p>
-<pre><code class="language-masm" data-lang="masm">mov eax
-</code></pre><p>我们只关注 main 函数调用 add 函数的过程：</p>
+</code></pre></div><p>在命令行中执行 <code>go tool compile -s main.go</code> 查看 plan9 的汇编代码，我们目前只关注 <code>add</code> 函数 ：</p>
+<pre><code class="language-assembly" data-lang="assembly">&quot;&quot;.add STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0
+        0x0000 00000 (notify.go:7)      TEXT    &quot;&quot;.add(SB), NOSPLIT|ABIInternal, $0-24
+        0x0000 00000 (notify.go:7)      FUNCDATA        $0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+        0x0000 00000 (notify.go:7)      FUNCDATA        $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+        0x0000 00000 (notify.go:8)      MOVQ    &quot;&quot;.b+16(SP), AX
+        0x0005 00005 (notify.go:8)      MOVQ    &quot;&quot;.a+8(SP), CX
+        0x000a 00010 (notify.go:8)      ADDQ    CX, AX
+        0x000d 00013 (notify.go:8)      MOVQ    AX, &quot;&quot;.~r2+24(SP)
+        0x0012 00018 (notify.go:8)      RET
+</code></pre><p>先看第一行内容：</p>
+<pre><code class="language-assembly" data-lang="assembly">&quot;&quot;.add STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0
+</code></pre><p>内容虽然多，但是非常好理解，先看另一种场景，放在一起学习：</p>
+<pre><code class="language-assembly" data-lang="assembly">TEXT runtime∕internal∕atomic·Cas(SB),NOSPLIT,$0-17
+</code></pre><p>引号里和 <code>runtime/internal/atomic</code> 都是函数名，可以省略，后面紧跟函数名。<code>TEXT</code> 是区段名。<code>SB</code> 是基于伪寄存器 <code>SB</code> 进行偏移，比如：</p>
+<pre><code class="language-assembly" data-lang="assembly">+4(SB)
+a+8(SB)
+</code></pre><p>一个是在 SB 寄存器起始地址上正向偏移 4 个字节，一个是从 SB 的 a 变量开始偏移 4 个字节。</p>
+<p>由于 Go 语言函数的调用栈帧默认是动态伸缩的，初始大小只有 2KB，你可以使用 <code>指令</code> 来控制这个行为：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">//go:nosplit
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">str2slc</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</code></pre></div><p>这条指令可以禁止扩容检测，这样做一定程度上可以增加效率。而汇编代码里的 <code>nosplit</code> 是编译器帮我们做的优化。</p>
+<p><code>$0-17</code> 的 0 是函数栈帧大小，17 是参数大小，'-' 不是减号，只是连接符，不要想当然认为栈向下增长所以是做减法（不过好像问题也不大。这两个值都是算在 <strong>在调用者栈帧上</strong> 的。</p>
+<p>需要注意的是，如果没有 <code>nosplit</code>，则必须给出参数大小，而不能直接 <code>$x-0</code>。</p>
+<h3 id="伪寄存器">伪寄存器<a href="#伪寄存器" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>寄存器分为 <strong>实寄存器（real register）和 伪寄存器（pseudo register）</strong> ，前者在 CPU 内部，属于 CPU 的固件，作为与 CPU 直接产生信息交换的单位，具体种类与架构有关，可以通过 dlv 工具查看：</p>
+<pre><code>(dlv) regs                                       
+   Rip = 0x00007ff90ed00771                      
+   Rsp = 0x000000cfd45ff260                      
+   Rax = 0x0000000000000000                      
+   Rbx = 0x0000000000000010                      
+   Rcx = 0x00007ff90eccd2c4                      
+   Rdx = 0x0000000000000000                      
+   Rsi = 0x00007ff90ed61a80                      
+   Rdi = 0x000000cfd4237000                      
+   Rbp = 0x0000000000000000                      
+    R8 = 0x000000cfd45ff258                      
+    R9 = 0x0000000000000000                      
+   R10 = 0x0000000000000000                      
+   R11 = 0x0000000000000246                      
+   R12 = 0x0000000000000040                      
+   R13 = 0x0000000000000000                      
+   R14 = 0x00007ff90ed548f0                      
+   R15 = 0x00000254e7900000                      
+Rflags = 0x0000000000000246     [PF ZF IF IOPL=0]
+    Cs = 0x0000000000000033                      
+    Fs = 0x0000000000000053                      
+    Gs = 0x000000000000002b                      
+</code></pre><p>后者是应用层抽象出来的概念，实际并不存在，目的是为了方便编程。</p>
+<p>plan9 抽象了 4 种伪寄存器：</p>
+<ul>
+<li></li>
+</ul>
 <h2 id="与传统汇编的差异">与传统汇编的差异<a href="#与传统汇编的差异" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <h2 id="函数调用栈帧汇编">函数调用栈帧汇编<a href="#函数调用栈帧汇编" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <h3 id="指令差异">指令差异<a href="#指令差异" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
@@ -131,7 +180,7 @@ mov eax 我们只关注 main 函数调用 add 函数的过程：
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81">源码</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>110 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>310 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-04-05 04:30 &#43;0800</p>
 			</footer>
 		</article>
