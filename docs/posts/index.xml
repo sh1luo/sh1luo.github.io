@@ -55,21 +55,20 @@ RPC 是解决分布式系统通信问题的一大利器。 RPC 的通信原理�
 		</item>
 		
 		<item>
-			<title>Go 使用的 plan9 汇编初探、与传统汇编差异与 Go 函数调用栈帧分析</title>
-			<link>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E5%88%9D%E6%8E%A2%E4%B8%8E%E4%BC%A0%E7%BB%9F%E6%B1%87%E7%BC%96%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</link>
+			<title>Go 使用的 plan9 汇编语言初探</title>
+			<link>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</link>
 			<pubDate>Sun, 04 Apr 2021 20:30:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E5%88%9D%E6%8E%A2%E4%B8%8E%E4%BC%A0%E7%BB%9F%E6%B1%87%E7%BC%96%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</guid>
-			<description>plan9汇编初探 plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
+			<guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</guid>
+			<description>plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
 Go 语言早在 1.5 版本就实现了自举，即使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，放在下文 与传统汇编差异 解释。
 我们从最简单的例子出发。
 一个简单的程序 package main func add(x, y int) (sum int) { z := x + y return z } func main() { c := add(2, 3) } 在命令行中执行 go tool compile -s main.go 查看 plan9 的汇编代码，我们目前只关注 add 函数 ：
 &amp;quot;&amp;quot;.add STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0 0x0000 00000 (notify.</description>
-			<content type="html"><![CDATA[<h2 id="plan9汇编初探">plan9汇编初探</h2>
-<p>plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。</p>
+			<content type="html"><![CDATA[<p>plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。</p>
 <p>Go 语言早在 1.5 版本就实现了自举，即使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，放在下文 <code>与传统汇编差异</code> 解释。</p>
 <p>我们从最简单的例子出发。</p>
-<h3 id="一个简单的程序">一个简单的程序</h3>
+<h2 id="一个简单的程序">一个简单的程序</h2>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">sum</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
@@ -92,9 +91,9 @@ Go 语言早在 1.5 版本就实现了自举，即使用 Go 语言去写 Go 语�
         0x0012 00018 (notify.go:8)      RET
 </code></pre><p>先看第一行内容：</p>
 <pre><code class="language-assembly" data-lang="assembly">&quot;&quot;.add STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0
-</code></pre><p>内容虽然多，但是非常好理解，先看另一种场景，放在一起学习：</p>
+</code></pre><p>内容虽然多，但是非常好理解，不同数值均给出了名称，但是更标准的表示法一般是这样：</p>
 <pre><code class="language-assembly" data-lang="assembly">TEXT runtime∕internal∕atomic·Cas(SB),NOSPLIT,$0-17
-</code></pre><p>引号里和 <code>runtime/internal/atomic</code> 都是函数名，可以省略，后面紧跟函数名。<code>TEXT</code> 是区段名。<code>SB</code> 是基于伪寄存器 <code>SB</code> 进行偏移，比如：</p>
+</code></pre><p>双引号里和 <code>runtime/internal/atomic</code> 都是函数名，可以省略，后面紧跟函数名。<code>TEXT</code> 是区段名。<code>SB</code> 是基于伪寄存器 <code>SB</code> 进行偏移，比如：</p>
 <pre><code class="language-assembly" data-lang="assembly">+4(SB)
 a+8(SB)
 </code></pre><p>一个是在 SB 寄存器起始地址上正向偏移 4 个字节，一个是从 SB 的 a 变量开始偏移 4 个字节。</p>
@@ -103,10 +102,12 @@ a+8(SB)
 </span><span class="c1"></span><span class="kd">func</span> <span class="nf">str2slc</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
     <span class="o">...</span>
 <span class="p">}</span>
-</code></pre></div><p>这条指令可以禁止扩容检测，这样做一定程度上可以增加效率。而汇编代码里的 <code>nosplit</code> 是编译器帮我们做的优化。</p>
-<p><code>$0-17</code> 的 0 是函数栈帧大小，17 是参数大小，'-' 不是减号，只是连接符，不要想当然认为栈向下增长所以是做减法（不过好像问题也不大。这两个值都是算在 <strong>在调用者栈帧上</strong> 的。</p>
-<p>需要注意的是，如果没有 <code>nosplit</code>，则必须给出参数大小，而不能直接 <code>$x-0</code>。</p>
-<h3 id="伪寄存器">伪寄存器</h3>
+</code></pre></div><p>这条指令可以禁止扩容检测，这样做一定程度上可以增加效率。而汇编代码里的 <code>nosplit</code> 是编译器帮我们做的优化。除此之外，还有 <code>WRAPPER</code>、<code>noinline</code> 等许多指令，都是用来指导编译器的工作，例如禁用内联，禁止逃逸，禁止逃逸分析等等，具体及更多信息可以在官方文档 <a href="https://golang.org/cmd/compile/">golang.org/cmd/compile</a> 查看。</p>
+<p><code>$0-17</code> 的 0 是函数栈帧大小，指函数内的局部变量总大小，这个值包括准备子函数参数的开销。17 是参数大小，'-' 不是减号，只是连接符，不要想当然认为栈向下增长所以是做减法（不过好像问题也不大</p>
+<p><del>需要注意的是，如果没有 <code>nosplit</code>，则必须给出参数大小，而不能直接 <code>$x</code>，因为 Go 语言编译器已无法根据函数签名进行占用空间大小的推导。</del></p>
+<p>所以，最终定义函数的标准语法如下：</p>
+<pre><code class="language-assembly" data-lang="assembly">TEXT symbol(SB), [flags,] $framesize[-argsize]
+</code></pre><h2 id="伪寄存器">伪寄存器</h2>
 <p>寄存器分为 <strong>实寄存器（real register）和 伪寄存器（pseudo register）</strong> ，前者在 CPU 内部，属于 CPU 的固件，作为与 CPU 直接产生信息交换的单位，具体种类与架构有关，可以通过 dlv 工具查看：</p>
 <pre><code>(dlv) regs                                       
    Rip = 0x00007ff90ed00771                      
@@ -130,17 +131,21 @@ Rflags = 0x0000000000000246     [PF ZF IF IOPL=0]
     Cs = 0x0000000000000033                      
     Fs = 0x0000000000000053                      
     Gs = 0x000000000000002b                      
-</code></pre><p>后者是应用层抽象出来的概念，实际并不存在，目的是为了方便编程。</p>
+</code></pre><p>后者是应用层抽象出来的概念，实际并不存在，目的是为了更方便地写汇编。</p>
 <p>plan9 抽象了 4 种伪寄存器：</p>
 <ul>
-<li>FP</li>
-<li>SP</li>
-<li>SP</li>
-<li>PC</li>
+<li>FP（Frame Pointer），帧指针，快速访问函数的参数和返回值。</li>
+<li>SP（Stack Pointer），栈指针，指向栈顶。</li>
+<li>SB（Static base pointer），静态基址，全局变量。</li>
+<li>PC（Program Counter），其实就是 IP（Instruction Pointer）的别名，指向下一条指令的地址。jmp等跳转指令还有分支控制等原理就是通过修改这个值。在 8086 机里等价于 CS:IP。</li>
 </ul>
-<h2 id="与传统汇编的差异">与传统汇编的差异</h2>
-<h2 id="函数调用栈帧汇编">函数调用栈帧汇编</h2>
-<h3 id="指令差异">指令差异</h3>
+<p>其实就是对 CPU 的重新抽象，<strong>这个抽象结构与具体的 CPU 结构无关</strong>。</p>
+<p>它们之间的具体关系如下图：</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/ch3-3-arch-amd64-02.ditaa.png" alt="图源《Go语言高级编程》"></p>
+<h2 id="函数调用栈帧">函数调用栈帧</h2>
+<h2 id="与x86汇编的差异">与x86汇编的差异</h2>
+<h2 id="汇编语言的强大力量">汇编语言的强大力量</h2>
+<h2 id="总结">总结</h2>
 <ul>
 <li>没有 push，pop 等栈操作，栈的增缩是通过对 sp 栈顶寄存器的加减实现的，例如 +8（sp）</li>
 <li>操作数的大小不是通过区分操作码来实现的，而是通过操作码的后缀实现，例如复制 <code>ax</code> 寄存器低 1 字节到第二字节，在 <code>x86</code> 汇编中是通过 <code>mov ah,al</code>，而在 plan9 中则是通过 <code>movb al,ah</code>
