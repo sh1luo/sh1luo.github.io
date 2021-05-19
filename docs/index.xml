@@ -7,7 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 25 Apr 2021 23:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 May 2021 21:45:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>极客时间专栏《RPC实战与核心原理》读后笔记</title>
+      <link>https://www.kcode.icu/posts/rpc/geektime-rpc/</link>
+      <pubDate>Fri, 14 May 2021 21:45:13 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/rpc/geektime-rpc/</guid>
+      <description>简介 对 RPC 相关的学习也有了一段时间，算是有了一个初步的认识，回过头来读 极客时间的专栏 感觉思路清晰了不少，顺利了许多，再回头看 rpcx 的源码也没有那么费劲了。我把我在这个专栏中学到的一些内容记录下来，共同学习。
+本文不再解释 RPC 相关基础概念，有需要可在上文链接或者往期文章中学习。
+以下的二级标题均对应专栏的课程大纲，同样分单元总结。
+开篇词 开篇词介绍了 RPC 的使用场景，重要意义，作为引文。
+RPC 即远程过程调用，目的是使调用另一台机器上的程序就像调用本地程序一样简单。总是和 “微服务”，SOA 联系，其实理论上来说，任何牵扯到网络通信的系统都可能需要使用 RPC。比如分布式各个组件间或与应用间的通信，比如 etcd 作为统一的配置服务，客户端就是通过 gRPC 框架与服务端进行通信的。
+RPC 是解决分布式系统通信问题的一大利器。 RPC 的通信原理十分简单，可是想完美驾驭却不那么容易，这个过程除了调用过程之外，还主要包括：通信节点查找，连接的建立与状态管理，数据传输的编解码，序列化与反序列化等等，每一项都十分复杂。
+而完整的 RPC 框架却对上述过程进行了封装，使得网络通信逻辑的开发变得十分简单，效率也会更高。
+最初的我学习 RPC 也是由浅入深，从 “字面意思” 出发，即如何调用远程主机上的某个函数，实现了编解码，序列化等等一整套调用流程，成功执行了远程主机的程序，当然了，这还是点对点的。
+后来我发现这些仅仅是基础，冰山下的还包括一系列服务治理功能：连接管理，健康检测，负载均衡，优雅启停机，异常重试，业务分组以及熔断限流等等。十分复杂又充满了挑战性。</description>
+    </item>
+    
     <item>
       <title>MIT 6.828 课程学习记录</title>
       <link>https://www.kcode.icu/posts/os/mitos/</link>
@@ -153,20 +170,6 @@ func DbInit() (sql.DB, error) { db, err := sql.Open() if err != nil { return nil
  “先进后出”，也就是说如果使用了多个 defer，最先使用 的 defer 后的函数体 最后执行。 一定会执行，即 panic 后依然有效。 执行体参数在注册 defer 时确定。 &amp;hellip;  我们先来看看为什么。
 结构定义 先来看看标准库中 runtime/runtime2.defer 的定义。
 type _defer struct { siz int32	// 函数参数和返回值的大小 	started bool heap bool	// 是否分配在堆上  openDefer bool	// 是否经过开放编码的优化 	sp uintptr // defer函数体的栈顶指针 	pc uintptr // 下一条指令地址 	fn *funcval // 执行函数地址，如果是开放编码可以为空 	_panic *_panic // 与之相关的panic链表 	link *_defer	// defer链表  .</description>
-    </item>
-    
-    <item>
-      <title>深入理解 Go map</title>
-      <link>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</link>
-      <pubDate>Fri, 22 Jan 2021 23:35:20 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</guid>
-      <description>哈希表 几乎所有语言都有 哈希表 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度内增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的 ”大神“。
-问题来源于实际，我们先看看这些实际问题 ：
- 声明。当我使用 :=，var，make，甚至 new 声明 map 的时候，编译器帮我们做了什么事情，它们有什么区别？ 增删改查。使用 数组+链表 的情况下如何设计才能避免 O(n) 的最差情况？ 注意事项。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？  还有一个常识是 Go map 的 遍历是随机的，即多次遍历输出的结果不同，这个的原因会在后面提到。
-设计方式/数据结构 Go map 实现哈希表使用的是 数组+链表 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。
-为了降低 map 操作的时间复杂度，引入了一个 负载因子 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 实际上最好只存 多少比例的元素，而不是一直等到满载再处理，因为多到一定程度效率 可能 就低了。在 Go 语言里这个值被定义为 6.5，即每个桶里最多存 6.5 个，包括溢出桶。
-当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过 平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。</description>
     </item>
     
   </channel>

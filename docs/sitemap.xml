@@ -3,6 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.kcode.icu/posts/</loc>
+    <lastmod>2021-05-14T21:45:13+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/rpc/</loc>
+    <lastmod>2021-05-14T21:45:13+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/tags/</loc>
+    <lastmod>2021-05-14T21:45:13+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/</loc>
+    <lastmod>2021-05-14T21:45:13+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.kcode.icu/posts/rpc/geektime-rpc/</loc>
+    <lastmod>2021-05-14T21:45:13+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.kcode.icu/tags/mit/</loc>
     <lastmod>2021-04-25T23:35:20+00:00</lastmod>
   </url>
@@ -14,21 +39,6 @@
   
   <url>
     <loc>https://www.kcode.icu/tags/os/</loc>
-    <lastmod>2021-04-25T23:35:20+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/posts/</loc>
-    <lastmod>2021-04-25T23:35:20+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/tags/</loc>
-    <lastmod>2021-04-25T23:35:20+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/</loc>
     <lastmod>2021-04-25T23:35:20+00:00</lastmod>
   </url>
   
@@ -165,11 +175,6 @@
   <url>
     <loc>https://www.kcode.icu/posts/interview/2020-12-interview/</loc>
     <lastmod>2021-01-03T21:18:13+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/tags/rpc/</loc>
-    <lastmod>2020-11-28T15:45:13+00:00</lastmod>
   </url>
   
   <url>
@@ -335,10 +340,6 @@
   <url>
     <loc>https://www.kcode.icu/about/</loc>
     <lastmod>2019-12-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.kcode.icu/posts/rpc/geektime-rpc/</loc>
   </url>
   
 </urlset>
