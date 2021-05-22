@@ -5,8 +5,6 @@ tags:
   - RPC
 ---
 
-## 简介
-
 对 [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call) 相关的学习也有了一段时间，算是有了一个初步的认识，回过头来读 [极客时间的专栏](https://time.geekbang.org/column/intro/100046201) 感觉思路清晰了不少，顺利了许多，再回头看 [rpcx](https://rpcx.io/) 的源码也没有那么费劲了。我把我在这个专栏中学到的一些内容记录下来，共同学习。
 
 本文不再解释 RPC 相关基础概念，有需要可在上文链接或者往期文章中学习。
