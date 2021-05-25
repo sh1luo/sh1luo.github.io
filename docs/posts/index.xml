@@ -114,18 +114,18 @@ ENTER    | 0, imm16              | imm16, 0
 ENTER    | 1, imm16              | imm16, 1
 </code></pre><h3 id="操作数顺序不同">操作数顺序不同</h3>
 <p>在 x86 中，一些常见指令是这样的：</p>
-<pre><code class="language-assembly" data-lang="assembly">MOV EAX, 10		;EAX=10
-MOV AH, [BL]	;AH=*BL
+<pre><code class="language-assembly" data-lang="assembly">MOV EAX, 10  ;EAX=10
+MOV AH, [BL] ;AH=*BL
 </code></pre><p>而在 plan9 中操作数的顺序会相反：</p>
-<pre><code class="language-assembly" data-lang="assembly">MOVL a+0(FP), AX		;AX=a	
-MOVB BX, AX				;AX=BX
+<pre><code class="language-assembly" data-lang="assembly">MOVL a+0(FP), AX  ;AX=a 
+MOVB BX, AX    ;AX=BX
 </code></pre><p>不止这些，还有 LEA ADD SUB IMUL等等也都满足。</p>
 <h3 id="操作数大小表示法不同">操作数大小表示法不同</h3>
 <p>在 x86 中，表示大小通过直接区分操作数，比如 AX 寄存器的高 8 位就是 <code>AH</code> ，低 8 位就叫 <code>AL</code>.。而 plan9 中通过不同操作码来区分：</p>
-<pre><code class="language-assembly" data-lang="assembly">MOVB $0x10, AX		;1B,	Byte
-MOVW $-10, DI		;2B,	1Word=2Byte
-MOVL $0, SP			;4B,	Double Word
-MOVQ $1, DX			;8B,	Quatury Word
+<pre><code class="language-assembly" data-lang="assembly">MOVB $0x10, AX  ;1B, Byte
+MOVW $-10, DI  ;2B, 1Word=2Byte
+MOVL $0, SP   ;4B, Double Word
+MOVQ $1, DX   ;8B, Quatury Word
 </code></pre><h3 id="寄存器">寄存器</h3>
 <p>寄存器分为 <strong>实寄存器（real register）和 伪寄存器（pseudo register）</strong> ，前者在 CPU 内部，属于 CPU 的固件，作为与 CPU 直接产生信息交换的单位，具体种类与架构有关，可以通过 dlv 工具查看：</p>
 <blockquote>
@@ -226,8 +226,9 @@ Rflags = 0x0000000000000246     [PF ZF IF IOPL=0]
 <span class="p">}</span>
 </code></pre></div><h3 id="栈帧">栈帧</h3>
 <p>函数实现嵌套调用依靠的数据结构就是栈，上面这个程序它的调用栈帧如下：</p>
-<pre><code class="language-assembly" data-lang="assembly">  					+------------+ &lt;----------+
-                    |    ...     |			  |
+<pre><code class="language-assembly" data-lang="assembly">       
+                    +------------+ &lt;----------+
+                    |    ....    |            |
                     +------------+            |
                     |    Ret1    |            |
                     +------------+            |
