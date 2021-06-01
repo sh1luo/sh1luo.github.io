@@ -7,7 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Fri, 14 May 2021 21:45:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 31 May 2021 15:33:50 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>正/反向代理与科学上网</title>
+      <link>https://www.kcode.icu/posts/2021-05-31-%E6%AD%A3%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+      <pubDate>Mon, 31 May 2021 15:33:50 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/2021-05-31-%E6%AD%A3%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
+      <description>代理
+你可能听过许多 反向代理（Reverse Proxy） 软件例如 Nginx、Apache 等，它们性能优越，被广泛应用于实际应用中，那么你是否知道 “反向” 是什么意思，为什么叫反向呢，明白这个问题有助于我们更深入的理解它们。还有许多框架中常用的的 控制反转（IOC）/依赖注入（DI） 等概念，你是否理解 反转OR注入 的真正含义。
+既然有反向代理，就有正向代理，常用的科学上网就是使用了这个技术，你所见过的例如 ss/ssr/socks5 等等仅仅是协议名，配合上一些混淆方式，它们的技术原理还是 正向代理（ Forward Proxy）。
+之前我在「刷」面试题的时候，就遇到过相关问题，“墙的原理以及科学上网的原理”。相信读完这本文你会得到答案。
+反向代理 在了解正反向代理之前先牢记一句话，反向代理 代理并隐藏服务端，正向代理与之相反，隐藏客户端。
+OK，记住了这句话，想想 Nginx/Apache 的功能，你将服务部署在服务器上，可能有多个，然后使用 Nginx/Apache 来接受外界请求，利用提供的指令，例如 sever_name，listen，index，location 等控制其进行转发，由于使用了非常高效的 epoll IO多路复用模型，效率非常高。
+那么你的脑海中应该有这么一张图：
+正向代理 科学上网 </description>
+    </item>
+    
     <item>
       <title>极客时间专栏《RPC实战与核心原理》读后笔记</title>
       <link>https://www.kcode.icu/posts/rpc/geektime-rpc/</link>
@@ -159,19 +175,6 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 证书的作用有两个：
  确保通信目标的身份。 确认你的身份。  其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：
 加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。</description>
-    </item>
-    
-    <item>
-      <title>深入理解 Go defer 版本差异与底层特性</title>
-      <link>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</link>
-      <pubDate>Mon, 25 Jan 2021 23:35:20 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</guid>
-      <description>defer 简介 defer 的作用是使某个/某些执行延时执行，常用在资源使用后的释放等场景，例如：
-func DbInit() (sql.DB, error) { db, err := sql.Open() if err != nil { return nil, err } defer db.Close() ... } defer 有一些熟知的特性：
- “先进后出”，也就是说如果使用了多个 defer，最先使用 的 defer 后的函数体 最后执行。 一定会执行，即 panic 后依然有效。 执行体参数在注册 defer 时确定。 &amp;hellip;  我们先来看看为什么。
-结构定义 先来看看标准库中 runtime/runtime2.defer 的定义。
-type _defer struct { siz int32	// 函数参数和返回值的大小 	started bool heap bool	// 是否分配在堆上  openDefer bool	// 是否经过开放编码的优化 	sp uintptr // defer函数体的栈顶指针 	pc uintptr // 下一条指令地址 	fn *funcval // 执行函数地址，如果是开放编码可以为空 	_panic *_panic // 与之相关的panic链表 	link *_defer	// defer链表  .</description>
     </item>
     
   </channel>
