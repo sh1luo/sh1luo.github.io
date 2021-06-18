@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>源码 on wasabi</title>
-    <link>https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81/</link>
+    <link>https://kcode.icu/tags/%E6%BA%90%E7%A0%81/</link>
     <description>Recent content in 源码 on wasabi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 14 Mar 2021 13:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 Mar 2021 13:35:20 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E6%BA%90%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</title>
-      <link>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
+      <link>https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
       <pubDate>Sun, 14 Mar 2021 13:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
+      <guid>https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
       <description>前几天见到了一个问题：
 uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
@@ -24,10 +24,10 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
     
     <item>
       <title>深入理解 Go channel</title>
-      <link>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</link>
+      <link>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</link>
       <pubDate>Thu, 25 Feb 2021 19:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</guid>
+      <guid>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</guid>
       <description>Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
 Go 语言倡导通过通信的方式共享内存，也就是减少锁的使用，尽量都通过 Channel 来进行协程间通信。
 其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
@@ -38,10 +38,10 @@ type hchan struct { qcount uint // 队列中元素数量 	dataqsiz uint // 环�
     
     <item>
       <title>深入理解 Go string 与 slice</title>
-      <link>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</link>
+      <link>https://kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</link>
       <pubDate>Mon, 15 Feb 2021 23:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</guid>
+      <guid>https://kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</guid>
       <description>数据结构 我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 reflect/value.go 中，分别对应着 StringHeader 和 SliceHeader 。
 type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data uintptr Len int Cap int } 定义非常简单，Data 表示底层数据的地址，Len 表示长度，Cap 表示容量。容量评估了当前切片最多能容纳多少字节元素，而长度表示当前已经存储多少个字节了，切片只是对底层数据的引用：
 [图片]
@@ -52,10 +52,10 @@ package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 
     
     <item>
       <title>深入理解 Go defer 版本差异与底层特性</title>
-      <link>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</link>
+      <link>https://kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</link>
       <pubDate>Mon, 25 Jan 2021 23:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</guid>
+      <guid>https://kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</guid>
       <description>defer 简介 defer 的作用是使某个/某些执行延时执行，常用在资源使用后的释放等场景，例如：
 func DbInit() (sql.DB, error) { db, err := sql.Open() if err != nil { return nil, err } defer db.Close() ... } defer 有一些熟知的特性：
  “先进后出”，也就是说如果使用了多个 defer，最先使用 的 defer 后的函数体 最后执行。 一定会执行，即 panic 后依然有效。 执行体参数在注册 defer 时确定。 &amp;hellip;  我们先来看看为什么。
@@ -65,10 +65,10 @@ type _defer struct { siz int32	// 函数参数和返回值的大小 	started boo
     
     <item>
       <title>深入理解 Go map</title>
-      <link>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</link>
+      <link>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</link>
       <pubDate>Fri, 22 Jan 2021 23:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</guid>
+      <guid>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</guid>
       <description>哈希表 几乎所有语言都有 哈希表 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度内增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的 ”大神“。
 问题来源于实际，我们先看看这些实际问题 ：
  声明。当我使用 :=，var，make，甚至 new 声明 map 的时候，编译器帮我们做了什么事情，它们有什么区别？ 增删改查。使用 数组+链表 的情况下如何设计才能避免 O(n) 的最差情况？ 注意事项。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？  还有一个常识是 Go map 的 遍历是随机的，即多次遍历输出的结果不同，这个的原因会在后面提到。
@@ -79,10 +79,10 @@ type _defer struct { siz int32	// 函数参数和返回值的大小 	started boo
     
     <item>
       <title>Go语言net/url包源码初探</title>
-      <link>https://www.kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</link>
+      <link>https://kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</link>
       <pubDate>Wed, 11 Mar 2020 22:49:51 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</guid>
+      <guid>https://kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</guid>
       <description>问题起因 问题的起因是最近需要写一个小工具，期间因为需要自己在服务器上搭建了一个 Web 服务来提供 RESTful API 接口，在请求接口的时候需要拼接 url，没有考虑到部分字符的编码问题，导致 400 Bad Request 错误。原来使用的是这样：
 url := fmt.Sprintf(&amp;#34;%ssearch?keywords=%s %s&amp;amp;limit=1&amp;#34;, Mp3Server, name, singer) resp,err := http.Get(url) ...... 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
 q := url.Values{} q.Set(&amp;#34;keywords&amp;#34;, name+&amp;#34; &amp;#34;+singer) q.Set(&amp;#34;limit&amp;#34;, &amp;#34;1&amp;#34;) u := url.URL{ Scheme: &amp;#34;http&amp;#34;, Host: &amp;#34;shiluo.design:3000&amp;#34;, Path: &amp;#34;search&amp;#34;, RawQuery: q.Encode(), // 关键在这 } resp, err := http.Get(u.String()) 问题解决的关键就是在 RawQuery: q.Encode() 。由于我一直有看源码的习惯，我就 ctrl+左键跟进去把处理逻辑看了几遍，收获不小，特别记录下来。

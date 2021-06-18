@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>REST on wasabi</title>
-    <link>https://www.kcode.icu/tags/rest/</link>
+    <link>https://kcode.icu/tags/rest/</link>
     <description>Recent content in REST on wasabi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Tue, 10 Nov 2020 21:30:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/rest/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 10 Nov 2020 21:30:13 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/rest/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>你觉得HTTP最香是因为你还不知道RPC</title>
-      <link>https://www.kcode.icu/posts/rpc/rpcvshttp/</link>
+      <link>https://kcode.icu/posts/rpc/rpcvshttp/</link>
       <pubDate>Tue, 10 Nov 2020 21:30:13 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/rpc/rpcvshttp/</guid>
+      <guid>https://kcode.icu/posts/rpc/rpcvshttp/</guid>
       <description>我在动手写 RPCg 这个”框架“之前看了大量的文章阐述 RPC 与 HTTP，这篇文章是比较不错的一篇，我翻译过来和你分享一下 :)
 REST vs. RPC你要使用API去解决什么问题？ 有一则关于这个农民的笑话，他被问到”为什么他要尽量避免耕种出‘童话环’的形状“，他回答道，”因为如果我不那么做，我就会变成傻子“。（第一段的引用故事可暂时不关注）。
 许多人关于他们自己构建的 APIs 会说同样的话，事实上，去思考一下你要用你的 APIs 去解决什么问题这非常重要，因为你所创建的 API 的风格和你所使用的技术都依赖于你上面的回答。

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>优化 on wasabi</title>
-    <link>https://www.kcode.icu/tags/%E4%BC%98%E5%8C%96/</link>
+    <link>https://kcode.icu/tags/%E4%BC%98%E5%8C%96/</link>
     <description>Recent content in 优化 on wasabi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 16 Mar 2020 16:46:08 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E4%BC%98%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 16 Mar 2020 16:46:08 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E4%BC%98%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>优化Golang服务减少40%以上的CPU</title>
-      <link>https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</link>
+      <link>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</link>
       <pubDate>Mon, 16 Mar 2020 16:46:08 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</guid>
+      <guid>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</guid>
       <description>优化 Golang 服务来减少 40% 以上的 CPU 十年前，谷歌正在面临一个由 C++ 编译时间过长所造成的严重瓶颈，并且需要一个全新的方式来解决这个问题。谷歌的工程师们通过创造了一种新的被称作 Go （又名 Golang）的语言来应对挑战。这个新语言 Go 带来了 C++ 最好的部分（最主要的是它的性能和稳定性），又与 Python 的速度相结合，使得 Go 能够在实现并发的同时快速地使用多核心。
 在 Coralogix（译者注：一个提供全面日志分析的服务产品，官网），我们为了去给我们的客户提供关于他们日志实时的分析、警报和元数据，要去解析他们的日志。在解析阶段，我们需要非常快速地解析包含多个复杂规则的服务日志，这个目标是促使我们决定使用 Golang 的原因之一。
 这项新的服务现在就全天候的跑在生产阶段，尽管我们看到了非常好的结果，但是它也需要跑在高性能的机器上。这项 Go 的服务跑在一台 AWS m4.2xlarge 实例上 ，带有 8 CPUs 和 36 GB 的配置，每天要解析几十亿的日志。

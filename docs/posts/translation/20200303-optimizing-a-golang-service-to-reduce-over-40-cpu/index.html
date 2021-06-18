@@ -35,7 +35,7 @@
 第二，为了更好的理解我们的流程以及弄清楚我们应该在哪花费时间和资源，我们开始去进行分析。
 分析不同的服务和程序语言可能看起来很复杂并且令人望而生畏，但是对于 Go 来说它实际上十分容易，仅仅几个命令就能够描述清楚。Go 有一个专门的工具叫“pprof”，它通过监听一个路由（默认端口6060）能够应用在你的 app 上，并且使用 Go 的包来管理 HTTP 连接：" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/" />
+<meta property="og:url" content="https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/" />
 <meta property="article:published_time" content="2020-03-16T16:46:08+00:00" />
 <meta property="article:modified_time" content="2020-03-16T16:46:08+00:00" />
 <meta name="twitter:card" content="summary"/>
@@ -58,7 +58,7 @@
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>优化Golang服务减少40%以上的CPU</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	<link rel="stylesheet" href="https://kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
 	
 </head>
 
@@ -68,13 +68,13 @@
 		<div class="hdr-wrapper section-inner">
 			<div class="hdr-left">
 				<div class="site-branding">
-					<a href="https://www.kcode.icu/">wasabi</a>
+					<a href="https://kcode.icu/">wasabi</a>
 				</div>
 				<nav class="site-nav hide-in-mobile">
-					<a href="https://www.kcode.icu/posts/">文章</a>
-					<a href="https://www.kcode.icu/summary">总结</a>
-					<a href="https://www.kcode.icu/chore">杂项</a>
-					<a href="https://www.kcode.icu/go">Go系列</a>
+					<a href="https://kcode.icu/posts/">文章</a>
+					<a href="https://kcode.icu/summary">总结</a>
+					<a href="https://kcode.icu/chore">杂项</a>
+					<a href="https://kcode.icu/go">Go系列</a>
 				</nav>
 			</div>
 			<div class="hdr-right hdr-icons">
@@ -84,9 +84,9 @@
 	</header>
 	<div id="mobile-menu" class="animated fast">
 		<ul>
-			<li><a href="https://www.kcode.icu/posts/">文章</a></li>
-			<li><a href="https://www.kcode.icu/tags/">标签</a></li>
-			<li><a href="https://www.kcode.icu/about/">关于</a></li>
+			<li><a href="https://kcode.icu/posts/">文章</a></li>
+			<li><a href="https://kcode.icu/tags/">标签</a></li>
+			<li><a href="https://kcode.icu/about/">关于</a></li>
 		</ul>
 	</div>
 
@@ -171,17 +171,17 @@
 			<hr class="post-end">
 			<footer class="post-info">
 				<p>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/%E7%BF%BB%E8%AF%91">翻译</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E4%BC%98%E5%8C%96">优化</a></span><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://kcode.icu/tags/%E7%BF%BB%E8%AF%91">翻译</a></span><span class="tag"><a href="https://kcode.icu/tags/%E4%BC%98%E5%8C%96">优化</a></span><span class="tag"><a href="https://kcode.icu/tags/go">Go</a></span>
 				</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>267 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-03-17 00:46 &#43;0800</p>
 			</footer>
 		</article>
 		<div class="post-nav thin">
-			<a class="next-post" href="https://www.kcode.icu/posts/chore/go&#43;qamel/">
+			<a class="next-post" href="https://kcode.icu/posts/chore/go&#43;qamel/">
 				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Go&#43;QML构建桌面应用</span>
 			</a>
-			<a class="prev-post" href="https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/">
+			<a class="prev-post" href="https://kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Go&#43;QML开发的跨平台桌面直播助手[下]</span>
 			</a>
 		</div>
@@ -197,14 +197,14 @@
 	</main>
 
 	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
+		<p>&copy; 2018 - 2021 <a href="https://kcode.icu/">wasabi</a></p>
 		<p>
-			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
 		</p>
 	</footer>
 
 
-	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+	<script src="https://kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {

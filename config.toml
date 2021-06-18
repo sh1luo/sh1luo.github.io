@@ -1,4 +1,4 @@
-baseURL = "https://www.kcode.icu/"
+baseURL = "https://kcode.icu/"
 languageCode = "zh-hans"
 defaultContentLanguage = "en"
 title = "wasabi"

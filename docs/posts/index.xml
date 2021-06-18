@@ -1,20 +1,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>Posts on wasabi</title>
-		<link>https://www.kcode.icu/posts/</link>
+		<link>https://kcode.icu/posts/</link>
 		<description>Recent content in Posts on wasabi</description>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-hans</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
 		<lastBuildDate>Sat, 05 Jun 2021 14:36:20 +0000</lastBuildDate>
-		<atom:link href="https://www.kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
+		<atom:link href="https://kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
 		
 		<item>
 			<title>如何只使用一个指针域实现双向链表</title>
-			<link>https://www.kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</link>
+			<link>https://kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</link>
 			<pubDate>Sat, 05 Jun 2021 14:36:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</guid>
+			<guid>https://kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</guid>
 			<description>这是来自某学习群友提供的，一道 便利蜂 的实习面试题，恰好被看到了（不是
 问题是：只使用一个指针如何实现双向链表，乍一想好像不可能，我当时的大致思路是这样的：原来直接使用 -&amp;gt;right 或者 -&amp;gt;left 就能访问到左右节点，现在只有一个指针，就要修改指针的含义，不能直接存储下一个节点的地址了，大概率是要根据某些条件算出下一个地址。
 事实证明基本如此，我去翻了维基百科详细看了思路并本地实现了一遍完整代码，记录一下。</description>
@@ -27,10 +27,10 @@
 		
 		<item>
 			<title>正/反向代理与科学上网</title>
-			<link>https://www.kcode.icu/posts/2021-05-31-%E6%AD%A3%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+			<link>https://kcode.icu/posts/2021-05-31-%E6%AD%A3%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
 			<pubDate>Mon, 31 May 2021 15:33:50 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/2021-05-31-%E6%AD%A3%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
+			<guid>https://kcode.icu/posts/2021-05-31-%E6%AD%A3%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
 			<description>代理
 你可能听过许多 反向代理（Reverse Proxy） 软件例如 Nginx、Apache 等，它们性能优越，被广泛应用于实际应用中，那么你是否知道 “反向” 是什么意思，为什么叫反向呢，明白这个问题有助于我们更深入的理解它们。还有许多框架中常用的的 控制反转（IOC）/依赖注入（DI） 等概念，你是否理解 反转OR注入 的真正含义。
 既然有反向代理，就有正向代理，常用的科学上网就是使用了这个技术，你所见过的例如 ss/ssr/socks5 等等仅仅是协议名，配合上一些混淆方式，它们的技术原理还是 正向代理（ Forward Proxy）。
@@ -54,10 +54,10 @@ OK，记住了这句话，想想 Nginx/Apache 的功能，你将服务部署在�
 		
 		<item>
 			<title>极客时间专栏《RPC实战与核心原理》读后笔记</title>
-			<link>https://www.kcode.icu/posts/rpc/geektime-rpc/</link>
+			<link>https://kcode.icu/posts/rpc/geektime-rpc/</link>
 			<pubDate>Fri, 14 May 2021 21:45:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/rpc/geektime-rpc/</guid>
+			<guid>https://kcode.icu/posts/rpc/geektime-rpc/</guid>
 			<description>对 RPC 相关的学习也有了一段时间，算是有了一个初步的认识，回过头来读 极客时间的专栏 感觉思路清晰了不少，顺利了许多，再回头看 rpcx 的源码也没有那么费劲了。我把我在这个专栏中学到的一些内容记录下来，共同学习。
 本文不再解释 RPC 相关基础概念，有需要可在上文链接或者往期文章中学习。
 以下的二级标题均对应专栏的课程大纲，同样分单元总结。
@@ -83,10 +83,10 @@ RPC 是解决分布式系统通信问题的一大利器。 RPC 的通信原理�
 		
 		<item>
 			<title>MIT 6.828 课程学习记录</title>
-			<link>https://www.kcode.icu/posts/os/mitos/</link>
+			<link>https://kcode.icu/posts/os/mitos/</link>
 			<pubDate>Sun, 25 Apr 2021 23:35:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/os/mitos/</guid>
+			<guid>https://kcode.icu/posts/os/mitos/</guid>
 			<description>介绍 好多人推荐这个国外的课程，就找了一下课程，下载了一份讲义，打开第一眼就看到大名鼎鼎的 rsc 大佬，偶像啊，Go 的当下掌舵人。就冲这名必须得看完了（狗头😄）。 开个玩笑，我个人对计算机基础最感兴趣的就是组成原理、操作系统和汇编语言，除此之外就是分布式了，等搞定这个之后也去跟一下 MIT 6.824 分布式部分（开新坑🕳️ ）
 待更&amp;hellip;.</description>
 			<content type="html"><![CDATA[<h2 id="介绍">介绍</h2>
@@ -98,10 +98,10 @@ RPC 是解决分布式系统通信问题的一大利器。 RPC 的通信原理�
 		
 		<item>
 			<title>Go 使用的 plan9 汇编语言初探</title>
-			<link>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</link>
+			<link>https://kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</link>
 			<pubDate>Sun, 04 Apr 2021 20:30:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</guid>
+			<guid>https://kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</guid>
 			<description>plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
 Go 语言早在 1.5 版本就实现了自举，即 使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，在下文中一边比较一边介绍。
 伪寄存器 plan9 抽象了 4 种伪寄存器：
@@ -385,10 +385,10 @@ a+8(SB)
 		
 		<item>
 			<title>大三实习求职之旅</title>
-			<link>https://www.kcode.icu/posts/interview/2021-3-nowcoder/</link>
+			<link>https://kcode.icu/posts/interview/2021-3-nowcoder/</link>
 			<pubDate>Tue, 30 Mar 2021 17:20:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/interview/2021-3-nowcoder/</guid>
+			<guid>https://kcode.icu/posts/interview/2021-3-nowcoder/</guid>
 			<description>说在前面 经常“吸”社区，也要时不时反馈一点，一起延续开源精神。
 个人情况：22 届双非一本，从去年 12 月开始面试找寒假的实习，由于学校疫情原因没去成功，于是经过寒假复习“二战”。先后面了跟谁学，腾讯，字节，阿里。
 由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C++ 用来写题，有的问题可能不具有参考价值，理性看待。
@@ -506,10 +506,10 @@ go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来�
 		
 		<item>
 			<title>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</title>
-			<link>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
+			<link>https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
 			<pubDate>Sun, 14 Mar 2021 13:35:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
+			<guid>https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
 			<description>前几天见到了一个问题：
 uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
@@ -621,10 +621,10 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
 		
 		<item>
 			<title>深入理解 Go channel</title>
-			<link>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</link>
+			<link>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</link>
 			<pubDate>Thu, 25 Feb 2021 19:35:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</guid>
+			<guid>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</guid>
 			<description>Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
 Go 语言倡导通过通信的方式共享内存，也就是减少锁的使用，尽量都通过 Channel 来进行协程间通信。
 其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
@@ -674,10 +674,10 @@ type hchan struct { qcount uint // 队列中元素数量 	dataqsiz uint // 环�
 		
 		<item>
 			<title>记 MySQL 5.7.5 及以上实现的功能检测依赖报错分析</title>
-			<link>https://www.kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/</link>
+			<link>https://kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/</link>
 			<pubDate>Wed, 24 Feb 2021 15:15:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/</guid>
+			<guid>https://kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/</guid>
 			<description>秉承着 “软件均使用最新版本，学习均从文档入手” 的理念，学习使用 MySQL 我也是在使用最新的大版本 MySQL 8，而在技术发展过程中，一个不可忽视的因素就是兼容性，在保证新特性无误的同时必须确保以前的功能不受影响，如果不能保证这一点，那么许多使用者在迁移的时候就需要考虑很多改动成本，除非不是大改动，一般都会考虑到这一点，比如 HTTP/2 、TLS/1.3 等等。
 错误描述及分析 最近为学校写一个选课平台时关系型数据库使用的是 MySQL 8+，使用 Group by 时报了这个错误：
 ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column &#39;mydb.t.address&#39; which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by意思是说 select 列表中包含了非聚合列，其并不函数依赖于 Group by 子句中的列。并且和 sql_mode 这个配置项的 only_full_group_by 值冲突。不过这篇文章并不只是单纯说解决方法，如果想要解决方法请直接移步文末。
@@ -731,10 +731,10 @@ mysql&gt; select @@session.sql_mode;
 		
 		<item>
 			<title>深入理解 Go string 与 slice</title>
-			<link>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</link>
+			<link>https://kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</link>
 			<pubDate>Mon, 15 Feb 2021 23:35:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</guid>
+			<guid>https://kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</guid>
 			<description>数据结构 我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 reflect/value.go 中，分别对应着 StringHeader 和 SliceHeader 。
 type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data uintptr Len int Cap int } 定义非常简单，Data 表示底层数据的地址，Len 表示长度，Cap 表示容量。容量评估了当前切片最多能容纳多少字节元素，而长度表示当前已经存储多少个字节了，切片只是对底层数据的引用：
 [图片]
@@ -773,10 +773,10 @@ go.string.&quot;abc&quot; SRODATA dupok size=3
 		
 		<item>
 			<title>https 为什么安全</title>
-			<link>https://www.kcode.icu/posts/https/</link>
+			<link>https://kcode.icu/posts/https/</link>
 			<pubDate>Wed, 27 Jan 2021 15:57:50 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/https/</guid>
+			<guid>https://kcode.icu/posts/https/</guid>
 			<description>截图均使用了 Wireshark 工具进行抓包分析。
  HTTPS 并不是一种新的协议，而是 HTTP over SSL/TLS，也就是使用了 SSL/TLS 加密的 HTTP，解决了 HTTP 不安全的问题。SSL（Secure Sockets Layer） 是 TLS（Transport Layer Security） 的前身，它们都处在 OSI 七层模型中的会话层。SSL 经历了三个版本的变迁，后来升级为了 TLS，TLS 主要有 1.0、1.1、1.2 和 1.3，现在大部分正在从 1.1 到 1.2 的迁移，部分使用 1.3，我们可以使用 Wireshark 过滤一下进行简单查看。
 需要注意的是，应用了 HTTPS 后通信效率会变低，毕竟需要进行额外的握手，加解密步骤。
@@ -969,10 +969,10 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 		
 		<item>
 			<title>深入理解 Go defer 版本差异与底层特性</title>
-			<link>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</link>
+			<link>https://kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</link>
 			<pubDate>Mon, 25 Jan 2021 23:35:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</guid>
+			<guid>https://kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</guid>
 			<description>defer 简介 defer 的作用是使某个/某些执行延时执行，常用在资源使用后的释放等场景，例如：
 func DbInit() (sql.DB, error) { db, err := sql.Open() if err != nil { return nil, err } defer db.Close() ... } defer 有一些熟知的特性：
  “先进后出”，也就是说如果使用了多个 defer，最先使用 的 defer 后的函数体 最后执行。 一定会执行，即 panic 后依然有效。 执行体参数在注册 defer 时确定。 &amp;hellip;  我们先来看看为什么。
@@ -1045,10 +1045,10 @@ type _defer struct { siz int32	// 函数参数和返回值的大小 	started boo
 		
 		<item>
 			<title>深入理解 Go map</title>
-			<link>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</link>
+			<link>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</link>
 			<pubDate>Fri, 22 Jan 2021 23:35:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</guid>
+			<guid>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</guid>
 			<description>哈希表 几乎所有语言都有 哈希表 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度内增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的 ”大神“。
 问题来源于实际，我们先看看这些实际问题 ：
  声明。当我使用 :=，var，make，甚至 new 声明 map 的时候，编译器帮我们做了什么事情，它们有什么区别？ 增删改查。使用 数组+链表 的情况下如何设计才能避免 O(n) 的最差情况？ 注意事项。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？  还有一个常识是 Go map 的 遍历是随机的，即多次遍历输出的结果不同，这个的原因会在后面提到。
@@ -1401,10 +1401,10 @@ type _defer struct { siz int32	// 函数参数和返回值的大小 	started boo
 		
 		<item>
 			<title>在线博客的图床解决方案</title>
-			<link>https://www.kcode.icu/posts/chore/blog_imgs/</link>
+			<link>https://kcode.icu/posts/chore/blog_imgs/</link>
 			<pubDate>Wed, 20 Jan 2021 15:45:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/chore/blog_imgs/</guid>
+			<guid>https://kcode.icu/posts/chore/blog_imgs/</guid>
 			<description>很多人应该都听说过来人说过要写博客进行总结记录，一是说自己学习过程的复盘，二是在某些时候向不认识自己的人间接显示自己的大致水平。不过如果没有人“手把手”教的话我相信还会遇到各种各样的问题的，这篇文章就介绍一下在博客中必不可少的图片网络地址解决方法，也就是图床。它的目标是在你写文章的过程中可以一键插入目标图片并自动上传到网络，就像你使用本地图片一样快捷。
 图床的目的就是把你的本地图片上传上去，从而能获得它的网络地址。当然了，只使用图床也是可以的，但是需要配合对应的工具上传拿 URL（比如 OSS）或者纯手动（GitHub/Gitee），非常不方便 一点也不极客，所以需要配合其他工具一键快速拿到它对应的网络地址（URL），所以我在下面介绍了我使用到的工具，仅供参考。
  评估用的稳定性指你上传的图片会不会在某个不确定的时间突然挂掉，让你的文章出现大量图片 404 丢失的情况。
@@ -1472,10 +1472,10 @@ PicGo PicGo 是一款使用 Node + Electron 开发的跨平台可视化图片上
 		
 		<item>
 			<title>谈谈最常见的 HTTP</title>
-			<link>https://www.kcode.icu/posts/http/</link>
+			<link>https://kcode.icu/posts/http/</link>
 			<pubDate>Fri, 15 Jan 2021 23:10:22 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/http/</guid>
+			<guid>https://kcode.icu/posts/http/</guid>
 			<description>标题的”最常见“我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。
 这篇博客我想阐述除书本概念之外的一些可能你 理解不深刻 的问题的 个人理解，希望对你有所帮助。
 HTTP是什么 超文本传输协议（Hypertext Transfer Protocol，HTTP），是一个应用层面上的，也就是软件双方通信的数据规则，是通信的基石。不然你发给我一串 @#$%$%^$%^，只有你能看懂，我怎么知道你说的是什么玩意？双方按照这个规则去通信，有什么需求都在这个规范里写好了发给对方，对方就知道你想干什么，就可以也按照这个规范给你回过去，就是这么简单。只是因为随着技术的发展，所遇到的问题越来越多，从功能需求，再到安全、效率、可读性等等，不得不提出一系列的解决方案去完善，最终变得很 ”臃肿“ 罢了。但是你应该明白，这就是一个为应用程序通信所提出来的一个基础通信协议。
@@ -1522,10 +1522,10 @@ Connection: keep-alive在这之前这个字段的默认是 close，长连接的
 		
 		<item>
 			<title>一些常见 Go 语言及面试问题的整理</title>
-			<link>https://www.kcode.icu/posts/interview/somequestions/</link>
+			<link>https://kcode.icu/posts/interview/somequestions/</link>
 			<pubDate>Fri, 15 Jan 2021 21:10:55 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/interview/somequestions/</guid>
+			<guid>https://kcode.icu/posts/interview/somequestions/</guid>
 			<description>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。
  待完成
  Go make和new的区别，使用和底层？ 两者都可以声明变量，例如 map，channelchannel，slice，以及结构体等等，我们常用make来初始化map，channel，而常用new 来初始化普通类型变量和结构体。
@@ -1562,10 +1562,10 @@ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m�
 		
 		<item>
 			<title>几经周折的博客变迁史</title>
-			<link>https://www.kcode.icu/posts/chore/blog_journey/</link>
+			<link>https://kcode.icu/posts/chore/blog_journey/</link>
 			<pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/chore/blog_journey/</guid>
+			<guid>https://kcode.icu/posts/chore/blog_journey/</guid>
 			<description>仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
  尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。 使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。 发现了国内访问速度更快的 Gitee Page。 再次购买域名，使用 CDN 加速国外空间，未果（下文说）&amp;hellip;&amp;hellip;  前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
 当时配置那个 A 记录，CNAME 记录啥的根本不知道是什么东西，也不知道 DNS 是什么，就是配，成功了就行，不成功就猜，一个个试呗。现在想想，真的是走了不少弯路，如果能系统地学一下多好。不过这些问题也都在我后来的实践以及学习过程中逐一解决了，现在遇到问题也不用像没头苍蝇一样乱撞了，这种感觉很不错 :)
@@ -1657,10 +1657,10 @@ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m�
 		
 		<item>
 			<title>记人生中前几次面试及思考</title>
-			<link>https://www.kcode.icu/posts/interview/2020-12-interview/</link>
+			<link>https://kcode.icu/posts/interview/2020-12-interview/</link>
 			<pubDate>Sun, 03 Jan 2021 21:18:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/interview/2020-12-interview/</guid>
+			<guid>https://kcode.icu/posts/interview/2020-12-interview/</guid>
 			<description>写作背景 由于早早有了就业的想法，于是我在大三上学期快要结束的时候便早早地”物色“各大公司的实习了，也是希望能在就业前增加段实习经历，丰富一下经验。这也是人生中我的第一次面试，感触颇多。特别记录下来自己的总结以及对于假期自己的学习规划。
 面试总结 这次我面试的总共有三家公司，跟谁学、字节跳动和腾讯，对我印象最深也是帮助最大的就是”字节跳动“。关于面试的准备大致有三块，简历、技术口述和手撕代码，下面分开说。
 简历 这里使用的简历风格是参考了 @帅地玩编程 和 @码农桃花源 两位大佬，一个是本科腾讯大学时期年入几十万的，第二个是 Go 圈的全成大佬，推荐大家关注。
@@ -1703,10 +1703,10 @@ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m�
 		
 		<item>
 			<title>手写一个RPCg（上）</title>
-			<link>https://www.kcode.icu/posts/rpc/rpcg/</link>
+			<link>https://kcode.icu/posts/rpc/rpcg/</link>
 			<pubDate>Sat, 28 Nov 2020 15:45:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/rpc/rpcg/</guid>
+			<guid>https://kcode.icu/posts/rpc/rpcg/</guid>
 			<description>须知 可能看到这里的一部分人还不知道什么是 RPC，也不知道为什么要用 RPC，内心：HTTP不香吗？那么你需要首先看一下这篇文章：
  你觉得HTTP哪都好用是因为你不知道RPC
  已经实现的 这篇文章我会带你手写一个简易版本的 RPC 框架，这个框架会支持如下这些功能：
@@ -1764,10 +1764,10 @@ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m�
 		
 		<item>
 			<title>你觉得HTTP最香是因为你还不知道RPC</title>
-			<link>https://www.kcode.icu/posts/rpc/rpcvshttp/</link>
+			<link>https://kcode.icu/posts/rpc/rpcvshttp/</link>
 			<pubDate>Tue, 10 Nov 2020 21:30:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/rpc/rpcvshttp/</guid>
+			<guid>https://kcode.icu/posts/rpc/rpcvshttp/</guid>
 			<description>我在动手写 RPCg 这个”框架“之前看了大量的文章阐述 RPC 与 HTTP，这篇文章是比较不错的一篇，我翻译过来和你分享一下 :)
 REST vs. RPC你要使用API去解决什么问题？ 有一则关于这个农民的笑话，他被问到”为什么他要尽量避免耕种出‘童话环’的形状“，他回答道，”因为如果我不那么做，我就会变成傻子“。（第一段的引用故事可暂时不关注）。
 许多人关于他们自己构建的 APIs 会说同样的话，事实上，去思考一下你要用你的 APIs 去解决什么问题这非常重要，因为你所创建的 API 的风格和你所使用的技术都依赖于你上面的回答。
@@ -1785,10 +1785,10 @@ REST vs. RPC你要使用API去解决什么问题？ 有一则关于这个农民�
 		
 		<item>
 			<title>Linux du/df命令总结</title>
-			<link>https://www.kcode.icu/posts/chore/linux_df_du/</link>
+			<link>https://kcode.icu/posts/chore/linux_df_du/</link>
 			<pubDate>Wed, 04 Nov 2020 18:15:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/chore/linux_df_du/</guid>
+			<guid>https://kcode.icu/posts/chore/linux_df_du/</guid>
 			<description>linux 在我们日常学习中用的非常多，连接远程 linux 服务器，使用各种 linux 命令，或者物理机就是 linux 系统或者 MacOS。如果你想要学习进阶知识，linux 已经是必不可少的一个组件了。这篇博客记录一下 linux 下常被混淆的 du/df 命令。
 df df 就是 “disk free” 的缩写，一般是用来快速浏览你的文件系统，会显示所有磁盘的大小，使用空间，剩余空间，使用百分比还有磁盘挂载到哪个分区上了。使用的时候一般要带上 -h 参数来增加可读性。这些数据都是从挂载点或者文件系统级别计算出来的，比较 “宏观”。
 而且，-h 标记会使你的数据四舍五入更方便显示，比如它显示 3G 的大小，实际上可能是 2.9G 或者 3.1G，并不确定。
@@ -1813,10 +1813,10 @@ df VS. du 看了这两个命令大致用法后，它们在使用场景是什么�
 		
 		<item>
 			<title>一文搞懂ASCII、Unicode和UTF</title>
-			<link>https://www.kcode.icu/posts/ascii-unicode-utf/</link>
+			<link>https://kcode.icu/posts/ascii-unicode-utf/</link>
 			<pubDate>Fri, 18 Sep 2020 09:27:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/ascii-unicode-utf/</guid>
+			<guid>https://kcode.icu/posts/ascii-unicode-utf/</guid>
 			<description>起因 最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 Byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在 会用 的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。
 什么是ASCII，为什么又要引入Unicode 都应该了解过 ASCII、Unicode、Unicode 码点、UTF-8等一系列名词。先说 ASCII（American Standard Code for Information Interchange: 美国信息交换标准代码），它是一种字符集，说白了就是一个字符和数字的一一对应关系，你想找这个字符怎么办，计算机又不认识字符？给出他的对应的数字就行了。最初只有美国等一些使用英文的国家使用，所以 128 个字符完全够用，它包含了标点符号、数字和字母等。但是随着世界上使用计算机的国家越来越多，这 128 个字符是完全不够用的。所以 Unicode 字符集 就出现了。Unicode 包含了世界上绝大多数的字符，给他们提供了一一对应关系，比如“知”字对应 30693，即 U+77e5（16 进制形式）。所以说白了 ASCII 和 Unicode 就是一种字符集，一种字符对应关系，Unicode 中每个字符被称为一个 Code Point（码点），而 Go 语言中的 rune 类型正是代表了这样一个单位，即一个 rune 代表了一个 unicode 字符。
 那么大家肯定都听说过 UTF-8，UTF-16 吧，那问题来了， UTF 又是什么呢，UTF-8 和 UTF-16 到底又有什么关系呢？
@@ -1888,10 +1888,10 @@ Process finished with <span class="nb">exit</span> code <span class="m">0</span>
 		
 		<item>
 			<title>StarUML3.x 版本解包分析</title>
-			<link>https://www.kcode.icu/posts/chore/staruml-3.2.x/</link>
+			<link>https://kcode.icu/posts/chore/staruml-3.2.x/</link>
 			<pubDate>Wed, 20 May 2020 22:11:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/chore/staruml-3.2.x/</guid>
+			<guid>https://kcode.icu/posts/chore/staruml-3.2.x/</guid>
 			<description>由于软件工程基础课需要，搜索发现这个工具还算毕竟好用的，下载了这个工具发现需要注册码，遂进行一番查找，最后确定如下方法。之所以写博客记录下来是因为有两个坑点。
  OS：Windows 10 专业版。
 更新时间：2020/5/17
@@ -1971,10 +1971,10 @@ internal/fs/utils.js:230
 		
 		<item>
 			<title>OBS显示器捕获黑屏解决方案</title>
-			<link>https://www.kcode.icu/posts/chore/obs/</link>
+			<link>https://kcode.icu/posts/chore/obs/</link>
 			<pubDate>Sun, 26 Apr 2020 11:34:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/chore/obs/</guid>
+			<guid>https://kcode.icu/posts/chore/obs/</guid>
 			<description>问题起因 由于我最近重新安装了系统，在重新下载 OBS 后发现捕获不到桌面。我之前解决方法就是直接在显卡控制面板里将 OBS 设置为集显就行了。但是这次设置了也不行，有可能是我下载的显卡驱动版本不对。。于是就找到了这个终极解决方案，基本电脑上有这个功能的都能解决。
 问题环境 操作系统：Win10 64位 专业版 - 1909
 CPU 集成显卡型号：Inter(R) UHD Graphics 630
@@ -2017,10 +2017,10 @@ OBS 版本：25.0.4(64 bit)
 		
 		<item>
 			<title>Go&#43;QML构建桌面应用</title>
-			<link>https://www.kcode.icu/posts/chore/go&#43;qamel/</link>
+			<link>https://kcode.icu/posts/chore/go&#43;qamel/</link>
 			<pubDate>Mon, 23 Mar 2020 14:51:15 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/chore/go&#43;qamel/</guid>
+			<guid>https://kcode.icu/posts/chore/go&#43;qamel/</guid>
 			<description>引文 开发的项目是直播助手，相关介绍在 B站直播协议分析上 有介绍，这里说一下技术选型方面遇到的问题，踩的坑，希望给后续的人一点建议和参考。
 技术选型 因为当时第一步的主要想开发的功能是弹幕点歌，但是在稍做分析之后发现如何对 MP3 文件进行解码播放是个问题，自己实现可能略显复杂，也不是这个工具的主要想解决的问题。然后就考虑到使用什么组件来解码并播放音乐。
 最初的想法是另写一套前端，和已经写好的这套后端进行通信，来呈现内容，播放音乐等，这是一定可以实现的，但是同一条信息进行两次传输效率太低，于是放弃，想在同一端执行，增加效率。Go 确实不擅长写 GUI 程序（C#完美。。），决定使用 qamel来使用开发，其和 therecipe 比较如下：
@@ -2060,10 +2060,10 @@ OBS 版本：25.0.4(64 bit)
 		
 		<item>
 			<title>优化Golang服务减少40%以上的CPU</title>
-			<link>https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</link>
+			<link>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</link>
 			<pubDate>Mon, 16 Mar 2020 16:46:08 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</guid>
+			<guid>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</guid>
 			<description>优化 Golang 服务来减少 40% 以上的 CPU 十年前，谷歌正在面临一个由 C++ 编译时间过长所造成的严重瓶颈，并且需要一个全新的方式来解决这个问题。谷歌的工程师们通过创造了一种新的被称作 Go （又名 Golang）的语言来应对挑战。这个新语言 Go 带来了 C++ 最好的部分（最主要的是它的性能和稳定性），又与 Python 的速度相结合，使得 Go 能够在实现并发的同时快速地使用多核心。
 在 Coralogix（译者注：一个提供全面日志分析的服务产品，官网），我们为了去给我们的客户提供关于他们日志实时的分析、警报和元数据，要去解析他们的日志。在解析阶段，我们需要非常快速地解析包含多个复杂规则的服务日志，这个目标是促使我们决定使用 Golang 的原因之一。
 这项新的服务现在就全天候的跑在生产阶段，尽管我们看到了非常好的结果，但是它也需要跑在高性能的机器上。这项 Go 的服务跑在一台 AWS m4.2xlarge 实例上 ，带有 8 CPUs 和 36 GB 的配置，每天要解析几十亿的日志。
@@ -2145,10 +2145,10 @@ OBS 版本：25.0.4(64 bit)
 		
 		<item>
 			<title>Go&#43;QML开发的跨平台桌面直播助手[下]</title>
-			<link>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</link>
+			<link>https://kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</link>
 			<pubDate>Fri, 13 Mar 2020 13:22:23 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</guid>
+			<guid>https://kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8B/</guid>
 			<description>Go + QML 结合上节的分析，开发的思路的大致流程我画了个图，大概是这样：
  因为是需要面向用户的，又考虑到 Go 语言的特殊性（可以直接调用 C/C++ 代码，GUI 官方不支持），最后决定使用 Qml 来呈现前端，与 Go 语言利用插槽和信号进行通信。
  处理思路是创建一个协程池来处理不同类型的包数据。判断每个包内所有子包类型，将接收的未处理的字节数组直接送入对应协程池中的管道。因为代码也比较简单，就是简单的 WebSocket 通信。
@@ -2268,10 +2268,10 @@ OBS 版本：25.0.4(64 bit)
 		
 		<item>
 			<title>Go语言net/url包源码初探</title>
-			<link>https://www.kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</link>
+			<link>https://kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</link>
 			<pubDate>Wed, 11 Mar 2020 22:49:51 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</guid>
+			<guid>https://kcode.icu/posts/chore/go-net-url%E5%8C%85%E6%BA%90%E7%A0%81%E5%88%9D%E6%8E%A2/</guid>
 			<description>问题起因 问题的起因是最近需要写一个小工具，期间因为需要自己在服务器上搭建了一个 Web 服务来提供 RESTful API 接口，在请求接口的时候需要拼接 url，没有考虑到部分字符的编码问题，导致 400 Bad Request 错误。原来使用的是这样：
 url := fmt.Sprintf(&amp;#34;%ssearch?keywords=%s %s&amp;amp;limit=1&amp;#34;, Mp3Server, name, singer) resp,err := http.Get(url) ...... 这个 name 和 singer 都有可能是中文，直接请求服务器无法识别，所以导致 400 无效请求的错误。后来改成这样，就成功了：
 q := url.Values{} q.Set(&amp;#34;keywords&amp;#34;, name+&amp;#34; &amp;#34;+singer) q.Set(&amp;#34;limit&amp;#34;, &amp;#34;1&amp;#34;) u := url.URL{ Scheme: &amp;#34;http&amp;#34;, Host: &amp;#34;shiluo.design:3000&amp;#34;, Path: &amp;#34;search&amp;#34;, RawQuery: q.Encode(), // 关键在这 } resp, err := http.Get(u.String()) 问题解决的关键就是在 RawQuery: q.Encode() 。由于我一直有看源码的习惯，我就 ctrl+左键跟进去把处理逻辑看了几遍，收获不小，特别记录下来。
@@ -2467,10 +2467,10 @@ q := url.Values{} q.Set(&amp;#34;keywords&amp;#34;, name+&amp;#34; &amp;#34;+sin
 		
 		<item>
 			<title>Go&#43;QML开发的跨平台桌面直播助手[上]</title>
-			<link>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8A/</link>
+			<link>https://kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8A/</link>
 			<pubDate>Thu, 05 Mar 2020 15:45:13 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8A/</guid>
+			<guid>https://kcode.icu/posts/b%E7%AB%99%E7%9B%B4%E6%92%AD%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E4%B8%8A/</guid>
 			<description>B站直播协议分析  上篇介绍协议分析，下篇介绍开发思路。
  项目缘由 假期在家，群里有几个朋友决定尝个新鲜开直播娱乐一下，后来发现B站官方提供的直播姬只有弹幕显示功能，并没有点歌等其他自定义功能，网上的项目也比较少，而且一些点歌机不维护了导致功能有缺陷，因此打算开发一个自定义的具有多功能的直播助手，初步包含弹幕礼物显示，点歌等功能。
 开发的思路是分析传输二进制包，从中找出我们想要的数据，以我们想要的方式显示出来。
@@ -2619,10 +2619,10 @@ q := url.Values{} q.Set(&amp;#34;keywords&amp;#34;, name+&amp;#34; &amp;#34;+sin
 		
 		<item>
 			<title>超越代码的贡献:对于每一个人的开源</title>
-			<link>https://www.kcode.icu/posts/translation/20191204-contribute-beyond-code-open-source-for-everyone/</link>
+			<link>https://kcode.icu/posts/translation/20191204-contribute-beyond-code-open-source-for-everyone/</link>
 			<pubDate>Fri, 14 Feb 2020 21:21:55 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/translation/20191204-contribute-beyond-code-open-source-for-everyone/</guid>
+			<guid>https://kcode.icu/posts/translation/20191204-contribute-beyond-code-open-source-for-everyone/</guid>
 			<description>超越代码的贡献：对于每一个人的开源 开发者经常被鼓励去为开源做贡献。如果你不把自己当成一个开发者，那么踏上贡献这个旅程可能让人感到望而生畏。在过去的一年里，我发现参与开源 folk 的数量跌倒了谷底，这一定程度上与大家总是拿“但是我不是开发者”作为借口有关。在这篇文章中，我会分享一些关于为什么你应该为 Go OSS 项目做贡献，并且提供一些信息关于在哪贡献，包括一些额外的资源让你开始。
 你为什么应该贡献开源项目？ 参与开源是一份保持给予的礼物。每一个人都有他们的动机，但是以一个积极的角色和社区联系起来的好处包括：
  提高学习和开发技巧。 你能够在与绩效评估无关的角色中练习合作技巧。并且由你工作之外的兴趣所驱动，你会发展出其他的技能。 构建和提高知名度。 你的雇主会受益于你参与了开源社区。你可以找到新的工作机会和潜在的同事。  你需要什么？ 首先，弄清楚你的雇主对于开源贡献的政策并且审查一下你的雇佣协议。虽然我认为每一个使用开源软件的公司都应该给他们的雇员一些时间去做贡献，但是开源政策经常有问题，尽管个体贡献在个人时间和个人设备的环境下。如果你的公司还没有一个政策（或者有一个受限的政策），我分享的 A Model IP and Open Source Contribution Policy 可能对于向你提供引导，去改善这个情况有帮助。
@@ -2695,10 +2695,10 @@ q := url.Values{} q.Set(&amp;#34;keywords&amp;#34;, name+&amp;#34; &amp;#34;+sin
 		
 		<item>
 			<title>Go语言内存管理与内存清理</title>
-			<link>https://www.kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</link>
+			<link>https://kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</link>
 			<pubDate>Fri, 14 Feb 2020 21:20:33 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</guid>
+			<guid>https://kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</guid>
 			<description>Go：内存管理与内存清理 清理内存是一个过程，它能够让 Go 知道哪些内存段最近可用于分配。但是，它并不会使用将位置 0 的方式来清理内存。
 将内存置0 将内存置 0 的过程 —— 就是把内存段中的所有位赋值为 0 —— 是在分配过程中即时执行的。
 然后，第一个分配就开始了：
@@ -2763,10 +2763,10 @@ q := url.Values{} q.Set(&amp;#34;keywords&amp;#34;, name+&amp;#34; &amp;#34;+sin
 		
 		<item>
 			<title>Go的GC是怎样监听你的应用的？</title>
-			<link>https://www.kcode.icu/posts/translation/20191002-go-how-does-the-garbage-collector-watch-your-application/</link>
+			<link>https://kcode.icu/posts/translation/20191002-go-how-does-the-garbage-collector-watch-your-application/</link>
 			<pubDate>Wed, 01 Jan 2020 20:43:19 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/translation/20191002-go-how-does-the-garbage-collector-watch-your-application/</guid>
+			<guid>https://kcode.icu/posts/translation/20191002-go-how-does-the-garbage-collector-watch-your-application/</guid>
 			<description>Go: GC 是怎样监听你的应用的？ Go 语言的垃圾收集器 （下文简称 GC ）能够帮助到开发者，通过自动地释放掉一些程序中不再需要使用的内存。但是，跟踪并清理掉这些内存也可能影响我们程序的性能。Go 语言的 GC 旨在实现 这些目标 并且关注如下几个问题：
  当程序被终止时，尽可能多的减少在这两个阶段的 STW （的次数） 。 一个 GC 周期的时间要少于 10 毫秒。 一次 GC 周期不能占用超过 25% 的 CPU 资源。  这是一些很有挑战性的目标，如果 GC 从我们的程序中了解到足够多的信息，它就能去解决这些问题。
 到达堆阈值 GC 将会关注的第一个指标是堆的使用增长。默认情况下，它将在堆大小加倍时运行。这是一个在循环中分配内存的简单程序。
@@ -2847,10 +2847,10 @@ gc 15 @121.340s 0%: 0.058+1.2+0.015 ms clock, 0.46+0/2.0/4.1+0.12 ms cpu, 1-&gt;
 		
 		<item>
 			<title>Go的随机数是怎样产生的？</title>
-			<link>https://www.kcode.icu/posts/translation/20191202-go-how-are-random-numbers-generated/</link>
+			<link>https://kcode.icu/posts/translation/20191202-go-how-are-random-numbers-generated/</link>
 			<pubDate>Sun, 29 Dec 2019 21:14:55 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/translation/20191202-go-how-are-random-numbers-generated/</guid>
+			<guid>https://kcode.icu/posts/translation/20191202-go-how-are-random-numbers-generated/</guid>
 			<description>Go：随机数是怎样产生的？ 这篇文章基于 Go 1.13 版本
 Go 实现了两个包来产生随机数：
  在包 math/rand 的一个伪随机数生成器（ PRNG ） 在包 crypto/rand 中实现的加密伪随机数生成器（ CPRNG ）  如果这两个包都产生了随机数，则将基于真正的随机数和性能之间取舍

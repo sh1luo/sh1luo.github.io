@@ -21,7 +21,7 @@
 <meta property="og:description" content="介绍 好多人推荐这个国外的课程，就找了一下课程，下载了一份讲义，打开第一眼就看到大名鼎鼎的 rsc 大佬，偶像啊，Go 的当下掌舵人。就冲这名必须得看完了（狗头😄）。 开个玩笑，我个人对计算机基础最感兴趣的就是组成原理、操作系统和汇编语言，除此之外就是分布式了，等搞定这个之后也去跟一下 MIT 6.824 分布式部分（开新坑🕳️ ）
 待更&hellip;." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/os/mitos/" />
+<meta property="og:url" content="https://kcode.icu/posts/os/mitos/" />
 <meta property="article:published_time" content="2021-04-25T23:35:20+00:00" />
 <meta property="article:modified_time" content="2021-04-25T23:35:20+00:00" />
 <meta name="twitter:card" content="summary"/>
@@ -37,7 +37,7 @@
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>MIT 6.828 课程学习记录</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	<link rel="stylesheet" href="https://kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
 	
 </head>
 
@@ -47,13 +47,13 @@
 		<div class="hdr-wrapper section-inner">
 			<div class="hdr-left">
 				<div class="site-branding">
-					<a href="https://www.kcode.icu/">wasabi</a>
+					<a href="https://kcode.icu/">wasabi</a>
 				</div>
 				<nav class="site-nav hide-in-mobile">
-					<a href="https://www.kcode.icu/posts/">文章</a>
-					<a href="https://www.kcode.icu/summary">总结</a>
-					<a href="https://www.kcode.icu/chore">杂项</a>
-					<a href="https://www.kcode.icu/go">Go系列</a>
+					<a href="https://kcode.icu/posts/">文章</a>
+					<a href="https://kcode.icu/summary">总结</a>
+					<a href="https://kcode.icu/chore">杂项</a>
+					<a href="https://kcode.icu/go">Go系列</a>
 				</nav>
 			</div>
 			<div class="hdr-right hdr-icons">
@@ -63,9 +63,9 @@
 	</header>
 	<div id="mobile-menu" class="animated fast">
 		<ul>
-			<li><a href="https://www.kcode.icu/posts/">文章</a></li>
-			<li><a href="https://www.kcode.icu/tags/">标签</a></li>
-			<li><a href="https://www.kcode.icu/about/">关于</a></li>
+			<li><a href="https://kcode.icu/posts/">文章</a></li>
+			<li><a href="https://kcode.icu/tags/">标签</a></li>
+			<li><a href="https://kcode.icu/about/">关于</a></li>
 		</ul>
 	</div>
 
@@ -87,17 +87,17 @@
 			<hr class="post-end">
 			<footer class="post-info">
 				<p>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/os">OS</a></span><span class="tag"><a href="https://www.kcode.icu/tags/mit">MIT</a></span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://kcode.icu/tags/os">OS</a></span><span class="tag"><a href="https://kcode.icu/tags/mit">MIT</a></span>
 				</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>11 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-04-26 07:35 &#43;0800</p>
 			</footer>
 		</article>
 		<div class="post-nav thin">
-			<a class="next-post" href="https://www.kcode.icu/posts/rpc/geektime-rpc/">
+			<a class="next-post" href="https://kcode.icu/posts/rpc/geektime-rpc/">
 				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>极客时间专栏《RPC实战与核心原理》读后笔记</span>
 			</a>
-			<a class="prev-post" href="https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/">
+			<a class="prev-post" href="https://kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Go 使用的 plan9 汇编语言初探</span>
 			</a>
 		</div>
@@ -113,14 +113,14 @@
 	</main>
 
 	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
+		<p>&copy; 2018 - 2021 <a href="https://kcode.icu/">wasabi</a></p>
 		<p>
-			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
 		</p>
 	</footer>
 
 
-	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+	<script src="https://kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {

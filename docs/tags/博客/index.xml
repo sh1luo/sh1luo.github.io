@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>博客 on wasabi</title>
-    <link>https://www.kcode.icu/tags/%E5%8D%9A%E5%AE%A2/</link>
+    <link>https://kcode.icu/tags/%E5%8D%9A%E5%AE%A2/</link>
     <description>Recent content in 博客 on wasabi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 20 Jan 2021 15:45:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 20 Jan 2021 15:45:13 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在线博客的图床解决方案</title>
-      <link>https://www.kcode.icu/posts/chore/blog_imgs/</link>
+      <link>https://kcode.icu/posts/chore/blog_imgs/</link>
       <pubDate>Wed, 20 Jan 2021 15:45:13 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/chore/blog_imgs/</guid>
+      <guid>https://kcode.icu/posts/chore/blog_imgs/</guid>
       <description>很多人应该都听说过来人说过要写博客进行总结记录，一是说自己学习过程的复盘，二是在某些时候向不认识自己的人间接显示自己的大致水平。不过如果没有人“手把手”教的话我相信还会遇到各种各样的问题的，这篇文章就介绍一下在博客中必不可少的图片网络地址解决方法，也就是图床。它的目标是在你写文章的过程中可以一键插入目标图片并自动上传到网络，就像你使用本地图片一样快捷。
 图床的目的就是把你的本地图片上传上去，从而能获得它的网络地址。当然了，只使用图床也是可以的，但是需要配合对应的工具上传拿 URL（比如 OSS）或者纯手动（GitHub/Gitee），非常不方便 一点也不极客，所以需要配合其他工具一键快速拿到它对应的网络地址（URL），所以我在下面介绍了我使用到的工具，仅供参考。
  评估用的稳定性指你上传的图片会不会在某个不确定的时间突然挂掉，让你的文章出现大量图片 404 丢失的情况。
@@ -38,10 +38,10 @@ PicGo PicGo 是一款使用 Node + Electron 开发的跨平台可视化图片上
     
     <item>
       <title>几经周折的博客变迁史</title>
-      <link>https://www.kcode.icu/posts/chore/blog_journey/</link>
+      <link>https://kcode.icu/posts/chore/blog_journey/</link>
       <pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/chore/blog_journey/</guid>
+      <guid>https://kcode.icu/posts/chore/blog_journey/</guid>
       <description>仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
  尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。 使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。 发现了国内访问速度更快的 Gitee Page。 再次购买域名，使用 CDN 加速国外空间，未果（下文说）&amp;hellip;&amp;hellip;  前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
 当时配置那个 A 记录，CNAME 记录啥的根本不知道是什么东西，也不知道 DNS 是什么，就是配，成功了就行，不成功就猜，一个个试呗。现在想想，真的是走了不少弯路，如果能系统地学一下多好。不过这些问题也都在我后来的实践以及学习过程中逐一解决了，现在遇到问题也不用像没头苍蝇一样乱撞了，这种感觉很不错 :)

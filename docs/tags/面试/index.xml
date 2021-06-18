@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>面试 on wasabi</title>
-    <link>https://www.kcode.icu/tags/%E9%9D%A2%E8%AF%95/</link>
+    <link>https://kcode.icu/tags/%E9%9D%A2%E8%AF%95/</link>
     <description>Recent content in 面试 on wasabi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Fri, 15 Jan 2021 21:10:55 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E9%9D%A2%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Jan 2021 21:10:55 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E9%9D%A2%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>一些常见 Go 语言及面试问题的整理</title>
-      <link>https://www.kcode.icu/posts/interview/somequestions/</link>
+      <link>https://kcode.icu/posts/interview/somequestions/</link>
       <pubDate>Fri, 15 Jan 2021 21:10:55 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/interview/somequestions/</guid>
+      <guid>https://kcode.icu/posts/interview/somequestions/</guid>
       <description>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。
  待完成
  Go make和new的区别，使用和底层？ 两者都可以声明变量，例如 map，channelchannel，slice，以及结构体等等，我们常用make来初始化map，channel，而常用new 来初始化普通类型变量和结构体。
@@ -27,10 +27,10 @@ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m�
     
     <item>
       <title>记人生中前几次面试及思考</title>
-      <link>https://www.kcode.icu/posts/interview/2020-12-interview/</link>
+      <link>https://kcode.icu/posts/interview/2020-12-interview/</link>
       <pubDate>Sun, 03 Jan 2021 21:18:13 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/interview/2020-12-interview/</guid>
+      <guid>https://kcode.icu/posts/interview/2020-12-interview/</guid>
       <description>写作背景 由于早早有了就业的想法，于是我在大三上学期快要结束的时候便早早地”物色“各大公司的实习了，也是希望能在就业前增加段实习经历，丰富一下经验。这也是人生中我的第一次面试，感触颇多。特别记录下来自己的总结以及对于假期自己的学习规划。
 面试总结 这次我面试的总共有三家公司，跟谁学、字节跳动和腾讯，对我印象最深也是帮助最大的就是”字节跳动“。关于面试的准备大致有三块，简历、技术口述和手撕代码，下面分开说。
 简历 这里使用的简历风格是参考了 @帅地玩编程 和 @码农桃花源 两位大佬，一个是本科腾讯大学时期年入几十万的，第二个是 Go 圈的全成大佬，推荐大家关注。

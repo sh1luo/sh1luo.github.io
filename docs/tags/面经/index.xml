@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>面经 on wasabi</title>
-    <link>https://www.kcode.icu/tags/%E9%9D%A2%E7%BB%8F/</link>
+    <link>https://kcode.icu/tags/%E9%9D%A2%E7%BB%8F/</link>
     <description>Recent content in 面经 on wasabi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Tue, 30 Mar 2021 17:20:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E9%9D%A2%E7%BB%8F/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 30 Mar 2021 17:20:20 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E9%9D%A2%E7%BB%8F/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>大三实习求职之旅</title>
-      <link>https://www.kcode.icu/posts/interview/2021-3-nowcoder/</link>
+      <link>https://kcode.icu/posts/interview/2021-3-nowcoder/</link>
       <pubDate>Tue, 30 Mar 2021 17:20:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/interview/2021-3-nowcoder/</guid>
+      <guid>https://kcode.icu/posts/interview/2021-3-nowcoder/</guid>
       <description>说在前面 经常“吸”社区，也要时不时反馈一点，一起延续开源精神。
 个人情况：22 届双非一本，从去年 12 月开始面试找寒假的实习，由于学校疫情原因没去成功，于是经过寒假复习“二战”。先后面了跟谁学，腾讯，字节，阿里。
 由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C++ 用来写题，有的问题可能不具有参考价值，理性看待。

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go on wasabi</title>
-    <link>https://www.kcode.icu/tags/go/</link>
+    <link>https://kcode.icu/tags/go/</link>
     <description>Recent content in Go on wasabi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 04 Apr 2021 20:30:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 04 Apr 2021 20:30:20 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go 使用的 plan9 汇编语言初探</title>
-      <link>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</link>
+      <link>https://kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</link>
       <pubDate>Sun, 04 Apr 2021 20:30:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</guid>
+      <guid>https://kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</guid>
       <description>plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
 Go 语言早在 1.5 版本就实现了自举，即 使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，在下文中一边比较一边介绍。
 伪寄存器 plan9 抽象了 4 种伪寄存器：
@@ -25,10 +25,10 @@ Mnemonic | Go operands | AT&amp;amp;T operands=================================
     
     <item>
       <title>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</title>
-      <link>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
+      <link>https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link>
       <pubDate>Sun, 14 Mar 2021 13:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
+      <guid>https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
       <description>前几天见到了一个问题：
 uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
@@ -39,10 +39,10 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
     
     <item>
       <title>深入理解 Go channel</title>
-      <link>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</link>
+      <link>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</link>
       <pubDate>Thu, 25 Feb 2021 19:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</guid>
+      <guid>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</guid>
       <description>Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
 Go 语言倡导通过通信的方式共享内存，也就是减少锁的使用，尽量都通过 Channel 来进行协程间通信。
 其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
@@ -53,10 +53,10 @@ type hchan struct { qcount uint // 队列中元素数量 	dataqsiz uint // 环�
     
     <item>
       <title>深入理解 Go string 与 slice</title>
-      <link>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</link>
+      <link>https://kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</link>
       <pubDate>Mon, 15 Feb 2021 23:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</guid>
+      <guid>https://kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</guid>
       <description>数据结构 我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 reflect/value.go 中，分别对应着 StringHeader 和 SliceHeader 。
 type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data uintptr Len int Cap int } 定义非常简单，Data 表示底层数据的地址，Len 表示长度，Cap 表示容量。容量评估了当前切片最多能容纳多少字节元素，而长度表示当前已经存储多少个字节了，切片只是对底层数据的引用：
 [图片]
@@ -67,10 +67,10 @@ package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 
     
     <item>
       <title>深入理解 Go defer 版本差异与底层特性</title>
-      <link>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</link>
+      <link>https://kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</link>
       <pubDate>Mon, 25 Jan 2021 23:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</guid>
+      <guid>https://kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</guid>
       <description>defer 简介 defer 的作用是使某个/某些执行延时执行，常用在资源使用后的释放等场景，例如：
 func DbInit() (sql.DB, error) { db, err := sql.Open() if err != nil { return nil, err } defer db.Close() ... } defer 有一些熟知的特性：
  “先进后出”，也就是说如果使用了多个 defer，最先使用 的 defer 后的函数体 最后执行。 一定会执行，即 panic 后依然有效。 执行体参数在注册 defer 时确定。 &amp;hellip;  我们先来看看为什么。
@@ -80,10 +80,10 @@ type _defer struct { siz int32	// 函数参数和返回值的大小 	started boo
     
     <item>
       <title>深入理解 Go map</title>
-      <link>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</link>
+      <link>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</link>
       <pubDate>Fri, 22 Jan 2021 23:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</guid>
+      <guid>https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</guid>
       <description>哈希表 几乎所有语言都有 哈希表 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度内增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的 ”大神“。
 问题来源于实际，我们先看看这些实际问题 ：
  声明。当我使用 :=，var，make，甚至 new 声明 map 的时候，编译器帮我们做了什么事情，它们有什么区别？ 增删改查。使用 数组+链表 的情况下如何设计才能避免 O(n) 的最差情况？ 注意事项。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？  还有一个常识是 Go map 的 遍历是随机的，即多次遍历输出的结果不同，这个的原因会在后面提到。
@@ -94,10 +94,10 @@ type _defer struct { siz int32	// 函数参数和返回值的大小 	started boo
     
     <item>
       <title>一些常见 Go 语言及面试问题的整理</title>
-      <link>https://www.kcode.icu/posts/interview/somequestions/</link>
+      <link>https://kcode.icu/posts/interview/somequestions/</link>
       <pubDate>Fri, 15 Jan 2021 21:10:55 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/interview/somequestions/</guid>
+      <guid>https://kcode.icu/posts/interview/somequestions/</guid>
       <description>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。
  待完成
  Go make和new的区别，使用和底层？ 两者都可以声明变量，例如 map，channelchannel，slice，以及结构体等等，我们常用make来初始化map，channel，而常用new 来初始化普通类型变量和结构体。
@@ -111,10 +111,10 @@ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m�
     
     <item>
       <title>手写一个RPCg（上）</title>
-      <link>https://www.kcode.icu/posts/rpc/rpcg/</link>
+      <link>https://kcode.icu/posts/rpc/rpcg/</link>
       <pubDate>Sat, 28 Nov 2020 15:45:13 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/rpc/rpcg/</guid>
+      <guid>https://kcode.icu/posts/rpc/rpcg/</guid>
       <description>须知 可能看到这里的一部分人还不知道什么是 RPC，也不知道为什么要用 RPC，内心：HTTP不香吗？那么你需要首先看一下这篇文章：
  你觉得HTTP哪都好用是因为你不知道RPC
  已经实现的 这篇文章我会带你手写一个简易版本的 RPC 框架，这个框架会支持如下这些功能：
@@ -130,10 +130,10 @@ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m�
     
     <item>
       <title>Go&#43;QML构建桌面应用</title>
-      <link>https://www.kcode.icu/posts/chore/go&#43;qamel/</link>
+      <link>https://kcode.icu/posts/chore/go&#43;qamel/</link>
       <pubDate>Mon, 23 Mar 2020 14:51:15 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/chore/go&#43;qamel/</guid>
+      <guid>https://kcode.icu/posts/chore/go&#43;qamel/</guid>
       <description>引文 开发的项目是直播助手，相关介绍在 B站直播协议分析上 有介绍，这里说一下技术选型方面遇到的问题，踩的坑，希望给后续的人一点建议和参考。
 技术选型 因为当时第一步的主要想开发的功能是弹幕点歌，但是在稍做分析之后发现如何对 MP3 文件进行解码播放是个问题，自己实现可能略显复杂，也不是这个工具的主要想解决的问题。然后就考虑到使用什么组件来解码并播放音乐。
 最初的想法是另写一套前端，和已经写好的这套后端进行通信，来呈现内容，播放音乐等，这是一定可以实现的，但是同一条信息进行两次传输效率太低，于是放弃，想在同一端执行，增加效率。Go 确实不擅长写 GUI 程序（C#完美。。），决定使用 qamel来使用开发，其和 therecipe 比较如下：
@@ -144,10 +144,10 @@ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m�
     
     <item>
       <title>优化Golang服务减少40%以上的CPU</title>
-      <link>https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</link>
+      <link>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</link>
       <pubDate>Mon, 16 Mar 2020 16:46:08 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</guid>
+      <guid>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</guid>
       <description>优化 Golang 服务来减少 40% 以上的 CPU 十年前，谷歌正在面临一个由 C++ 编译时间过长所造成的严重瓶颈，并且需要一个全新的方式来解决这个问题。谷歌的工程师们通过创造了一种新的被称作 Go （又名 Golang）的语言来应对挑战。这个新语言 Go 带来了 C++ 最好的部分（最主要的是它的性能和稳定性），又与 Python 的速度相结合，使得 Go 能够在实现并发的同时快速地使用多核心。
 在 Coralogix（译者注：一个提供全面日志分析的服务产品，官网），我们为了去给我们的客户提供关于他们日志实时的分析、警报和元数据，要去解析他们的日志。在解析阶段，我们需要非常快速地解析包含多个复杂规则的服务日志，这个目标是促使我们决定使用 Golang 的原因之一。
 这项新的服务现在就全天候的跑在生产阶段，尽管我们看到了非常好的结果，但是它也需要跑在高性能的机器上。这项 Go 的服务跑在一台 AWS m4.2xlarge 实例上 ，带有 8 CPUs 和 36 GB 的配置，每天要解析几十亿的日志。

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>OS on wasabi</title>
-    <link>https://www.kcode.icu/tags/os/</link>
+    <link>https://kcode.icu/tags/os/</link>
     <description>Recent content in OS on wasabi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 25 Apr 2021 23:35:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/os/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Apr 2021 23:35:20 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/os/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MIT 6.828 课程学习记录</title>
-      <link>https://www.kcode.icu/posts/os/mitos/</link>
+      <link>https://kcode.icu/posts/os/mitos/</link>
       <pubDate>Sun, 25 Apr 2021 23:35:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/os/mitos/</guid>
+      <guid>https://kcode.icu/posts/os/mitos/</guid>
       <description>介绍 好多人推荐这个国外的课程，就找了一下课程，下载了一份讲义，打开第一眼就看到大名鼎鼎的 rsc 大佬，偶像啊，Go 的当下掌舵人。就冲这名必须得看完了（狗头😄）。 开个玩笑，我个人对计算机基础最感兴趣的就是组成原理、操作系统和汇编语言，除此之外就是分布式了，等搞定这个之后也去跟一下 MIT 6.824 分布式部分（开新坑🕳️ ）
 待更&amp;hellip;.</description>
     </item>

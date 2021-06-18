@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>QML on wasabi</title>
-    <link>https://www.kcode.icu/tags/qml/</link>
+    <link>https://kcode.icu/tags/qml/</link>
     <description>Recent content in QML on wasabi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 23 Mar 2020 14:51:15 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/qml/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 23 Mar 2020 14:51:15 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/qml/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go&#43;QML构建桌面应用</title>
-      <link>https://www.kcode.icu/posts/chore/go&#43;qamel/</link>
+      <link>https://kcode.icu/posts/chore/go&#43;qamel/</link>
       <pubDate>Mon, 23 Mar 2020 14:51:15 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/chore/go&#43;qamel/</guid>
+      <guid>https://kcode.icu/posts/chore/go&#43;qamel/</guid>
       <description>引文 开发的项目是直播助手，相关介绍在 B站直播协议分析上 有介绍，这里说一下技术选型方面遇到的问题，踩的坑，希望给后续的人一点建议和参考。
 技术选型 因为当时第一步的主要想开发的功能是弹幕点歌，但是在稍做分析之后发现如何对 MP3 文件进行解码播放是个问题，自己实现可能略显复杂，也不是这个工具的主要想解决的问题。然后就考虑到使用什么组件来解码并播放音乐。
 最初的想法是另写一套前端，和已经写好的这套后端进行通信，来呈现内容，播放音乐等，这是一定可以实现的，但是同一条信息进行两次传输效率太低，于是放弃，想在同一端执行，增加效率。Go 确实不擅长写 GUI 程序（C#完美。。），决定使用 qamel来使用开发，其和 therecipe 比较如下：

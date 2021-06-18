@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>RPC on wasabi</title>
-    <link>https://www.kcode.icu/tags/rpc/</link>
+    <link>https://kcode.icu/tags/rpc/</link>
     <description>Recent content in RPC on wasabi</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Fri, 14 May 2021 21:45:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/rpc/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 14 May 2021 21:45:13 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/rpc/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>极客时间专栏《RPC实战与核心原理》读后笔记</title>
-      <link>https://www.kcode.icu/posts/rpc/geektime-rpc/</link>
+      <link>https://kcode.icu/posts/rpc/geektime-rpc/</link>
       <pubDate>Fri, 14 May 2021 21:45:13 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/rpc/geektime-rpc/</guid>
+      <guid>https://kcode.icu/posts/rpc/geektime-rpc/</guid>
       <description>对 RPC 相关的学习也有了一段时间，算是有了一个初步的认识，回过头来读 极客时间的专栏 感觉思路清晰了不少，顺利了许多，再回头看 rpcx 的源码也没有那么费劲了。我把我在这个专栏中学到的一些内容记录下来，共同学习。
 本文不再解释 RPC 相关基础概念，有需要可在上文链接或者往期文章中学习。
 以下的二级标题均对应专栏的课程大纲，同样分单元总结。
@@ -27,10 +27,10 @@ RPC 是解决分布式系统通信问题的一大利器。 RPC 的通信原理�
     
     <item>
       <title>手写一个RPCg（上）</title>
-      <link>https://www.kcode.icu/posts/rpc/rpcg/</link>
+      <link>https://kcode.icu/posts/rpc/rpcg/</link>
       <pubDate>Sat, 28 Nov 2020 15:45:13 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/rpc/rpcg/</guid>
+      <guid>https://kcode.icu/posts/rpc/rpcg/</guid>
       <description>须知 可能看到这里的一部分人还不知道什么是 RPC，也不知道为什么要用 RPC，内心：HTTP不香吗？那么你需要首先看一下这篇文章：
  你觉得HTTP哪都好用是因为你不知道RPC
  已经实现的 这篇文章我会带你手写一个简易版本的 RPC 框架，这个框架会支持如下这些功能：
@@ -46,10 +46,10 @@ RPC 是解决分布式系统通信问题的一大利器。 RPC 的通信原理�
     
     <item>
       <title>你觉得HTTP最香是因为你还不知道RPC</title>
-      <link>https://www.kcode.icu/posts/rpc/rpcvshttp/</link>
+      <link>https://kcode.icu/posts/rpc/rpcvshttp/</link>
       <pubDate>Tue, 10 Nov 2020 21:30:13 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/rpc/rpcvshttp/</guid>
+      <guid>https://kcode.icu/posts/rpc/rpcvshttp/</guid>
       <description>我在动手写 RPCg 这个”框架“之前看了大量的文章阐述 RPC 与 HTTP，这篇文章是比较不错的一篇，我翻译过来和你分享一下 :)
 REST vs. RPC你要使用API去解决什么问题？ 有一则关于这个农民的笑话，他被问到”为什么他要尽量避免耕种出‘童话环’的形状“，他回答道，”因为如果我不那么做，我就会变成傻子“。（第一段的引用故事可暂时不关注）。
 许多人关于他们自己构建的 APIs 会说同样的话，事实上，去思考一下你要用你的 APIs 去解决什么问题这非常重要，因为你所创建的 API 的风格和你所使用的技术都依赖于你上面的回答。
