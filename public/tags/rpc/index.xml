@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RPC on wasabi</title>
+    <link>https://www.kcode.icu/tags/rpc/</link>
+    <description>Recent content in RPC on wasabi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Fri, 14 May 2021 21:45:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/rpc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>极客时间专栏《RPC实战与核心原理》读后笔记</title>
+      <link>https://www.kcode.icu/posts/rpc/geektime-rpc/</link>
+      <pubDate>Fri, 14 May 2021 21:45:13 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/rpc/geektime-rpc/</guid>
+      <description>对 RPC 相关的学习也有了一段时间，算是有了一个初步的认识，回过头来读 极客时间的专栏 感觉思路清晰了不少，顺利了许多，再回头看 rpcx 的源码也没有那么费劲了。我把我在这个专栏中学到的一些内容记录下来，共同学习。
+本文不再解释 RPC 相关基础概念，有需要可在上文链接或者往期文章中学习。
+以下的二级标题均对应专栏的课程大纲，同样分单元总结。
+开篇词 开篇词介绍了 RPC 的使用场景，重要意义，作为引文。
+RPC 即远程过程调用，目的是使调用另一台机器上的程序就像调用本地程序一样简单。总是和 “微服务”，SOA 联系，其实理论上来说，任何牵扯到网络通信的系统都可能需要使用 RPC。比如分布式各个组件间或与应用间的通信，比如 etcd 作为统一的配置服务，客户端就是通过 gRPC 框架与服务端进行通信的。
+RPC 是解决分布式系统通信问题的一大利器。 RPC 的通信原理十分简单，可是想完美驾驭却不那么容易，这个过程除了调用过程之外，还主要包括：通信节点查找，连接的建立与状态管理，数据传输的编解码，序列化与反序列化等等，每一项都十分复杂。
+而完整的 RPC 框架却对上述过程进行了封装，使得网络通信逻辑的开发变得十分简单，效率也会更高。
+最初的我学习 RPC 也是由浅入深，从 “字面意思” 出发，即如何调用远程主机上的某个函数，实现了编解码，序列化等等一整套调用流程，成功执行了远程主机的程序，当然了，这还是点对点的。
+后来我发现这些仅仅是基础，冰山下的还包括一系列服务治理功能：连接管理，健康检测，负载均衡，优雅启停机，异常重试，业务分组以及熔断限流等等。十分复杂又充满了挑战性。</description>
+    </item>
+    
+    <item>
+      <title>手写一个RPCg（上）</title>
+      <link>https://www.kcode.icu/posts/rpc/rpcg/</link>
+      <pubDate>Sat, 28 Nov 2020 15:45:13 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/rpc/rpcg/</guid>
+      <description>须知 可能看到这里的一部分人还不知道什么是 RPC，也不知道为什么要用 RPC，内心：HTTP不香吗？那么你需要首先看一下这篇文章：
+ 你觉得HTTP哪都好用是因为你不知道RPC
+ 已经实现的 这篇文章我会带你手写一个简易版本的 RPC 框架，这个框架会支持如下这些功能：
+ 多种网络传输方式 服务端自动注册可导出服务 可以心跳保活的注册中心 服务注册与服务发现 多种序列化方式 超时控制 一些负载均衡策略，一致性哈希、平滑带权轮询等  未来需要做的   自定义的代码生成插件
+  一种压缩方式
+  基于服务器时延的负载均衡策略？
+  心里有数 ”切忌重复造轮子“这句话你应该听过，不过这个”框架“的目的是带领我们大致了解 RPC 框架的工作过程，目标并不是工业级应用，我想你也一定清楚用框架和自己写框架对框架的理解程度有什么区别。也不必把 RPC 想成多么”高端“的技术，RPC 也只是一个调用，微服务的一个组件，从小的地方出发更容易让人接受罢了。好了，话不多说，让我们正式开始。
+俯瞰RPCg 这个图向我们展示了最基本的 RPC 调用关系：服务端将自己的服务注册到注册中心，客户端从注册中心获取所有服务端的所有信息，在拿到这些信息之后带着自己的请求去访问某个服务端的服务。你可能会问为什么要多个”第三者“注册中心出来呢，我直接就只有客户端和服务端多方便，那你需要思考以下问题：
+ 直接通信是不是需要将通信的地址等服务端信息硬编码到客户端的代码中？如果服务端节点数改变了怎么办，难道手动删改代码？ 客户端怎么知道服务端可不可用？难道需要服务端开个服务专门去处理这类信息吗？这属于服务端的业务吗？ &amp;hellip;&amp;hellip;  我想你应该大致能明白为什么需要这个注册中心了，就是屏蔽对方对己方的感知，通过一个第三方中介来提供/提出自己的服务/需求，这就够了，你可以类比 房产中介，婚介所等等机构，当然，注册中心还有很多功能，我们这里为了学习，就只提供这部分功能了，更多的需要留给你去探索 :)
+我们再想想，我们现在有了三个主体，之前有不同的需求，怎么提供通信。业界有非常多的解决方法，比如 gRPC 的 HTTP/2.0，它的优势也是显而易见的：多路复用，pipelining 的通信方式，效率大幅提高，不必在等待对方的回复；首部压缩，这里我需要说明一下，RPC 调用大部分是服务端内部的互相调用，比如公司机房里 50 台机器之间相互调用，需要保证传输的效率，也就是说传送的数据要尽可能地小，这才有了 Protocol Buffers 的数据格式，所以经过压缩的首部数据量更小，效率更高。还有 tcp 连接，优势是简单等等。
+等待更新&amp;hellip;&amp;hellip;.</description>
+    </item>
+    
+    <item>
+      <title>你觉得HTTP最香是因为你还不知道RPC</title>
+      <link>https://www.kcode.icu/posts/rpc/rpcvshttp/</link>
+      <pubDate>Tue, 10 Nov 2020 21:30:13 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/rpc/rpcvshttp/</guid>
+      <description>我在动手写 RPCg 这个”框架“之前看了大量的文章阐述 RPC 与 HTTP，这篇文章是比较不错的一篇，我翻译过来和你分享一下 :)
+REST vs. RPC你要使用API去解决什么问题？ 有一则关于这个农民的笑话，他被问到”为什么他要尽量避免耕种出‘童话环’的形状“，他回答道，”因为如果我不那么做，我就会变成傻子“。（第一段的引用故事可暂时不关注）。
+许多人关于他们自己构建的 APIs 会说同样的话，事实上，去思考一下你要用你的 APIs 去解决什么问题这非常重要，因为你所创建的 API 的风格和你所使用的技术都依赖于你上面的回答。
+根据调用 自从 FORTRAN Ⅱ 在1958 年提出调用（也叫函数）这个概念，函数（调用）就一直是组织计算机代码的主要结构。所有现在主流被用来构建和使用 API 的编程语言例如 Java,Javascript, Python, Golang, C/C++ 和 PHP 都使用调用（也就是函数）来作为他们的主要组织结构。因此这数十年来”函数调用“以远程过程调用（RPC） 的形式称为设计和实现分布式 API 的主要模型也就不足为奇了。
+如果你要问大多数软件开发者为什么要定义和构建 API，他们可能会解释说他们有个应用，它需要实现多个分布式组件，并且这些组件之间可以互相调用，来使整个应用程序正常运行。他们也可能说需要实现由多个应用程序使用的服务 API。</description>
+    </item>
+    
+  </channel>
+</rss>

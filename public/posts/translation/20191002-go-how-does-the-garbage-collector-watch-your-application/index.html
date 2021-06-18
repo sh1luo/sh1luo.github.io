@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="Go的GC是怎样监听你的应用的？">
+<meta itemprop="description" content="Go: GC 是怎样监听你的应用的？ Go 语言的垃圾收集器 （下文简称 GC ）能够帮助到开发者，通过自动地释放掉一些程序中不再需要使用的内存。但是，跟踪并清理掉这些内存也可能影响我们程序的性能。Go 语言的 GC 旨在实现 这些目标 并且关注如下几个问题：
+ 当程序被终止时，尽可能多的减少在这两个阶段的 STW （的次数） 。 一个 GC 周期的时间要少于 10 毫秒。 一次 GC 周期不能占用超过 25% 的 CPU 资源。  这是一些很有挑战性的目标，如果 GC 从我们的程序中了解到足够多的信息，它就能去解决这些问题。
+到达堆阈值 GC 将会关注的第一个指标是堆的使用增长。默认情况下，它将在堆大小加倍时运行。这是一个在循环中分配内存的简单程序。
+func BenchmarkAllocationEveryMs(b *testing.B) { // need permanent allocation to clear see when the heap double its size 	var s *[]int tmp := make([]int, 1100000, 1100000) s = &amp;tmp var a *[]int for i := 0; i &lt; b.">
+<meta itemprop="datePublished" content="2020-01-01T20:43:19+00:00" />
+<meta itemprop="dateModified" content="2020-01-01T20:43:19+00:00" />
+<meta itemprop="wordCount" content="277">
+
+
+
+<meta itemprop="keywords" content="翻译," />
+<meta property="og:title" content="Go的GC是怎样监听你的应用的？" />
+<meta property="og:description" content="Go: GC 是怎样监听你的应用的？ Go 语言的垃圾收集器 （下文简称 GC ）能够帮助到开发者，通过自动地释放掉一些程序中不再需要使用的内存。但是，跟踪并清理掉这些内存也可能影响我们程序的性能。Go 语言的 GC 旨在实现 这些目标 并且关注如下几个问题：
+ 当程序被终止时，尽可能多的减少在这两个阶段的 STW （的次数） 。 一个 GC 周期的时间要少于 10 毫秒。 一次 GC 周期不能占用超过 25% 的 CPU 资源。  这是一些很有挑战性的目标，如果 GC 从我们的程序中了解到足够多的信息，它就能去解决这些问题。
+到达堆阈值 GC 将会关注的第一个指标是堆的使用增长。默认情况下，它将在堆大小加倍时运行。这是一个在循环中分配内存的简单程序。
+func BenchmarkAllocationEveryMs(b *testing.B) { // need permanent allocation to clear see when the heap double its size 	var s *[]int tmp := make([]int, 1100000, 1100000) s = &amp;tmp var a *[]int for i := 0; i &lt; b." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.kcode.icu/posts/translation/20191002-go-how-does-the-garbage-collector-watch-your-application/" />
+<meta property="article:published_time" content="2020-01-01T20:43:19+00:00" />
+<meta property="article:modified_time" content="2020-01-01T20:43:19+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go的GC是怎样监听你的应用的？"/>
+<meta name="twitter:description" content="Go: GC 是怎样监听你的应用的？ Go 语言的垃圾收集器 （下文简称 GC ）能够帮助到开发者，通过自动地释放掉一些程序中不再需要使用的内存。但是，跟踪并清理掉这些内存也可能影响我们程序的性能。Go 语言的 GC 旨在实现 这些目标 并且关注如下几个问题：
+ 当程序被终止时，尽可能多的减少在这两个阶段的 STW （的次数） 。 一个 GC 周期的时间要少于 10 毫秒。 一次 GC 周期不能占用超过 25% 的 CPU 资源。  这是一些很有挑战性的目标，如果 GC 从我们的程序中了解到足够多的信息，它就能去解决这些问题。
+到达堆阈值 GC 将会关注的第一个指标是堆的使用增长。默认情况下，它将在堆大小加倍时运行。这是一个在循环中分配内存的简单程序。
+func BenchmarkAllocationEveryMs(b *testing.B) { // need permanent allocation to clear see when the heap double its size 	var s *[]int tmp := make([]int, 1100000, 1100000) s = &amp;tmp var a *[]int for i := 0; i &lt; b."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Go的GC是怎样监听你的应用的？</title>
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://www.kcode.icu/">wasabi</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://www.kcode.icu/posts/">文章</a>
+					<a href="https://www.kcode.icu/summary">总结</a>
+					<a href="https://www.kcode.icu/chore">杂项</a>
+					<a href="https://www.kcode.icu/go">Go系列</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://www.kcode.icu/posts/">文章</a></li>
+			<li><a href="https://www.kcode.icu/tags/">标签</a></li>
+			<li><a href="https://www.kcode.icu/about/">关于</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jan 1, 2020</span></div>
+				<h1>Go的GC是怎样监听你的应用的？</h1>
+			</header>
+			<div class="content">
+				<h1 id="go-gc-是怎样监听你的应用的">Go: GC 是怎样监听你的应用的？<a href="#go-gc-是怎样监听你的应用的" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+<p><img src="https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/1.png" alt=""></p>
+<!-- raw HTML omitted -->
+<p>Go 语言的垃圾收集器 （下文简称 GC ）能够帮助到开发者，通过自动地释放掉一些程序中不再需要使用的内存。但是，跟踪并清理掉这些内存也可能影响我们程序的性能。Go 语言的 GC 旨在实现 <a href="https://blog.golang.org/ismmkeynote">这些目标</a> 并且关注如下几个问题：</p>
+<ul>
+<li>当程序被终止时，尽可能多的减少在这两个阶段的 STW （的次数） 。</li>
+<li>一个 GC 周期的时间要少于 10 毫秒。</li>
+<li>一次 GC 周期不能占用超过 25% 的 CPU 资源。</li>
+</ul>
+<p>这是一些很有挑战性的目标，如果 GC 从我们的程序中了解到足够多的信息，它就能去解决这些问题。</p>
+<h2 id="到达堆阈值">到达堆阈值<a href="#到达堆阈值" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>GC 将会关注的第一个指标是堆的使用增长。默认情况下，它将在堆大小加倍时运行。这是一个在循环中分配内存的简单程序。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">BenchmarkAllocationEveryMs</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// need permanent allocation to clear see when the heap double its size
+</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">s</span> <span class="o">*</span><span class="p">[]</span><span class="kt">int</span>
+	<span class="nx">tmp</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">1100000</span><span class="p">,</span> <span class="mi">1100000</span><span class="p">)</span>
+	<span class="nx">s</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">tmp</span>
+
+	<span class="kd">var</span> <span class="nx">a</span> <span class="o">*</span><span class="p">[]</span><span class="kt">int</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">N</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span>  <span class="p">{</span>
+		<span class="nx">tmp</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+		<span class="nx">a</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">tmp</span>
+
+		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Millisecond</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">_</span> <span class="p">=</span> <span class="nx">a</span>
+	<span class="nx">runtime</span><span class="p">.</span><span class="nf">KeepAlive</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><p>追踪器向我们展示了 GC 什么时候被调用：</p>
+<p><img src="https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/2.png" alt=""></p>
+<!-- raw HTML omitted -->
+<pre><code>gc 8 @0.251s 0%: 0.004+0.11+0.003 ms clock, 0.036+0/0.10/0.15+0.028 ms cpu, 16-&gt;16-&gt;8 MB, 17 MB goal, 8 P
+
+gc 9 @0.389s 0%: 0.005+0.11+0.007 ms clock, 0.041+0/0.090/0.11+0.062 ms cpu, 16-&gt;16-&gt;8 MB, 17 MB goal, 8 P
+
+gc 10 @0.526s 0%: 0.046+0.24+0.014 ms clock, 0.37+0/0.14/0.23+0.11 ms cpu, 16-&gt;16-&gt;8 MB, 17 MB goal, 8 P
+</code></pre><p>第九个循环就是我们之前看到的那个循环，运行在第 389 ms 。有意思的部分是 <code>16-&gt;16-&gt;8 MB</code> ，它展示了在 GC 被调用前堆使用的内存有多大，以及在 GC 执行后它们还剩下多少。我们可以清楚地看到，当第八个循环将堆大小减少到 8 MB 时，第九个 GC 周期将在 16 MB 时刻触发。</p>
+<p>这个阈值的比例由环境变量 GOGC 决定，默认值为 100 % —— 也就是说，在堆的大小增加了一倍之后，GC 就会被调用。出于性能原因，并且为了避免经常启动一个循环，当堆的大小低于 4 MB * GOGC 的时候， GC 将不会被执行。——当 GOGC 被设置为 100 % 时，在堆内存低于 4 MB 时 GC 将不会被触发。</p>
+<h2 id="到达时间阈值">到达时间阈值<a href="#到达时间阈值" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>GC 关注的第二个指标是在两次 GC 之间的时间间隔。如果超过两分钟 GC 还未执行，那么就会强制启动一次 GC 循环。</p>
+<p>由<code>GODEBUG</code> 给出的跟踪显示，两分钟后会强制启动一次循环。</p>
+<pre><code>GC forced
+gc 15 @121.340s 0%: 0.058+1.2+0.015 ms clock, 0.46+0/2.0/4.1+0.12 ms cpu, 1-&gt;1-&gt;1 MB, 4 MB goal, 8 P
+</code></pre><h2 id="需要协助">需要协助<a href="#需要协助" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>GC 主要由两个主要阶段组成：</p>
+<ul>
+<li>标记仍在使用的内存</li>
+<li>清理未标记为使用中的内存</li>
+</ul>
+<p>在标记期间，Go 必须确保 GC 标记内存的速度比新分配内存的速度更快。事实是，如果 GC 正在标记 4 MB 大小的内存，然而同时程序正在分配同样大小的内存，那么 GC 必须在完成后立即触发。</p>
+<p>为了解决这个问题，Go 在标记内存的同时会跟踪新的内存分配，并关注 GC 何时过载。第一步在 GC 触发时执行，它会首先为每一个处理器准备一个 处于 sleep状态的goroutine，等待标记阶段。</p>
+<p><img src="https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/3.png" alt=""></p>
+<!-- raw HTML omitted -->
+<p><img src="https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/4.png" alt=""></p>
+<!-- raw HTML omitted -->
+<p>GC 现在已经能够去标记那些不再使用的变量。对于每一个被扫描到的变量，它会增加一个计数器，以便继续跟踪当前的工作并且也能够获得剩余工作的快照。当一个 goroutine 在 GC 期间被安排了任务，Go 将会比较所需要的分配和已经扫描到的，以便对比扫描的速度和分配的需求。如果比较的结果是扫描内容较多，那么当前的 goroutine 并不需要去提供帮助。换句话说，如果扫描与分配相比有所欠缺，那么 Go 就会使用 goroutine来协助。这有一个图表来反应这个逻辑：</p>
+<p><img src="https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/5.png" alt=""></p>
+<!-- raw HTML omitted -->
+<p><img src="https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/6.png" alt=""></p>
+<!-- raw HTML omitted -->
+<p>Go 语言 GC 的目标之一是不占用 25 % 的 CPU。这就意味着 Go 在标记阶段不应分配超过四分之一的处理器。实际上，这正是我们在前面的示例中所看到的，在八个处理器中只有两个 goroutine 被 GC 充分利用：</p>
+<p><img src="https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/7.png" alt=""></p>
+<!-- raw HTML omitted -->
+<p><img src="https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/8.png" alt=""></p>
+<!-- raw HTML omitted -->
+<hr>
+<p>via：<a href="https://medium.com/a-journey-with-go/go-how-does-the-garbage-collector-watch-your-application-dbef99be2c35">来源地址</a></p>
+<p>作者：<a href="https://medium.com/@blanchon.vincent?source=post_page-----dbef99be2c35----------------------">Vincent Blanchon</a>
+译者：<a href="https://github.com/sh1luo">sh1luo</a>
+校对：<a href="https://github.com/lxbwolf">lxbwolf</a></p>
+<p>本文由 <a href="https://github.com/studygolang/GCTT">GCTT</a> 原创编译，<a href="https://studygolang.com/">Go中文网</a> 荣誉推出</p>
+
+			</div>
+			<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp"></div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/%E7%BF%BB%E8%AF%91">翻译</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>277 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-01-02 04:43 &#43;0800</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://www.kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Go语言内存管理与内存清理</span>
+			</a>
+			<a class="prev-post" href="https://www.kcode.icu/posts/translation/20191202-go-how-are-random-numbers-generated/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Go的随机数是怎样产生的？</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+						<script src="https://utteranc.es/client.js"
+							repo="sh1luo/sh1luo"
+							issue-term="pathname"
+							theme="github-light"
+							crossorigin="anonymous"
+							async>
+			</script>
+		</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-193315904-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>

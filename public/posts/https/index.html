@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="https 为什么安全">
+<meta itemprop="description" content="截图均使用了 Wireshark 工具进行抓包分析。
+ HTTPS 并不是一种新的协议，而是 HTTP over SSL/TLS，也就是使用了 SSL/TLS 加密的 HTTP，解决了 HTTP 不安全的问题。SSL（Secure Sockets Layer） 是 TLS（Transport Layer Security） 的前身，它们都处在 OSI 七层模型中的会话层。SSL 经历了三个版本的变迁，后来升级为了 TLS，TLS 主要有 1.0、1.1、1.2 和 1.3，现在大部分正在从 1.1 到 1.2 的迁移，部分使用 1.3，我们可以使用 Wireshark 过滤一下进行简单查看。
+需要注意的是，应用了 HTTPS 后通信效率会变低，毕竟需要进行额外的握手，加解密步骤。
+SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加密的密钥用于后续加密通信。主要可以分为两种方式，RSA 和 ECDH。RSA 方式也在 TLS/1.3 中正式被废除。下面我们分别来看。
+证书 不管什么版本的 SSL/TLS，只使用对称加密和非对称加密也是不够的，因为无法解决 中间人攻击，都需要配合证书来完成整个验证过程。所以在说明各个阶段的 HTTPS 之前有必要介绍一下证书的几个概念。
+证书的作用有两个：
+ 确保通信目标的身份。 确认你的身份。  其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：
+加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。">
+<meta itemprop="datePublished" content="2021-01-27T15:57:50+00:00" />
+<meta itemprop="dateModified" content="2021-01-27T15:57:50+00:00" />
+<meta itemprop="wordCount" content="457">
+
+
+
+<meta itemprop="keywords" content="HTTPS,安全," />
+<meta property="og:title" content="https 为什么安全" />
+<meta property="og:description" content="截图均使用了 Wireshark 工具进行抓包分析。
+ HTTPS 并不是一种新的协议，而是 HTTP over SSL/TLS，也就是使用了 SSL/TLS 加密的 HTTP，解决了 HTTP 不安全的问题。SSL（Secure Sockets Layer） 是 TLS（Transport Layer Security） 的前身，它们都处在 OSI 七层模型中的会话层。SSL 经历了三个版本的变迁，后来升级为了 TLS，TLS 主要有 1.0、1.1、1.2 和 1.3，现在大部分正在从 1.1 到 1.2 的迁移，部分使用 1.3，我们可以使用 Wireshark 过滤一下进行简单查看。
+需要注意的是，应用了 HTTPS 后通信效率会变低，毕竟需要进行额外的握手，加解密步骤。
+SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加密的密钥用于后续加密通信。主要可以分为两种方式，RSA 和 ECDH。RSA 方式也在 TLS/1.3 中正式被废除。下面我们分别来看。
+证书 不管什么版本的 SSL/TLS，只使用对称加密和非对称加密也是不够的，因为无法解决 中间人攻击，都需要配合证书来完成整个验证过程。所以在说明各个阶段的 HTTPS 之前有必要介绍一下证书的几个概念。
+证书的作用有两个：
+ 确保通信目标的身份。 确认你的身份。  其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：
+加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.kcode.icu/posts/https/" />
+<meta property="article:published_time" content="2021-01-27T15:57:50+00:00" />
+<meta property="article:modified_time" content="2021-01-27T15:57:50+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="https 为什么安全"/>
+<meta name="twitter:description" content="截图均使用了 Wireshark 工具进行抓包分析。
+ HTTPS 并不是一种新的协议，而是 HTTP over SSL/TLS，也就是使用了 SSL/TLS 加密的 HTTP，解决了 HTTP 不安全的问题。SSL（Secure Sockets Layer） 是 TLS（Transport Layer Security） 的前身，它们都处在 OSI 七层模型中的会话层。SSL 经历了三个版本的变迁，后来升级为了 TLS，TLS 主要有 1.0、1.1、1.2 和 1.3，现在大部分正在从 1.1 到 1.2 的迁移，部分使用 1.3，我们可以使用 Wireshark 过滤一下进行简单查看。
+需要注意的是，应用了 HTTPS 后通信效率会变低，毕竟需要进行额外的握手，加解密步骤。
+SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加密的密钥用于后续加密通信。主要可以分为两种方式，RSA 和 ECDH。RSA 方式也在 TLS/1.3 中正式被废除。下面我们分别来看。
+证书 不管什么版本的 SSL/TLS，只使用对称加密和非对称加密也是不够的，因为无法解决 中间人攻击，都需要配合证书来完成整个验证过程。所以在说明各个阶段的 HTTPS 之前有必要介绍一下证书的几个概念。
+证书的作用有两个：
+ 确保通信目标的身份。 确认你的身份。  其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：
+加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>https 为什么安全</title>
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://www.kcode.icu/">wasabi</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://www.kcode.icu/posts/">文章</a>
+					<a href="https://www.kcode.icu/summary">总结</a>
+					<a href="https://www.kcode.icu/chore">杂项</a>
+					<a href="https://www.kcode.icu/go">Go系列</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://www.kcode.icu/posts/">文章</a></li>
+			<li><a href="https://www.kcode.icu/tags/">标签</a></li>
+			<li><a href="https://www.kcode.icu/about/">关于</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jan 27, 2021</span></div>
+				<h1>https 为什么安全</h1>
+			</header>
+			<div class="content">
+				<blockquote>
+<p>截图均使用了 <a href="https://www.wireshark.org/">Wireshark</a> 工具进行抓包分析。</p>
+</blockquote>
+<p>HTTPS  并不是一种新的协议，而是 <code>HTTP over SSL/TLS</code>，也就是使用了 SSL/TLS 加密的 HTTP，解决了 HTTP 不安全的问题。SSL（Secure Sockets Layer） 是 TLS（Transport Layer Security） 的前身，它们都处在 OSI 七层模型中的会话层。SSL 经历了三个版本的变迁，后来升级为了 TLS，TLS 主要有 1.0、1.1、1.2 和 1.3，现在大部分正在从 1.1 到 1.2 的迁移，部分使用 1.3，我们可以使用 Wireshark 过滤一下进行简单查看。</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/640.png" alt="Wireshark截图"></p>
+<p>需要注意的是，应用了 HTTPS 后通信效率会变低，毕竟需要进行额外的握手，加解密步骤。</p>
+<p>SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加密的密钥用于后续加密通信。主要可以分为两种方式，RSA 和 ECDH。RSA 方式也在 TLS/1.3 中正式被废除。下面我们分别来看。</p>
+<h2 id="证书">证书<a href="#证书" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>不管什么版本的 SSL/TLS，只使用对称加密和非对称加密也是不够的，因为无法解决 <strong>中间人攻击</strong>，都需要配合证书来完成整个验证过程。所以在说明各个阶段的 HTTPS 之前有必要介绍一下证书的几个概念。</p>
+<p>证书的作用有两个：</p>
+<ul>
+<li>确保通信目标的身份。</li>
+<li>确认你的身份。</li>
+</ul>
+<p>其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/ca.png" alt="ca"></p>
+<h3 id="加密与签名">加密与签名<a href="#加密与签名" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 <strong>加密</strong> 和 <strong>签名</strong> ，很多人容易搞混。不过需要记住不变的是 <strong>私钥永远需要保密</strong>，不能公布。</p>
+<ul>
+<li>前者是使用公钥加密，私钥解密。将公钥发布出去，只有自己才能获得加密信息，用于 <strong>保护信息</strong>。</li>
+<li>后者是私钥加密，公钥解密。用于 <strong>判断信息是否被篡改</strong>。</li>
+</ul>
+<p>加密很好理解，签名可以这样理解：私钥加密的签名其他人无法伪造（其他人没有私钥），而你将经过私钥加密的信息和未加密明文还有公钥一起交付，对方就可以用公钥去解密（公钥是公开的），然后比对，如果一致了就说明信息没有被篡改，否则已经被改过了，抛弃。</p>
+<p>整个过程可以参考上图，证书验证的过程就是使用了加密和签名两种手段。</p>
+<h3 id="信任链">信任链<a href="#信任链" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>在你申请到 CA 的证书并部署，在客户端请求时返回后，客户端的验证过程是有信任链验证的。你可以随便打开一个部署了 HTTPS 的站点，点击锁图标查看证书路径。</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210129114612091.png" alt=""></p>
+<p>可以看到你的证书是处于最下级，也就是三级证书，这个证书是由上一级证书机构 Secure Site CA G2 签发的，由于它不是根证书，无法认为它可靠，所以要再向上级寻找直到根证书。然后使用根证书公钥验证二级证书，依次向下，直到目标服务器的证书。</p>
+<p>为什么要这样一步一步验证好多次呢？</p>
+<p>因为我们只相信根证书，而根证书是部署在操作系统上的，是被我们信任的。Windows 10 系统可以通过</p>
+<pre><code>控制面板 -&gt; 搜索证书 -&gt; 管理计算机证书 
+</code></pre><p>方式之一来查看本地根证书。</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/Snipaste_2021-01-28_21-32-27.png" alt=""></p>
+<p>好了，你现在应该大致明白了证书的验证过程，再来一张图看总结一下。</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/640%20(1).png" alt="640 (1)"></p>
+<p>至此，我们已经利用证书机制确保了通信双方的身份，解决了不安全的问题之一。</p>
+<h2 id="tls12ecdhe">TLS1.2/ECDHE<a href="#tls12ecdhe" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>先来看一下最常见的 ECDHE 方式握手步骤图：</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/tls-hs-ecdhe.png" alt="tls-hs-ecdhe"></p>
+<p>TLS/1.2 的共需要 4 次握手，花费两个 RTT（Round-Trip Time，RTT），如果加上 TCP 握手就是一共 7 次握手，再加上 HTTP 的一次报文交换，一共需要 4.5 个 RTT。</p>
+<p>握手过程较为麻烦，大致过程如下：</p>
+<ol>
+<li>
+<p>客户端向服务端发送 <strong>Client Hello</strong> 消息，其中携带客户端支持的<strong>协议版本</strong>，<strong>加密套件</strong>，压缩算法、<strong>客户端生成的随机数</strong> 以及扩展列表，不过安全的客户端一般不允许压缩，会传递一个 null 作为唯一的压缩算法，来避免 <a href="https://en.wikipedia.org/wiki/CRIME">CRIME attack</a> 。</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/client-hello.png" alt="client-hello"></p>
+</li>
+<li>
+<p>服务端收到客户端发来的协议版本、加密算法等信息后：</p>
+<ol>
+<li>
+<p>向客户端发送 <strong>Server Hello</strong> 消息，并选择其中一个协议版本、加密方法、会话 ID 以及 <strong>服务端生成的随机数</strong>；这里的加密方法格式非常规范：</p>
+<pre><code>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+</code></pre><p>上面的加密套件的意思是：生成密钥所使用的算法为 ECDHE_RSA，后续通信使用的对称加密算法 128位的AES，分组模式是 GCM（对称加密的关键），哈希摘要算法 SHA256。</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/server-hello.png" alt="server-hello"></p>
+</li>
+<li>
+<p>向客户端发送 Certificate 消息，即服务端的证书链，其中包含证书支持的域名、发行方和有效期等信息；</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/server-certificate.png" alt=""></p>
+</li>
+<li>
+<p>向客户端发送 Server Key Exchange 消息，传递 ECDHE 算法的参数，也被称为 server_params，还有签名等信息。这个过程还会被签名：</p>
+<pre><code>SHA256(client_random + server_random + server_params)
+</code></pre><p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/dhe-params.png" alt="dhe-params"></p>
+</li>
+<li>
+<p>向客户端发送可选的消息 CertificateRequest，验证客户端的证书。因为 TLS 握手是一个双向认证的过程，所以服务端可以向客户端发送请求来验证客户端身份。这个验证的回复在客户端第三次握手阶段发出。</p>
+</li>
+<li>
+<p>向客户端发送 Server Hello Done 消息，通知服务端已经发送了全部的相关信息；</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/server-hello-done.png" alt="server-hello-done"></p>
+</li>
+</ol>
+</li>
+<li>
+<p>客户端收到服务端的协议版本、加密方法、会话 ID 以及证书等信息后，验证服务端的证书；</p>
+<ol>
+<li>
+<p>向服务端发送 Client Key Exchange 消息，包含客户端生成的公钥字符串，然后计算得到预主密钥（Pre Master Secret），再利用之前在客户端和服务端分别产生的两个随机数，还有伪随机数函数也就是 SHA256 哈希摘要函数，最终计算得到最终的主密钥（Master Key）；</p>
+<pre><code>master_secret = PRF(pre_master_secret, &quot;master secret&quot;, client_random + server_random)[0..47]
+</code></pre><p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/client-dhe-key%20(1).png" alt="client-dhe-key (1)"></p>
+</li>
+<li>
+<p>向服务端发送 Change Cipher Spec 消息，通知服务端后面的数据段会加密传输。</p>
+</li>
+<li>
+<p>向服务端发送 Finished 消息，其中包含加密后的握手信息。这个消息包含之前通信的所有信息以及之前的两个随机字符串，求哈希值后再加密，确保服务端能正常解密并且确认无误，还能避免重放攻击。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>服务端收到 Change Cipher Spec 和 Finished 消息后计算得到预主密钥（Pre Master Secret），然后同样流程计算得到最终的主密钥；</p>
+<ol>
+<li>向客户端发送 Change Cipher Spec 消息，通知客户端后面的数据段会加密传输；</li>
+<li>向客户端发送 Finished 消息，验证客户端的 Finished 消息并完成 TLS 握手；</li>
+</ol>
+</li>
+</ol>
+<p>TLS 握手的关键在于利用通信双方生成的随机字符串和服务端的公钥生成一个双方经过协商后的密钥，通信的双方可以使用这个对称的密钥加密消息防止中间人的监听和攻击，保证通信的安全。</p>
+<p>这么多繁琐的步骤就是为了验证两方身份的情况下协商出一个对称加密的密钥。</p>
+<p>你可能会问：</p>
+<ul>
+<li>非对称加密这么强什么都能干为啥还要再使用对称加密呢？
+<ul>
+<li>原因是<strong>对称加密效率高</strong>，是非对称加密的上百倍。你可以使用 openssl 工具的 speed 子命令来查看不同加密算法的性能测试。</li>
+</ul>
+</li>
+<li>HTTPS 通信是一个双向的过程，服务端怎么确认客户端身份呢？
+<ul>
+<li>其实这是个可选项，比如网上银行这种场景，服务端会为客户端颁发证书，要求客户端在第三次握手时通过 <code>client certificate</code> 发送证书让服务端走一遍验证流程，确认客户端身份。</li>
+</ul>
+</li>
+</ul>
+<h2 id="传统rsa">传统RSA<a href="#传统rsa" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>之所以说是传统 RSA，是因为使用了 RSA 公钥加密预主密钥（Pre-Master Key）。流程和 ECDH 的方式差不多，少了服务端的 <strong>Server Key Exchange</strong> 消息。这种方式的缺点是因为不具备 <strong>前向保密性</strong>，也就是说如果黑客一直收集你的加密信息，如果在未来某一个你的私钥泄露或者被计算出来了，你以前所有的加密信息都会被破解。</p>
+<p>这也是为什么 ECDHE 算法最终在 TLS1.3 被保留，它在加密过程中使用临时产生的随机数作为椭圆曲线的参数来生成主密钥，这样就算私钥泄露，由于拿不到当时的随机密钥，也是没用的。主要流程如下：</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/rsa.png" alt="rsa"></p>
+<h2 id="tls13">TLS1.3<a href="#tls13" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>TLS1.3 为了解决向下兼容的问题，不能直接修改协议报文里的协议版本字段，这样会引起识别错误，导致 TLS 握手失败。所以就通过扩展字段来解决兼容问题：</p>
+<pre><code>Handshake Protocol: Client Hello
+    Version: TLS 1.2 (0x0303)
+    Extension: supported_versions (len=11)
+        Supported Version: TLS 1.3 (0x0304)
+        Supported Version: TLS 1.2 (0x0303)
+</code></pre><p>主要优化有两个方面。</p>
+<h3 id="增强安全">增强安全<a href="#增强安全" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>TLS/1.3 精简了许多选项：</p>
+<ul>
+<li>只保留 AES、ChaCha20 对称加密算法</li>
+<li>分组模式只能用 GCM、CCM 和 Poly1305</li>
+<li>消息摘要算法只能用 SHA256、SHA384</li>
+<li>密钥交换算法只有 ECDHE 和 DHE</li>
+<li>椭圆曲线也只剩下 P-256（也称为 secp256r1，openssl 里叫 prime256v1） 和 x25519（最安全最快速） 等5种。</li>
+</ul>
+<blockquote>
+<p>openssl 是知名的安全工具，几乎包含了所有公开的算法，你可以使用openssl speed命令来测试aes与rsa1024或rsa2048的速度，来直观的感受一下它们的速度差异。</p>
+<p>我们平时在服务端需要生成一对公私要来交给 CA 或者其他用途的时候，一般也是使用 openssl 工具。</p>
+</blockquote>
+<p>加密套件只剩下 5 种了，看看之前的十几个套件。。</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/new_suit.jpg" alt="new_suit"></p>
+<h3 id="优化性能">优化性能<a href="#优化性能" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>客户端第一次握手：</p>
+<pre><code>Handshake Protocol: Client Hello
+    Version: TLS 1.2 (0x0303)
+    Random: cebeb6c05403654d66c2329…
+    Cipher Suites (18 suites)
+        Cipher Suite: TLS_AES_128_GCM_SHA256 (0x1301)
+        Cipher Suite: TLS_CHACHA20_POLY1305_SHA256 (0x1303)
+        Cipher Suite: TLS_AES_256_GCM_SHA384 (0x1302)
+    Extension: supported_versions (len=9)
+        Supported Version: TLS 1.3 (0x0304)
+        Supported Version: TLS 1.2 (0x0303)
+    Extension: supported_groups (len=14)
+        Supported Groups (6 groups)
+            Supported Group: x25519 (0x001d)
+            Supported Group: secp256r1 (0x0017)
+    Extension: key_share (len=107)
+        Key Share extension
+            Client Key Share Length: 105
+            Key Share Entry: Group: x25519
+            Key Share Entry: Group: secp256r1
+</code></pre><p>服务端第二次握手：</p>
+<pre><code>Handshake Protocol: Server Hello
+    Version: TLS 1.2 (0x0303)
+    Random: 12d2bce6568b063d3dee2…
+    Cipher Suite: TLS_AES_128_GCM_SHA256 (0x1301)
+    Extension: supported_versions (len=2)
+        Supported Version: TLS 1.3 (0x0304)
+    Extension: key_share (len=36)
+        Key Share extension
+            Key Share Entry: Group: x25519, Key Exchange length: 32
+</code></pre><p>TLS1.2 需要两个 RTT 完成握手，TLS1.3 优化为了一个 RTT。</p>
+<p>具体的做法还是利用了扩展（因为要向下兼容，就像 HTTP 扩展可以无限增加首部字段一样）。</p>
+<p>客户端第一次握手就发送自己这边的椭圆曲线参数，服务端也回复自己的参数。然后就可以生成主密钥了。</p>
+<p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/tls13.png" alt="tls13"></p>
+<p>TLS1.3 还多了一个 Vertificate Verify，也就是服务端用自己的私钥把以前的椭圆曲线参数等信息签名，确保消息没有被篡改。</p>
+<h2 id="总结">总结<a href="#总结" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>说了这么多，我们回到最初的问题，https 为什么安全，我想可以大致总结如下：</p>
+<p>整体上通过引入第三方 CA 和证书机制验证双方身份，加密确保消息不会被窃听，签名确保消息不会被篡改解决了 HTTP 三大不安全问题。</p>
+<p>如果你从 HTTP -&gt; 传统RSA -&gt; TLS1.2 -&gt; TLS1.3 一路看过来就会发现，技术的变化也是需要时间的，有许多设计并不是一开始就完美无缺，<strong>方案总是需要实践的检验才能被人们认可</strong>。</p>
+
+			</div>
+			<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp"></div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/https">HTTPS</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E5%AE%89%E5%85%A8">安全</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>457 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-01-27 23:57 &#43;0800</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>深入理解 Go string 与 slice</span>
+			</a>
+			<a class="prev-post" href="https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>深入理解 Go defer 版本差异与底层特性</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+						<script src="https://utteranc.es/client.js"
+							repo="sh1luo/sh1luo"
+							issue-term="pathname"
+							theme="github-light"
+							crossorigin="anonymous"
+							async>
+			</script>
+		</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-193315904-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>
