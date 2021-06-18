@@ -20,7 +20,7 @@
 当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加两条 CNAME 记录，然后在 GitHub Pages 仓库的发布分支放一个 CNAME 文件，文件内容就是你的 CNAME 地址就可以了，它会自动帮你设置为这个域名并搞定一切的:)">
 <meta itemprop="datePublished" content="2021-01-06T21:13:13+00:00" />
 <meta itemprop="dateModified" content="2021-01-06T21:13:13+00:00" />
-<meta itemprop="wordCount" content="120">
+<meta itemprop="wordCount" content="202">
 
 
 
@@ -130,14 +130,52 @@
 <p>配置完源站信息后，会生成一个 CDN 域名，比如我的是 <code>kcode.icu.cdn.dnsv1.com</code> ，然后再添加一条 CNAME 记录指向这个域名就搞定。这样配置过，你的网站经过缓存后国内访问速度能达到非常恐怖的速度，可以试着 ping 一下哦。</p>
 <p>不过我这里是尝试了一下，发现国内都是不支持加速国外域名，所以放弃了。</p>
 <p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118184423991.png" alt=""></p>
-<h2 id="actions自动化构建">Actions自动化构建<a href="#actions自动化构建" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h2 id="自动化构建">自动化构建<a href="#自动化构建" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>自动化构建意思是说你只需要完成博客内容部分，其他生成静态页面，打包，发布部署等功能都交给一套脚本去完成。这里介绍我曾经体验过的几种。</p>
+<h3 id="github-actions">Github Actions<a href="#github-actions" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>这是 Github 提供的功能较为全面的自动化部署解决方案，使用方法有两种，一是在 <code>.git</code> 文件的同级目录下创建一个 <code>.github/workflow</code> 目录，然后新建 <code>gh-pages.yaml</code> 文件，另一个是在 Web端登录进入你 <code>yourname.github.io</code> 仓库， <code>Code</code> 栏右侧的 <code>Action</code> ，点进去图形化创建并编辑文件即可，这里展示我的 action 脚本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Deploy Hugo</span><span class="w">
+</span><span class="w"></span><span class="nt">on</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="l">master</span><span class="w">
+</span><span class="w"></span><span class="nt">jobs</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">build-deploy</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l">ubuntu-18.04</span><span class="w">
+</span><span class="w">    </span><span class="nt">steps</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">actions/checkout@v2</span><span class="w">
+</span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">submodules</span><span class="p">:</span><span class="w"> </span><span class="l">recursive</span><span class="w"> </span><span class="c"># Fetch Hugo themes (true OR recursive)</span><span class="w">
+</span><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="c"># Fetch all history for .GitInfo and .Lastmod</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Setup Hugo</span><span class="w">
+</span><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-hugo@v2</span><span class="w">
+</span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">hugo-version</span><span class="p">:</span><span class="w"> </span><span class="l">latest</span><span class="w">
+</span><span class="w">          </span><span class="nt">extended</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Build</span><span class="w">
+</span><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">hugo &amp;&amp; echo www.kcode.icu &gt; ./public/CNAME</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Deploy</span><span class="w">
+</span><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-gh-pages@v3</span><span class="w">
+</span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">personal_token</span><span class="p">:</span><span class="w"> </span><span class="l">${{ secrets.personal_token }}</span><span class="w"> </span><span class="c"># personal_token 这里新建一个 https://github.com/settings/tokens</span><span class="w">
+</span><span class="w">          </span><span class="nt">PUBLISH_BRANCH</span><span class="p">:</span><span class="w"> </span><span class="l">gh-pages</span><span class="w"> </span><span class="c"># 推送到当前 gh-pages 分支</span><span class="w">
+</span><span class="w">          </span><span class="nt">PUBLISH_DIR</span><span class="p">:</span><span class="w"> </span><span class="l">./public</span><span class="w"> </span><span class="c"># hugo 生成到 public 作为跟目录</span><span class="w">
+</span><span class="w">          </span><span class="nt">commit_message</span><span class="p">:</span><span class="w"> </span><span class="l">${{ github.event.head_commit.message }}</span><span class="w">
+</span></code></pre></div><p>也比较好理解，就是执行 <code>hugo</code> 命令然后创建一个 CNAME 文件用于自动设置一个自定义域名，然后推到 <code>gh-pages</code> 分支。</p>
+<p>这种方案的优点是自定义程度高，缺点相对就是需要自己全权控制写一个控制脚本，有一定学习成本。</p>
+<p>这是我的自动化构建执行结果：</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331160251498.png" alt="image-20210331160251498"></p>
+<h3 id="gitee-page">Gitee Page<a href="#gitee-page" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>Gitee 提供了常见的几个博客框架的自动化部署功能，Hugo，Hexo 和 Jekyll。也就是说，只要你根目录下有对应框架的 <code>yaml</code> 配置文件，在你每次将最新内容推至仓库时就会自动执行自动化构建，并把最新页面推到前端页面上，比较省心。</p>
+<p>优点是国内速度比 Github 快，毕竟服务器近，缺点是每次推完还要手动点更新，自动的一年 99RMB。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331155953211.png" alt="image-20210331155953211"></p>
 <h2 id="说在最后">说在最后<a href="#说在最后" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 <p>这里说几点我个人看法。</p>
 <ul>
-<li>博客要注重内容，我看好多人把界面弄的 <strong>过于花哨</strong> 不注重内在，我觉得如果你内容很丰富的情况下可以适当美化，但是弄个 BGM 或者动态换图什么的还是不要了。</li>
+<li>博客要<strong>注重内容</strong>，我看好多人把界面弄的 <strong>过于花哨</strong> 不注重实际内容，我觉得如果你内容很丰富的情况下可以适当美化，但是弄个 BGM 或者动态换图什么的还是不要了。</li>
 <li>多踩坑不一定是坏事，在大学这个试错成本很低的环境里就要多尝试，在踩坑的过程中把基础打牢，锻炼问题定位能力，多思考，多总结，日积月累肯定有所提升。</li>
 <li>写博客给别人看的同时要多去看别人的成果，尤其是大佬们的，进步很快。</li>
-<li></li>
+<li>最后一点也是最重要的，不要主要依靠别人的博客学习，大部分博客不系统，甚至有的博主不理解就生搬硬套，很容易给新人带来误解。努力学习一手资料，官方文档、书籍都是不错的选择，其次才是较为系统阐述的博客、零散的博客。</li>
 </ul>
 
 			</div>
@@ -147,7 +185,7 @@
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/%E5%8D%9A%E5%AE%A2">博客</a></span><span class="tag"><a href="https://www.kcode.icu/tags/cdn">CDN</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%9D%82%E8%B0%88">杂谈</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>120 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>202 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-01-07 05:13 &#43;0800</p>
 			</footer>
 		</article>
@@ -157,14 +195,19 @@
   <ul>
     <li><a href="#github-page自定义域名">GitHub Page+自定义域名</a></li>
     <li><a href="#cdn加速">CDN加速</a></li>
-    <li><a href="#actions自动化构建">Actions自动化构建</a></li>
+    <li><a href="#自动化构建">自动化构建</a>
+      <ul>
+        <li><a href="#github-actions">Github Actions</a></li>
+        <li><a href="#gitee-page">Gitee Page</a></li>
+      </ul>
+    </li>
     <li><a href="#说在最后">说在最后</a></li>
   </ul>
 </nav>
 		</aside>
 		<div class="post-nav thin">
 			<a class="next-post" href="https://www.kcode.icu/posts/interview/somequestions/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>一些常见Go语言及面试问题的整理</span>
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>一些常见 Go 语言及面试问题的整理</span>
 			</a>
 			<a class="prev-post" href="https://www.kcode.icu/posts/interview/2020-12-interview/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>记人生中前几次面试及思考</span>
@@ -190,6 +233,17 @@
 
 
 	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-193315904-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
 
 </body>
 

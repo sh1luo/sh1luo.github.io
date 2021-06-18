@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="Go 使用的 plan9 汇编语言初探">
+<meta itemprop="description" content="plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
+Go 语言早在 1.5 版本就实现了自举，即 使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，在下文中一边比较一边介绍。
+伪寄存器 plan9 抽象了 4 种伪寄存器：
+ FP（Frame Pointer），帧指针，快速访问函数的参数和返回值。 SP（Stack Pointer），栈指针，指向栈顶。 SB（Static base pointer），静态基址，全局变量。 PC（Program Counter），其实就是 IP（Instruction Pointer）的别名，指向下一条指令的地址。jmp等跳转指令还有分支控制等原理就是通过修改这个值。在 8086 机里等价于 CS:IP。  其实就是对 CPU 的重新抽象，这个抽象结构与具体的 CPU 结构无关。
+它们之间的具体关系如下图：
+与x86汇编的差异 许多人之前广泛了解的汇编可能是 AT&amp;T 格式或者传统 Intel-x86 格式，AT&amp;T 规范与 x86 有许多不同，而 plan9 与 AT&amp;T 有许多相似的地方，比如操作数顺序许多是相同的，但 不完全等价。还是需要我们重新学习，这里列举一些常见区别。
+Mnemonic | Go operands | AT&amp;T operands ================================================ BOUNDW | m16&amp;16, r16 | r16, m16&amp;16 BOUNDL | m32&amp;32, r32 | r32, m32&amp;32 CMPB | AL, imm8 | imm8, AL CMPW | AX, imm16 | imm16, AX CMPL | EAX, imm32 | imm32, EAX CMPQ | RAX, imm32 | imm32, RAX CMPW | r/m16, imm16 | imm16, r/m16 CMPW | r/m16, imm8 | imm8, r/m16 CMPW | r/m16, r16 | r16, r/m16 CMPL | r/m32, imm32 | imm32, r/m32 CMPL | r/m32, imm8 | imm8, r/m32 CMPL | r/m32, r32 | r32, r/m32 CMPQ | r/m64, imm32 | imm32, r/m64 CMPQ | r/m64, imm8 | imm8, r/m64 CMPQ | r/m64, r64 | r64, r/m64 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPW | r16, r/m16 | r/m16, r16 CMPL | r32, r/m32 | r/m32, r32 CMPQ | r64, r/m64 | r/m64, r64 CMPB | r8, r/m8 | r/m8, r8 CMPB | r8, r/m8 | r/m8, r8 CMPPD | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPPS | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPSD | imm8, xmm1, xmm2/m64 | imm8, xmm2/m64, xmm1 CMPSS | imm8, xmm1, xmm2/m32 | imm8, xmm2/m32, xmm1 ENTER | 0, imm16 | imm16, 0 ENTER | 1, imm16 | imm16, 1 操作数顺序不同 在 x86 中，一些常见指令是这样的：">
+<meta itemprop="datePublished" content="2021-04-04T20:30:20+00:00" />
+<meta itemprop="dateModified" content="2021-04-04T20:30:20+00:00" />
+<meta itemprop="wordCount" content="950">
+
+
+
+<meta itemprop="keywords" content="Go,汇编," />
+<meta property="og:title" content="Go 使用的 plan9 汇编语言初探" />
+<meta property="og:description" content="plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
+Go 语言早在 1.5 版本就实现了自举，即 使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，在下文中一边比较一边介绍。
+伪寄存器 plan9 抽象了 4 种伪寄存器：
+ FP（Frame Pointer），帧指针，快速访问函数的参数和返回值。 SP（Stack Pointer），栈指针，指向栈顶。 SB（Static base pointer），静态基址，全局变量。 PC（Program Counter），其实就是 IP（Instruction Pointer）的别名，指向下一条指令的地址。jmp等跳转指令还有分支控制等原理就是通过修改这个值。在 8086 机里等价于 CS:IP。  其实就是对 CPU 的重新抽象，这个抽象结构与具体的 CPU 结构无关。
+它们之间的具体关系如下图：
+与x86汇编的差异 许多人之前广泛了解的汇编可能是 AT&amp;T 格式或者传统 Intel-x86 格式，AT&amp;T 规范与 x86 有许多不同，而 plan9 与 AT&amp;T 有许多相似的地方，比如操作数顺序许多是相同的，但 不完全等价。还是需要我们重新学习，这里列举一些常见区别。
+Mnemonic | Go operands | AT&amp;T operands ================================================ BOUNDW | m16&amp;16, r16 | r16, m16&amp;16 BOUNDL | m32&amp;32, r32 | r32, m32&amp;32 CMPB | AL, imm8 | imm8, AL CMPW | AX, imm16 | imm16, AX CMPL | EAX, imm32 | imm32, EAX CMPQ | RAX, imm32 | imm32, RAX CMPW | r/m16, imm16 | imm16, r/m16 CMPW | r/m16, imm8 | imm8, r/m16 CMPW | r/m16, r16 | r16, r/m16 CMPL | r/m32, imm32 | imm32, r/m32 CMPL | r/m32, imm8 | imm8, r/m32 CMPL | r/m32, r32 | r32, r/m32 CMPQ | r/m64, imm32 | imm32, r/m64 CMPQ | r/m64, imm8 | imm8, r/m64 CMPQ | r/m64, r64 | r64, r/m64 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPW | r16, r/m16 | r/m16, r16 CMPL | r32, r/m32 | r/m32, r32 CMPQ | r64, r/m64 | r/m64, r64 CMPB | r8, r/m8 | r/m8, r8 CMPB | r8, r/m8 | r/m8, r8 CMPPD | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPPS | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPSD | imm8, xmm1, xmm2/m64 | imm8, xmm2/m64, xmm1 CMPSS | imm8, xmm1, xmm2/m32 | imm8, xmm2/m32, xmm1 ENTER | 0, imm16 | imm16, 0 ENTER | 1, imm16 | imm16, 1 操作数顺序不同 在 x86 中，一些常见指令是这样的：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/" />
+<meta property="article:published_time" content="2021-04-04T20:30:20+00:00" />
+<meta property="article:modified_time" content="2021-04-04T20:30:20+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 使用的 plan9 汇编语言初探"/>
+<meta name="twitter:description" content="plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
+Go 语言早在 1.5 版本就实现了自举，即 使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，在下文中一边比较一边介绍。
+伪寄存器 plan9 抽象了 4 种伪寄存器：
+ FP（Frame Pointer），帧指针，快速访问函数的参数和返回值。 SP（Stack Pointer），栈指针，指向栈顶。 SB（Static base pointer），静态基址，全局变量。 PC（Program Counter），其实就是 IP（Instruction Pointer）的别名，指向下一条指令的地址。jmp等跳转指令还有分支控制等原理就是通过修改这个值。在 8086 机里等价于 CS:IP。  其实就是对 CPU 的重新抽象，这个抽象结构与具体的 CPU 结构无关。
+它们之间的具体关系如下图：
+与x86汇编的差异 许多人之前广泛了解的汇编可能是 AT&amp;T 格式或者传统 Intel-x86 格式，AT&amp;T 规范与 x86 有许多不同，而 plan9 与 AT&amp;T 有许多相似的地方，比如操作数顺序许多是相同的，但 不完全等价。还是需要我们重新学习，这里列举一些常见区别。
+Mnemonic | Go operands | AT&amp;T operands ================================================ BOUNDW | m16&amp;16, r16 | r16, m16&amp;16 BOUNDL | m32&amp;32, r32 | r32, m32&amp;32 CMPB | AL, imm8 | imm8, AL CMPW | AX, imm16 | imm16, AX CMPL | EAX, imm32 | imm32, EAX CMPQ | RAX, imm32 | imm32, RAX CMPW | r/m16, imm16 | imm16, r/m16 CMPW | r/m16, imm8 | imm8, r/m16 CMPW | r/m16, r16 | r16, r/m16 CMPL | r/m32, imm32 | imm32, r/m32 CMPL | r/m32, imm8 | imm8, r/m32 CMPL | r/m32, r32 | r32, r/m32 CMPQ | r/m64, imm32 | imm32, r/m64 CMPQ | r/m64, imm8 | imm8, r/m64 CMPQ | r/m64, r64 | r64, r/m64 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPW | r16, r/m16 | r/m16, r16 CMPL | r32, r/m32 | r/m32, r32 CMPQ | r64, r/m64 | r/m64, r64 CMPB | r8, r/m8 | r/m8, r8 CMPB | r8, r/m8 | r/m8, r8 CMPPD | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPPS | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPSD | imm8, xmm1, xmm2/m64 | imm8, xmm2/m64, xmm1 CMPSS | imm8, xmm1, xmm2/m32 | imm8, xmm2/m32, xmm1 ENTER | 0, imm16 | imm16, 0 ENTER | 1, imm16 | imm16, 1 操作数顺序不同 在 x86 中，一些常见指令是这样的："/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Go 使用的 plan9 汇编语言初探</title>
+	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://www.kcode.icu/">wasabi</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://www.kcode.icu/posts/">文章</a>
+					<a href="https://www.kcode.icu/summary">总结</a>
+					<a href="https://www.kcode.icu/chore">杂项</a>
+					<a href="https://www.kcode.icu/go">Go系列</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://www.kcode.icu/posts/">文章</a></li>
+			<li><a href="https://www.kcode.icu/tags/">标签</a></li>
+			<li><a href="https://www.kcode.icu/about/">关于</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Apr 4, 2021</span></div>
+				<h1>Go 使用的 plan9 汇编语言初探</h1>
+			</header>
+			<div class="content">
+				<p>plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。</p>
+<p>Go 语言早在 1.5 版本就实现了自举，即 使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，在下文中一边比较一边介绍。</p>
+<h2 id="伪寄存器">伪寄存器<a href="#伪寄存器" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>plan9 抽象了 4 种伪寄存器：</p>
+<ul>
+<li>FP（Frame Pointer），帧指针，快速访问函数的参数和返回值。</li>
+<li>SP（Stack Pointer），栈指针，指向栈顶。</li>
+<li>SB（Static base pointer），静态基址，全局变量。</li>
+<li>PC（Program Counter），其实就是 IP（Instruction Pointer）的别名，指向下一条指令的地址。jmp等跳转指令还有分支控制等原理就是通过修改这个值。在 8086 机里等价于 CS:IP。</li>
+</ul>
+<p>其实就是对 CPU 的重新抽象，<strong>这个抽象结构与具体的 CPU 结构无关</strong>。</p>
+<p>它们之间的具体关系如下图：</p>
+<h2 id="与x86汇编的差异">与x86汇编的差异<a href="#与x86汇编的差异" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>许多人之前广泛了解的汇编可能是 AT&amp;T 格式或者传统 Intel-x86 格式，AT&amp;T 规范与 x86 有许多不同，而 plan9 与 AT&amp;T 有许多相似的地方，比如操作数顺序许多是相同的，但 <strong>不完全等价</strong>。还是需要我们重新学习，这里列举一些常见区别。</p>
+<pre><code class="language-assembly" data-lang="assembly">Mnemonic | Go operands           | AT&amp;T operands
+================================================
+BOUNDW   | m16&amp;16, r16           | r16, m16&amp;16
+BOUNDL   | m32&amp;32, r32           | r32, m32&amp;32
+CMPB     | AL, imm8              | imm8, AL
+CMPW     | AX, imm16             | imm16, AX
+CMPL     | EAX, imm32            | imm32, EAX
+CMPQ     | RAX, imm32            | imm32, RAX
+CMPW     | r/m16, imm16          | imm16, r/m16
+CMPW     | r/m16, imm8           | imm8, r/m16
+CMPW     | r/m16, r16            | r16, r/m16
+CMPL     | r/m32, imm32          | imm32, r/m32
+CMPL     | r/m32, imm8           | imm8, r/m32
+CMPL     | r/m32, r32            | r32, r/m32
+CMPQ     | r/m64, imm32          | imm32, r/m64
+CMPQ     | r/m64, imm8           | imm8, r/m64
+CMPQ     | r/m64, r64            | r64, r/m64
+CMPB     | r/m8, imm8            | imm8, r/m8
+CMPB     | r/m8, imm8            | imm8, r/m8
+CMPB     | r/m8, r8              | r8, r/m8
+CMPB     | r/m8, r8              | r8, r/m8
+CMPW     | r16, r/m16            | r/m16, r16
+CMPL     | r32, r/m32            | r/m32, r32
+CMPQ     | r64, r/m64            | r/m64, r64
+CMPB     | r8, r/m8              | r/m8, r8
+CMPB     | r8, r/m8              | r/m8, r8
+CMPPD    | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1
+CMPPS    | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1
+CMPSD    | imm8, xmm1, xmm2/m64  | imm8, xmm2/m64, xmm1
+CMPSS    | imm8, xmm1, xmm2/m32  | imm8, xmm2/m32, xmm1
+ENTER    | 0, imm16              | imm16, 0
+ENTER    | 1, imm16              | imm16, 1
+</code></pre><h3 id="操作数顺序不同">操作数顺序不同<a href="#操作数顺序不同" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>在 x86 中，一些常见指令是这样的：</p>
+<pre><code class="language-assembly" data-lang="assembly">MOV EAX, 10  ;EAX=10
+MOV AH, [BL] ;AH=*BL
+</code></pre><p>而在 plan9 中操作数的顺序会相反：</p>
+<pre><code class="language-assembly" data-lang="assembly">MOVL a+0(FP), AX  ;AX=a 
+MOVB BX, AX    ;AX=BX
+</code></pre><p>不止这些，还有 LEA ADD SUB IMUL等等也都满足。</p>
+<h3 id="操作数大小表示法不同">操作数大小表示法不同<a href="#操作数大小表示法不同" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>在 x86 中，表示大小通过直接区分操作数，比如 AX 寄存器的高 8 位就是 <code>AH</code> ，低 8 位就叫 <code>AL</code>.。而 plan9 中通过不同操作码来区分：</p>
+<pre><code class="language-assembly" data-lang="assembly">MOVB $0x10, AX  ;1B, Byte
+MOVW $-10, DI  ;2B, 1Word=2Byte
+MOVL $0, SP   ;4B, Double Word
+MOVQ $1, DX   ;8B, Quatury Word
+</code></pre><h3 id="寄存器">寄存器<a href="#寄存器" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>寄存器分为 <strong>实寄存器（real register）和 伪寄存器（pseudo register）</strong> ，前者在 CPU 内部，属于 CPU 的固件，作为与 CPU 直接产生信息交换的单位，具体种类与架构有关，可以通过 dlv 工具查看：</p>
+<blockquote>
+<p>示例程序的机器为 AMD64，也就是 x86-64。不同的机器可能会因为 CPU 的不同而不同。</p>
+</blockquote>
+<pre><code>(dlv) regs                                       
+   Rip = 0x00007ff90ed00771                      
+   Rsp = 0x000000cfd45ff260                      
+   Rax = 0x0000000000000000                      
+   Rbx = 0x0000000000000010                      
+   Rcx = 0x00007ff90eccd2c4                      
+   Rdx = 0x0000000000000000                      
+   Rsi = 0x00007ff90ed61a80                      
+   Rdi = 0x000000cfd4237000                      
+   Rbp = 0x0000000000000000                      
+    R8 = 0x000000cfd45ff258                      
+    R9 = 0x0000000000000000                      
+   R10 = 0x0000000000000000                      
+   R11 = 0x0000000000000246                      
+   R12 = 0x0000000000000040                      
+   R13 = 0x0000000000000000                      
+   R14 = 0x00007ff90ed548f0                      
+   R15 = 0x00000254e7900000                      
+Rflags = 0x0000000000000246     [PF ZF IF IOPL=0]
+    Cs = 0x0000000000000033                      
+    Fs = 0x0000000000000053                      
+    Gs = 0x000000000000002b                      
+</code></pre><p>后者是应用层抽象出来的概念，实际并不存在，目的是为了更方便地写汇编。</p>
+<p>由于历史原因，x86 平台要保证向后兼容，要求在 64 位机上要能够运行 32、16、8位程序。解决方法是通过给寄存器加前缀实现的。</p>
+<pre><code class="language-assembly" data-lang="assembly">AH/AL -&gt; AX -&gt; EAX -&gt; RAX
+  8      16     32     64
+</code></pre><p>除此之外，还有这些对应关系</p>
+<table>
+<thead>
+<tr>
+<th>X64</th>
+<th>rax</th>
+<th>rbx</th>
+<th>rcx</th>
+<th>rdx</th>
+<th>rdi</th>
+<th>rsi</th>
+<th>rbp</th>
+<th>rsp</th>
+<th>r8</th>
+<th>r9</th>
+<th>r10</th>
+<th>r11</th>
+<th>r12</th>
+<th>r13</th>
+<th>r14</th>
+<th>rip</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan9</td>
+<td>AX</td>
+<td>BX</td>
+<td>CX</td>
+<td>DX</td>
+<td>DI</td>
+<td>SI</td>
+<td>BP</td>
+<td>SP</td>
+<td>R8</td>
+<td>R9</td>
+<td>R10</td>
+<td>R11</td>
+<td>R12</td>
+<td>R13</td>
+<td>R14</td>
+<td>PC</td>
+</tr>
+</tbody>
+</table>
+<h4 id="伪寄存器-1">伪寄存器<a href="#伪寄存器-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
+<p>为了方便编程，plan9 还引入了 4 个伪寄存器，<code>SP</code> <code>FP</code> <code>SB</code> <code>PC</code>。想当年面试的时候（其实就是去年，我张口就来引入这四个是为了增加性能（猜的，回头想想还真是离谱。</p>
+<p>这 4 个有不同的作用，其中 伪SP寄存器 还与 真SP寄存器 重名了，就更容易让初学者懵逼了，这里放个曹大的图就明白了。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/ch3-3-arch-amd64-02.ditaa.png" alt="图源《Go语言高级编程》"></p>
+<p>这个图里有一点歧义，红色部分是栈，黄色是堆，图中的关系是堆在上面，而实际堆是向上增长的。</p>
+<p>另外还有一点，这张图里没有标明 实寄存器BP 的位置，BP 是栈基地址。</p>
+<h2 id="函数调用">函数调用<a href="#函数调用" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>这里拿一个简单的函数嵌套调用代码，来举例说明它们之间的具体位置关系和实现原理：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">upper</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">r0</span><span class="p">,</span> <span class="nx">r1</span> <span class="o">:=</span> <span class="nf">f0</span><span class="p">(</span><span class="nx">arg0</span><span class="p">,</span> <span class="nx">arg1</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">f0</span><span class="p">(</span><span class="nx">arg0</span><span class="p">,</span> <span class="nx">arg1</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">ret0</span><span class="p">,</span> <span class="nx">ret1</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">r0</span> <span class="o">:=</span> <span class="nx">arg0</span> <span class="o">-</span> <span class="nx">arg1</span>
+    <span class="nx">r1</span> <span class="o">:=</span> <span class="nx">arg0</span> <span class="o">+</span> <span class="nx">arg1</span>
+    <span class="nx">r1</span> <span class="p">=</span> <span class="nf">f1</span><span class="p">(</span><span class="nx">r0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">r0</span><span class="p">,</span> <span class="nx">r1</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">f1</span><span class="p">(</span><span class="nx">arg0</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">ret0</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="nx">arg0</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="栈帧">栈帧<a href="#栈帧" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>函数实现嵌套调用依靠的数据结构就是栈，上面这个程序它的调用栈帧如下：</p>
+<pre><code class="language-assembly" data-lang="assembly">       
+                    +------------+ &lt;----------+
+                    |    ....    |            |
+                    +------------+            |
+                    |    Ret1    |            |
+                    +------------+            |
+                    |    Ret0    |
+                    +------------+      upper call stack
+                    |    Arg1    |
+                    +------------+            |
+                    |    Arg0    |            |
+                    +------------+            |
+                    |  Ret Addr  |            |
+                    +------------+ &lt;----------+
+real BP(pseudo SP)  |  upper BP  |            |
+------------------&gt; +------------+            |
+                    |   Local0   |            |
+                    +------------+            |
+       real SP      |   Local1   |
+  ----------------&gt; +------------+
+                    |            |      f0 stack frame
+                    |unused space|
+                    |            |
+                    +------------+            |
+                    |    Ret0    |            |
+                    +------------+            |
+       pseudo FP    |    Arg1    |            |
+  ----------------&gt; +------------+            |
+                    |  Ret Addr  |            |
+                    +------------+ &lt;----------+
+                    |Caller f0'BP|
+                    +------------+
+                    |   Local0   |
+                    +------------+
+                    |   Local1   |
+                    +------------+
+                    |    ...     |
+                    +------------+
+                    
+</code></pre><h3 id="验证">验证<a href="#验证" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>我们使用 FP/real SP/pseudo SP 来验证一下上面的栈帧示意图：</p>
+<h2 id="分析一个简单的程序">分析一个简单的程序<a href="#分析一个简单的程序" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>好了，终于见到 「真的汇编代码」 了，理论知识差不多了（误</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">sum</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">sub</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">z</span> <span class="o">:=</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span>
+  <span class="nx">w</span> <span class="o">:=</span> <span class="nx">x</span> <span class="o">-</span> <span class="nx">y</span>
+  <span class="k">return</span> <span class="nx">z</span><span class="p">,</span> <span class="nx">w</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">c</span><span class="p">,</span> <span class="nx">d</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="前置知识">前置知识<a href="#前置知识" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>在命令行中执行 <code>go tool compile -S -N -l main.go</code> 查看汇编代码。看之前需要注意两点，</p>
+<ul>
+<li>不管使用 <code>go tool compile -S</code> 还是 <code>go tool objdump</code> 来查看汇编代码，都是和实际我们手写 plan9 不同的，不能照搬语法。这两者关于汇编指令的输出也是不同的。当然，十六进制肯定是相同的。</li>
+<li>输出的所有 SP 指针无论带不带 symbol 都是实寄存器，而实际上在手写 plan9 时，如果使用了形如 <code>symbol+offset(SP)</code> 的表达则指使用的是 伪SP指针，不带则是 真SP指针。</li>
+<li>而实际手写在使用 <code>FP</code> 寄存器时如果不带 <code>symbol</code> 会直接报错。</li>
+</ul>
+<h3 id="变量与常量">变量与常量<a href="#变量与常量" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<h3 id="函数">函数<a href="#函数" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<pre><code class="language-assembly" data-lang="assembly">&quot;&quot;.add STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0
+        0x0000 00000 (notify.go:7)      TEXT    &quot;&quot;.add(SB), NOSPLIT|ABIInternal, $0-24
+        0x0000 00000 (notify.go:7)      FUNCDATA        $0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+        0x0000 00000 (notify.go:7)      FUNCDATA        $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+        0x0000 00000 (notify.go:8)      MOVQ    &quot;&quot;.b+16(SP), AX
+        0x0005 00005 (notify.go:8)      MOVQ    &quot;&quot;.a+8(SP), CX
+        0x000a 00010 (notify.go:8)      ADDQ    CX, AX
+        0x000d 00013 (notify.go:8)      MOVQ    AX, &quot;&quot;.~r2+24(SP)
+        0x0012 00018 (notify.go:8)      RET
+</code></pre><p>先看第一行内容：</p>
+<pre><code class="language-assembly" data-lang="assembly">&quot;&quot;.add STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0
+</code></pre><p>内容虽然多，但是非常好理解，不同数值均给出了名称，但是更标准的表示法一般是这样：</p>
+<pre><code class="language-assembly" data-lang="assembly">TEXT runtime∕internal∕atomic·Cas(SB),NOSPLIT,$0-17
+</code></pre><p>双引号里和 <code>runtime/internal/atomic</code> 都是函数名，可以省略，后面紧跟函数名。<code>TEXT</code> 是区段名。<code>SB</code> 是基于伪寄存器 <code>SB</code> 进行偏移，比如：</p>
+<pre><code class="language-assembly" data-lang="assembly">+4(SB)
+a+8(SB)
+</code></pre><p>一个是在 SB 寄存器起始地址上正向偏移 4 个字节，一个是从 SB 的 a 变量开始偏移 4 个字节。</p>
+<p>由于 Go 语言函数的调用栈帧默认是动态伸缩的，初始大小只有 2KB，你可以使用 <code>指令</code> 来控制这个行为：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">//go:nosplit
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">str2slc</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</code></pre></div><p>这条指令可以禁止扩容检测，这样做一定程度上可以增加效率。而汇编代码里的 <code>nosplit</code> 是编译器帮我们做的优化。除此之外，还有 <code>WRAPPER</code>、<code>noinline</code> 等许多指令，都是用来指导编译器的工作，例如禁用内联，禁止逃逸，禁止逃逸分析等等，具体及更多信息可以在官方文档 <a href="https://golang.org/cmd/compile/">golang.org/cmd/compile</a> 查看。</p>
+<p><code>$0-17</code> 的 0 是函数栈帧大小，指函数内的局部变量总大小，这个值包括准备子函数参数的开销。17 是参数大小，'-' 不是减号，只是连接符，不要想当然认为栈向下增长所以是做减法（不过好像问题也不大</p>
+<p><del>需要注意的是，如果没有 <code>nosplit</code>，则必须给出参数大小，而不能直接 <code>$x</code>，因为 Go 语言编译器已无法根据函数签名进行占用空间大小的推导。</del></p>
+<p>所以，最终定义函数的标准语法如下：</p>
+<pre><code class="language-assembly" data-lang="assembly">TEXT symbol(SB), [flags,] $framesize[-argsize]
+</code></pre><h2 id="手写来练习一下吧">手写来练习一下吧<a href="#手写来练习一下吧" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>看了这么多，来手写一个简单的 plan9 汇编程序练习一下。</p>
+<blockquote>
+<p>目标：实现一个求整型切片元素和的函数，函数签名为：func addSliceInt(slc []int) int。举个例子，如果 slc := []{1,2,3,4}，那么返回 10.</p>
+</blockquote>
+<h2 id="总结">总结<a href="#总结" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>plan9 是一个操作系统，对应一套汇编语法，被称为 plan9 汇编，与 AT&amp;T 规范非常相似，也不完全一样。与传统 x86 汇编差异较大。</p>
+<p>plan9 重新定义了 4 个伪寄存器来方便编程，函数嵌套调用的核心就是依靠栈的先进先出特性，在调用前来保护 Caller 的执行现场，并在 Callee 执行完返回后恢复现场，从而继续执行。</p>
+<ul>
+<li>没有 push，pop 等栈操作，栈的增缩是通过对 sp 栈顶寄存器的加减实现的，例如 +8（sp）</li>
+<li>操作数的大小不是通过区分操作码来实现的，而是通过操作码的后缀实现，例如复制 <code>ax</code> 寄存器低 1 字节到第二字节，在 <code>x86</code> 汇编中是通过 <code>mov ah,al</code>，而在 plan9 中则是通过 <code>movb al,ah</code>
+<ul>
+<li>b w d q分别代表1 2 4 8 Byte，含义是byte，word，double word，quatury。</li>
+</ul>
+</li>
+<li>操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条</li>
+</ul>
+<blockquote>
+<p>我们学习 plan9 汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可。</p>
+</blockquote>
+<p>但是为什么 plan9 不与 x86 系兼容呢，而要单独开发一套自己的语法呢，我看了不少人的解释，貌似是因为 unix 团队是学院派，特立独行，也不屑于商业化（就是玩</p>
+
+			</div>
+			<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp"></div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%B1%87%E7%BC%96">汇编</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>950 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-04-05 04:30 &#43;0800</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://www.kcode.icu/posts/os/mitos/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>MIT 6.828 课程学习记录</span>
+			</a>
+			<a class="prev-post" href="https://www.kcode.icu/posts/interview/2021-3-nowcoder/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>大三实习求职之旅</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+						<script src="https://utteranc.es/client.js"
+							repo="sh1luo/sh1luo"
+							issue-term="pathname"
+							theme="github-light"
+							crossorigin="anonymous"
+							async>
+			</script>
+		</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-193315904-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>

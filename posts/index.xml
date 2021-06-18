@@ -6,24 +6,501 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-hans</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Sat, 20 Mar 2021 20:30:20 +0000</lastBuildDate>
+		<lastBuildDate>Sat, 05 Jun 2021 14:36:20 +0000</lastBuildDate>
 		<atom:link href="https://www.kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
 		
 		<item>
-			<title>Go 函数调用栈帧汇编分析</title>
-			<link>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</link>
-			<pubDate>Sat, 20 Mar 2021 20:30:20 +0000</pubDate>
+			<title>如何只使用一个指针域实现双向链表</title>
+			<link>https://www.kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</link>
+			<pubDate>Sat, 05 Jun 2021 14:36:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</guid>
-			<description>123
-这是Go 函数调用栈帧汇编分析文章。。
- 待更新
- </description>
-			<content type="html"><![CDATA[<p>123</p>
-<p>这是Go 函数调用栈帧汇编分析文章。。</p>
+			<guid>https://www.kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</guid>
+			<description>这是来自某学习群友提供的，一道 便利蜂 的实习面试题，恰好被看到了（不是
+问题是：只使用一个指针如何实现双向链表，乍一想好像不可能，我当时的大致思路是这样的：原来直接使用 -&amp;gt;right 或者 -&amp;gt;left 就能访问到左右节点，现在只有一个指针，就要修改指针的含义，不能直接存储下一个节点的地址了，大概率是要根据某些条件算出下一个地址。
+事实证明基本如此，我去翻了维基百科详细看了思路并本地实现了一遍完整代码，记录一下。</description>
+			<content type="html"><![CDATA[<p>这是来自某学习群友提供的，一道 <a href="https://www.bianlifeng.com/">便利蜂</a> 的实习面试题，恰好被看到了（不是</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210605145233924.png" alt="image-20210605145233924"></p>
+<p>问题是：只使用一个指针如何实现双向链表，乍一想好像不可能，我当时的大致思路是这样的：原来直接使用 <code>-&gt;right</code> 或者 <code>-&gt;left</code> 就能访问到左右节点，现在只有一个指针，就要修改指针的含义，不能直接存储下一个节点的地址了，大概率是要根据某些条件算出下一个地址。</p>
+<p>事实证明基本如此，我去翻了维基百科详细看了思路并本地实现了一遍完整代码，记录一下。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>正/反向代理与科学上网</title>
+			<link>https://www.kcode.icu/posts/2021-05-31-%E6%AD%A3%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+			<pubDate>Mon, 31 May 2021 15:33:50 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/2021-05-31-%E6%AD%A3%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
+			<description>代理
+你可能听过许多 反向代理（Reverse Proxy） 软件例如 Nginx、Apache 等，它们性能优越，被广泛应用于实际应用中，那么你是否知道 “反向” 是什么意思，为什么叫反向呢，明白这个问题有助于我们更深入的理解它们。还有许多框架中常用的的 控制反转（IOC）/依赖注入（DI） 等概念，你是否理解 反转OR注入 的真正含义。
+既然有反向代理，就有正向代理，常用的科学上网就是使用了这个技术，你所见过的例如 ss/ssr/socks5 等等仅仅是协议名，配合上一些混淆方式，它们的技术原理还是 正向代理（ Forward Proxy）。
+之前我在「刷」面试题的时候，就遇到过相关问题，“墙的原理以及科学上网的原理”。相信读完这本文你会得到答案。
+反向代理 在了解正反向代理之前先牢记一句话，反向代理 代理并隐藏服务端，正向代理与之相反，隐藏客户端。
+OK，记住了这句话，想想 Nginx/Apache 的功能，你将服务部署在服务器上，可能有多个，然后使用 Nginx/Apache 来接受外界请求，利用提供的指令，例如 sever_name，listen，index，location 等控制其进行转发，由于使用了非常高效的 epoll IO多路复用模型，效率非常高。
+那么你的脑海中应该有这么一张图：
+正向代理 科学上网 </description>
+			<content type="html"><![CDATA[<p>代理</p>
+<p>你可能听过许多 <strong>反向代理（Reverse Proxy）</strong> 软件例如 Nginx、Apache 等，它们性能优越，被广泛应用于实际应用中，那么你是否知道 “反向” 是什么意思，为什么叫反向呢，明白这个问题有助于我们更深入的理解它们。还有许多框架中常用的的 <strong>控制反转（IOC）/依赖注入</strong>（DI） 等概念，你是否理解 <strong>反转OR注入</strong> 的真正含义。</p>
+<p>既然有反向代理，就有正向代理，常用的科学上网就是使用了这个技术，你所见过的例如 ss/ssr/socks5 等等仅仅是协议名，配合上一些混淆方式，它们的技术原理还是 <strong>正向代理（ Forward Proxy）</strong>。</p>
+<p>之前我在「刷」面试题的时候，就遇到过相关问题，“墙的原理以及科学上网的原理”。相信读完这本文你会得到答案。</p>
+<h2 id="反向代理">反向代理</h2>
+<p>在了解正反向代理之前先牢记一句话，<strong><code>反向代理</code> 代理并隐藏服务端，<code>正向代理</code>与之相反，隐藏客户端。</strong></p>
+<p>OK，记住了这句话，想想 Nginx/Apache 的功能，你将服务部署在服务器上，可能有多个，然后使用 Nginx/Apache 来接受外界请求，利用提供的指令，例如 <code>sever_name</code>，<code>listen</code>，<code>index</code>，<code>location</code> 等控制其进行转发，由于使用了非常高效的 epoll IO多路复用模型，效率非常高。</p>
+<p>那么你的脑海中应该有这么一张图：</p>
+<h2 id="正向代理">正向代理</h2>
+<h2 id="科学上网">科学上网</h2>
+]]></content>
+		</item>
+		
+		<item>
+			<title>极客时间专栏《RPC实战与核心原理》读后笔记</title>
+			<link>https://www.kcode.icu/posts/rpc/geektime-rpc/</link>
+			<pubDate>Fri, 14 May 2021 21:45:13 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/rpc/geektime-rpc/</guid>
+			<description>对 RPC 相关的学习也有了一段时间，算是有了一个初步的认识，回过头来读 极客时间的专栏 感觉思路清晰了不少，顺利了许多，再回头看 rpcx 的源码也没有那么费劲了。我把我在这个专栏中学到的一些内容记录下来，共同学习。
+本文不再解释 RPC 相关基础概念，有需要可在上文链接或者往期文章中学习。
+以下的二级标题均对应专栏的课程大纲，同样分单元总结。
+开篇词 开篇词介绍了 RPC 的使用场景，重要意义，作为引文。
+RPC 即远程过程调用，目的是使调用另一台机器上的程序就像调用本地程序一样简单。总是和 “微服务”，SOA 联系，其实理论上来说，任何牵扯到网络通信的系统都可能需要使用 RPC。比如分布式各个组件间或与应用间的通信，比如 etcd 作为统一的配置服务，客户端就是通过 gRPC 框架与服务端进行通信的。
+RPC 是解决分布式系统通信问题的一大利器。 RPC 的通信原理十分简单，可是想完美驾驭却不那么容易，这个过程除了调用过程之外，还主要包括：通信节点查找，连接的建立与状态管理，数据传输的编解码，序列化与反序列化等等，每一项都十分复杂。
+而完整的 RPC 框架却对上述过程进行了封装，使得网络通信逻辑的开发变得十分简单，效率也会更高。
+最初的我学习 RPC 也是由浅入深，从 “字面意思” 出发，即如何调用远程主机上的某个函数，实现了编解码，序列化等等一整套调用流程，成功执行了远程主机的程序，当然了，这还是点对点的。
+后来我发现这些仅仅是基础，冰山下的还包括一系列服务治理功能：连接管理，健康检测，负载均衡，优雅启停机，异常重试，业务分组以及熔断限流等等。十分复杂又充满了挑战性。</description>
+			<content type="html"><![CDATA[<p>对 <a href="https://en.wikipedia.org/wiki/Remote_procedure_call">RPC</a> 相关的学习也有了一段时间，算是有了一个初步的认识，回过头来读 <a href="https://time.geekbang.org/column/intro/100046201">极客时间的专栏</a> 感觉思路清晰了不少，顺利了许多，再回头看 <a href="https://rpcx.io/">rpcx</a> 的源码也没有那么费劲了。我把我在这个专栏中学到的一些内容记录下来，共同学习。</p>
+<p>本文不再解释 RPC 相关基础概念，有需要可在上文链接或者往期文章中学习。</p>
+<p>以下的二级标题均对应专栏的课程大纲，同样分单元总结。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210515133206463.png" alt="image-20210515133206463"></p>
+<h2 id="开篇词">开篇词</h2>
+<p>开篇词介绍了 RPC 的使用场景，重要意义，作为引文。</p>
+<p>RPC 即远程过程调用，目的是使调用另一台机器上的程序就像调用本地程序一样简单。总是和 “微服务”，SOA 联系，其实理论上来说，任何牵扯到网络通信的系统都可能需要使用 RPC。比如分布式各个组件间或与应用间的通信，比如 etcd 作为统一的配置服务，客户端就是通过 gRPC 框架与服务端进行通信的。</p>
+<p><strong>RPC 是解决分布式系统通信问题的一大利器。</strong> RPC 的通信原理十分简单，可是想完美驾驭却不那么容易，这个过程除了调用过程之外，还主要包括：通信节点查找，连接的建立与状态管理，数据传输的编解码，序列化与反序列化等等，每一项都十分复杂。</p>
+<p>而完整的 RPC 框架却对上述过程进行了封装，使得网络通信逻辑的开发变得十分简单，效率也会更高。</p>
+<p>最初的我学习 RPC 也是由浅入深，从 “字面意思” 出发，即如何调用远程主机上的某个函数，实现了编解码，序列化等等一整套调用流程，成功执行了远程主机的程序，当然了，这还是点对点的。</p>
+<p>后来我发现这些仅仅是基础，冰山下的还包括一系列服务治理功能：连接管理，健康检测，负载均衡，优雅启停机，异常重试，业务分组以及熔断限流等等。十分复杂又充满了挑战性。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>MIT 6.828 课程学习记录</title>
+			<link>https://www.kcode.icu/posts/os/mitos/</link>
+			<pubDate>Sun, 25 Apr 2021 23:35:20 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/os/mitos/</guid>
+			<description>介绍 好多人推荐这个国外的课程，就找了一下课程，下载了一份讲义，打开第一眼就看到大名鼎鼎的 rsc 大佬，偶像啊，Go 的当下掌舵人。就冲这名必须得看完了（狗头😄）。 开个玩笑，我个人对计算机基础最感兴趣的就是组成原理、操作系统和汇编语言，除此之外就是分布式了，等搞定这个之后也去跟一下 MIT 6.824 分布式部分（开新坑🕳️ ）
+待更&amp;hellip;.</description>
+			<content type="html"><![CDATA[<h2 id="介绍">介绍</h2>
+<p>好多人推荐这个国外的课程，就找了一下课程，下载了一份讲义，打开第一眼就看到大名鼎鼎的 <a href="https://github.com/rsc">rsc</a> 大佬，偶像啊，Go 的当下掌舵人。就冲这名必须得看完了（狗头😄）。 开个玩笑，我个人对计算机基础最感兴趣的就是组成原理、操作系统和汇编语言，除此之外就是分布式了，等搞定这个之后也去跟一下 MIT 6.824 分布式部分（开新坑🕳️ ）</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210425171314612.png" alt="image-20210425171314612"></p>
+<p>待更&hellip;.</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Go 使用的 plan9 汇编语言初探</title>
+			<link>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</link>
+			<pubDate>Sun, 04 Apr 2021 20:30:20 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</guid>
+			<description>plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
+Go 语言早在 1.5 版本就实现了自举，即 使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，在下文中一边比较一边介绍。
+伪寄存器 plan9 抽象了 4 种伪寄存器：
+ FP（Frame Pointer），帧指针，快速访问函数的参数和返回值。 SP（Stack Pointer），栈指针，指向栈顶。 SB（Static base pointer），静态基址，全局变量。 PC（Program Counter），其实就是 IP（Instruction Pointer）的别名，指向下一条指令的地址。jmp等跳转指令还有分支控制等原理就是通过修改这个值。在 8086 机里等价于 CS:IP。  其实就是对 CPU 的重新抽象，这个抽象结构与具体的 CPU 结构无关。
+它们之间的具体关系如下图：
+与x86汇编的差异 许多人之前广泛了解的汇编可能是 AT&amp;amp;T 格式或者传统 Intel-x86 格式，AT&amp;amp;T 规范与 x86 有许多不同，而 plan9 与 AT&amp;amp;T 有许多相似的地方，比如操作数顺序许多是相同的，但 不完全等价。还是需要我们重新学习，这里列举一些常见区别。
+Mnemonic | Go operands | AT&amp;amp;T operands ================================================ BOUNDW | m16&amp;amp;16, r16 | r16, m16&amp;amp;16 BOUNDL | m32&amp;amp;32, r32 | r32, m32&amp;amp;32 CMPB | AL, imm8 | imm8, AL CMPW | AX, imm16 | imm16, AX CMPL | EAX, imm32 | imm32, EAX CMPQ | RAX, imm32 | imm32, RAX CMPW | r/m16, imm16 | imm16, r/m16 CMPW | r/m16, imm8 | imm8, r/m16 CMPW | r/m16, r16 | r16, r/m16 CMPL | r/m32, imm32 | imm32, r/m32 CMPL | r/m32, imm8 | imm8, r/m32 CMPL | r/m32, r32 | r32, r/m32 CMPQ | r/m64, imm32 | imm32, r/m64 CMPQ | r/m64, imm8 | imm8, r/m64 CMPQ | r/m64, r64 | r64, r/m64 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPW | r16, r/m16 | r/m16, r16 CMPL | r32, r/m32 | r/m32, r32 CMPQ | r64, r/m64 | r/m64, r64 CMPB | r8, r/m8 | r/m8, r8 CMPB | r8, r/m8 | r/m8, r8 CMPPD | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPPS | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPSD | imm8, xmm1, xmm2/m64 | imm8, xmm2/m64, xmm1 CMPSS | imm8, xmm1, xmm2/m32 | imm8, xmm2/m32, xmm1 ENTER | 0, imm16 | imm16, 0 ENTER | 1, imm16 | imm16, 1 操作数顺序不同 在 x86 中，一些常见指令是这样的：</description>
+			<content type="html"><![CDATA[<p>plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。</p>
+<p>Go 语言早在 1.5 版本就实现了自举，即 使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，在下文中一边比较一边介绍。</p>
+<h2 id="伪寄存器">伪寄存器</h2>
+<p>plan9 抽象了 4 种伪寄存器：</p>
+<ul>
+<li>FP（Frame Pointer），帧指针，快速访问函数的参数和返回值。</li>
+<li>SP（Stack Pointer），栈指针，指向栈顶。</li>
+<li>SB（Static base pointer），静态基址，全局变量。</li>
+<li>PC（Program Counter），其实就是 IP（Instruction Pointer）的别名，指向下一条指令的地址。jmp等跳转指令还有分支控制等原理就是通过修改这个值。在 8086 机里等价于 CS:IP。</li>
+</ul>
+<p>其实就是对 CPU 的重新抽象，<strong>这个抽象结构与具体的 CPU 结构无关</strong>。</p>
+<p>它们之间的具体关系如下图：</p>
+<h2 id="与x86汇编的差异">与x86汇编的差异</h2>
+<p>许多人之前广泛了解的汇编可能是 AT&amp;T 格式或者传统 Intel-x86 格式，AT&amp;T 规范与 x86 有许多不同，而 plan9 与 AT&amp;T 有许多相似的地方，比如操作数顺序许多是相同的，但 <strong>不完全等价</strong>。还是需要我们重新学习，这里列举一些常见区别。</p>
+<pre><code class="language-assembly" data-lang="assembly">Mnemonic | Go operands           | AT&amp;T operands
+================================================
+BOUNDW   | m16&amp;16, r16           | r16, m16&amp;16
+BOUNDL   | m32&amp;32, r32           | r32, m32&amp;32
+CMPB     | AL, imm8              | imm8, AL
+CMPW     | AX, imm16             | imm16, AX
+CMPL     | EAX, imm32            | imm32, EAX
+CMPQ     | RAX, imm32            | imm32, RAX
+CMPW     | r/m16, imm16          | imm16, r/m16
+CMPW     | r/m16, imm8           | imm8, r/m16
+CMPW     | r/m16, r16            | r16, r/m16
+CMPL     | r/m32, imm32          | imm32, r/m32
+CMPL     | r/m32, imm8           | imm8, r/m32
+CMPL     | r/m32, r32            | r32, r/m32
+CMPQ     | r/m64, imm32          | imm32, r/m64
+CMPQ     | r/m64, imm8           | imm8, r/m64
+CMPQ     | r/m64, r64            | r64, r/m64
+CMPB     | r/m8, imm8            | imm8, r/m8
+CMPB     | r/m8, imm8            | imm8, r/m8
+CMPB     | r/m8, r8              | r8, r/m8
+CMPB     | r/m8, r8              | r8, r/m8
+CMPW     | r16, r/m16            | r/m16, r16
+CMPL     | r32, r/m32            | r/m32, r32
+CMPQ     | r64, r/m64            | r/m64, r64
+CMPB     | r8, r/m8              | r/m8, r8
+CMPB     | r8, r/m8              | r/m8, r8
+CMPPD    | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1
+CMPPS    | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1
+CMPSD    | imm8, xmm1, xmm2/m64  | imm8, xmm2/m64, xmm1
+CMPSS    | imm8, xmm1, xmm2/m32  | imm8, xmm2/m32, xmm1
+ENTER    | 0, imm16              | imm16, 0
+ENTER    | 1, imm16              | imm16, 1
+</code></pre><h3 id="操作数顺序不同">操作数顺序不同</h3>
+<p>在 x86 中，一些常见指令是这样的：</p>
+<pre><code class="language-assembly" data-lang="assembly">MOV EAX, 10  ;EAX=10
+MOV AH, [BL] ;AH=*BL
+</code></pre><p>而在 plan9 中操作数的顺序会相反：</p>
+<pre><code class="language-assembly" data-lang="assembly">MOVL a+0(FP), AX  ;AX=a 
+MOVB BX, AX    ;AX=BX
+</code></pre><p>不止这些，还有 LEA ADD SUB IMUL等等也都满足。</p>
+<h3 id="操作数大小表示法不同">操作数大小表示法不同</h3>
+<p>在 x86 中，表示大小通过直接区分操作数，比如 AX 寄存器的高 8 位就是 <code>AH</code> ，低 8 位就叫 <code>AL</code>.。而 plan9 中通过不同操作码来区分：</p>
+<pre><code class="language-assembly" data-lang="assembly">MOVB $0x10, AX  ;1B, Byte
+MOVW $-10, DI  ;2B, 1Word=2Byte
+MOVL $0, SP   ;4B, Double Word
+MOVQ $1, DX   ;8B, Quatury Word
+</code></pre><h3 id="寄存器">寄存器</h3>
+<p>寄存器分为 <strong>实寄存器（real register）和 伪寄存器（pseudo register）</strong> ，前者在 CPU 内部，属于 CPU 的固件，作为与 CPU 直接产生信息交换的单位，具体种类与架构有关，可以通过 dlv 工具查看：</p>
 <blockquote>
-<p>待更新</p>
+<p>示例程序的机器为 AMD64，也就是 x86-64。不同的机器可能会因为 CPU 的不同而不同。</p>
 </blockquote>
+<pre><code>(dlv) regs                                       
+   Rip = 0x00007ff90ed00771                      
+   Rsp = 0x000000cfd45ff260                      
+   Rax = 0x0000000000000000                      
+   Rbx = 0x0000000000000010                      
+   Rcx = 0x00007ff90eccd2c4                      
+   Rdx = 0x0000000000000000                      
+   Rsi = 0x00007ff90ed61a80                      
+   Rdi = 0x000000cfd4237000                      
+   Rbp = 0x0000000000000000                      
+    R8 = 0x000000cfd45ff258                      
+    R9 = 0x0000000000000000                      
+   R10 = 0x0000000000000000                      
+   R11 = 0x0000000000000246                      
+   R12 = 0x0000000000000040                      
+   R13 = 0x0000000000000000                      
+   R14 = 0x00007ff90ed548f0                      
+   R15 = 0x00000254e7900000                      
+Rflags = 0x0000000000000246     [PF ZF IF IOPL=0]
+    Cs = 0x0000000000000033                      
+    Fs = 0x0000000000000053                      
+    Gs = 0x000000000000002b                      
+</code></pre><p>后者是应用层抽象出来的概念，实际并不存在，目的是为了更方便地写汇编。</p>
+<p>由于历史原因，x86 平台要保证向后兼容，要求在 64 位机上要能够运行 32、16、8位程序。解决方法是通过给寄存器加前缀实现的。</p>
+<pre><code class="language-assembly" data-lang="assembly">AH/AL -&gt; AX -&gt; EAX -&gt; RAX
+  8      16     32     64
+</code></pre><p>除此之外，还有这些对应关系</p>
+<table>
+<thead>
+<tr>
+<th>X64</th>
+<th>rax</th>
+<th>rbx</th>
+<th>rcx</th>
+<th>rdx</th>
+<th>rdi</th>
+<th>rsi</th>
+<th>rbp</th>
+<th>rsp</th>
+<th>r8</th>
+<th>r9</th>
+<th>r10</th>
+<th>r11</th>
+<th>r12</th>
+<th>r13</th>
+<th>r14</th>
+<th>rip</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plan9</td>
+<td>AX</td>
+<td>BX</td>
+<td>CX</td>
+<td>DX</td>
+<td>DI</td>
+<td>SI</td>
+<td>BP</td>
+<td>SP</td>
+<td>R8</td>
+<td>R9</td>
+<td>R10</td>
+<td>R11</td>
+<td>R12</td>
+<td>R13</td>
+<td>R14</td>
+<td>PC</td>
+</tr>
+</tbody>
+</table>
+<h4 id="伪寄存器-1">伪寄存器</h4>
+<p>为了方便编程，plan9 还引入了 4 个伪寄存器，<code>SP</code> <code>FP</code> <code>SB</code> <code>PC</code>。想当年面试的时候（其实就是去年，我张口就来引入这四个是为了增加性能（猜的，回头想想还真是离谱。</p>
+<p>这 4 个有不同的作用，其中 伪SP寄存器 还与 真SP寄存器 重名了，就更容易让初学者懵逼了，这里放个曹大的图就明白了。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/ch3-3-arch-amd64-02.ditaa.png" alt="图源《Go语言高级编程》"></p>
+<p>这个图里有一点歧义，红色部分是栈，黄色是堆，图中的关系是堆在上面，而实际堆是向上增长的。</p>
+<p>另外还有一点，这张图里没有标明 实寄存器BP 的位置，BP 是栈基地址。</p>
+<h2 id="函数调用">函数调用</h2>
+<p>这里拿一个简单的函数嵌套调用代码，来举例说明它们之间的具体位置关系和实现原理：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">upper</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">r0</span><span class="p">,</span> <span class="nx">r1</span> <span class="o">:=</span> <span class="nf">f0</span><span class="p">(</span><span class="nx">arg0</span><span class="p">,</span> <span class="nx">arg1</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">f0</span><span class="p">(</span><span class="nx">arg0</span><span class="p">,</span> <span class="nx">arg1</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">ret0</span><span class="p">,</span> <span class="nx">ret1</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">r0</span> <span class="o">:=</span> <span class="nx">arg0</span> <span class="o">-</span> <span class="nx">arg1</span>
+    <span class="nx">r1</span> <span class="o">:=</span> <span class="nx">arg0</span> <span class="o">+</span> <span class="nx">arg1</span>
+    <span class="nx">r1</span> <span class="p">=</span> <span class="nf">f1</span><span class="p">(</span><span class="nx">r0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">r0</span><span class="p">,</span> <span class="nx">r1</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">f1</span><span class="p">(</span><span class="nx">arg0</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">ret0</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="nx">arg0</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="栈帧">栈帧</h3>
+<p>函数实现嵌套调用依靠的数据结构就是栈，上面这个程序它的调用栈帧如下：</p>
+<pre><code class="language-assembly" data-lang="assembly">       
+                    +------------+ &lt;----------+
+                    |    ....    |            |
+                    +------------+            |
+                    |    Ret1    |            |
+                    +------------+            |
+                    |    Ret0    |
+                    +------------+      upper call stack
+                    |    Arg1    |
+                    +------------+            |
+                    |    Arg0    |            |
+                    +------------+            |
+                    |  Ret Addr  |            |
+                    +------------+ &lt;----------+
+real BP(pseudo SP)  |  upper BP  |            |
+------------------&gt; +------------+            |
+                    |   Local0   |            |
+                    +------------+            |
+       real SP      |   Local1   |
+  ----------------&gt; +------------+
+                    |            |      f0 stack frame
+                    |unused space|
+                    |            |
+                    +------------+            |
+                    |    Ret0    |            |
+                    +------------+            |
+       pseudo FP    |    Arg1    |            |
+  ----------------&gt; +------------+            |
+                    |  Ret Addr  |            |
+                    +------------+ &lt;----------+
+                    |Caller f0'BP|
+                    +------------+
+                    |   Local0   |
+                    +------------+
+                    |   Local1   |
+                    +------------+
+                    |    ...     |
+                    +------------+
+                    
+</code></pre><h3 id="验证">验证</h3>
+<p>我们使用 FP/real SP/pseudo SP 来验证一下上面的栈帧示意图：</p>
+<h2 id="分析一个简单的程序">分析一个简单的程序</h2>
+<p>好了，终于见到 「真的汇编代码」 了，理论知识差不多了（误</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="nx">sum</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">sub</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">z</span> <span class="o">:=</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span>
+  <span class="nx">w</span> <span class="o">:=</span> <span class="nx">x</span> <span class="o">-</span> <span class="nx">y</span>
+  <span class="k">return</span> <span class="nx">z</span><span class="p">,</span> <span class="nx">w</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">c</span><span class="p">,</span> <span class="nx">d</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="前置知识">前置知识</h3>
+<p>在命令行中执行 <code>go tool compile -S -N -l main.go</code> 查看汇编代码。看之前需要注意两点，</p>
+<ul>
+<li>不管使用 <code>go tool compile -S</code> 还是 <code>go tool objdump</code> 来查看汇编代码，都是和实际我们手写 plan9 不同的，不能照搬语法。这两者关于汇编指令的输出也是不同的。当然，十六进制肯定是相同的。</li>
+<li>输出的所有 SP 指针无论带不带 symbol 都是实寄存器，而实际上在手写 plan9 时，如果使用了形如 <code>symbol+offset(SP)</code> 的表达则指使用的是 伪SP指针，不带则是 真SP指针。</li>
+<li>而实际手写在使用 <code>FP</code> 寄存器时如果不带 <code>symbol</code> 会直接报错。</li>
+</ul>
+<h3 id="变量与常量">变量与常量</h3>
+<h3 id="函数">函数</h3>
+<pre><code class="language-assembly" data-lang="assembly">&quot;&quot;.add STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0
+        0x0000 00000 (notify.go:7)      TEXT    &quot;&quot;.add(SB), NOSPLIT|ABIInternal, $0-24
+        0x0000 00000 (notify.go:7)      FUNCDATA        $0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+        0x0000 00000 (notify.go:7)      FUNCDATA        $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+        0x0000 00000 (notify.go:8)      MOVQ    &quot;&quot;.b+16(SP), AX
+        0x0005 00005 (notify.go:8)      MOVQ    &quot;&quot;.a+8(SP), CX
+        0x000a 00010 (notify.go:8)      ADDQ    CX, AX
+        0x000d 00013 (notify.go:8)      MOVQ    AX, &quot;&quot;.~r2+24(SP)
+        0x0012 00018 (notify.go:8)      RET
+</code></pre><p>先看第一行内容：</p>
+<pre><code class="language-assembly" data-lang="assembly">&quot;&quot;.add STEXT nosplit size=19 args=0x18 locals=0x0 funcid=0x0
+</code></pre><p>内容虽然多，但是非常好理解，不同数值均给出了名称，但是更标准的表示法一般是这样：</p>
+<pre><code class="language-assembly" data-lang="assembly">TEXT runtime∕internal∕atomic·Cas(SB),NOSPLIT,$0-17
+</code></pre><p>双引号里和 <code>runtime/internal/atomic</code> 都是函数名，可以省略，后面紧跟函数名。<code>TEXT</code> 是区段名。<code>SB</code> 是基于伪寄存器 <code>SB</code> 进行偏移，比如：</p>
+<pre><code class="language-assembly" data-lang="assembly">+4(SB)
+a+8(SB)
+</code></pre><p>一个是在 SB 寄存器起始地址上正向偏移 4 个字节，一个是从 SB 的 a 变量开始偏移 4 个字节。</p>
+<p>由于 Go 语言函数的调用栈帧默认是动态伸缩的，初始大小只有 2KB，你可以使用 <code>指令</code> 来控制这个行为：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">//go:nosplit
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">str2slc</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</code></pre></div><p>这条指令可以禁止扩容检测，这样做一定程度上可以增加效率。而汇编代码里的 <code>nosplit</code> 是编译器帮我们做的优化。除此之外，还有 <code>WRAPPER</code>、<code>noinline</code> 等许多指令，都是用来指导编译器的工作，例如禁用内联，禁止逃逸，禁止逃逸分析等等，具体及更多信息可以在官方文档 <a href="https://golang.org/cmd/compile/">golang.org/cmd/compile</a> 查看。</p>
+<p><code>$0-17</code> 的 0 是函数栈帧大小，指函数内的局部变量总大小，这个值包括准备子函数参数的开销。17 是参数大小，'-' 不是减号，只是连接符，不要想当然认为栈向下增长所以是做减法（不过好像问题也不大</p>
+<p><del>需要注意的是，如果没有 <code>nosplit</code>，则必须给出参数大小，而不能直接 <code>$x</code>，因为 Go 语言编译器已无法根据函数签名进行占用空间大小的推导。</del></p>
+<p>所以，最终定义函数的标准语法如下：</p>
+<pre><code class="language-assembly" data-lang="assembly">TEXT symbol(SB), [flags,] $framesize[-argsize]
+</code></pre><h2 id="手写来练习一下吧">手写来练习一下吧</h2>
+<p>看了这么多，来手写一个简单的 plan9 汇编程序练习一下。</p>
+<blockquote>
+<p>目标：实现一个求整型切片元素和的函数，函数签名为：func addSliceInt(slc []int) int。举个例子，如果 slc := []{1,2,3,4}，那么返回 10.</p>
+</blockquote>
+<h2 id="总结">总结</h2>
+<p>plan9 是一个操作系统，对应一套汇编语法，被称为 plan9 汇编，与 AT&amp;T 规范非常相似，也不完全一样。与传统 x86 汇编差异较大。</p>
+<p>plan9 重新定义了 4 个伪寄存器来方便编程，函数嵌套调用的核心就是依靠栈的先进先出特性，在调用前来保护 Caller 的执行现场，并在 Callee 执行完返回后恢复现场，从而继续执行。</p>
+<ul>
+<li>没有 push，pop 等栈操作，栈的增缩是通过对 sp 栈顶寄存器的加减实现的，例如 +8（sp）</li>
+<li>操作数的大小不是通过区分操作码来实现的，而是通过操作码的后缀实现，例如复制 <code>ax</code> 寄存器低 1 字节到第二字节，在 <code>x86</code> 汇编中是通过 <code>mov ah,al</code>，而在 plan9 中则是通过 <code>movb al,ah</code>
+<ul>
+<li>b w d q分别代表1 2 4 8 Byte，含义是byte，word，double word，quatury。</li>
+</ul>
+</li>
+<li>操作数在第一个参数，结果放在第二个参数，与intel汇编相反，具体看第二条</li>
+</ul>
+<blockquote>
+<p>我们学习 plan9 汇编其实也并没有太大困难，前期在学习时也未必要看懂全部的汇编代码，可先学习大概思路，再深入了解即可。</p>
+</blockquote>
+<p>但是为什么 plan9 不与 x86 系兼容呢，而要单独开发一套自己的语法呢，我看了不少人的解释，貌似是因为 unix 团队是学院派，特立独行，也不屑于商业化（就是玩</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>大三实习求职之旅</title>
+			<link>https://www.kcode.icu/posts/interview/2021-3-nowcoder/</link>
+			<pubDate>Tue, 30 Mar 2021 17:20:20 +0000</pubDate>
+			
+			<guid>https://www.kcode.icu/posts/interview/2021-3-nowcoder/</guid>
+			<description>说在前面 经常“吸”社区，也要时不时反馈一点，一起延续开源精神。
+个人情况：22 届双非一本，从去年 12 月开始面试找寒假的实习，由于学校疫情原因没去成功，于是经过寒假复习“二战”。先后面了跟谁学，腾讯，字节，阿里。
+由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C++ 用来写题，有的问题可能不具有参考价值，理性看待。
+另外有的问题确实记不得了，大家不要太看重问题，因为大部分都是八股的题型，网上一搜一大堆，博客的总结能几万字，但是没有面试官喜欢听这种东西，都是搞技术的不喜欢花里胡哨，我曾经就因为答协程区别和特点被反问 你这个有点像背的，，不过我也没反驳，下次总结避免就好了。你要答出问题的本质，底层的思考，说出跟别人不一样的地方，用有些面试官的话来说就是 这个问题我只想听你说一句话，我看我能不能听到。说白了就是你说了一大堆可能在对面听来都没听到，说不到点子上等于没说。
+另外本文我主要突出面试过程，不是面试问题的总结帖（有的问题我真的记不得了 :(。
+好了，不说废话了，大家看正文吧，有什么问题欢迎找我聊~
+跟谁学两面 oc，第一次面试 一面 自我介绍
+项目：
+  用go写的rpc框架的具体功能细节，注册中心单机还是分布式的，其中一个挂了怎么办？一致性，可靠性怎么保证的。超时控制，加锁和管道支持并发，单机（考虑了多机情况，说了已经在todo里了）。
+  Go+QML 利用cgo实现的跨平台桌面应用功能，场景，为什么要写这个东西？ 我说为了性能，追问性能如何体现，如何测试的，如何优化。答宏观上从任务管理器，top中看，细节上从pprof进行性能定位调优，从火焰图上看。追问pprof还有什么功能，你一般是怎么定位问题的？回答还是先具体再细节。
+  这时候我就俩项目，后面怕不够，又想拿go写个web的，正好学校说需要重构某个子选课系统，就跟同学接了，这个下面说。
+写个快排？时分复杂度分析？看你了解过go的标准库实现，说说go的快排源码怎么实现的，答三数取中，根据数据量选择多种排序方式组合，追问细节我就不知道i了，，确实没看过这个。。他说没事。
+协程与线程区别？为什么快，快在哪了？自定义了4个伪寄存器 fp sp sb pc，轻量，初始2KB动态伸缩，由runtime管理，对os透明等等各种原因，又说了以下gmp调度的优势。追问寄存器是什么，你对寄存器还有什么了解。我说了一点关于go和c 在寄存器方面使用的不同，函数传参，调用堆栈等等，扯了点汇编区别，就又问了几个汇编指令，过了。
+虚拟地址，物理地址区别
+rpc与http区别，使用场景，自己总结一下再说几条
+还有点八股没啥难的 有点忘了。。
+也没问啥难点一面就过了
+二面部门leader 详细聊虚拟地址与物理地址，为什么分这俩，段页作用，为什么内存占用能比实际要大的多（还是虚拟地址作用），循序渐进的从现象到技术实现来问，不是考试。
+go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来这个项目好多面试官也不懂，cgo特性一是用起来结合其他语言的时候确实有坑点，二是拿go写gui有点杀马特，不招人待见？
+闲聊网络跟os，最后问了个智力问题，就过了。
+总结 感觉难度不大，缺人进来打杂，要求不高。问了一下前辈，说加班严重，校招的话工资高了可以放备选考虑去。。面试体验还不错，自己缺乏一点回答技巧上的经验，聊技术不能一下到点子上，废话略多。
+字节二面挂，腾讯二面挂 这俩对我帮助最大。
+字节 字节对我最大的帮助是深度思考算法，为什么要这么写，别的方法行不行？
+自己感觉有了点面试方面的经验，就投了较大的厂，遭到毒打。
+字节一面是算法面，最后写了个单链表归并非递归，勉强通过。
+二面上来扣20分钟rpc项目，挖出你这个项目的所有特点为止：
+ 序列化方式有哪几个，区别是什么，自己写过吗 协议用的哪个，为啥不用udp &amp;hellip;鞭打。。。  当时确实缺少对项目的深度思考，也是参考了声哥的项目，不过他是java写的，用go写起来参考了不少框架源码，rpcx，grpc，实现起来略费劲，时间仓促，底层思考略少。
+二面挂是因为问了个快排复杂度，详细分析这三个时间复杂度的结果，怎么来的这个值，举例子说明等等，自己算法这方面当时确实弱项，挂了正常。
+腾讯 腾讯对我最大的帮助是看源码，有的东西嚼别人的东西是不够的，应该学习一手资料，详情参考曹大的博客《工程师应该怎么学习》。还是太菜了，缺乏深度思考
+几个亿找中位数
+搜索树旋转过程
+对面应该是c++的，问我map，我说我用go，他就说go也行，你说说go map 时间复杂度，为啥是这个值，为什么这么多数，O1能直接访问到，当时map只了解了一点，遂答的浅。</description>
+			<content type="html"><![CDATA[<h2 id="说在前面">说在前面</h2>
+<p>经常“吸”社区，也要时不时反馈一点，一起延续开源精神。</p>
+<p>个人情况：22 届双非一本，从去年 12 月开始面试找寒假的实习，由于学校疫情原因没去成功，于是经过寒假复习“二战”。先后面了跟谁学，腾讯，字节，阿里。</p>
+<p>由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C++ 用来写题，有的问题可能不具有参考价值，理性看待。</p>
+<p>另外有的问题确实记不得了，大家不要太看重问题，因为大部分都是八股的题型，网上一搜一大堆，博客的总结能几万字，但是没有面试官喜欢听这种东西，都是搞技术的不喜欢花里胡哨，我曾经就因为答协程区别和特点被反问 你这个有点像背的，，不过我也没反驳，下次总结避免就好了。你要答出问题的本质，底层的思考，说出跟别人不一样的地方，用有些面试官的话来说就是 这个问题我只想听你说一句话，我看我能不能听到。说白了就是你说了一大堆可能在对面听来都没听到，说不到点子上等于没说。</p>
+<p>另外本文我主要突出面试过程，不是面试问题的总结帖（有的问题我真的记不得了 :(。</p>
+<p>好了，不说废话了，大家看正文吧，有什么问题欢迎找我聊~</p>
+<h3 id="跟谁学两面-oc第一次面试">跟谁学两面 oc，第一次面试</h3>
+<h4 id="一面">一面</h4>
+<p>自我介绍</p>
+<p>项目：</p>
+<ul>
+<li>
+<p>用go写的rpc框架的具体功能细节，注册中心单机还是分布式的，其中一个挂了怎么办？一致性，可靠性怎么保证的。超时控制，加锁和管道支持并发，单机（考虑了多机情况，说了已经在todo里了）。</p>
+</li>
+<li>
+<p>Go+QML 利用cgo实现的跨平台桌面应用功能，场景，<strong>为什么要写这个东西？</strong> 我说为了性能，追问性能如何体现，如何测试的，如何优化。答宏观上从任务管理器，top中看，细节上从pprof进行性能定位调优，从火焰图上看。追问pprof还有什么功能，你一般是怎么定位问题的？回答还是先具体再细节。</p>
+</li>
+</ul>
+<p>这时候我就俩项目，后面怕不够，又想拿go写个web的，正好学校说需要重构某个子选课系统，就跟同学接了，这个下面说。</p>
+<p>写个快排？时分复杂度分析？看你了解过go的标准库实现，说说go的快排源码怎么实现的，答三数取中，根据数据量选择多种排序方式组合，追问细节我就不知道i了，，确实没看过这个。。他说没事。</p>
+<p>协程与线程区别？为什么快，快在哪了？自定义了4个伪寄存器 fp sp sb pc，轻量，初始2KB动态伸缩，由runtime管理，对os透明等等各种原因，又说了以下gmp调度的优势。追问寄存器是什么，你对寄存器还有什么了解。我说了一点关于go和c 在寄存器方面使用的不同，函数传参，调用堆栈等等，扯了点汇编区别，就又问了几个汇编指令，过了。</p>
+<p>虚拟地址，物理地址区别</p>
+<p>rpc与http区别，使用场景，自己总结一下再说几条</p>
+<p>还有点八股没啥难的 有点忘了。。</p>
+<p>也没问啥难点一面就过了</p>
+<h4 id="二面部门leader">二面部门leader</h4>
+<p>详细聊虚拟地址与物理地址，为什么分这俩，段页作用，为什么内存占用能比实际要大的多（还是虚拟地址作用），循序渐进的从现象到技术实现来问，不是考试。</p>
+<p>go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来这个项目好多面试官也不懂，cgo特性一是用起来结合其他语言的时候确实有坑点，二是拿go写gui有点杀马特，不招人待见？</p>
+<p>闲聊网络跟os，最后问了个智力问题，就过了。</p>
+<h4 id="总结">总结</h4>
+<p>感觉难度不大，缺人进来打杂，要求不高。问了一下前辈，说加班严重，校招的话工资高了可以放备选考虑去。。面试体验还不错，自己缺乏一点回答技巧上的经验，聊技术不能一下到点子上，废话略多。</p>
+<h3 id="字节二面挂腾讯二面挂">字节二面挂，腾讯二面挂</h3>
+<p>这俩对我帮助最大。</p>
+<h4 id="字节">字节</h4>
+<p>字节对我最大的帮助是深度思考算法，为什么要这么写，别的方法行不行？</p>
+<p>自己感觉有了点面试方面的经验，就投了较大的厂，遭到毒打。</p>
+<p>字节一面是算法面，最后写了个单链表归并非递归，勉强通过。</p>
+<p>二面上来扣20分钟rpc项目，挖出你这个项目的所有特点为止：</p>
+<ul>
+<li>序列化方式有哪几个，区别是什么，自己写过吗</li>
+<li>协议用的哪个，为啥不用udp</li>
+<li>&hellip;鞭打。。。</li>
+</ul>
+<p>当时确实缺少对项目的深度思考，也是参考了声哥的项目，不过他是java写的，用go写起来参考了不少框架源码，rpcx，grpc，实现起来略费劲，时间仓促，底层思考略少。</p>
+<p>二面挂是因为问了个快排复杂度，详细分析这三个时间复杂度的结果，怎么来的这个值，举例子说明等等，自己算法这方面当时确实弱项，挂了正常。</p>
+<h4 id="腾讯">腾讯</h4>
+<p>腾讯对我最大的帮助是看源码，有的东西嚼别人的东西是不够的，应该学习一手资料，详情参考曹大的博客《工程师应该怎么学习》。还是太菜了，缺乏深度思考</p>
+<p>几个亿找中位数</p>
+<p>搜索树旋转过程</p>
+<p>对面应该是c++的，问我map，我说我用go，他就说go也行，你说说go map 时间复杂度，为啥是这个值，为什么这么多数，O1能直接访问到，当时map只了解了一点，遂答的浅。</p>
+<p>问 gc，gmp模型</p>
+<p>后面忘了。</p>
+<p>从这里开始，我去把go map的源码包括 runtime/map.go还有相关的汇编代码过了3.4遍，逐行注释源码，写成了博客，这才有了后续跟阿里面试官（技术专家）扯map 20分钟，详细问到扩容的代码实现。。</p>
+<p>也看了channel的源码，挺多的，假期期间算是把底层源码这块入了个门，能扯几句了。</p>
+<h3 id="阿里三面挂">阿里三面挂</h3>
+<p>笔试算法还是写的不好。</p>
+<p>这个是寒假回来的了，阿里云的，一面跟技术专家聊了45min，面试官应该是c++的，懂go，全程比较愉快，最后15分钟写了个题，改编版无重复字符最长字串，10分钟a了就过了。这里记录几个有意思的问题：</p>
+<ul>
+<li>有什么方法可以让函数无限递归不爆栈？（尾递归，返回还是函数本身，栈帧覆盖）</li>
+<li>什么方法可以限制从堆分配内存的内存范围？（不会）</li>
+<li>逃逸分析，有哪些情况会逃逸，为什么？（go的逃逸分析）</li>
+<li>内部布局，系统空间和用户空间，系统空间有中断向量表等不可访问资源，用户空间就是代码段，数据段，堆栈等等。</li>
+</ul>
+<p>二面是笔试面，1小时俩题，20分钟a了，接雨水改编版，左视图。问思路，把接雨水改了改，写完了过了</p>
+<p>三面应该是主管，到这里的时候项目补了个选课系统，全程问项目整体设计，不具体扣到最深的细节，又问了职业规划，除了go 还意向什么语言，答py c++ rust也可，，貌似对c++意愿不够，其实我c++还可以的，go封装太多了，其实挺想学c++的，之后对方声音变低了，还问了俩问题就结束了，最后问一面的技术专家说原因是笔试不好所以挂了。。</p>
+<p>原因我是没想明白，，二面不是补笔试都a了，问题也都答了。。玄学，也不纠结。</p>
+<h3 id="阿里区块链测开">阿里区块链测开</h3>
+<p>被捞了。一面摸底面，先问你学过哪几个方向，答网络os组原都学过，于是每个都问了一遍，问题有点多，记不住了，挑几个印象深的吧，不分先后：</p>
+<ul>
+<li>docker用过吗，隔离实现底层？dockerfile，dockercompose，指令说几个，看我说了expose，问端口映射方式，追问冒号左右哪个是主机哪个是容器。。。我还真忘了，上一个dockercompose和dockerfile是几个月前了。。</li>
+<li>vlan了解吗，学校做过，但没深入了解。对方看我不太懂就没追问。。</li>
+<li>https详细握手过程，说了tls 12 13，psk，sessionid，sessionticket，ecdhe，rsa反正一大堆，你懂的。</li>
+<li>从源码到二进制代码的整个流程，编译链接载入内存等等。我说了这里看到的地址都是虚拟地址，平常看到的0xc00000xxxx里的c是虚拟地址与物理地址的转换表的下标，瞎扯了程序领空和用户领空的区别。</li>
+</ul>
+<p>昨晚突击二面，我说不想测开，他说给我转到平台研发部，还详细说了一下他们部门的工作，说不是BS架构，没后端，只能到平台研发，是C++，我就说也行，面试3分钟就结束了。</p>
+<h3 id="腾讯过">腾讯过</h3>
+<p>开学面了俩除了阿里云就是这个，比较顺，刚oc。</p>
+<p>一面是俩人，问项目，应用层协议，https过程，最后写了个树的题，递归写的比较简单，忘了。。</p>
+<p>二面就20分钟，全程问go rpc，穿插一些网络方面的问题，比如tcp udp选择，区别，技术实现等等，没写题。有的问题我感觉答的不好，比如序列化是自己实现的吗，我说用标准库，感觉对方有点失望，我也意识到这个应该自己写一下锻炼锻炼。感觉对方也不是很满意要凉了，最后还是过了，莫名其妙。</p>
 ]]></content>
 		</item>
 		
@@ -34,11 +511,11 @@
 			
 			<guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
 			<description>前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
+uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
 fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&amp;hellip;），那你再看一段代码：
-//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要任何内存，因为他们共享底层数据空间。
-函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048B，是写死在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</description>
+//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
+函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048Byte，是固定在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</description>
 			<content type="html"><![CDATA[<p>前几天见到了一个问题：</p>
 <pre><code>uintptr与 unsafe.Pointer 有什么区别？
 </code></pre><p>你可能曾经看到过类似这样的代码：</p>
@@ -65,16 +542,20 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
     <span class="nx">b</span> <span class="o">:=</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="kt">uintptr</span><span class="p">{</span><span class="nx">ss</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">ss</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">ss</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
     <span class="k">return</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="p">[]</span><span class="kt">byte</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">b</span><span class="p">))</span>
 <span class="p">}</span>
-</code></pre></div><p>这两个函数实现了 []Byte 与 string 的互转，并且不需要任何内存，因为他们共享底层数据空间。</p>
-<p>函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048B，是写死在源码中的。而 <code>go:nosplit</code> 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</p>
-<h2 id="unsafe包">unsafe包</h2>
+</code></pre></div><p>这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。</p>
+<p>函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048Byte，是固定在源码中的。而 <code>go:nosplit</code> 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</p>
+<p>这段代码通过 unsafe.Pointer 类型实现了从 float64 强转 uint64 的效果，出自标准库。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Float64bits</span><span class="p">(</span><span class="nx">f</span> <span class="kt">float64</span><span class="p">)</span> <span class="kt">uint64</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="kt">uint64</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">f</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="unsafe包">unsafe包</h2>
 <p><code>Go</code> 语言本身由于类型系统的原因，不支持指针的运算操作，对于指针的使用进行了极大的限制，不像 <code>C/C++</code> 语言那样对指针 “为所欲为”，也不像 <code>Java</code> 语言中那样根本不提供指针，采取了一种折中方案，只支持常见的取址（&amp;），取值（*）操作。但是为了有些场合的需要，还是提供了一个用来直接无视类型系统而直接操作的特性，这便是 <code>unsafe</code> 包提供的能力。</p>
 <p><code>unsafe</code> 包开放了一个类型，三个函数，分别是：</p>
 <ul>
-<li>Pointer ，任意指针类型</li>
-<li>Alignof 函数，计算变量内存对齐边界大小</li>
-<li>Sizeof 函数，计算该类型所占用内存大小，不包含底层数据大小</li>
-<li>Offsetof 函数，计算该变量相对于结构体首地址的地址偏移</li>
+<li>Pointer ，任意指针类型，类似于 C/C++ 语言中的 void* 类型</li>
+<li>Alignof(x ArbitraryType) uintptr 函数，计算变量内存对齐边界大小</li>
+<li>Sizeof(x ArbitraryType) uintptr 函数，计算该类型所占用内存大小，不包含底层数据大小</li>
+<li>Offsetof(x ArbitraryType) uintptr 函数，计算该变量相对于结构体首地址的地址偏移</li>
 </ul>
 <blockquote>
 <p>看源码过程中可能会看到  <code>ArbitraryType</code> 类型，而 <code>Pointer</code> 就是 <code>ArbitraryType</code> 类型，不必疑惑，这个类型没有任何实际意义，仅仅代表了它可以是任意 <code>Go</code> 语言类型，不是 <code>unsafe</code> 包的组成部分。</p>
@@ -87,13 +568,54 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="err">#</span> <span class="nx">command</span><span class="o">-</span><span class="nx">line</span><span class="o">-</span><span class="nx">arguments</span>
 <span class="p">.</span><span class="err">\</span><span class="nx">notify</span><span class="p">.</span><span class="k">go</span><span class="p">:</span><span class="mi">17</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span> <span class="nx">invalid</span> <span class="nx">operation</span><span class="p">:</span> <span class="nx">pa</span><span class="o">++</span> <span class="p">(</span><span class="nx">non</span><span class="o">-</span><span class="nx">numeric</span> <span class="kd">type</span> <span class="o">*</span><span class="kt">int</span><span class="p">)</span>
 </code></pre></div><p>这 “一类型，三函数” 所提供的能力就是直接无视这个限制，直接进行地址运算，下面详细介绍这些能力。</p>
-<h3 id="pointer">Pointer</h3>
-<p><code>Pointer</code> 类型提供了 <code>uintptr</code> 与类型指针之间的转换中介，通过 Pointer 类型，这三者之间可以任意转换。</p>
-<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/pointer_uintptr.svg" alt="pointer_uintptr"></p>
-<p>不过需要遵循几个固定的规则。</p>
-<h3 id="alignof">Alignof</h3>
-<h3 id="sizeof">Sizeof</h3>
-<h3 id="offsetof">Offsetof</h3>
+<h3 id="一类型pointer">一类型Pointer</h3>
+<p><code>Pointer</code> 类型提供了 <code>uintptr</code> 与类型指针之间的转换中介，要想将任意指针类型 *p 转为 uintptr 来进行指针运算，需要先转换为 <code>Pointer</code> 类型，再转换为 <code>uintptr</code> 类型。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/unsafe_uintptr_p.svg" alt=""></p>
+<h4 id="类型介绍">类型介绍</h4>
+<p>unsafe.Pointer 类型的定义非常简单，就是一个任意类型的指针表示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">ArbitraryType</span> <span class="kt">int</span>
+<span class="kd">type</span> <span class="nx">Pointer</span> <span class="o">*</span><span class="nx">ArbitraryType</span>
+</code></pre></div><p>自定义了一个命名类型 <code>ArbitraryType</code>，这个类型并没有什么实际含义，只是表示任意类型，在代码文档中使用。如果没有这个类型，那么 Sizeof 等函数的参数就是 int 类型，会让人费解。所以正如字面意思，<code>Pointer</code> 的含义就是 “任意类型的指针”。</p>
+<h4 id="使用注意">使用注意</h4>
+<p>除了上图描述的这个类型间转换规则外，还需要遵循几个固定的规则。</p>
+<h5 id="uintptr变量无法保持对变量的引用">uintptr变量无法保持对变量的引用</h5>
+<p>你不能这么做：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">i</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">1</span>
+<span class="nx">up</span> <span class="o">:=</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">i</span><span class="p">))</span>
+<span class="c1">// after 1000 years...
+</span><span class="c1"></span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="c1">// maybe panic!
+</span></code></pre></div><p><code>uintptr</code> 可以用来进行指针运算，实际上就是一个非常大的无符号整数类型，可以表示所有地址空间。上述代码可能会 panic 的原因是 i 变量可能会被 Garbage Collector（gc） 回收。一般这个 uintptr 类型只作为中间值参与运算。</p>
+<h4 id="使用案例">使用案例</h4>
+<p>go slice 的创建是通过 makeslice 创建，返回值是一个结构体：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">makeslice</span><span class="p">(</span><span class="nx">et</span> <span class="o">*</span><span class="nx">_type</span><span class="p">,</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">cap</span> <span class="kt">int</span><span class="p">)</span> <span class="nx">slice</span>
+</code></pre></div><p>我们可以通过以下两种方式获取切片的长度：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">s</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="nf">Println</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="kt">int</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">s</span><span class="p">))</span> <span class="o">+</span> <span class="nb">uintptr</span><span class="p">(</span><span class="mi">8</span><span class="p">))))</span> <span class="c1">// 8
+</span><span class="c1"></span><span class="nf">Println</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">))</span> <span class="c1">// 8
+</span></code></pre></div><p>把 <code>uintptr(8)</code> 改为 <code>uintptr(16)</code> 就可以获取到容量了。</p>
+<p>如果我们想获取 map 的大小，需要有一点小小的改变，因为 map 的创建是通过 makemap 函数：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">makemap</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">maptype</span><span class="p">,</span> <span class="nx">hint</span> <span class="kt">int64</span><span class="p">,</span> <span class="nx">h</span> <span class="o">*</span><span class="nx">hmap</span><span class="p">,</span> <span class="nx">bucket</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)</span> <span class="o">*</span><span class="nx">hmap</span>
+</code></pre></div><p>该返回的是一个指针，由于再次取地址，是二级指针，所以我们稍稍修改一下代码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">mm</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="nf">Println</span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="o">**</span><span class="kt">int</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">mm</span><span class="p">)))</span>  <span class="c1">// 8
+</span></code></pre></div><h3 id="三函数alignofsizeof和offsetof">三函数Alignof、Sizeof和Offsetof</h3>
+<p>看了上面的内容，可能会有一个疑问，这有什么用呢？不是有更优的 “常规” 解法吗？</p>
+<p>我想说的是，除了 <code>zero-copy</code> 来转换 slice 与 string 这个例子之外，还有一个场景。</p>
+<p>如果结构体成员私有，包外如何访问？你不能通过常规的运算符 &lsquo;.&rsquo; 来访问到私有字段，就要借助 unsafe 包了。通过 <code>unsafe.Sizeof</code> 函数计算偏移字段的大小和，直接获取到目标字段的地址偏移：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">a</span>
+<span class="kd">type</span> <span class="nx">T</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">a</span> <span class="kt">int</span>
+    <span class="nx">b</span> <span class="kt">bool</span>
+    <span class="nx">c</span> <span class="kt">byte</span>
+<span class="p">}</span>
+
+<span class="kn">package</span> <span class="nx">b</span>
+<span class="nx">t</span> <span class="o">:=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">T</span><span class="p">{</span> <span class="nx">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">b</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">c</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="nx">tc</span> <span class="o">:=</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="kt">byte</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)(</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">t</span><span class="p">))</span> <span class="o">+</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="kc">true</span><span class="p">))</span>
+<span class="nf">Println</span><span class="p">(</span><span class="nx">tc</span><span class="p">)</span> <span class="c1">// 2
+</span></code></pre></div><h3 id="总结">总结</h3>
+<p>Go 语言中和了 C/C++ 和 Java 语言对指针提供的能力，有效地解决了指针滥用导致内存泄露、非法访问等安全问题。通过静态语言的严格类型系统限制了一些内存操作，也提供了一个不安全但 “炫酷” 的 unsafe 包，标准库的源码许多都使用了 unsafe 包所提供了能力，高效简洁，让我们仿佛在看 C 系语言源码。这也不难理解，Go 语言的创始人之一正是 C 语言的创造者之一，许多设计思想优秀且独树一帜。</p>
+<p>不过之所以命名为 unsafe，也是因为可以直接绕过类型系统直接操作底层内存，会带来一定的安全问题，与 GC 的工作 “冲突”，所以需要我们谨慎使用。</p>
 ]]></content>
 		</item>
 		
@@ -103,18 +625,50 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
 			<pubDate>Thu, 25 Feb 2021 19:35:20 +0000</pubDate>
 			
 			<guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</guid>
-			<description>Channel   Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
-在其他语言中，面对并发访问或者需要同步异步的问题，你可能设置一个变量，通过对它加锁的方式来告诉其他试图操作这个变量的其他 “用户”（线程、进程等其他实体）一些信息，比如正在读写，这便是通过共享内存来通信，也就是过程使用了同一个变量，并且传递了信息。还有另一种方式，你可以给这个 “用户” 发一条消息，比如 “我在写这个变量，等会你再来” 或者 “我给你发过去了一条消息，你收一下”，也可以不使用这个 “中间变量”，也就是锁。这个传递信息的媒介在 Go 语言中叫 channel，上述这种方式就是通过通信来共享内存。
-上面是形象的介绍，其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
-两个实体 goroutine 通过 channel</description>
-			<content type="html"><![CDATA[<h2 id="channel">Channel</h2>
-<h1 id="heading"></h1>
-<h1 id="heading-1"></h1>
-<p>Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。</p>
-<p>在其他语言中，面对并发访问或者需要同步异步的问题，你可能设置一个变量，通过对它加锁的方式来告诉其他试图操作这个变量的其他 “用户”（线程、进程等其他实体）一些信息，比如正在读写，这便是通过共享内存来通信，也就是过程使用了同一个变量，并且传递了信息。还有另一种方式，你可以给这个 “用户” 发一条消息，比如 “我在写这个变量，等会你再来” 或者 “我给你发过去了一条消息，你收一下”，也可以不使用这个 “中间变量”，也就是锁。这个传递信息的媒介在 Go 语言中叫 channel，上述这种方式就是通过通信来共享内存。</p>
-<p>上面是形象的介绍，其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。</p>
-<p><img src="https://raw.githubusercontent.com/sh1luo/CDN/641b376a00bb5b57536906244c1a64163bb3de1b/imagescsp.svg" alt="image"></p>
-<p>两个实体 goroutine 通过 channel</p>
+			<description>Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
+Go 语言倡导通过通信的方式共享内存，也就是减少锁的使用，尽量都通过 Channel 来进行协程间通信。
+其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
+两个实体 goroutine 通过 Channel 通信，收发消息。
+数据结构 Channel 是一种 带锁环状队列，运行时结构定义在 runtime/chan.hchan ，代码也比较容易理解。
+type hchan struct { qcount uint // 队列中元素数量 	dataqsiz uint // 环形队列总大小 	buf unsafe.Pointer // 底层数组指针 	elemsize uint16	// 元素大小 	closed uint32	// 是否已关闭 	elemtype *_type // 元素类型 	sendx uint // 发送端下标 	recvx uint // 接收端下标 	recvq waitq // 接收端等待队列 	sendq waitq // 发送端等待队列  // 保护 hchan 并发访问的字段 	lock mutex } type waitq struct { first *sudog	// 等待队列链表的头节点 	last *sudog	// 尾节点 } 通过两个指针指向发送端和接收端接下来的操作位置，结合锁机制完成数据操作，这是很容易想到的并发处理方式。runtime/chan.</description>
+			<content type="html"><![CDATA[<p>Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。</p>
+<p>Go 语言倡导通过通信的方式共享内存，也就是减少锁的使用，尽量都通过 Channel 来进行协程间通信。</p>
+<p>其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/csp.svg" alt="csp"></p>
+<p>两个实体 goroutine 通过 Channel  通信，收发消息。</p>
+<h2 id="数据结构">数据结构</h2>
+<p>Channel 是一种 <strong>带锁环状队列</strong>，运行时结构定义在 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/chan.go#L32">runtime/chan.hchan</a> ，代码也比较容易理解。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">hchan</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">qcount</span>   <span class="kt">uint</span>           <span class="c1">// 队列中元素数量
+</span><span class="c1"></span>	<span class="nx">dataqsiz</span> <span class="kt">uint</span>           <span class="c1">// 环形队列总大小
+</span><span class="c1"></span>	<span class="nx">buf</span>      <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// 底层数组指针
+</span><span class="c1"></span>	<span class="nx">elemsize</span> <span class="kt">uint16</span>			<span class="c1">// 元素大小
+</span><span class="c1"></span>	<span class="nx">closed</span>   <span class="kt">uint32</span>			<span class="c1">// 是否已关闭
+</span><span class="c1"></span>	<span class="nx">elemtype</span> <span class="o">*</span><span class="nx">_type</span> 		<span class="c1">// 元素类型
+</span><span class="c1"></span>	<span class="nx">sendx</span>    <span class="kt">uint</span>   <span class="c1">// 发送端下标
+</span><span class="c1"></span>	<span class="nx">recvx</span>    <span class="kt">uint</span>   <span class="c1">// 接收端下标
+</span><span class="c1"></span>	<span class="nx">recvq</span>    <span class="nx">waitq</span>  <span class="c1">// 接收端等待队列
+</span><span class="c1"></span>	<span class="nx">sendq</span>    <span class="nx">waitq</span>  <span class="c1">// 发送端等待队列
+</span><span class="c1"></span>
+	<span class="c1">// 保护 hchan 并发访问的字段
+</span><span class="c1"></span>	<span class="nx">lock</span> <span class="nx">mutex</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">waitq</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">first</span> <span class="o">*</span><span class="nx">sudog</span>	<span class="c1">// 等待队列链表的头节点
+</span><span class="c1"></span>	<span class="nx">last</span>  <span class="o">*</span><span class="nx">sudog</span>	<span class="c1">// 尾节点
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>通过两个指针指向发送端和接收端接下来的操作位置，结合锁机制完成数据操作，这是很容易想到的并发处理方式。<a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/chan.go#L53">runtime/chan.waiq</a> 是阻塞等待 goroutine 的双向链表，每一个节点是一个封装了的 goroutine，被命名为 <code>sudog</code>，定义在 <a href="https://github.com/golang/go/blob/41d8e61a6b/src/runtime/runtime2.go#L345">runtime/runtime2.go</a> 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">sudog</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">g</span> <span class="o">*</span><span class="nx">g</span>
+
+	<span class="nx">next</span> <span class="o">*</span><span class="nx">sudog</span>
+	<span class="nx">prev</span> <span class="o">*</span><span class="nx">sudog</span>
+	<span class="nx">elem</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// data element (may point to stack)
+</span><span class="c1"></span>	<span class="o">...</span>
+
+<span class="p">}</span>
+</code></pre></div><p><code>next</code> 和 <code>prev</code> 就是指向前后节点的指针，并且包裹了一个 goroutine 结构。</p>
 ]]></content>
 		</item>
 		
@@ -126,7 +680,7 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
 			<guid>https://www.kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/</guid>
 			<description>秉承着 “软件均使用最新版本，学习均从文档入手” 的理念，学习使用 MySQL 我也是在使用最新的大版本 MySQL 8，而在技术发展过程中，一个不可忽视的因素就是兼容性，在保证新特性无误的同时必须确保以前的功能不受影响，如果不能保证这一点，那么许多使用者在迁移的时候就需要考虑很多改动成本，除非不是大改动，一般都会考虑到这一点，比如 HTTP/2 、TLS/1.3 等等。
 错误描述及分析 最近为学校写一个选课平台时关系型数据库使用的是 MySQL 8+，使用 Group by 时报了这个错误：
-ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column &#39;mydb.t.address&#39; which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by意思是说 select 列表中包含了非聚合列，其并不函数依赖于 Group by 子句中的列。并且和 sql_mode 这个配置项的 only_full_group_by 值冲突。不过这篇文章并不只是单纯说解决方法，如果想要解决方法请直接移步文末。
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column &#39;mydb.t.address&#39; which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by 意思是说 select 列表中包含了非聚合列，其并不函数依赖于 Group by 子句中的列。并且和 sql_mode 这个配置项的 only_full_group_by 值冲突。不过这篇文章并不只是单纯说解决方法，如果想要解决方法请直接移步文末。
 可以确定的是同样的使用了 Group by 的 SQL 查询语句在低版本中是正常的但是高版本却不行，猜测可能是版本差异造成的，而且还是因为这个配置项导致的。
 所以虽然我们一开始可能看不懂这个报错信息，但是我们通过一些分析已经定位了问题，并且报错的错误码明显（ERROR 1055(42000)），报错提示信息清楚，并不难找到解决方法。</description>
 			<content type="html"><![CDATA[<p>秉承着 “软件均使用最新版本，学习均从文档入手” 的理念，学习使用 MySQL 我也是在使用最新的大版本 MySQL 8，而在技术发展过程中，一个不可忽视的因素就是兼容性，在保证新特性无误的同时必须确保以前的功能不受影响，如果不能保证这一点，那么许多使用者在迁移的时候就需要考虑很多改动成本，除非不是大改动，一般都会考虑到这一点，比如 HTTP/2 、TLS/1.3 等等。</p>
@@ -176,20 +730,18 @@ mysql&gt; select @@session.sql_mode;
 		</item>
 		
 		<item>
-			<title>深入理解 Go string与slice</title>
+			<title>深入理解 Go string 与 slice</title>
 			<link>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</link>
 			<pubDate>Mon, 15 Feb 2021 23:35:20 +0000</pubDate>
 			
 			<guid>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</guid>
-			<description>123
-数据结构 我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 reflect/value.go 中，分别对应着 StringHeader 和 SliceHeader 。
+			<description>数据结构 我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 reflect/value.go 中，分别对应着 StringHeader 和 SliceHeader 。
 type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data uintptr Len int Cap int } 定义非常简单，Data 表示底层数据的地址，Len 表示长度，Cap 表示容量。容量评估了当前切片最多能容纳多少字节元素，而长度表示当前已经存储多少个字节了，切片只是对底层数据的引用：
 [图片]
 字符串就是字符的数组，我们先来看个小程序的例子：
 package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 go tool compile -S main.go 使用自带工具包查看汇编代码，可以看到有这样一段信息：
-...go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=30x0000 61 62 63 abc...很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
-			<content type="html"><![CDATA[<p>123</p>
-<h2 id="数据结构">数据结构</h2>
+... go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=3 0x0000 61 62 63 abc ... 很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
+			<content type="html"><![CDATA[<h2 id="数据结构">数据结构</h2>
 <p>我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 <code>reflect/value.go</code> 中，分别对应着 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/reflect/value.go#L1983">StringHeader</a> 和 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/reflect/value.go#L1994">SliceHeader</a> 。</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">StringHeader</span> <span class="kd">struct</span> <span class="p">{</span>
 	<span class="nx">Data</span> <span class="kt">uintptr</span>
@@ -220,7 +772,7 @@ go.string.&quot;abc&quot; SRODATA dupok size=3
 		</item>
 		
 		<item>
-			<title>https为什么安全</title>
+			<title>https 为什么安全</title>
 			<link>https://www.kcode.icu/posts/https/</link>
 			<pubDate>Wed, 27 Jan 2021 15:57:50 +0000</pubDate>
 			
@@ -416,13 +968,79 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 		</item>
 		
 		<item>
-			<title>Go 结构体与内存对齐</title>
-			<link>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</link>
+			<title>深入理解 Go defer 版本差异与底层特性</title>
+			<link>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</link>
 			<pubDate>Mon, 25 Jan 2021 23:35:20 +0000</pubDate>
 			
-			<guid>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</guid>
-			<description></description>
-			<content type="html"><![CDATA[]]></content>
+			<guid>https://www.kcode.icu/posts/go/2021-01-25-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-defer%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82%E4%B8%8E%E5%BA%95%E5%B1%82%E7%89%B9%E6%80%A7/</guid>
+			<description>defer 简介 defer 的作用是使某个/某些执行延时执行，常用在资源使用后的释放等场景，例如：
+func DbInit() (sql.DB, error) { db, err := sql.Open() if err != nil { return nil, err } defer db.Close() ... } defer 有一些熟知的特性：
+ “先进后出”，也就是说如果使用了多个 defer，最先使用 的 defer 后的函数体 最后执行。 一定会执行，即 panic 后依然有效。 执行体参数在注册 defer 时确定。 &amp;hellip;  我们先来看看为什么。
+结构定义 先来看看标准库中 runtime/runtime2.defer 的定义。
+type _defer struct { siz int32	// 函数参数和返回值的大小 	started bool heap bool	// 是否分配在堆上  openDefer bool	// 是否经过开放编码的优化 	sp uintptr // defer函数体的栈顶指针 	pc uintptr // 下一条指令地址 	fn *funcval // 执行函数地址，如果是开放编码可以为空 	_panic *_panic // 与之相关的panic链表 	link *_defer	// defer链表  .</description>
+			<content type="html"><![CDATA[<h2 id="defer-简介">defer 简介</h2>
+<p>defer 的作用是使某个/某些执行延时执行，常用在资源使用后的释放等场景，例如：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">DbInit</span><span class="p">()</span> <span class="p">(</span><span class="nx">sql</span><span class="p">.</span><span class="nx">DB</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">db</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sql</span><span class="p">.</span><span class="nf">Open</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+    <span class="p">}</span>
+    <span class="k">defer</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</code></pre></div><p>defer 有一些熟知的特性：</p>
+<ul>
+<li>“先进后出”，也就是说如果使用了多个 defer，<strong>最先使用</strong> 的 defer 后的函数体 <strong>最后执行</strong>。</li>
+<li>一定会执行，即 panic 后依然有效。</li>
+<li>执行体参数在注册 defer 时确定。</li>
+<li>&hellip;</li>
+</ul>
+<p>我们先来看看为什么。</p>
+<h3 id="结构定义">结构定义</h3>
+<p>先来看看标准库中 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/runtime2.go#L907">runtime/runtime2.defer</a> 的定义。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">_defer</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">siz</span>     <span class="kt">int32</span>	<span class="c1">// 函数参数和返回值的大小
+</span><span class="c1"></span>	<span class="nx">started</span> <span class="kt">bool</span>
+	<span class="nx">heap</span>    <span class="kt">bool</span>	<span class="c1">// 是否分配在堆上
+</span><span class="c1"></span>
+	<span class="nx">openDefer</span> <span class="kt">bool</span>	<span class="c1">// 是否经过开放编码的优化
+</span><span class="c1"></span>	<span class="nx">sp</span>        <span class="kt">uintptr</span>  <span class="c1">// defer函数体的栈顶指针
+</span><span class="c1"></span>	<span class="nx">pc</span>        <span class="kt">uintptr</span>  <span class="c1">// 下一条指令地址
+</span><span class="c1"></span>	<span class="nx">fn</span>        <span class="o">*</span><span class="nx">funcval</span> <span class="c1">// 执行函数地址，如果是开放编码可以为空
+</span><span class="c1"></span>	<span class="nx">_panic</span>    <span class="o">*</span><span class="nx">_panic</span>  <span class="c1">// 与之相关的panic链表
+</span><span class="c1"></span>	<span class="nx">link</span>      <span class="o">*</span><span class="nx">_defer</span>	<span class="c1">// defer链表
+</span><span class="c1"></span>
+	<span class="o">...</span>
+<span class="p">}</span>
+</code></pre></div><p>除堆分配和开放编码相关字段之外，其余字段很容易理解。这两个特性是在 1.13 与 1.14 引入的，重点解决 defer 性能问题，放在下文。还有一些字段是关于 gc 的，理解较为复杂，暂不讨论。</p>
+<p>除此之外，有两个字段比较重要，<code>link</code> 与 <code>_panic</code>。前者将注册的许多 defer 串成链表，在执行的时候按预先定义的顺序访问，先恢复执行体函数所需的栈信息等操作，跳转到函数地址处执行；后者将 defer 与 panic 进行关联，确保发生 panic 后按序执行所有注册过的 defer 函数。</p>
+<p>编译阶段会把 defer 关键字分为三种状态，分别是开放编码，栈分配，堆分配。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">state</span><span class="p">)</span> <span class="nf">stmt</span><span class="p">(</span><span class="nx">n</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="k">switch</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Op</span> <span class="p">{</span>
+        <span class="o">...</span>
+        <span class="k">case</span> <span class="nx">ODEFER</span><span class="p">:</span>
+			<span class="o">...</span>
+			<span class="k">if</span> <span class="nx">s</span><span class="p">.</span><span class="nx">hasOpenDefers</span> <span class="p">{</span>
+				<span class="nx">s</span><span class="p">.</span><span class="nf">openDeferRecord</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">Left</span><span class="p">)</span>	<span class="c1">// 开放编码
+</span><span class="c1"></span>			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nx">d</span> <span class="o">:=</span> <span class="nx">callDefer</span>	<span class="c1">// 堆分配
+</span><span class="c1"></span>				<span class="k">if</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Esc</span> <span class="o">==</span> <span class="nx">EscNever</span> <span class="p">{</span>
+					<span class="nx">d</span> <span class="p">=</span> <span class="nx">callDeferStack</span>	<span class="c1">// 栈分配
+</span><span class="c1"></span>				<span class="p">}</span>
+				<span class="nx">s</span><span class="p">.</span><span class="nf">callResult</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">Left</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span>
+			<span class="p">}</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+
+</code></pre></div><p>早起的 Go （1.13 之前）会把 defer 所需内存全部分配在堆上，性能较差，在 1.13 时通过调用分析可选择分配在栈上以增加性能，提升了大约 30%，1.14 又增加了开放编码方式，使 defer 的调用损耗可以忽略不计（&lt;10ms）。</p>
+<h3 id="现象背后的原因">现象背后的原因</h3>
+<p>先讨论表象背后的底层原理，即</p>
+<h2 id="版本差异">版本差异</h2>
+<h2 id="总结">总结</h2>
+]]></content>
 		</item>
 		
 		<item>
@@ -572,7 +1190,7 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">value</span> <span class="o">:=</span> <span class="nx">m</span><span class="p">[</span><span class="s">&#34;I&#39;m a Key&#34;</span><span class="p">]</span>
 </code></pre></div><p>Or</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">value</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">m</span><span class="p">[</span><span class="s">&#34;I&#39;m a Key&#34;</span><span class="p">]</span>
-</code></pre></div><p>第二种方式的第二个返回值是个布尔类型，代表该键在 map 中是否存在，类似于数据库或者其他概念中的 NULL 值，目的是为了不和所有该类型值冲突。两种方式的底层调用分别对应着 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/runtime/map.go#L389">runtime/mapaccess1</a> 和 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/runtime/map.go#L452">runtime/mapaccess2</a> ，Go 语言会在运行时决定使用哪种方式。</p>
+</code></pre></div><p>第二种方式的第二个返回值是个布尔类型，代表该键在 map 中是否存在，类似于数据库或者其他概念中的 NULL 值，目的是为了不和所有该类型值冲突。两种方式的底层调用分别对应着 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/runtime/map.go#L389">runtime/mapaccess1</a> 和 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/runtime/map.go#L452">runtime/mapaccess2</a> ，Go 语言会在 <strong>运行时决定</strong> 使用哪种方式。</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">mapaccess1</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">maptype</span><span class="p">,</span> <span class="nx">h</span> <span class="o">*</span><span class="nx">hmap</span><span class="p">,</span> <span class="nx">key</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="p">{</span>
     <span class="c1">// ...
 </span><span class="c1"></span>	<span class="nx">hash</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">hasher</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">hash0</span><span class="p">))</span>
@@ -621,12 +1239,163 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 	<span class="k">return</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">zeroVal</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="kc">false</span>
 </code></pre></div><p>还有一个函数 <a href="https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L511">mapaccessK</a> ，返回的是 map 的 key 和 value，用于 map 的 range 函数遍历，过程类似，不赘述了。</p>
 <h4 id="写入">写入</h4>
-<h4 id="删除">删除</h4>
+<p>map 的写入操作对应底层 <a href="https://github.com/golang/go/blob/ac0ba6707c1655ea4316b41d06571a0303cc60eb/src/runtime/map.go#L571">runtime/map.go.mapassign</a> 函数。这个函数的签名如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">mapassign</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">maptype</span><span class="p">,</span> <span class="nx">h</span> <span class="o">*</span><span class="nx">hmap</span><span class="p">,</span> <span class="nx">key</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span>
+</code></pre></div><p>签名中并没有看到写入 key 所对应的 value 值表达式，唯一相关的返回值是一个指向任意类型的指针类型，可能有人就迷惑了，map 写入是依靠这个函数，我都没传 value 怎么写入呢？</p>
+<p>答案是写入操作并没有写在标准库源码中，而是在汇编代码中。</p>
+<pre><code class="language-assembly" data-lang="assembly">...
+0x008e 00142 (notify.go:5)      CALL    runtime.mapassign_fast64(SB)
+0x0093 00147 (notify.go:5)      MOVQ    24(SP), AX
+0x0098 00152 (notify.go:5)      MOVQ    $666, (AX)
+...
+</code></pre><blockquote>
+<p>学习 Go 底层原理时，时常要借助汇编代码一起分析，Go 官方也为我们提供了完整的工具包，其中 <code>go tool compile -S</code> 就十分有用，上面这些信息就是通过这个工具得到的。</p>
+</blockquote>
+<p><code>mapassign_fast64</code> 是针对不同类型的 key 做出的编译时优化，为了增加效率。</p>
+<p>下面看一下这个函数的源码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">mapassign</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">maptype</span><span class="p">,</span> <span class="nx">h</span> <span class="o">*</span><span class="nx">hmap</span><span class="p">,</span> <span class="nx">key</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="p">{</span>
+    <span class="c1">// 向空map中写入会panic，比如仅仅通过
+</span><span class="c1"></span>    <span class="c1">// var mp map[int]int
+</span><span class="c1"></span>    <span class="c1">// mp[1] = 2 // panic!
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">h</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nb">panic</span><span class="p">(</span><span class="nf">plainError</span><span class="p">(</span><span class="s">&#34;assignment to entry in nil map&#34;</span><span class="p">))</span>
+	<span class="p">}</span>
+	<span class="o">...</span>
+    <span class="c1">// 写map时会把flags标志位写位置1，写入时如果检测到已经置1，
+</span><span class="c1"></span>    <span class="c1">// 说明并发写入，语言不支持，会panic
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">h</span><span class="p">.</span><span class="nx">flags</span><span class="o">&amp;</span><span class="nx">hashWriting</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nf">throw</span><span class="p">(</span><span class="s">&#34;concurrent map writes&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">hash</span> <span class="o">:=</span> <span class="nx">t</span><span class="p">.</span><span class="nf">hasher</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">hash0</span><span class="p">))</span>
+
+    <span class="c1">// 这个要在t.hasher之后，因为hasher调用可能panic，导致写入失败，没必要把写入位置1
+</span><span class="c1"></span>	<span class="nx">h</span><span class="p">.</span><span class="nx">flags</span> <span class="p">^=</span> <span class="nx">hashWriting</span>
+
+    <span class="c1">// 如果还没有桶就new一个
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">h</span><span class="p">.</span><span class="nx">buckets</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">h</span><span class="p">.</span><span class="nx">buckets</span> <span class="p">=</span> <span class="nf">newobject</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">bucket</span><span class="p">)</span> <span class="c1">// newarray(t.bucket, 1)
+</span><span class="c1"></span>	<span class="p">}</span>
+
+<span class="nx">again</span><span class="p">:</span>
+	<span class="nx">bucket</span> <span class="o">:=</span> <span class="nx">hash</span> <span class="o">&amp;</span> <span class="nf">bucketMask</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span>	<span class="c1">// 与低B位确定在哪个桶
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">h</span><span class="p">.</span><span class="nf">growing</span><span class="p">()</span> <span class="p">{</span>	<span class="c1">// 这个函数只有一行代码，h.oldbuckets != nil，判断是否迁移完毕
+</span><span class="c1"></span>		<span class="nf">growWork</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">bucket</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">b</span> <span class="o">:=</span> <span class="p">(</span><span class="o">*</span><span class="nx">bmap</span><span class="p">)(</span><span class="nf">add</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">buckets</span><span class="p">,</span> <span class="nx">bucket</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">bucketsize</span><span class="p">)))</span><span class="c1">// 用首地址+桶编号*单个桶大小定位到目标桶的地址
+</span><span class="c1"></span>	<span class="nx">top</span> <span class="o">:=</span> <span class="nf">tophash</span><span class="p">(</span><span class="nx">hash</span><span class="p">)</span> <span class="c1">// 计算tophash哈希值，用于找到key value
+</span><span class="c1"></span>
+    <span class="c1">// 完成了上面的各种判断，才会进行下面双重循环的判断，按照所有桶，每个桶里的8个位，按顺序遍历
+</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">inserti</span> <span class="o">*</span><span class="kt">uint8</span>
+	<span class="kd">var</span> <span class="nx">insertk</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span>
+	<span class="kd">var</span> <span class="nx">elem</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span>
+<span class="nx">bucketloop</span><span class="p">:</span>
+	<span class="k">for</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="nb">uintptr</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">bucketCnt</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="nx">b</span><span class="p">.</span><span class="nx">tophash</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">!=</span> <span class="nx">top</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="nf">isEmpty</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">tophash</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">inserti</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+					<span class="nx">inserti</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">b</span><span class="p">.</span><span class="nx">tophash</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+					<span class="nx">insertk</span> <span class="p">=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">b</span><span class="p">),</span> <span class="nx">dataOffset</span><span class="o">+</span><span class="nx">i</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">keysize</span><span class="p">))</span>
+					<span class="nx">elem</span> <span class="p">=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">b</span><span class="p">),</span> <span class="nx">dataOffset</span><span class="o">+</span><span class="nx">bucketCnt</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">keysize</span><span class="p">)</span><span class="o">+</span><span class="nx">i</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">elemsize</span><span class="p">))</span>
+				<span class="p">}</span>
+				<span class="k">if</span> <span class="nx">b</span><span class="p">.</span><span class="nx">tophash</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">==</span> <span class="nx">emptyRest</span> <span class="p">{</span>
+					<span class="k">break</span> <span class="nx">bucketloop</span>
+				<span class="p">}</span>
+				<span class="k">continue</span>
+			<span class="p">}</span>
+			<span class="nx">k</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">b</span><span class="p">),</span> <span class="nx">dataOffset</span><span class="o">+</span><span class="nx">i</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">keysize</span><span class="p">))</span>
+			<span class="k">if</span> <span class="nx">t</span><span class="p">.</span><span class="nf">indirectkey</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nx">k</span> <span class="p">=</span> <span class="o">*</span><span class="p">((</span><span class="o">*</span><span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)(</span><span class="nx">k</span><span class="p">))</span>
+			<span class="p">}</span>
+			<span class="k">if</span> <span class="p">!</span><span class="nx">t</span><span class="p">.</span><span class="nx">key</span><span class="p">.</span><span class="nf">equal</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">k</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">continue</span>
+			<span class="p">}</span>
+			<span class="c1">// already have a mapping for key. Update it.
+</span><span class="c1"></span>			<span class="k">if</span> <span class="nx">t</span><span class="p">.</span><span class="nf">needkeyupdate</span><span class="p">()</span> <span class="p">{</span>
+				<span class="nf">typedmemmove</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
+			<span class="p">}</span>
+			<span class="nx">elem</span> <span class="p">=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">b</span><span class="p">),</span> <span class="nx">dataOffset</span><span class="o">+</span><span class="nx">bucketCnt</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">keysize</span><span class="p">)</span><span class="o">+</span><span class="nx">i</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">elemsize</span><span class="p">))</span>
+			<span class="k">goto</span> <span class="nx">done</span>
+		<span class="p">}</span>
+		<span class="nx">ovf</span> <span class="o">:=</span> <span class="nx">b</span><span class="p">.</span><span class="nf">overflow</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">ovf</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">break</span>
+		<span class="p">}</span>
+		<span class="nx">b</span> <span class="p">=</span> <span class="nx">ovf</span>
+	<span class="p">}</span>
+
+	<span class="c1">// Did not find mapping for key. Allocate new cell &amp; add entry.
+</span><span class="c1"></span>
+	<span class="c1">// If we hit the max load factor or we have too many overflow buckets,
+</span><span class="c1"></span>	<span class="c1">// and we&#39;re not already in the middle of growing, start growing.
+</span><span class="c1"></span>	<span class="k">if</span> <span class="p">!</span><span class="nx">h</span><span class="p">.</span><span class="nf">growing</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nf">overLoadFactor</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">count</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nx">h</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="o">||</span> <span class="nf">tooManyOverflowBuckets</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">noverflow</span><span class="p">,</span> <span class="nx">h</span><span class="p">.</span><span class="nx">B</span><span class="p">))</span> <span class="p">{</span>
+		<span class="nf">hashGrow</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">h</span><span class="p">)</span>
+		<span class="k">goto</span> <span class="nx">again</span> <span class="c1">// Growing the table invalidates everything, so try again
+</span><span class="c1"></span>	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="nx">inserti</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="c1">// The current bucket and all the overflow buckets connected to it are full, allocate a new one.
+</span><span class="c1"></span>		<span class="nx">newb</span> <span class="o">:=</span> <span class="nx">h</span><span class="p">.</span><span class="nf">newoverflow</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
+		<span class="nx">inserti</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">newb</span><span class="p">.</span><span class="nx">tophash</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="nx">insertk</span> <span class="p">=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">newb</span><span class="p">),</span> <span class="nx">dataOffset</span><span class="p">)</span>
+		<span class="nx">elem</span> <span class="p">=</span> <span class="nf">add</span><span class="p">(</span><span class="nx">insertk</span><span class="p">,</span> <span class="nx">bucketCnt</span><span class="o">*</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">keysize</span><span class="p">))</span>
+	<span class="p">}</span>
+
+	<span class="c1">// store new key/elem at insert position
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">t</span><span class="p">.</span><span class="nf">indirectkey</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">kmem</span> <span class="o">:=</span> <span class="nf">newobject</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">key</span><span class="p">)</span>
+		<span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)(</span><span class="nx">insertk</span><span class="p">)</span> <span class="p">=</span> <span class="nx">kmem</span>
+		<span class="nx">insertk</span> <span class="p">=</span> <span class="nx">kmem</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="nx">t</span><span class="p">.</span><span class="nf">indirectelem</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">vmem</span> <span class="o">:=</span> <span class="nf">newobject</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">elem</span><span class="p">)</span>
+		<span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)(</span><span class="nx">elem</span><span class="p">)</span> <span class="p">=</span> <span class="nx">vmem</span>
+	<span class="p">}</span>
+	<span class="nf">typedmemmove</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="nx">insertk</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
+	<span class="o">*</span><span class="nx">inserti</span> <span class="p">=</span> <span class="nx">top</span>
+	<span class="nx">h</span><span class="p">.</span><span class="nx">count</span><span class="o">++</span>
+
+<span class="nx">done</span><span class="p">:</span>
+	<span class="k">if</span> <span class="nx">h</span><span class="p">.</span><span class="nx">flags</span><span class="o">&amp;</span><span class="nx">hashWriting</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nf">throw</span><span class="p">(</span><span class="s">&#34;concurrent map writes&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="nx">h</span><span class="p">.</span><span class="nx">flags</span> <span class="o">&amp;^=</span> <span class="nx">hashWriting</span>
+	<span class="k">if</span> <span class="nx">t</span><span class="p">.</span><span class="nf">indirectelem</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">elem</span> <span class="p">=</span> <span class="o">*</span><span class="p">((</span><span class="o">*</span><span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)(</span><span class="nx">elem</span><span class="p">))</span>
+	<span class="p">}</span>
+    
+    <span class="c1">// 返回elem地址，由汇编代码负责执行真正的写入操作
+</span><span class="c1"></span>	<span class="k">return</span> <span class="nx">elem</span>
+<span class="p">}</span>
+</code></pre></div><h4 id="删除">删除</h4>
+<p>删除对应的底层函数是 <a href="https://github.com/golang/go/blob/ac0ba6707c/src/runtime/map.go#L685">runtime/map.mapdelete</a> ，处理的思路非常相似，也是先判断各种情况，最后进行双重循环定位目标 cell，不再赘述了。</p>
 <h4 id="扩容">扩容</h4>
-<h3 id="总结">总结</h3>
-<p>Go 语言的 map 使用了数组+链表实现的哈希表，引入了溢出桶的概念来减少桶的扩容，实现了平均 O(1) 的时间复杂度内访问元素，基本不会出现最坏的情况。经过哈希计算后，用低 B 位确定桶位置，高 8 位比对找到 tophash，再通过偏移找到 key/value，或者执行插入或者新增溢出桶等等逻辑。</p>
+<p>扩容过程较为复杂，总的来说，扩容分为 增量扩容 与 等量扩容，前者有两种情况触发，一是在桶不够用时，即容量到达扩容因子时，二是在，后者是在桶空间较为稀疏时触发，作用不同。</p>
+<p>需要注意的一点是，扩容并不是一次性完成的，而是渐进式的，在每次进行写入操作时搬运一部分元素，主要目的也是为了防止瞬时的性能抖动对整个应用造成影响。</p>
+<h5 id="等量扩容">等量扩容</h5>
+<p>等量扩容的目的是使得桶的数据密度不至于过小，想象一种极端场景，一个哈希表有1个位置，拉链出了100个bucket，但只有一个元素，它在最后一个桶（正常桶+溢出桶）的最后一个位置上，我们每次访问这个元素，都需要从头到尾扫描这n个桶，直到找到这个元素，显而易见，这样效率非常低，所以go语言运行时会动态修改这个大小，进行数据的紧缩，使得数据密度增大增大，既增加了效率，也减少了所需空间。</p>
+<p>等量扩容的代码在 xxxxx，</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">
+</code></pre></div><p>主要做了这些事：</p>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<h5 id="增量扩容">增量扩容</h5>
+<p>增量扩容的出现场景就是桶不够用，即容量到达了负载因子的限制大小，需要进行扩大，具体与hmap。b的大小有关：</p>
+<ul>
+<li>当b《=15时，如果桶大小一旦超过这个值扩容</li>
+<li>当b》15，如果桶大小大于2…………15次方就扩容</li>
+</ul>
+<p>扩容时由于b的大小+1，所以掩码的低位位数会+1，最高位的0和1会把所有元素分到两个部分，在go中这两部分被命名为 evaluatex，evaluatey，</p>
+<p>具体代码放在 xxxx，</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">
+</code></pre></div><h3 id="总结">总结</h3>
+<p>Go 语言的 map 使用了数组+链表实现的哈希表，引入了溢出桶的概念以及触发扩容的条件机制来减少桶的扩容，实现了平均 O(1) 的时间复杂度内访问元素，基本不会出现最坏的情况。</p>
+<p>访问元素的大致流程时：经过哈希计算后，用低 B 位确定桶位置，高 8 位比对 tophash 找到偏移，再通过偏移找到 key/value，或者执行插入或者新增溢出桶等等逻辑。</p>
 <p>不管你使用字面量的方式还是 make 的方式声明 map，都是对应底层的 hmap 结构，获得了一个指向 hmap 的指针，并且 Go 语言针对不给出初始大小的 map 还进行了快速初始化的优化，针对 map 的大小过大（hmap.B 大于4），提前建立溢出桶的优化。</p>
-<p>Go 提供了两种方式访问 map 中的元素，可以获得两个返回值，第二个返回值可以忽略，这用于空键值对的判断，类似于数据库中的 NULL，不和任何值冲突。并且 map 的遍历访问是随机的，这是因为每次遍历时会通过 fastrand 生成一个随机数，随机选择一个桶，再随机选择桶中的一个元素，先遍历完该桶，再顺次遍历后续的桶。map 是可以并发访问的，因为这并不会有任何冲突发生。</p>
+<p>Go 提供了两种方式访问 map 中的元素，可以获得两个返回值，第二个返回值可以忽略，这用于空键值对的判断，类似于数据库中的 NULL，不和任何值冲突。并且 map 的遍历访问是随机的，这是因为每次遍历时会通过 fastrand 生成一个随机数，随机选择一个桶，再随机选择桶中的一个元素，先遍历完该桶，再顺次遍历后续的桶。map 是可以并发访问（指读）的，因为这并不会有任何冲突发生。</p>
 ]]></content>
 		</item>
 		
@@ -715,7 +1484,7 @@ HTTP方法有什么“实际区别” 你可能听说过类似 “GET 和 POST �
 各个版本之间的发展史 HTTP 比较重要的几个发展时间节点是 0.9、1.0、1.1、2.0 和 3.0，每一次的版本变迁都是为了解决前一个版本的性能不足或者功能不完善，我不推荐死记硬背，即使它被称为计算机八股文。
 http 0.9和1.1 在 HTTP 0.9 的时候只有 GET 方法，1.0 补充了 POST，DEL 方法完善语义，还添加了几个首部，这个阶段的 HTTP 主要就是完善功能。
 1.0 和 1.1 的最大区别就是长短连接了。在 HTTP 1.1 将长连接设置为了默认，也就是：
-Connection: keep-alive在这之前这个字段的默认是 close，长连接的好处是显而易见的，由于 HTTP 是基于 tcp，如果总共传输三个文件，1.</description>
+Connection: keep-alive 在这之前这个字段的默认是 close，长连接的好处是显而易见的，由于 HTTP 是基于 tcp，如果总共传输三个文件，1.</description>
 			<content type="html"><![CDATA[<p>标题的”最常见“我想应该没有什么争议，对大多数人来说日常生活中接触到最多的应用层协议就是 HTTP了，从聊天软件、浏览器页面再到各种游戏实现，它们无处不在。这篇文章我就带你来看一看这个处于 OSI 标准最上层、最常用也是最普通的 HTTP 它究竟有什么“东西”，一起作为一个不只是听说过的“大神”。</p>
 <p>这篇博客我想阐述除书本概念之外的一些可能你 <strong>理解不深刻</strong> 的问题的 <strong>个人理解</strong>，希望对你有所帮助。</p>
 <h2 id="http是什么">HTTP是什么</h2>
@@ -752,17 +1521,31 @@ Connection: keep-alive在这之前这个字段的默认是 close，长连接的
 		</item>
 		
 		<item>
-			<title>一些常见Go语言及面试问题的整理</title>
+			<title>一些常见 Go 语言及面试问题的整理</title>
 			<link>https://www.kcode.icu/posts/interview/somequestions/</link>
 			<pubDate>Fri, 15 Jan 2021 21:10:55 +0000</pubDate>
 			
 			<guid>https://www.kcode.icu/posts/interview/somequestions/</guid>
-			<description>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家，等待更新中。
-Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
+			<description>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。
+ 待完成
+ Go make和new的区别，使用和底层？ 两者都可以声明变量，例如 map，channelchannel，slice，以及结构体等等，我们常用make来初始化map，channel，而常用new 来初始化普通类型变量和结构体。
+区别是make会分配底层所需的空间，而new只会分配该结构头部的空间。如果首部中并没有引用其他内存地址，那么new 和make是一样。
+举个例子，当我们声明 map 时，实际上说获得了一个 hmap 类型的指针，指向 hmap结构体：
+如果我们使用make（map[type]type, 10），就会为map底层所使用的空间分配足够使用的bucket，如果使用new，则只分配hmap结构体所需内存，并不会分配底层所使用的空间，使用map也就无从谈起了。常见的一个错误示范就是通过 var m map[int]int 声明，然后直接 m[1]=1 来使用，这样就会直接因为空指针引用而panic！
+Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m操作g的时候有自旋与非自旋状态？
 线程有哪些状态 注册中心挂了怎么办？ N节点，raft一致性？
 反射底层原理？ 通过反射执行函数，拿结构体tag？ 锁机制？饥饿模式正常模式？锁底层原理？ channel使用，坑，底层原理？ </description>
-			<content type="html"><![CDATA[<p>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家，等待更新中。</p>
+			<content type="html"><![CDATA[<p>这篇博客记录一些关于面试常见的 Go 语言方面的问题，希望能帮到大家。</p>
+<blockquote>
+<p>待完成</p>
+</blockquote>
 <h2 id="go-make和new的区别使用和底层">Go make和new的区别，使用和底层？</h2>
+<p>两者都可以声明变量，例如 map，channelchannel，slice，以及结构体等等，我们常用make来初始化map，channel，而常用new 来初始化普通类型变量和结构体。</p>
+<p>区别是make会分配底层所需的空间，而new只会分配该结构头部的空间。如果首部中并没有引用其他内存地址，那么new 和make是一样。</p>
+<p>举个例子，当我们声明 map 时，实际上说获得了一个 hmap 类型的指针，指向 hmap结构体：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">
+
+</code></pre></div><p>如果我们使用make（map[type]type, 10），就会为map底层所使用的空间分配足够使用的bucket，如果使用new，则只分配hmap结构体所需内存，并不会分配底层所使用的空间，使用map也就无从谈起了。常见的一个错误示范就是通过 <code>var m map[int]int</code> 声明，然后直接 <code>m[1]=1</code> 来使用，这样就会直接因为空指针引用而panic！</p>
 <h2 id="go内存管理">Go内存管理</h2>
 <h2 id="goroutine-什么时候会阻塞">goroutine 什么时候会阻塞？</h2>
 <h2 id="goroutine有几种状态">goroutine有几种状态？</h2>
@@ -822,14 +1605,52 @@ Go make和new的区别，使用和底层？ Go内存管理 goroutine 什么时�
 <p>配置完源站信息后，会生成一个 CDN 域名，比如我的是 <code>kcode.icu.cdn.dnsv1.com</code> ，然后再添加一条 CNAME 记录指向这个域名就搞定。这样配置过，你的网站经过缓存后国内访问速度能达到非常恐怖的速度，可以试着 ping 一下哦。</p>
 <p>不过我这里是尝试了一下，发现国内都是不支持加速国外域名，所以放弃了。</p>
 <p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118184423991.png" alt=""></p>
-<h2 id="actions自动化构建">Actions自动化构建</h2>
+<h2 id="自动化构建">自动化构建</h2>
+<p>自动化构建意思是说你只需要完成博客内容部分，其他生成静态页面，打包，发布部署等功能都交给一套脚本去完成。这里介绍我曾经体验过的几种。</p>
+<h3 id="github-actions">Github Actions</h3>
+<p>这是 Github 提供的功能较为全面的自动化部署解决方案，使用方法有两种，一是在 <code>.git</code> 文件的同级目录下创建一个 <code>.github/workflow</code> 目录，然后新建 <code>gh-pages.yaml</code> 文件，另一个是在 Web端登录进入你 <code>yourname.github.io</code> 仓库， <code>Code</code> 栏右侧的 <code>Action</code> ，点进去图形化创建并编辑文件即可，这里展示我的 action 脚本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Deploy Hugo</span><span class="w">
+</span><span class="w"></span><span class="nt">on</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="l">master</span><span class="w">
+</span><span class="w"></span><span class="nt">jobs</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">build-deploy</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l">ubuntu-18.04</span><span class="w">
+</span><span class="w">    </span><span class="nt">steps</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">actions/checkout@v2</span><span class="w">
+</span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">submodules</span><span class="p">:</span><span class="w"> </span><span class="l">recursive</span><span class="w"> </span><span class="c"># Fetch Hugo themes (true OR recursive)</span><span class="w">
+</span><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="c"># Fetch all history for .GitInfo and .Lastmod</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Setup Hugo</span><span class="w">
+</span><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-hugo@v2</span><span class="w">
+</span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">hugo-version</span><span class="p">:</span><span class="w"> </span><span class="l">latest</span><span class="w">
+</span><span class="w">          </span><span class="nt">extended</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Build</span><span class="w">
+</span><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">hugo &amp;&amp; echo www.kcode.icu &gt; ./public/CNAME</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Deploy</span><span class="w">
+</span><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-gh-pages@v3</span><span class="w">
+</span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">personal_token</span><span class="p">:</span><span class="w"> </span><span class="l">${{ secrets.personal_token }}</span><span class="w"> </span><span class="c"># personal_token 这里新建一个 https://github.com/settings/tokens</span><span class="w">
+</span><span class="w">          </span><span class="nt">PUBLISH_BRANCH</span><span class="p">:</span><span class="w"> </span><span class="l">gh-pages</span><span class="w"> </span><span class="c"># 推送到当前 gh-pages 分支</span><span class="w">
+</span><span class="w">          </span><span class="nt">PUBLISH_DIR</span><span class="p">:</span><span class="w"> </span><span class="l">./public</span><span class="w"> </span><span class="c"># hugo 生成到 public 作为跟目录</span><span class="w">
+</span><span class="w">          </span><span class="nt">commit_message</span><span class="p">:</span><span class="w"> </span><span class="l">${{ github.event.head_commit.message }}</span><span class="w">
+</span></code></pre></div><p>也比较好理解，就是执行 <code>hugo</code> 命令然后创建一个 CNAME 文件用于自动设置一个自定义域名，然后推到 <code>gh-pages</code> 分支。</p>
+<p>这种方案的优点是自定义程度高，缺点相对就是需要自己全权控制写一个控制脚本，有一定学习成本。</p>
+<p>这是我的自动化构建执行结果：</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331160251498.png" alt="image-20210331160251498"></p>
+<h3 id="gitee-page">Gitee Page</h3>
+<p>Gitee 提供了常见的几个博客框架的自动化部署功能，Hugo，Hexo 和 Jekyll。也就是说，只要你根目录下有对应框架的 <code>yaml</code> 配置文件，在你每次将最新内容推至仓库时就会自动执行自动化构建，并把最新页面推到前端页面上，比较省心。</p>
+<p>优点是国内速度比 Github 快，毕竟服务器近，缺点是每次推完还要手动点更新，自动的一年 99RMB。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331155953211.png" alt="image-20210331155953211"></p>
 <h2 id="说在最后">说在最后</h2>
 <p>这里说几点我个人看法。</p>
 <ul>
-<li>博客要注重内容，我看好多人把界面弄的 <strong>过于花哨</strong> 不注重内在，我觉得如果你内容很丰富的情况下可以适当美化，但是弄个 BGM 或者动态换图什么的还是不要了。</li>
+<li>博客要<strong>注重内容</strong>，我看好多人把界面弄的 <strong>过于花哨</strong> 不注重实际内容，我觉得如果你内容很丰富的情况下可以适当美化，但是弄个 BGM 或者动态换图什么的还是不要了。</li>
 <li>多踩坑不一定是坏事，在大学这个试错成本很低的环境里就要多尝试，在踩坑的过程中把基础打牢，锻炼问题定位能力，多思考，多总结，日积月累肯定有所提升。</li>
 <li>写博客给别人看的同时要多去看别人的成果，尤其是大佬们的，进步很快。</li>
-<li></li>
+<li>最后一点也是最重要的，不要主要依靠别人的博客学习，大部分博客不系统，甚至有的博主不理解就生搬硬套，很容易给新人带来误解。努力学习一手资料，官方文档、书籍都是不错的选择，其次才是较为系统阐述的博客、零散的博客。</li>
 </ul>
 ]]></content>
 		</item>
@@ -996,21 +1817,23 @@ df VS. du 看了这两个命令大致用法后，它们在使用场景是什么�
 			<pubDate>Fri, 18 Sep 2020 09:27:13 +0000</pubDate>
 			
 			<guid>https://www.kcode.icu/posts/ascii-unicode-utf/</guid>
-			<description>起因 最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在会用的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。
+			<description>起因 最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 Byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在 会用 的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。
 什么是ASCII，为什么又要引入Unicode 都应该了解过 ASCII、Unicode、Unicode 码点、UTF-8等一系列名词。先说 ASCII（American Standard Code for Information Interchange: 美国信息交换标准代码），它是一种字符集，说白了就是一个字符和数字的一一对应关系，你想找这个字符怎么办，计算机又不认识字符？给出他的对应的数字就行了。最初只有美国等一些使用英文的国家使用，所以 128 个字符完全够用，它包含了标点符号、数字和字母等。但是随着世界上使用计算机的国家越来越多，这 128 个字符是完全不够用的。所以 Unicode 字符集 就出现了。Unicode 包含了世界上绝大多数的字符，给他们提供了一一对应关系，比如“知”字对应 30693，即 U+77e5（16 进制形式）。所以说白了 ASCII 和 Unicode 就是一种字符集，一种字符对应关系，Unicode 中每个字符被称为一个 Code Point（码点），而 Go 语言中的 rune 类型正是代表了这样一个单位，即一个 rune 代表了一个 unicode 字符。
 那么大家肯定都听说过 UTF-8，UTF-16 吧，那问题来了， UTF 又是什么呢，UTF-8 和 UTF-16 到底又有什么关系呢？
-UTF（Unicode Transformation Format） 从字面上你就应该能看出来，这就是一个 Unicode 转换格式。什么是转换格式，为什么需要转换格式？上文说了 Unicode 就是提供了字符间的一一对应关系，比如“知”对应了 30693，那计算机怎么表示这个数（计算机只认识二进制）？它要做到：
-在很长的文本中准确获取到每个字符，不能找错**Unicode 表示一个字符可以使用 1 - 4 个字节。**它的转换规则如下：</description>
+UTF（Unicode Transformation Format） 从字面上你就应该能看出来，这就是一个 Unicode 转换格式。什么是转换格式，为什么需要转换格式？上文说了 Unicode 就是提供了字符间的一一对应关系，比如“知”对应了 30693，那计算机怎么表示这个数（计算机只认识二进制）？很显然，它首先必须要做到 准确识别每一个字符。
+比如有这么一串二进制串：1101 0101 1010，如果表示每个字符所需的二进制位数相同，那么这个问题很容易解决，一一对应呗。但是如果长度不同怎么办？</description>
 			<content type="html"><![CDATA[<h2 id="起因">起因</h2>
-<p>最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在<strong>会用</strong>的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。</p>
+<p>最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 Byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在 <strong>会用</strong> 的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。</p>
 <h2 id="什么是ascii为什么又要引入unicode">什么是ASCII，为什么又要引入Unicode</h2>
 <p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/ascii.png" alt="image"></p>
 <p>都应该了解过 ASCII、Unicode、Unicode 码点、UTF-8等一系列名词。先说 ASCII（American Standard Code for Information Interchange: 美国信息交换标准代码），它是一种<strong>字符集</strong>，说白了就是一个字符和数字的<strong>一一对应关系</strong>，你想找这个字符怎么办，计算机又不认识字符？给出他的对应的数字就行了。最初只有美国等一些使用英文的国家使用，所以 128 个字符完全够用，它包含了标点符号、数字和字母等。但是随着世界上使用计算机的国家越来越多，这 128 个字符是完全不够用的。所以 <strong>Unicode 字符集</strong> 就出现了。Unicode 包含了世界上绝大多数的字符，给他们提供了一一对应关系，比如“知”字对应 30693，即 U+77e5（16 进制形式）。所以说白了 ASCII 和 Unicode 就是<strong>一种字符集</strong>，<strong>一种字符对应关系</strong>，Unicode 中每个字符被称为一个 <strong>Code Point</strong>（码点），而 Go 语言中的 rune 类型正是代表了这样一个单位，即一个 rune 代表了一个 unicode 字符。</p>
 <p>那么大家肯定都听说过 UTF-8，UTF-16 吧，那问题来了， UTF 又是什么呢，UTF-8 和 UTF-16 到底又有什么关系呢？</p>
 <h2 id="utfunicode-transformation-format">UTF（Unicode Transformation Format）</h2>
-<p>从字面上你就应该能看出来，这就是一个 Unicode 转换格式。什么是转换格式，为什么需要转换格式？上文说了 Unicode 就是提供了字符间的一一对应关系，比如“知”对应了 30693，那计算机怎么表示这个数（计算机只认识二进制）？它要做到：</p>
-<pre><code>在很长的文本中准确获取到每个字符，不能找错
-</code></pre><p>**Unicode 表示一个字符可以使用 1 - 4 个字节。**它的转换规则如下：</p>
+<p>从字面上你就应该能看出来，这就是一个 Unicode 转换格式。什么是转换格式，为什么需要转换格式？上文说了 Unicode 就是提供了字符间的一一对应关系，比如“知”对应了 30693，那计算机怎么表示这个数（计算机只认识二进制）？很显然，它首先必须要做到 <strong>准确识别每一个字符</strong>。</p>
+<p>比如有这么一串二进制串：<code>1101 0101 1010</code>，如果表示每个字符所需的二进制位数相同，那么这个问题很容易解决，一一对应呗。但是如果长度不同怎么办？</p>
+<p>那就需要先在每个字符开头说明 <strong>该字符未来在二进制流中会使用多少位</strong>，从而不会读错下一个字符。</p>
+<p>**Unicode 表示一个字符可以使用 1 - 4 个字节。**UTF-8 是这样做的，第一个字节如果开头位是0，那么就说明该字符只占用一个字节，否则后面有几个 1，就说明该字符需要几个字节来表达。</p>
+<p>具体如下：</p>
 <table>
 <thead>
 <tr>
@@ -1058,8 +1881,8 @@ UTF（Unicode Transformation Format） 从字面上你就应该能看出来，�
 
 Process finished with <span class="nb">exit</span> code <span class="m">0</span>
 </code></pre></div><p>这里需要说明的是，str 字符串的底层实现就是一个字节数组，根据上面所说的汉字占用 3 个字节，总字节长度为 6+3+3=12，而转换为 rune 类型后，所有字符都占用一个 Unicode <strong>Code Point</strong>（码点），所以占用了共 8 个字符，共 8 个码点。</p>
-<p>综上所述，ASCII 和 Unicode 都是一种字符集，代表了字符与数字间的一一对应关系。而 UTF 是一种变长的字符编码规范。而 rune 是 Go 语言中的一个变量类型，一个 rune 代表了一个 Unicode 码点单位。以上。</p>
-<p>因个人能力有限，有疏漏之处欢迎和我交流 :)</p>
+<p>综上所述，ASCII 和 Unicode 都是一种字符集，代表了字符与数字间的一一对应关系。而 UTF 是一种变长的字符编码规范。而 rune 是 Go 语言中的一个变量类型，一个 rune 代表了一个 Unicode 码点单位。</p>
+<p>因个人能力有限，有疏漏之处欢迎和我交流  :)</p>
 ]]></content>
 		</item>
 		
@@ -1077,8 +1900,8 @@ StarUML版本：3.2.2
 具体做法 下载安装 node 如果不会，自（bie）行（lai）解（zhao）决（wo）。
 使用 cnpm 包管理工具下载 asar 由于众所周知的原因，用 cnpm 下载，先安装 cnpm并使用淘宝镜像源：
 npm install -g cnpm --registry=https://registry.npm.taobao.org	// 下载 asar cnpm install -g asar // 安装 asar 解压 asar 文件，修改源代码 找到 StarUML 安装目录里 resource 文件夹下的 app.asar 文件，执行解压：
-asar extract app.asar app坑点一、解压盘符问题 由于 StarUML 默认安装位置是 C 盘，直接在 StarUML 的安装目录下执行会有权限问题，会报类似这种错误：
-$ asar extract app.asar appinternal/fs/utils.js:230throw err;^Error: EPERM: operation not permitted, open &#39;app\package.</description>
+asar extract app.asar app 坑点一、解压盘符问题 由于 StarUML 默认安装位置是 C 盘，直接在 StarUML 的安装目录下执行会有权限问题，会报类似这种错误：
+$ asar extract app.asar app internal/fs/utils.js:230 throw err; ^ Error: EPERM: operation not permitted, open &#39;app\package.</description>
 			<content type="html"><![CDATA[<p>由于软件工程基础课需要，搜索发现这个工具还算毕竟好用的，下载了这个工具发现需要注册码，遂进行一番查找，最后确定如下方法。之所以写博客记录下来是因为<strong>有两个坑点</strong>。</p>
 <blockquote>
 <p>OS：Windows 10 专业版。</p>
@@ -2033,8 +2856,8 @@ Go 实现了两个包来产生随机数：
  在包 math/rand 的一个伪随机数生成器（ PRNG ） 在包 crypto/rand 中实现的加密伪随机数生成器（ CPRNG ）  如果这两个包都产生了随机数，则将基于真正的随机数和性能之间取舍
 确定的结果 Go 的rand包会使用相同的源来产生一个确定的伪随机数序列。这个源会产生一个不变的数列，稍后在执行期间使用。将你的程序运行多次将会读到一个完全相同的序列并产生相同的结果。让我们用一个简单的例子来尝试一下：
 func main() { for i := 0; i &amp;lt; 4; i++ { println(rand.Intn(100)) } } 多次运行这个程序将会产生相同的结果：
-81874759由于源代码已经发布到 Go 的官方标准库中，因此任何运行此程序的计算机都会得到相同的结果。但是，由于 Go 仅保留一个生成的数字序列，我们可能想知道 Go 是如何管理用户请求的时间间隔的。Go 实际上使用此数字序列来播种一个产生这个随机数的源，然后获取其请求间隔的模。例如，运行相同的程序，最大值为 10，则模 10 的结果相同。
-1779让我们来看一下如何在每次运行我们的程序时得到不同的序列。
+81 87 47 59 由于源代码已经发布到 Go 的官方标准库中，因此任何运行此程序的计算机都会得到相同的结果。但是，由于 Go 仅保留一个生成的数字序列，我们可能想知道 Go 是如何管理用户请求的时间间隔的。Go 实际上使用此数字序列来播种一个产生这个随机数的源，然后获取其请求间隔的模。例如，运行相同的程序，最大值为 10，则模 10 的结果相同。
+1 7 7 9 让我们来看一下如何在每次运行我们的程序时得到不同的序列。
 播种 Go 提供一个方法， Seed(see int64) ，该方法能让你初始化这个默认序列。默认情况下，它会使用变量 1。使用另一个变量将会提供一个新的序列，但会保持确定性：
 func main() { rand.Seed(2) for i := 0; i &amp;lt; 4; i++ { println(rand.</description>
 			<content type="html"><![CDATA[<h1 id="go随机数是怎样产生的">Go：随机数是怎样产生的？</h1>

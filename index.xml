@@ -7,17 +7,114 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 20 Mar 2021 20:30:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Jun 2021 14:36:20 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Go 函数调用栈帧汇编分析</title>
-      <link>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</link>
-      <pubDate>Sat, 20 Mar 2021 20:30:20 +0000</pubDate>
+      <title>如何只使用一个指针域实现双向链表</title>
+      <link>https://www.kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</link>
+      <pubDate>Sat, 05 Jun 2021 14:36:20 +0000</pubDate>
       
-      <guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88%E5%B8%A7%E6%B1%87%E7%BC%96%E5%88%86%E6%9E%90/</guid>
-      <description>123
-这是Go 函数调用栈帧汇编分析文章。。
- 待更新
- </description>
+      <guid>https://www.kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</guid>
+      <description>这是来自某学习群友提供的，一道 便利蜂 的实习面试题，恰好被看到了（不是
+问题是：只使用一个指针如何实现双向链表，乍一想好像不可能，我当时的大致思路是这样的：原来直接使用 -&amp;gt;right 或者 -&amp;gt;left 就能访问到左右节点，现在只有一个指针，就要修改指针的含义，不能直接存储下一个节点的地址了，大概率是要根据某些条件算出下一个地址。
+事实证明基本如此，我去翻了维基百科详细看了思路并本地实现了一遍完整代码，记录一下。</description>
+    </item>
+    
+    <item>
+      <title>正/反向代理与科学上网</title>
+      <link>https://www.kcode.icu/posts/2021-05-31-%E6%AD%A3%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+      <pubDate>Mon, 31 May 2021 15:33:50 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/2021-05-31-%E6%AD%A3%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
+      <description>代理
+你可能听过许多 反向代理（Reverse Proxy） 软件例如 Nginx、Apache 等，它们性能优越，被广泛应用于实际应用中，那么你是否知道 “反向” 是什么意思，为什么叫反向呢，明白这个问题有助于我们更深入的理解它们。还有许多框架中常用的的 控制反转（IOC）/依赖注入（DI） 等概念，你是否理解 反转OR注入 的真正含义。
+既然有反向代理，就有正向代理，常用的科学上网就是使用了这个技术，你所见过的例如 ss/ssr/socks5 等等仅仅是协议名，配合上一些混淆方式，它们的技术原理还是 正向代理（ Forward Proxy）。
+之前我在「刷」面试题的时候，就遇到过相关问题，“墙的原理以及科学上网的原理”。相信读完这本文你会得到答案。
+反向代理 在了解正反向代理之前先牢记一句话，反向代理 代理并隐藏服务端，正向代理与之相反，隐藏客户端。
+OK，记住了这句话，想想 Nginx/Apache 的功能，你将服务部署在服务器上，可能有多个，然后使用 Nginx/Apache 来接受外界请求，利用提供的指令，例如 sever_name，listen，index，location 等控制其进行转发，由于使用了非常高效的 epoll IO多路复用模型，效率非常高。
+那么你的脑海中应该有这么一张图：
+正向代理 科学上网 </description>
+    </item>
+    
+    <item>
+      <title>极客时间专栏《RPC实战与核心原理》读后笔记</title>
+      <link>https://www.kcode.icu/posts/rpc/geektime-rpc/</link>
+      <pubDate>Fri, 14 May 2021 21:45:13 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/rpc/geektime-rpc/</guid>
+      <description>对 RPC 相关的学习也有了一段时间，算是有了一个初步的认识，回过头来读 极客时间的专栏 感觉思路清晰了不少，顺利了许多，再回头看 rpcx 的源码也没有那么费劲了。我把我在这个专栏中学到的一些内容记录下来，共同学习。
+本文不再解释 RPC 相关基础概念，有需要可在上文链接或者往期文章中学习。
+以下的二级标题均对应专栏的课程大纲，同样分单元总结。
+开篇词 开篇词介绍了 RPC 的使用场景，重要意义，作为引文。
+RPC 即远程过程调用，目的是使调用另一台机器上的程序就像调用本地程序一样简单。总是和 “微服务”，SOA 联系，其实理论上来说，任何牵扯到网络通信的系统都可能需要使用 RPC。比如分布式各个组件间或与应用间的通信，比如 etcd 作为统一的配置服务，客户端就是通过 gRPC 框架与服务端进行通信的。
+RPC 是解决分布式系统通信问题的一大利器。 RPC 的通信原理十分简单，可是想完美驾驭却不那么容易，这个过程除了调用过程之外，还主要包括：通信节点查找，连接的建立与状态管理，数据传输的编解码，序列化与反序列化等等，每一项都十分复杂。
+而完整的 RPC 框架却对上述过程进行了封装，使得网络通信逻辑的开发变得十分简单，效率也会更高。
+最初的我学习 RPC 也是由浅入深，从 “字面意思” 出发，即如何调用远程主机上的某个函数，实现了编解码，序列化等等一整套调用流程，成功执行了远程主机的程序，当然了，这还是点对点的。
+后来我发现这些仅仅是基础，冰山下的还包括一系列服务治理功能：连接管理，健康检测，负载均衡，优雅启停机，异常重试，业务分组以及熔断限流等等。十分复杂又充满了挑战性。</description>
+    </item>
+    
+    <item>
+      <title>MIT 6.828 课程学习记录</title>
+      <link>https://www.kcode.icu/posts/os/mitos/</link>
+      <pubDate>Sun, 25 Apr 2021 23:35:20 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/os/mitos/</guid>
+      <description>介绍 好多人推荐这个国外的课程，就找了一下课程，下载了一份讲义，打开第一眼就看到大名鼎鼎的 rsc 大佬，偶像啊，Go 的当下掌舵人。就冲这名必须得看完了（狗头😄）。 开个玩笑，我个人对计算机基础最感兴趣的就是组成原理、操作系统和汇编语言，除此之外就是分布式了，等搞定这个之后也去跟一下 MIT 6.824 分布式部分（开新坑🕳️ ）
+待更&amp;hellip;.</description>
+    </item>
+    
+    <item>
+      <title>Go 使用的 plan9 汇编语言初探</title>
+      <link>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</link>
+      <pubDate>Sun, 04 Apr 2021 20:30:20 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/</guid>
+      <description>plan9 汇编既不同于 Intel-x86 家族的汇编，也不与 AT&amp;amp;T 标准相同，作者是 unix 操作系统的同一批人，bell 实验室所开发的，其实 plan9 是一个操作系统，我们主要关注构建它的汇编语言。
+Go 语言早在 1.5 版本就实现了自举，即 使用 Go 语言去写 Go 语言。Go 的底层实现是使用 plan9 汇编完成的，并不是我们常见的 Intel 家族汇编，它与其他的汇编有几个不同点，在下文中一边比较一边介绍。
+伪寄存器 plan9 抽象了 4 种伪寄存器：
+ FP（Frame Pointer），帧指针，快速访问函数的参数和返回值。 SP（Stack Pointer），栈指针，指向栈顶。 SB（Static base pointer），静态基址，全局变量。 PC（Program Counter），其实就是 IP（Instruction Pointer）的别名，指向下一条指令的地址。jmp等跳转指令还有分支控制等原理就是通过修改这个值。在 8086 机里等价于 CS:IP。  其实就是对 CPU 的重新抽象，这个抽象结构与具体的 CPU 结构无关。
+它们之间的具体关系如下图：
+与x86汇编的差异 许多人之前广泛了解的汇编可能是 AT&amp;amp;T 格式或者传统 Intel-x86 格式，AT&amp;amp;T 规范与 x86 有许多不同，而 plan9 与 AT&amp;amp;T 有许多相似的地方，比如操作数顺序许多是相同的，但 不完全等价。还是需要我们重新学习，这里列举一些常见区别。
+Mnemonic | Go operands | AT&amp;amp;T operands ================================================ BOUNDW | m16&amp;amp;16, r16 | r16, m16&amp;amp;16 BOUNDL | m32&amp;amp;32, r32 | r32, m32&amp;amp;32 CMPB | AL, imm8 | imm8, AL CMPW | AX, imm16 | imm16, AX CMPL | EAX, imm32 | imm32, EAX CMPQ | RAX, imm32 | imm32, RAX CMPW | r/m16, imm16 | imm16, r/m16 CMPW | r/m16, imm8 | imm8, r/m16 CMPW | r/m16, r16 | r16, r/m16 CMPL | r/m32, imm32 | imm32, r/m32 CMPL | r/m32, imm8 | imm8, r/m32 CMPL | r/m32, r32 | r32, r/m32 CMPQ | r/m64, imm32 | imm32, r/m64 CMPQ | r/m64, imm8 | imm8, r/m64 CMPQ | r/m64, r64 | r64, r/m64 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPW | r16, r/m16 | r/m16, r16 CMPL | r32, r/m32 | r/m32, r32 CMPQ | r64, r/m64 | r/m64, r64 CMPB | r8, r/m8 | r/m8, r8 CMPB | r8, r/m8 | r/m8, r8 CMPPD | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPPS | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPSD | imm8, xmm1, xmm2/m64 | imm8, xmm2/m64, xmm1 CMPSS | imm8, xmm1, xmm2/m32 | imm8, xmm2/m32, xmm1 ENTER | 0, imm16 | imm16, 0 ENTER | 1, imm16 | imm16, 1 操作数顺序不同 在 x86 中，一些常见指令是这样的：</description>
+    </item>
+    
+    <item>
+      <title>大三实习求职之旅</title>
+      <link>https://www.kcode.icu/posts/interview/2021-3-nowcoder/</link>
+      <pubDate>Tue, 30 Mar 2021 17:20:20 +0000</pubDate>
+      
+      <guid>https://www.kcode.icu/posts/interview/2021-3-nowcoder/</guid>
+      <description>说在前面 经常“吸”社区，也要时不时反馈一点，一起延续开源精神。
+个人情况：22 届双非一本，从去年 12 月开始面试找寒假的实习，由于学校疫情原因没去成功，于是经过寒假复习“二战”。先后面了跟谁学，腾讯，字节，阿里。
+由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C++ 用来写题，有的问题可能不具有参考价值，理性看待。
+另外有的问题确实记不得了，大家不要太看重问题，因为大部分都是八股的题型，网上一搜一大堆，博客的总结能几万字，但是没有面试官喜欢听这种东西，都是搞技术的不喜欢花里胡哨，我曾经就因为答协程区别和特点被反问 你这个有点像背的，，不过我也没反驳，下次总结避免就好了。你要答出问题的本质，底层的思考，说出跟别人不一样的地方，用有些面试官的话来说就是 这个问题我只想听你说一句话，我看我能不能听到。说白了就是你说了一大堆可能在对面听来都没听到，说不到点子上等于没说。
+另外本文我主要突出面试过程，不是面试问题的总结帖（有的问题我真的记不得了 :(。
+好了，不说废话了，大家看正文吧，有什么问题欢迎找我聊~
+跟谁学两面 oc，第一次面试 一面 自我介绍
+项目：
+  用go写的rpc框架的具体功能细节，注册中心单机还是分布式的，其中一个挂了怎么办？一致性，可靠性怎么保证的。超时控制，加锁和管道支持并发，单机（考虑了多机情况，说了已经在todo里了）。
+  Go+QML 利用cgo实现的跨平台桌面应用功能，场景，为什么要写这个东西？ 我说为了性能，追问性能如何体现，如何测试的，如何优化。答宏观上从任务管理器，top中看，细节上从pprof进行性能定位调优，从火焰图上看。追问pprof还有什么功能，你一般是怎么定位问题的？回答还是先具体再细节。
+  这时候我就俩项目，后面怕不够，又想拿go写个web的，正好学校说需要重构某个子选课系统，就跟同学接了，这个下面说。
+写个快排？时分复杂度分析？看你了解过go的标准库实现，说说go的快排源码怎么实现的，答三数取中，根据数据量选择多种排序方式组合，追问细节我就不知道i了，，确实没看过这个。。他说没事。
+协程与线程区别？为什么快，快在哪了？自定义了4个伪寄存器 fp sp sb pc，轻量，初始2KB动态伸缩，由runtime管理，对os透明等等各种原因，又说了以下gmp调度的优势。追问寄存器是什么，你对寄存器还有什么了解。我说了一点关于go和c 在寄存器方面使用的不同，函数传参，调用堆栈等等，扯了点汇编区别，就又问了几个汇编指令，过了。
+虚拟地址，物理地址区别
+rpc与http区别，使用场景，自己总结一下再说几条
+还有点八股没啥难的 有点忘了。。
+也没问啥难点一面就过了
+二面部门leader 详细聊虚拟地址与物理地址，为什么分这俩，段页作用，为什么内存占用能比实际要大的多（还是虚拟地址作用），循序渐进的从现象到技术实现来问，不是考试。
+go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来这个项目好多面试官也不懂，cgo特性一是用起来结合其他语言的时候确实有坑点，二是拿go写gui有点杀马特，不招人待见？
+闲聊网络跟os，最后问了个智力问题，就过了。
+总结 感觉难度不大，缺人进来打杂，要求不高。问了一下前辈，说加班严重，校招的话工资高了可以放备选考虑去。。面试体验还不错，自己缺乏一点回答技巧上的经验，聊技术不能一下到点子上，废话略多。
+字节二面挂，腾讯二面挂 这俩对我帮助最大。
+字节 字节对我最大的帮助是深度思考算法，为什么要这么写，别的方法行不行？
+自己感觉有了点面试方面的经验，就投了较大的厂，遭到毒打。
+字节一面是算法面，最后写了个单链表归并非递归，勉强通过。
+二面上来扣20分钟rpc项目，挖出你这个项目的所有特点为止：
+ 序列化方式有哪几个，区别是什么，自己写过吗 协议用的哪个，为啥不用udp &amp;hellip;鞭打。。。  当时确实缺少对项目的深度思考，也是参考了声哥的项目，不过他是java写的，用go写起来参考了不少框架源码，rpcx，grpc，实现起来略费劲，时间仓促，底层思考略少。
+二面挂是因为问了个快排复杂度，详细分析这三个时间复杂度的结果，怎么来的这个值，举例子说明等等，自己算法这方面当时确实弱项，挂了正常。
+腾讯 腾讯对我最大的帮助是看源码，有的东西嚼别人的东西是不够的，应该学习一手资料，详情参考曹大的博客《工程师应该怎么学习》。还是太菜了，缺乏深度思考
+几个亿找中位数
+搜索树旋转过程
+对面应该是c++的，问我map，我说我用go，他就说go也行，你说说go map 时间复杂度，为啥是这个值，为什么这么多数，O1能直接访问到，当时map只了解了一点，遂答的浅。</description>
     </item>
     
     <item>
@@ -27,11 +124,11 @@
       
       <guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
       <description>前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
+uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
 fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&amp;hellip;），那你再看一段代码：
-//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要任何内存，因为他们共享底层数据空间。
-函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048B，是写死在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</description>
+//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
+函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048Byte，是固定在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</description>
     </item>
     
     <item>
@@ -40,10 +137,12 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
       <pubDate>Thu, 25 Feb 2021 19:35:20 +0000</pubDate>
       
       <guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/</guid>
-      <description>Channel   Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
-在其他语言中，面对并发访问或者需要同步异步的问题，你可能设置一个变量，通过对它加锁的方式来告诉其他试图操作这个变量的其他 “用户”（线程、进程等其他实体）一些信息，比如正在读写，这便是通过共享内存来通信，也就是过程使用了同一个变量，并且传递了信息。还有另一种方式，你可以给这个 “用户” 发一条消息，比如 “我在写这个变量，等会你再来” 或者 “我给你发过去了一条消息，你收一下”，也可以不使用这个 “中间变量”，也就是锁。这个传递信息的媒介在 Go 语言中叫 channel，上述这种方式就是通过通信来共享内存。
-上面是形象的介绍，其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
-两个实体 goroutine 通过 channel</description>
+      <description>Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
+Go 语言倡导通过通信的方式共享内存，也就是减少锁的使用，尽量都通过 Channel 来进行协程间通信。
+其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
+两个实体 goroutine 通过 Channel 通信，收发消息。
+数据结构 Channel 是一种 带锁环状队列，运行时结构定义在 runtime/chan.hchan ，代码也比较容易理解。
+type hchan struct { qcount uint // 队列中元素数量 	dataqsiz uint // 环形队列总大小 	buf unsafe.Pointer // 底层数组指针 	elemsize uint16	// 元素大小 	closed uint32	// 是否已关闭 	elemtype *_type // 元素类型 	sendx uint // 发送端下标 	recvx uint // 接收端下标 	recvq waitq // 接收端等待队列 	sendq waitq // 发送端等待队列  // 保护 hchan 并发访问的字段 	lock mutex } type waitq struct { first *sudog	// 等待队列链表的头节点 	last *sudog	// 尾节点 } 通过两个指针指向发送端和接收端接下来的操作位置，结合锁机制完成数据操作，这是很容易想到的并发处理方式。runtime/chan.</description>
     </item>
     
     <item>
@@ -54,103 +153,23 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
       <guid>https://www.kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/</guid>
       <description>秉承着 “软件均使用最新版本，学习均从文档入手” 的理念，学习使用 MySQL 我也是在使用最新的大版本 MySQL 8，而在技术发展过程中，一个不可忽视的因素就是兼容性，在保证新特性无误的同时必须确保以前的功能不受影响，如果不能保证这一点，那么许多使用者在迁移的时候就需要考虑很多改动成本，除非不是大改动，一般都会考虑到这一点，比如 HTTP/2 、TLS/1.3 等等。
 错误描述及分析 最近为学校写一个选课平台时关系型数据库使用的是 MySQL 8+，使用 Group by 时报了这个错误：
-ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column &#39;mydb.t.address&#39; which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by意思是说 select 列表中包含了非聚合列，其并不函数依赖于 Group by 子句中的列。并且和 sql_mode 这个配置项的 only_full_group_by 值冲突。不过这篇文章并不只是单纯说解决方法，如果想要解决方法请直接移步文末。
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column &#39;mydb.t.address&#39; which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by 意思是说 select 列表中包含了非聚合列，其并不函数依赖于 Group by 子句中的列。并且和 sql_mode 这个配置项的 only_full_group_by 值冲突。不过这篇文章并不只是单纯说解决方法，如果想要解决方法请直接移步文末。
 可以确定的是同样的使用了 Group by 的 SQL 查询语句在低版本中是正常的但是高版本却不行，猜测可能是版本差异造成的，而且还是因为这个配置项导致的。
 所以虽然我们一开始可能看不懂这个报错信息，但是我们通过一些分析已经定位了问题，并且报错的错误码明显（ERROR 1055(42000)），报错提示信息清楚，并不难找到解决方法。</description>
     </item>
     
     <item>
-      <title>深入理解 Go string与slice</title>
+      <title>深入理解 Go string 与 slice</title>
       <link>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</link>
       <pubDate>Mon, 15 Feb 2021 23:35:20 +0000</pubDate>
       
       <guid>https://www.kcode.icu/posts/go/2021-02-20-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-string-slice/</guid>
-      <description>123
-数据结构 我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 reflect/value.go 中，分别对应着 StringHeader 和 SliceHeader 。
+      <description>数据结构 我们先通过标准库源码来简单看一下。string 和 slice 的数据结构都定义在 reflect/value.go 中，分别对应着 StringHeader 和 SliceHeader 。
 type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data uintptr Len int Cap int } 定义非常简单，Data 表示底层数据的地址，Len 表示长度，Cap 表示容量。容量评估了当前切片最多能容纳多少字节元素，而长度表示当前已经存储多少个字节了，切片只是对底层数据的引用：
 [图片]
 字符串就是字符的数组，我们先来看个小程序的例子：
 package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 go tool compile -S main.go 使用自带工具包查看汇编代码，可以看到有这样一段信息：
-...go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=30x0000 61 62 63 abc...很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
-    </item>
-    
-    <item>
-      <title>https为什么安全</title>
-      <link>https://www.kcode.icu/posts/https/</link>
-      <pubDate>Wed, 27 Jan 2021 15:57:50 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/https/</guid>
-      <description>截图均使用了 Wireshark 工具进行抓包分析。
- HTTPS 并不是一种新的协议，而是 HTTP over SSL/TLS，也就是使用了 SSL/TLS 加密的 HTTP，解决了 HTTP 不安全的问题。SSL（Secure Sockets Layer） 是 TLS（Transport Layer Security） 的前身，它们都处在 OSI 七层模型中的会话层。SSL 经历了三个版本的变迁，后来升级为了 TLS，TLS 主要有 1.0、1.1、1.2 和 1.3，现在大部分正在从 1.1 到 1.2 的迁移，部分使用 1.3，我们可以使用 Wireshark 过滤一下进行简单查看。
-需要注意的是，应用了 HTTPS 后通信效率会变低，毕竟需要进行额外的握手，加解密步骤。
-SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加密的密钥用于后续加密通信。主要可以分为两种方式，RSA 和 ECDH。RSA 方式也在 TLS/1.3 中正式被废除。下面我们分别来看。
-证书 不管什么版本的 SSL/TLS，只使用对称加密和非对称加密也是不够的，因为无法解决 中间人攻击，都需要配合证书来完成整个验证过程。所以在说明各个阶段的 HTTPS 之前有必要介绍一下证书的几个概念。
-证书的作用有两个：
- 确保通信目标的身份。 确认你的身份。  其实就是确认通信双方的身份，而不是中间某个第三者。再结合非对称加密与对称加密，就可以解决 HTTP 的三大问题：明文传输，消息篡改，窃听。证书的整个流程如下图：
-加密与签名 这里有一点需要注意，非对称加密中 RSA 算法有一个非常好的特性，它的公私钥有两种用法，被称为 加密 和 签名 ，很多人容易搞混。不过需要记住不变的是 私钥永远需要保密，不能公布。</description>
-    </item>
-    
-    <item>
-      <title>Go 结构体与内存对齐</title>
-      <link>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</link>
-      <pubDate>Mon, 25 Jan 2021 23:35:20 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/go/2021-01-25-go%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>深入理解 Go map</title>
-      <link>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</link>
-      <pubDate>Fri, 22 Jan 2021 23:35:20 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-map/</guid>
-      <description>哈希表 几乎所有语言都有 哈希表 这个数据结构，能够在平均 O(1)，最差 O(n) 的时间复杂度内增删改查元素，Go 语言哈希表的精妙设计使得它几乎不会出现 O(n) 的糟糕情况。这篇文章我就带你从使用到底层由浅入深地探究 Go map 的奥秘，一起作一个不只是会用的 ”大神“。
-问题来源于实际，我们先看看这些实际问题 ：
- 声明。当我使用 :=，var，make，甚至 new 声明 map 的时候，编译器帮我们做了什么事情，它们有什么区别？ 增删改查。使用 数组+链表 的情况下如何设计才能避免 O(n) 的最差情况？ 注意事项。map 的键有什么要求？map 是值类型还是引用类型，函数传参时会有上层影响吗？是并发安全的吗？  还有一个常识是 Go map 的 遍历是随机的，即多次遍历输出的结果不同，这个的原因会在后面提到。
-设计方式/数据结构 Go map 实现哈希表使用的是 数组+链表 的形式，也就是使用链地址法解决的哈希冲突。这种方式桶的大小和元素个数之间没有关系，另外还有开放定址法，这是个宽泛的名字，具体包含线性探测法，再哈希法，平方探测法等等。
-为了降低 map 操作的时间复杂度，引入了一个 负载因子 的概念，这个概念在其他实现哈希表这个数据结构的语言里也都有，比如 python 中这个值被定义为 2/3，Java 中是 0.75，这个值评估了哈希表里 实际上最好只存 多少比例的元素，而不是一直等到满载再处理，因为多到一定程度效率 可能 就低了。在 Go 语言里这个值被定义为 6.5，即每个桶里最多存 6.5 个，包括溢出桶。
-当我们在 Go 语言中声明一个 map 的时候，实际上就是创建了一个 hmap 的结构体，它定义在 runtime/map.go 文件下，这个结构体包含了许多信息：map 的大小，桶数量、地址，溢出桶数量、地址等等。 哈希表就是实现一个映射关系，给出自变量 x，能够通过 平均 O(1) 的时间复杂度方法找到这个元素所对应的因变量 y=f(x) 来对它进行操作。</description>
-    </item>
-    
-    <item>
-      <title>在线博客的图床解决方案</title>
-      <link>https://www.kcode.icu/posts/chore/blog_imgs/</link>
-      <pubDate>Wed, 20 Jan 2021 15:45:13 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/chore/blog_imgs/</guid>
-      <description>很多人应该都听说过来人说过要写博客进行总结记录，一是说自己学习过程的复盘，二是在某些时候向不认识自己的人间接显示自己的大致水平。不过如果没有人“手把手”教的话我相信还会遇到各种各样的问题的，这篇文章就介绍一下在博客中必不可少的图片网络地址解决方法，也就是图床。它的目标是在你写文章的过程中可以一键插入目标图片并自动上传到网络，就像你使用本地图片一样快捷。
-图床的目的就是把你的本地图片上传上去，从而能获得它的网络地址。当然了，只使用图床也是可以的，但是需要配合对应的工具上传拿 URL（比如 OSS）或者纯手动（GitHub/Gitee），非常不方便 一点也不极客，所以需要配合其他工具一键快速拿到它对应的网络地址（URL），所以我在下面介绍了我使用到的工具，仅供参考。
- 评估用的稳定性指你上传的图片会不会在某个不确定的时间突然挂掉，让你的文章出现大量图片 404 丢失的情况。
- 图床 这里我介绍三种图床，列出优缺点。可以根据需要进行选择。
-GitHub/Gitee GitHub 和 Gitee 是干什么的我就不多说了，它们也是可以作为图床使用的，前者境内访问较慢，后者较快。没有账号可以免费注册一个，然后随便创建一个公开仓库，把图片上传上去就可以获取它的 URL 了，比较简单粗暴。
-优点：稳定性较好，空间无限，上手难度较简单
-缺点：无法阻止盗链，无法管理（原本目的就不是作为图床，没有统计流量等功能）。
-总结，如果你是新手，不担心自己的图片被别人轻易获取 ，随缘使用图床，这个是首选。
-OSS OSS （Object Storage Service）即对象存储服务，用来做个人博客的图床有点小题大做，腾讯云、阿里云等等提供 OSS 的平台都可以，一般需要续费，一年 50G 左右话 10 块钱左右。
-优点：可控性比较强，提供了专业的平台，你能想到的各种需求基本都有，包括防盗链，流量统计与分析等。
-缺点：对新手不友好，根据流量付费。
-总结，如果你未来博客流量会不断增大，出于可控考虑选这个，流量较小的新人不考虑。
-不稳定第三方 也可以使用这种第三方的图床，没有任何操作步骤，上传完就拿到 URL，当然事物都有两面性，这种极致快捷带来的就是不稳定，就跟当年的新浪图床一样，你不知道什么时候它就没了。。
-优点：简单快捷打开一键就用，免费
-缺点：不知道什么时候你的图片就被人家清了。。然后你的文章里的图片就全部 404 了。。
-总结，随缘党首选不解释，懂得都懂。
-工具 这里就介绍我使用的两个配合工具，其他的可以自行搜索。
-typora typora 是一款 Markdown 文本编辑软件，我相信写过 Markdown 的都听说过，它的特点是真正的实时显示，不左右分栏，扩展性强，灵活可配置。我个人平时写 Markdown 文本都是使用这个软件，具体可以去它的官网首页看，十分推荐。
-PicGo PicGo 是一款使用 Node + Electron 开发的跨平台可视化图片上传开源软件，支持 N 种图床平台，配置灵活简单，最重要的是它支持插件功能，理论上支持任意图床平台的使用（需要提供相应上传下载的 API），可以自行开发插件。操作也比较简单，把图片拖到框里就可以拿到 URL。这张图是 gitee 相关配置，其他平台类似，只需若干个必要参数即可：
-配合使用 前面说的这两种工具可以结合使用快速进行写作，在 typora 主界面上方，文件-&amp;gt;偏好设置-&amp;gt;图像，修改 PicGo 路径为你安装的路径下的 exe 地址。这样就可以做到你在 typora 里编辑时直接粘贴图片到文档里一键点击上传，非常方便。当然了，如果你不需要 typora，或者使用的是别的 Markdown 编辑器，也可以只使用 PicGo。</description>
-    </item>
-    
-    <item>
-      <title>《一起了解 Go 语言》</title>
-      <link>https://www.kcode.icu/go/</link>
-      <pubDate>Sun, 17 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/go/</guid>
-      <description>我不太喜欢只看问题的表面，总是不经意间思考了这么多，希望对你有所帮助。
-我打算围绕 Go 的底层实现写一些自己的思考和探究，我在写之前参考了大量博客等”二手资料“，写时手边也拿着 Go 语言最新版源代码这样的”一手资料“，其一是因为官方源码和文档永远是我们最好的第一学习工具，其二是我个人在没看到源信息时有种不踏实的感觉（可能跟以前踩过坑有关），所以文中说到的任何知识点均会附带源码说明，由于 Go 语言特殊性，必要时还会附带汇编代码辅助，最后我还会通过理论来推动实践为你做个演示。
-标记的内容已经列入计划，正在赶工中 😄
- 一：深入表象  「map」深入理解 Go map，正在&amp;hellip; 「string」简单又有”东西“的字符串，正在&amp;hellip; 「slice」灵活高效的切片，正在&amp;hellip; 「string&amp;amp;slice」用理论驱动实践，正在&amp;hellip;   二：深入理解  「method」方法到底是什么，正在&amp;hellip;   三：深入灵魂  「GPM」Go 调度模型为什么这么特别？，正在&amp;hellip; 「GC」入个 GC 算法的门？，正在&amp;hellip;    我的公众号 平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号：</description>
+... go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=3 0x0000 61 62 63 abc ... 很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
     </item>
     
   </channel>
