@@ -20,7 +20,7 @@ Go 语言早在 1.5 版本就实现了自举，即 使用 Go 语言去写 Go 语
  FP（Frame Pointer），帧指针，快速访问函数的参数和返回值。 SP（Stack Pointer），栈指针，指向栈顶。 SB（Static base pointer），静态基址，全局变量。 PC（Program Counter），其实就是 IP（Instruction Pointer）的别名，指向下一条指令的地址。jmp等跳转指令还有分支控制等原理就是通过修改这个值。在 8086 机里等价于 CS:IP。  其实就是对 CPU 的重新抽象，这个抽象结构与具体的 CPU 结构无关。
 它们之间的具体关系如下图：
 与x86汇编的差异 许多人之前广泛了解的汇编可能是 AT&amp;amp;T 格式或者传统 Intel-x86 格式，AT&amp;amp;T 规范与 x86 有许多不同，而 plan9 与 AT&amp;amp;T 有许多相似的地方，比如操作数顺序许多是相同的，但 不完全等价。还是需要我们重新学习，这里列举一些常见区别。
-Mnemonic | Go operands | AT&amp;amp;T operands ================================================ BOUNDW | m16&amp;amp;16, r16 | r16, m16&amp;amp;16 BOUNDL | m32&amp;amp;32, r32 | r32, m32&amp;amp;32 CMPB | AL, imm8 | imm8, AL CMPW | AX, imm16 | imm16, AX CMPL | EAX, imm32 | imm32, EAX CMPQ | RAX, imm32 | imm32, RAX CMPW | r/m16, imm16 | imm16, r/m16 CMPW | r/m16, imm8 | imm8, r/m16 CMPW | r/m16, r16 | r16, r/m16 CMPL | r/m32, imm32 | imm32, r/m32 CMPL | r/m32, imm8 | imm8, r/m32 CMPL | r/m32, r32 | r32, r/m32 CMPQ | r/m64, imm32 | imm32, r/m64 CMPQ | r/m64, imm8 | imm8, r/m64 CMPQ | r/m64, r64 | r64, r/m64 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, imm8 | imm8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPB | r/m8, r8 | r8, r/m8 CMPW | r16, r/m16 | r/m16, r16 CMPL | r32, r/m32 | r/m32, r32 CMPQ | r64, r/m64 | r/m64, r64 CMPB | r8, r/m8 | r/m8, r8 CMPB | r8, r/m8 | r/m8, r8 CMPPD | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPPS | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1 CMPSD | imm8, xmm1, xmm2/m64 | imm8, xmm2/m64, xmm1 CMPSS | imm8, xmm1, xmm2/m32 | imm8, xmm2/m32, xmm1 ENTER | 0, imm16 | imm16, 0 ENTER | 1, imm16 | imm16, 1 操作数顺序不同 在 x86 中，一些常见指令是这样的：</description>
+Mnemonic | Go operands | AT&amp;amp;T operands================================================BOUNDW | m16&amp;amp;16, r16 | r16, m16&amp;amp;16BOUNDL | m32&amp;amp;32, r32 | r32, m32&amp;amp;32CMPB | AL, imm8 | imm8, ALCMPW | AX, imm16 | imm16, AXCMPL | EAX, imm32 | imm32, EAXCMPQ | RAX, imm32 | imm32, RAXCMPW | r/m16, imm16 | imm16, r/m16CMPW | r/m16, imm8 | imm8, r/m16CMPW | r/m16, r16 | r16, r/m16CMPL | r/m32, imm32 | imm32, r/m32CMPL | r/m32, imm8 | imm8, r/m32CMPL | r/m32, r32 | r32, r/m32CMPQ | r/m64, imm32 | imm32, r/m64CMPQ | r/m64, imm8 | imm8, r/m64CMPQ | r/m64, r64 | r64, r/m64CMPB | r/m8, imm8 | imm8, r/m8CMPB | r/m8, imm8 | imm8, r/m8CMPB | r/m8, r8 | r8, r/m8CMPB | r/m8, r8 | r8, r/m8CMPW | r16, r/m16 | r/m16, r16CMPL | r32, r/m32 | r/m32, r32CMPQ | r64, r/m64 | r/m64, r64CMPB | r8, r/m8 | r/m8, r8CMPB | r8, r/m8 | r/m8, r8CMPPD | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1CMPPS | imm8, xmm1, xmm2/m128 | imm8, xmm2/m128, xmm1CMPSD | imm8, xmm1, xmm2/m64 | imm8, xmm2/m64, xmm1CMPSS | imm8, xmm1, xmm2/m32 | imm8, xmm2/m32, xmm1ENTER | 0, imm16 | imm16, 0ENTER | 1, imm16 | imm16, 1操作数顺序不同 在 x86 中，一些常见指令是这样的：</description>
     </item>
     
     <item>
@@ -30,7 +30,7 @@ Mnemonic | Go operands | AT&amp;amp;T operands =================================
       
       <guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
       <description>前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
+uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
 fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&amp;hellip;），那你再看一段代码：
 //go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
@@ -62,7 +62,7 @@ type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data
 [图片]
 字符串就是字符的数组，我们先来看个小程序的例子：
 package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 go tool compile -S main.go 使用自带工具包查看汇编代码，可以看到有这样一段信息：
-... go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=3 0x0000 61 62 63 abc ... 很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
+...go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=30x0000 61 62 63 abc...很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
     </item>
     
     <item>

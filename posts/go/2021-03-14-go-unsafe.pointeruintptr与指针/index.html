@@ -9,7 +9,7 @@
 	<meta name="msapplication-TileColor" content="#494f5c">
 <meta itemprop="name" content="Go unsafe.Pointer、uintptr、Pointer之间的区别与联系">
 <meta itemprop="description" content="前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
+uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &#34;goooo&#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;a)) &#43; unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
 fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&hellip;），那你再看一段代码：
 //go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
@@ -23,7 +23,7 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
 <meta itemprop="keywords" content="Go,源码," />
 <meta property="og:title" content="Go unsafe.Pointer、uintptr、Pointer之间的区别与联系" />
 <meta property="og:description" content="前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
+uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &#34;goooo&#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;a)) &#43; unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
 fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&hellip;），那你再看一段代码：
 //go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
@@ -35,7 +35,7 @@ fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Go unsafe.Pointer、uintptr、Pointer之间的区别与联系"/>
 <meta name="twitter:description" content="前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
+uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &#34;goooo&#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;a)) &#43; unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
 fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&hellip;），那你再看一段代码：
 //go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。

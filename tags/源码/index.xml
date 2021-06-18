@@ -15,7 +15,7 @@
       
       <guid>https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid>
       <description>前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
+uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
 fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&amp;hellip;），那你再看一段代码：
 //go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
@@ -47,7 +47,7 @@ type StringHeader struct { Data uintptr Len int } type SliceHeader struct { Data
 [图片]
 字符串就是字符的数组，我们先来看个小程序的例子：
 package main func main() { s := &amp;#34;abc&amp;#34; println(s) } 我们执行 go tool compile -S main.go 使用自带工具包查看汇编代码，可以看到有这样一段信息：
-... go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=3 0x0000 61 62 63 abc ... 很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
+...go.string.&amp;quot;abc&amp;quot; SRODATA dupok size=30x0000 61 62 63 abc...很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 Go 字符串是不可修改的。</description>
     </item>
     
     <item>
