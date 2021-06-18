@@ -1,3 +1,1 @@
-rm -rf ./public ./docs &&
-hugo && 
-mv public docs
+rm -rf ./public ./docs && hugo
