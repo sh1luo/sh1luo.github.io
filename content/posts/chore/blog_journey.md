@@ -109,6 +109,39 @@ Gitee 提供了常见的几个博客框架的自动化部署功能，Hugo，Hexo
 
 ![image-20210331155953211](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331155953211.png)
 
+## 画图工具
+
+这里主要介绍我使用的两个画图软件。
+
+> 2021-06-19 16:44:13 更新
+
+### Diagram
+
+原来这个软件叫 draw.io，后来改名为 [Diagram](https://www.diagrams.net/)。
+
+我之前一直使用这个工具画图，优点是免费，功能丰富，暂无发现缺点 :joy: 推荐给要求较高的同学使用，画彩色图，花里胡哨图。
+
+![image-20210619170357266](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619170357266.png)
+
+### Ascii
+
+Ascii 图是我看 [曹大博客](https://xargin.com/diagram-tools-intro/) 了解到的，可以说是一见面就夺走了我的所有抵抗力，我曾经还觉得在画编程方面的图这一块，Diagram 完全够用了，就好比 “任何比 C语言复杂的语言都能用 C语言实现” :sunglasses:
+
+但是当我看到这种风格的图我再也不想用其他工具了，因为它完全够用了（装逼完美
+
+毕竟曹大在讲 plan9 汇编时说过，学习的最大动力就是装逼，不服可以去线下面基他 :smile:，这种风格的图真的 geek 风拉满，“程序员味”十足。
+
+![image-20210619170049500](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619170049500.png)
+
+说点正经的，我喜欢这种图最大的优点是 **简洁**，无他。我不用操心颜色搭配，字体大小，迁移存储等一切问题，只专心图所能表达出的含义就 OK 了。这里推荐两个站点：
+
+- asciiflow（<https://asciiflow.com/>）
+- Textik（<https://textik.com/>）
+
+### Sketch
+
+这个软件是比较专业的设计师使用的，也可以用来画一般的文章插图，缺点是收费，只能在 Mac 下使用。我没有使用过，可以自行搜索。
+
 ## 说在最后
 
 这里说几点我个人看法。

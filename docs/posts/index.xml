@@ -10,18 +10,55 @@
 		<atom:link href="https://kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
 		
 		<item>
-			<title>如何只使用一个指针域实现双向链表</title>
+			<title>面试官：如何只使用一个指针域实现双向链表</title>
 			<link>https://kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</link>
 			<pubDate>Sat, 05 Jun 2021 14:36:20 +0000</pubDate>
 			
 			<guid>https://kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</guid>
-			<description>这是来自某学习群友提供的，一道 便利蜂 的实习面试题，恰好被看到了（不是
+			<description>这是来自某学习群的群友提供的，一道 便利蜂 的实习面试题，恰好被看到了（不是
 问题是：只使用一个指针如何实现双向链表，乍一想好像不可能，我当时的大致思路是这样的：原来直接使用 -&amp;gt;right 或者 -&amp;gt;left 就能访问到左右节点，现在只有一个指针，就要修改指针的含义，不能直接存储下一个节点的地址了，大概率是要根据某些条件算出下一个地址。
-事实证明基本如此，我去翻了维基百科详细看了思路并本地实现了一遍完整代码，记录一下。</description>
-			<content type="html"><![CDATA[<p>这是来自某学习群友提供的，一道 <a href="https://www.bianlifeng.com/">便利蜂</a> 的实习面试题，恰好被看到了（不是</p>
+事实呢？为了了解具体做法，我去翻了维基百科关于这部分的 详细解释 ，并本地实现了一遍完整代码，记录在这里。
+实现原理 这种链表被称为 异或链表（XOR Linked List），能够达到只使用一个指针域实现双向链表的效果，从而降低空间复杂度。当然它也不是没有缺点，如果只有一个节点，无法向两个方向遍历，必须有连续的两个节点地址。
+回到之前说的问题，问题的关键就是如何只使用一个指针实现双向访问的效果，再来看链表名，异或链表。
+任何一个节点的指针域的值为 它的前一个节点和下一个节点的地址异或。
+假如现在有 3 个节点分别为 A,B 和 C，地址分别为 0x1,0x2,0x3，那么，
+A.next = null^0x2 B.next = 0x1^0x3 C.next = 0x2^null  XOR linked List+--- -----+ next=0x1 +---------+ next=0x1^0x3 +---------+| *A=0x1 +--------- | *B=0x2 +------------ | *C=0x3 |+---------+ +---------+ +------+--+|| | next=0x2| || next=0x1 ||+------+--+ +---------+| null | | null |+---------+ +---------+这个图之所以没有画出箭头是因为这里并不是直接指向下一个节点的地址，而是需要和前一个节点异或计算才能得到下一个节点的地址。</description>
+			<content type="html"><![CDATA[<p>这是来自某学习群的群友提供的，一道 <a href="https://www.bianlifeng.com/">便利蜂</a> 的实习面试题，恰好被看到了（不是</p>
 <p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210605145233924.png" alt="image-20210605145233924"></p>
 <p>问题是：只使用一个指针如何实现双向链表，乍一想好像不可能，我当时的大致思路是这样的：原来直接使用 <code>-&gt;right</code> 或者 <code>-&gt;left</code> 就能访问到左右节点，现在只有一个指针，就要修改指针的含义，不能直接存储下一个节点的地址了，大概率是要根据某些条件算出下一个地址。</p>
-<p>事实证明基本如此，我去翻了维基百科详细看了思路并本地实现了一遍完整代码，记录一下。</p>
+<p>事实呢？为了了解具体做法，我去翻了维基百科关于这部分的 <a href="https://en.wikipedia.org/wiki/XOR_linked_list">详细解释</a> ，并本地实现了一遍完整代码，记录在这里。</p>
+<h2 id="实现原理">实现原理</h2>
+<p>这种链表被称为 <strong>异或链表</strong>（XOR Linked List），能够达到只使用一个指针域实现双向链表的效果，从而降低空间复杂度。当然它也不是没有缺点，如果只有一个节点，无法向两个方向遍历，必须有连续的两个节点地址。</p>
+<p>回到之前说的问题，问题的关键就是如何只使用一个指针实现双向访问的效果，再来看链表名，异或链表。</p>
+<p>任何一个节点的指针域的值为 它的前一个节点和下一个节点的地址异或。</p>
+<p>假如现在有 3 个节点分别为 A,B 和 C，地址分别为 0x1,0x2,0x3，那么，</p>
+<div class="highlight"><pre class="chroma"><code class="language-c++" data-lang="c++"><span class="n">A</span><span class="p">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">null</span><span class="o">^</span><span class="mh">0x2</span>
+<span class="n">B</span><span class="p">.</span><span class="n">next</span> <span class="o">=</span> <span class="mh">0x1</span><span class="o">^</span><span class="mh">0x3</span>
+<span class="n">C</span><span class="p">.</span><span class="n">next</span> <span class="o">=</span> <span class="mh">0x2</span><span class="o">^</span><span class="n">null</span>
+</code></pre></div><pre><code>                         XOR linked List
+
+
+
+   +--- -----+ next=0x1    +---------+ next=0x1^0x3   +---------+
+   | *A=0x1  +---------    | *B=0x2  +------------    | *C=0x3  |
+   +---------+             +---------+                +------+--+
+                                                             |
+       |                                                     | next=0x2
+       |                                                     |
+       | next=0x1                                            |
+       |
++------+--+                                               +---------+
+|  null   |                                               |  null   |
++---------+                                               +---------+
+</code></pre><p>这个图之所以没有画出箭头是因为这里并不是直接指向下一个节点的地址，而是需要和前一个节点异或计算才能得到下一个节点的地址。</p>
+<p>由于遍历的时候需要知道前一个节点的地址，所以遍历方向也就确定了，所以需要用到当前节点的指针域参与异或运算。并不需要后一个节点的指针域。可能有一点绕，一直用前一个后一个的说法，不过结合一下上面这个图你就明白了。</p>
+<h2 id="具体实现">具体实现</h2>
+<p>需要实现链表的基本操作，构造/访问/删除/插入，这里的插入操作是在第 N 个节点之前，例如上图，如果 N = 2，那么就是在 A 与 B 之间插入，使新节点成为第二个节点。删除操作也是找到第 N 个节点。</p>
+<h3 id="建表">建表</h3>
+<h3 id="遍历">遍历</h3>
+<h3 id="插入">插入</h3>
+<h3 id="删除">删除</h3>
+<h2 id="总结">总结</h2>
 ]]></content>
 		</item>
 		
@@ -1644,6 +1681,27 @@ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m�
 <p>Gitee 提供了常见的几个博客框架的自动化部署功能，Hugo，Hexo 和 Jekyll。也就是说，只要你根目录下有对应框架的 <code>yaml</code> 配置文件，在你每次将最新内容推至仓库时就会自动执行自动化构建，并把最新页面推到前端页面上，比较省心。</p>
 <p>优点是国内速度比 Github 快，毕竟服务器近，缺点是每次推完还要手动点更新，自动的一年 99RMB。</p>
 <p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331155953211.png" alt="image-20210331155953211"></p>
+<h2 id="画图工具">画图工具</h2>
+<p>这里主要介绍我使用的两个画图软件。</p>
+<blockquote>
+<p>2021-06-19 16:44:13 更新</p>
+</blockquote>
+<h3 id="diagram">Diagram</h3>
+<p>原来这个软件叫 draw.io，后来改名为 <a href="https://www.diagrams.net/">Diagram</a>。</p>
+<p>我之前一直使用这个工具画图，优点是免费，功能丰富，暂无发现缺点 😂 推荐给要求较高的同学使用，画彩色图，花里胡哨图。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619170357266.png" alt="image-20210619170357266"></p>
+<h3 id="ascii">Ascii</h3>
+<p>Ascii 图是我看 <a href="https://xargin.com/diagram-tools-intro/">曹大博客</a> 了解到的，可以说是一见面就夺走了我的所有抵抗力，我曾经还觉得在画编程方面的图这一块，Diagram 完全够用了，就好比 “任何比 C语言复杂的语言都能用 C语言实现” 😎</p>
+<p>但是当我看到这种风格的图我再也不想用其他工具了，因为它完全够用了（装逼完美</p>
+<p>毕竟曹大在讲 plan9 汇编时说过，学习的最大动力就是装逼，不服可以去线下面基他 😄，这种风格的图真的 geek 风拉满，“程序员味”十足。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619170049500.png" alt="image-20210619170049500"></p>
+<p>说点正经的，我喜欢这种图最大的优点是 <strong>简洁</strong>，无他。我不用操心颜色搭配，字体大小，迁移存储等一切问题，只专心图所能表达出的含义就 OK 了。这里推荐两个站点：</p>
+<ul>
+<li>asciiflow（<a href="https://asciiflow.com/">https://asciiflow.com/</a>）</li>
+<li>Textik（<a href="https://textik.com/">https://textik.com/</a>）</li>
+</ul>
+<h3 id="sketch">Sketch</h3>
+<p>这个软件是比较专业的设计师使用的，也可以用来画一般的文章插图，缺点是收费，只能在 Mac 下使用。我没有使用过，可以自行搜索。</p>
 <h2 id="说在最后">说在最后</h2>
 <p>这里说几点我个人看法。</p>
 <ul>
