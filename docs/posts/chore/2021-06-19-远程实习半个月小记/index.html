@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="最近两个月及远程实习半个月小记">
+<meta itemprop="description" content="自 3 月末完成许多轮线上面试，4 月初拿到 offer，到现在因疫情远程实习，已经过去2个多月了，时间真的一晃就过去了，虽说还没拿到正式的秋招 offer，但也距离面试不远了，有必要记录一下这段时间的生活，顺便总结反思。
+前段时间 在拿到实习 offer 后，和之前学习状态相比有点佛系，一方面是因为阶段性的目标没了，短时间内没有下一个目标；另一方面是把重心从看/背知识点转移到了深入思考，理解上来了。因为在准备时有一些知识难免是死记硬背的，或者理解不透彻，需要复现并弄清楚。
+针对第一方面，其实我之前已经有了另一个目标的雏形，也是针对我的简历项目比较薄弱。就是寻找一个 “亮眼” 的项目来丰富简历上的项目部分，思前想后主要有四大块方向，竞赛类项目，开源贡献，造轮子，还有 秒杀/CRUD 类。
+竞赛类项目是一些参加比赛的项目，比如一年一次的微信小程序开发大赛，用小程序解决一个实际问题或者开发一个趣味游戏。这个我现在来不及了，不适合。开源贡献这块我一直在关注 GSoC，奈何要求确实略高，另外需要提前至少 1-2 个月进行准备，为目标社区的项目贡献，联系导师等，之前加入了国内 GSoC 的 Gitter 社区讨论群，在 5 月恰巧看到群里有人说国内也搞了个开源夏令营，模仿谷歌的，是第二年举办，我就参加了，贡献了半个多月，累计 PR 10 个左右 ，也是常常肝到凌晨，目前结果怎么样还未知，不过学习到的东西真的很多，例如更多的 Git 用法，开源规范，还有具体项目的知识。这个如果成功了我觉得也应该比单纯的 CRUD 好（希望😄
+参加这类夏令营，大多都不看重 proposal，也就是申请书/简历一类的，强调在实际贡献中体现代码及工程能力，所以要提前一段时间准备，了解项目。
+造轮子就是创造一些小工具，这个需要有一定的代码能力，做得好了也很加分，但是我觉得写 用 tcp 实现 http，json 解析器之类的可以自己写，就没必要写简历上了，一来没啥问的，二来没啥实际用途。我个人是用 Go 写了个 rpc 框架的小轮子，不过难点也很多，很容易被怼。
+秒杀/CRUD 类就是常见的 xx管理系统，多做一些 CRUD 的操作，不推荐，除非吃透不怕问，不过我觉得面试官比你更懂秒杀（​逃😆
+ 除了简历，我也在思考一些常见问题如何回答的更深入，例如常见的 https，select/poll/epoll，memory，file system等等，这些问题想要答的透彻，基本都要看源码，看底层设计实现，比较耗时，但是能将清楚非常加分，也是拿到 sp/ssp 的关键一环。
+近期实习 由于疫情远程参与了实习，前期也比较闲，主要是熟悉产品，在内网逛逛😄，不得不说，来大厂实习的一大好处就是可以体验一下大厂内部的环境。好多都是自研，确实方便。
+很多资料，格式/规范，除非一部分实习生没权限之外（比如腾讯的乐问），技术资料都公开。因为可能是出售的产品，所以有的代码是不能访问，需要开权限才能访问。当然内部开源的工具的源码还是随便看的。
+等疫情过去，7 月多我就过去线下实习体验一下，还是挺期待现场实习的。">
+<meta itemprop="datePublished" content="2021-06-19T15:00:13+00:00" />
+<meta itemprop="dateModified" content="2021-06-19T15:00:13+00:00" />
+<meta itemprop="wordCount" content="60">
+
+
+
+<meta itemprop="keywords" content="实习," />
+<meta property="og:title" content="最近两个月及远程实习半个月小记" />
+<meta property="og:description" content="自 3 月末完成许多轮线上面试，4 月初拿到 offer，到现在因疫情远程实习，已经过去2个多月了，时间真的一晃就过去了，虽说还没拿到正式的秋招 offer，但也距离面试不远了，有必要记录一下这段时间的生活，顺便总结反思。
+前段时间 在拿到实习 offer 后，和之前学习状态相比有点佛系，一方面是因为阶段性的目标没了，短时间内没有下一个目标；另一方面是把重心从看/背知识点转移到了深入思考，理解上来了。因为在准备时有一些知识难免是死记硬背的，或者理解不透彻，需要复现并弄清楚。
+针对第一方面，其实我之前已经有了另一个目标的雏形，也是针对我的简历项目比较薄弱。就是寻找一个 “亮眼” 的项目来丰富简历上的项目部分，思前想后主要有四大块方向，竞赛类项目，开源贡献，造轮子，还有 秒杀/CRUD 类。
+竞赛类项目是一些参加比赛的项目，比如一年一次的微信小程序开发大赛，用小程序解决一个实际问题或者开发一个趣味游戏。这个我现在来不及了，不适合。开源贡献这块我一直在关注 GSoC，奈何要求确实略高，另外需要提前至少 1-2 个月进行准备，为目标社区的项目贡献，联系导师等，之前加入了国内 GSoC 的 Gitter 社区讨论群，在 5 月恰巧看到群里有人说国内也搞了个开源夏令营，模仿谷歌的，是第二年举办，我就参加了，贡献了半个多月，累计 PR 10 个左右 ，也是常常肝到凌晨，目前结果怎么样还未知，不过学习到的东西真的很多，例如更多的 Git 用法，开源规范，还有具体项目的知识。这个如果成功了我觉得也应该比单纯的 CRUD 好（希望😄
+参加这类夏令营，大多都不看重 proposal，也就是申请书/简历一类的，强调在实际贡献中体现代码及工程能力，所以要提前一段时间准备，了解项目。
+造轮子就是创造一些小工具，这个需要有一定的代码能力，做得好了也很加分，但是我觉得写 用 tcp 实现 http，json 解析器之类的可以自己写，就没必要写简历上了，一来没啥问的，二来没啥实际用途。我个人是用 Go 写了个 rpc 框架的小轮子，不过难点也很多，很容易被怼。
+秒杀/CRUD 类就是常见的 xx管理系统，多做一些 CRUD 的操作，不推荐，除非吃透不怕问，不过我觉得面试官比你更懂秒杀（​逃😆
+ 除了简历，我也在思考一些常见问题如何回答的更深入，例如常见的 https，select/poll/epoll，memory，file system等等，这些问题想要答的透彻，基本都要看源码，看底层设计实现，比较耗时，但是能将清楚非常加分，也是拿到 sp/ssp 的关键一环。
+近期实习 由于疫情远程参与了实习，前期也比较闲，主要是熟悉产品，在内网逛逛😄，不得不说，来大厂实习的一大好处就是可以体验一下大厂内部的环境。好多都是自研，确实方便。
+很多资料，格式/规范，除非一部分实习生没权限之外（比如腾讯的乐问），技术资料都公开。因为可能是出售的产品，所以有的代码是不能访问，需要开权限才能访问。当然内部开源的工具的源码还是随便看的。
+等疫情过去，7 月多我就过去线下实习体验一下，还是挺期待现场实习的。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kcode.icu/posts/chore/2021-06-19-%E8%BF%9C%E7%A8%8B%E5%AE%9E%E4%B9%A0%E5%8D%8A%E4%B8%AA%E6%9C%88%E5%B0%8F%E8%AE%B0/" />
+<meta property="article:published_time" content="2021-06-19T15:00:13+00:00" />
+<meta property="article:modified_time" content="2021-06-19T15:00:13+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="最近两个月及远程实习半个月小记"/>
+<meta name="twitter:description" content="自 3 月末完成许多轮线上面试，4 月初拿到 offer，到现在因疫情远程实习，已经过去2个多月了，时间真的一晃就过去了，虽说还没拿到正式的秋招 offer，但也距离面试不远了，有必要记录一下这段时间的生活，顺便总结反思。
+前段时间 在拿到实习 offer 后，和之前学习状态相比有点佛系，一方面是因为阶段性的目标没了，短时间内没有下一个目标；另一方面是把重心从看/背知识点转移到了深入思考，理解上来了。因为在准备时有一些知识难免是死记硬背的，或者理解不透彻，需要复现并弄清楚。
+针对第一方面，其实我之前已经有了另一个目标的雏形，也是针对我的简历项目比较薄弱。就是寻找一个 “亮眼” 的项目来丰富简历上的项目部分，思前想后主要有四大块方向，竞赛类项目，开源贡献，造轮子，还有 秒杀/CRUD 类。
+竞赛类项目是一些参加比赛的项目，比如一年一次的微信小程序开发大赛，用小程序解决一个实际问题或者开发一个趣味游戏。这个我现在来不及了，不适合。开源贡献这块我一直在关注 GSoC，奈何要求确实略高，另外需要提前至少 1-2 个月进行准备，为目标社区的项目贡献，联系导师等，之前加入了国内 GSoC 的 Gitter 社区讨论群，在 5 月恰巧看到群里有人说国内也搞了个开源夏令营，模仿谷歌的，是第二年举办，我就参加了，贡献了半个多月，累计 PR 10 个左右 ，也是常常肝到凌晨，目前结果怎么样还未知，不过学习到的东西真的很多，例如更多的 Git 用法，开源规范，还有具体项目的知识。这个如果成功了我觉得也应该比单纯的 CRUD 好（希望😄
+参加这类夏令营，大多都不看重 proposal，也就是申请书/简历一类的，强调在实际贡献中体现代码及工程能力，所以要提前一段时间准备，了解项目。
+造轮子就是创造一些小工具，这个需要有一定的代码能力，做得好了也很加分，但是我觉得写 用 tcp 实现 http，json 解析器之类的可以自己写，就没必要写简历上了，一来没啥问的，二来没啥实际用途。我个人是用 Go 写了个 rpc 框架的小轮子，不过难点也很多，很容易被怼。
+秒杀/CRUD 类就是常见的 xx管理系统，多做一些 CRUD 的操作，不推荐，除非吃透不怕问，不过我觉得面试官比你更懂秒杀（​逃😆
+ 除了简历，我也在思考一些常见问题如何回答的更深入，例如常见的 https，select/poll/epoll，memory，file system等等，这些问题想要答的透彻，基本都要看源码，看底层设计实现，比较耗时，但是能将清楚非常加分，也是拿到 sp/ssp 的关键一环。
+近期实习 由于疫情远程参与了实习，前期也比较闲，主要是熟悉产品，在内网逛逛😄，不得不说，来大厂实习的一大好处就是可以体验一下大厂内部的环境。好多都是自研，确实方便。
+很多资料，格式/规范，除非一部分实习生没权限之外（比如腾讯的乐问），技术资料都公开。因为可能是出售的产品，所以有的代码是不能访问，需要开权限才能访问。当然内部开源的工具的源码还是随便看的。
+等疫情过去，7 月多我就过去线下实习体验一下，还是挺期待现场实习的。"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>最近两个月及远程实习半个月小记</title>
+	<link rel="stylesheet" href="https://kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://kcode.icu/">wasabi</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://kcode.icu/posts/">文章</a>
+					<a href="https://kcode.icu/summary">总结</a>
+					<a href="https://kcode.icu/chore">杂项</a>
+					<a href="https://kcode.icu/go">Go系列</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://kcode.icu/posts/">文章</a></li>
+			<li><a href="https://kcode.icu/tags/">标签</a></li>
+			<li><a href="https://kcode.icu/about/">关于</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jun 19, 2021</span></div>
+				<h1>最近两个月及远程实习半个月小记</h1>
+			</header>
+			<div class="content">
+				<p>自 3 月末完成许多轮线上面试，4 月初拿到 offer，到现在因疫情远程实习，已经过去2个多月了，时间真的一晃就过去了，虽说还没拿到正式的秋招 offer，但也距离面试不远了，有必要记录一下这段时间的生活，顺便总结反思。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619155644748.png" alt="image-20210619155644748"></p>
+<h2 id="前段时间">前段时间<a href="#前段时间" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>在拿到实习 offer 后，和之前学习状态相比有点佛系，一方面是因为阶段性的目标没了，短时间内没有下一个目标；另一方面是把重心从看/背知识点转移到了深入思考，理解上来了。因为在准备时有一些知识难免是死记硬背的，或者理解不透彻，需要复现并弄清楚。</p>
+<p>针对第一方面，其实我之前已经有了另一个目标的雏形，也是针对我的简历项目比较薄弱。就是寻找一个  “亮眼” 的项目来丰富简历上的项目部分，思前想后主要有四大块方向，<strong>竞赛类项目</strong>，<strong>开源贡献</strong>，<strong>造轮子</strong>，还有 <strong>秒杀/CRUD 类</strong>。</p>
+<p>竞赛类项目是一些参加比赛的项目，比如一年一次的微信小程序开发大赛，用小程序解决一个实际问题或者开发一个趣味游戏。这个我现在来不及了，不适合。开源贡献这块我一直在关注 GSoC，奈何要求确实略高，另外需要提前至少 1-2 个月进行准备，为目标社区的项目贡献，联系导师等，之前加入了国内 GSoC 的 Gitter 社区讨论群，在 5 月恰巧看到群里有人说国内也搞了个开源夏令营，模仿谷歌的，是第二年举办，我就参加了，贡献了半个多月，累计 PR 10 个左右 ，也是常常肝到凌晨，目前结果怎么样还未知，不过学习到的东西真的很多，例如更多的 Git 用法，开源规范，还有具体项目的知识。这个如果成功了我觉得也应该比单纯的 CRUD 好（希望😄</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619163617259.png" alt="image-20210619163617259"></p>
+<p>参加这类夏令营，大多都不看重 proposal，也就是申请书/简历一类的，强调在实际贡献中体现代码及工程能力，所以要提前一段时间准备，了解项目。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619163352964.png" alt="image-20210619163352964"></p>
+<p>造轮子就是创造一些小工具，这个需要有一定的代码能力，做得好了也很加分，但是我觉得写 用 tcp 实现 http，json 解析器之类的可以自己写，就没必要写简历上了，一来没啥问的，二来没啥实际用途。我个人是用 Go 写了个 rpc 框架的小轮子，不过难点也很多，很容易被怼。</p>
+<p>秒杀/CRUD 类就是常见的 xx管理系统，多做一些 CRUD 的操作，不推荐，除非吃透不怕问，不过我觉得面试官比你更懂秒杀（​逃😆</p>
+<hr>
+<p>除了简历，我也在思考一些常见问题如何回答的更深入，例如常见的 https，select/poll/epoll，memory，file system等等，这些问题想要答的透彻，基本都要看源码，看底层设计实现，比较耗时，但是能将清楚非常加分，也是拿到  sp/ssp 的关键一环。</p>
+<h2 id="近期实习">近期实习<a href="#近期实习" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>由于疫情远程参与了实习，前期也比较闲，主要是熟悉产品，在内网逛逛😄，不得不说，来大厂实习的一大好处就是可以体验一下大厂内部的环境。好多都是自研，确实方便。</p>
+<p>很多资料，格式/规范，除非一部分实习生没权限之外（比如腾讯的乐问），技术资料都公开。因为可能是出售的产品，所以有的代码是不能访问，需要开权限才能访问。当然内部开源的工具的源码还是随便看的。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210629214311099.png" alt="image-20210629214311099"></p>
+<p>等疫情过去，7 月多我就过去线下实习体验一下，还是挺期待现场实习的。</p>
+
+			</div>
+			<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp"></div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://kcode.icu/tags/%E5%AE%9E%E4%B9%A0">实习</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>60 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-06-19 23:00 &#43;0800</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>面试官：如何只使用一个指针域实现双向链表</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+						<script src="https://utteranc.es/client.js"
+							repo="sh1luo/sh1luo"
+							issue-term="pathname"
+							theme="github-light"
+							crossorigin="anonymous"
+							async>
+			</script>
+		</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2018 - 2021 <a href="https://kcode.icu/">wasabi</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-193315904-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>
