@@ -37,7 +37,7 @@ tags:
 
 很多资料，格式/规范，除非一部分实习生没权限之外（比如腾讯的乐问），技术资料都公开。因为可能是出售的产品，所以有的代码是不能访问，需要开权限才能访问。当然内部开源的工具的源码还是随便看的。
 
-![image-20210629214311099](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210629214311099.png)
+![image-20210703211945974](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210703211945974.png)
 
 等疫情过去，7 月多我就过去线下实习体验一下，还是挺期待现场实习的。
 
