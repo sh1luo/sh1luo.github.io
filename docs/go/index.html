@@ -8,7 +8,7 @@
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
 <meta itemprop="name" content="《一起了解 Go 语言》">
-<meta itemprop="description" content="我不太喜欢只看问题的表面，总是不经意间思考了这么多，希望对你有所帮助。
+<meta itemprop="description" content="谁都“会用”，那我们只深入一点点，不深入多哦。
 我打算围绕 Go 的底层实现写一些自己的思考和探究，我在写之前参考了大量博客等”二手资料“，写时手边也拿着 Go 语言最新版源代码这样的”一手资料“，其一是因为官方源码和文档永远是我们最好的第一学习工具，其二是我个人在没看到源信息时有种不踏实的感觉（可能跟以前踩过坑有关），所以文中说到的任何知识点均会附带源码说明，由于 Go 语言特殊性，必要时还会附带汇编代码辅助，最后我还会通过理论来推动实践为你做个演示。
 标记的内容已经列入计划，正在赶工中 😄
  一：深入表象  「map」深入理解 Go map，正在&hellip; 「string」简单又有”东西“的字符串，正在&hellip; 「slice」灵活高效的切片，正在&hellip; 「string&amp;slice」用理论驱动实践，正在&hellip;   二：深入理解  「method」方法到底是什么，正在&hellip;   三：深入灵魂  「GPM」Go 调度模型为什么这么特别？，正在&hellip; 「GC」入个 GC 算法的门？，正在&hellip;    我的公众号 平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号：">
@@ -20,7 +20,7 @@
 
 <meta itemprop="keywords" content="" />
 <meta property="og:title" content="《一起了解 Go 语言》" />
-<meta property="og:description" content="我不太喜欢只看问题的表面，总是不经意间思考了这么多，希望对你有所帮助。
+<meta property="og:description" content="谁都“会用”，那我们只深入一点点，不深入多哦。
 我打算围绕 Go 的底层实现写一些自己的思考和探究，我在写之前参考了大量博客等”二手资料“，写时手边也拿着 Go 语言最新版源代码这样的”一手资料“，其一是因为官方源码和文档永远是我们最好的第一学习工具，其二是我个人在没看到源信息时有种不踏实的感觉（可能跟以前踩过坑有关），所以文中说到的任何知识点均会附带源码说明，由于 Go 语言特殊性，必要时还会附带汇编代码辅助，最后我还会通过理论来推动实践为你做个演示。
 标记的内容已经列入计划，正在赶工中 😄
  一：深入表象  「map」深入理解 Go map，正在&hellip; 「string」简单又有”东西“的字符串，正在&hellip; 「slice」灵活高效的切片，正在&hellip; 「string&amp;slice」用理论驱动实践，正在&hellip;   二：深入理解  「method」方法到底是什么，正在&hellip;   三：深入灵魂  「GPM」Go 调度模型为什么这么特别？，正在&hellip; 「GC」入个 GC 算法的门？，正在&hellip;    我的公众号 平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号：" />
@@ -30,7 +30,7 @@
 <meta property="article:modified_time" content="2021-01-17T00:00:00+00:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="《一起了解 Go 语言》"/>
-<meta name="twitter:description" content="我不太喜欢只看问题的表面，总是不经意间思考了这么多，希望对你有所帮助。
+<meta name="twitter:description" content="谁都“会用”，那我们只深入一点点，不深入多哦。
 我打算围绕 Go 的底层实现写一些自己的思考和探究，我在写之前参考了大量博客等”二手资料“，写时手边也拿着 Go 语言最新版源代码这样的”一手资料“，其一是因为官方源码和文档永远是我们最好的第一学习工具，其二是我个人在没看到源信息时有种不踏实的感觉（可能跟以前踩过坑有关），所以文中说到的任何知识点均会附带源码说明，由于 Go 语言特殊性，必要时还会附带汇编代码辅助，最后我还会通过理论来推动实践为你做个演示。
 标记的内容已经列入计划，正在赶工中 😄
  一：深入表象  「map」深入理解 Go map，正在&hellip; 「string」简单又有”东西“的字符串，正在&hellip; 「slice」灵活高效的切片，正在&hellip; 「string&amp;slice」用理论驱动实践，正在&hellip;   二：深入理解  「method」方法到底是什么，正在&hellip;   三：深入灵魂  「GPM」Go 调度模型为什么这么特别？，正在&hellip; 「GC」入个 GC 算法的门？，正在&hellip;    我的公众号 平时喜欢分享 Go 语言、学习历程，欢迎关注我的公众号："/>
@@ -43,7 +43,7 @@
 	<link rel="shortcut icon" href="/favicon.ico">
 
 	<title>《一起了解 Go 语言》</title>
-	<link rel="stylesheet" href="https://kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	<link rel="stylesheet" href="https://kcode.icu/css/style.min.13f214f99c510f937952df71d2ccc2d0a95e078cc48827cf18caba6a1de82a2b.css">
 	
 </head>
 
@@ -79,7 +79,7 @@
 	<main class="site-main section-inner thin animated fadeIn faster">
 		<h1>《一起了解 Go 语言》</h1>
 		<div class="content">
-			<p>我不太喜欢只看问题的表面，总是不经意间思考了这么多，希望对你有所帮助。</p>
+			<p>谁都“会用”，那我们只深入一点点，不深入多哦。</p>
 <p>我打算围绕 Go 的底层实现写一些自己的思考和探究，我在写之前参考了大量博客等”二手资料“，写时手边也拿着 Go 语言最新版源代码这样的”一手资料“，其一是因为官方源码和文档永远是我们最好的第一学习工具，其二是我个人在没看到源信息时有种不踏实的感觉（可能跟以前踩过坑有关），所以文中说到的任何知识点均会附带源码说明，由于 Go 语言特殊性，必要时还会附带汇编代码辅助，最后我还会通过理论来推动实践为你做个演示。</p>
 <p>标记的内容已经列入计划，正在赶工中 😄</p>
 <ul>
