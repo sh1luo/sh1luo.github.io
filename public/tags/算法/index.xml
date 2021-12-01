@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法 on wasabi</title>
+    <link>https://kcode.icu/tags/%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 算法 on wasabi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sat, 05 Jun 2021 14:36:20 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>面试官：如何只使用一个指针域实现双向链表</title>
+      <link>https://kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</link>
+      <pubDate>Sat, 05 Jun 2021 14:36:20 +0000</pubDate>
+      
+      <guid>https://kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</guid>
+      <description>这是来自某学习群的群友提供的，一道 便利蜂 的实习面试题，恰好被看到了（不是
+问题是：只使用一个指针如何实现双向链表，乍一想好像不可能，我当时的大致思路是这样的：原来直接使用 -&amp;gt;right 或者 -&amp;gt;left 就能访问到左右节点，现在只有一个指针，就要修改指针的含义，不能直接存储下一个节点的地址了，大概率是要根据某些条件算出下一个地址。
+事实呢？为了了解具体做法，我去翻了维基百科关于这部分的 详细解释 ，并本地实现了一遍完整代码，记录在这里。
+实现原理 这种链表被称为 异或链表（XOR Linked List），能够达到只使用一个指针域实现双向链表的效果，从而降低空间复杂度。当然它也不是没有缺点，如果只有一个节点，无法向两个方向遍历，必须有连续的两个节点地址。
+回到之前说的问题，问题的关键就是如何只使用一个指针实现双向访问的效果，再来看链表名，异或链表。
+任何一个节点的指针域的值为 它的前一个节点和下一个节点的地址异或。
+假如现在有 3 个节点分别为 A,B 和 C，地址分别为 0x1,0x2,0x3，那么，
+A.next = null^0x2 B.next = 0x1^0x3 C.next = 0x2^null  XOR linked List+--- -----+ next=0x1 +---------+ next=0x1^0x3 +---------+| *A=0x1 +--------- | *B=0x2 +------------ | *C=0x3 |+---------+ +---------+ +------+--+|| | next=0x2| || next=0x1 ||+------+--+ +---------+| null | | null |+---------+ +---------+这个图之所以没有画出箭头是因为这里并不是直接指向下一个节点的地址，而是需要和前一个节点异或计算才能得到下一个节点的地址。</description>
+    </item>
+    
+  </channel>
+</rss>

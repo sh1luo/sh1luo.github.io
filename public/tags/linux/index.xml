@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on wasabi</title>
+    <link>https://kcode.icu/tags/linux/</link>
+    <description>Recent content in Linux on wasabi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Wed, 04 Nov 2020 18:15:13 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux du/df命令总结</title>
+      <link>https://kcode.icu/posts/chore/linux_df_du/</link>
+      <pubDate>Wed, 04 Nov 2020 18:15:13 +0000</pubDate>
+      
+      <guid>https://kcode.icu/posts/chore/linux_df_du/</guid>
+      <description>linux 在我们日常学习中用的非常多，连接远程 linux 服务器，使用各种 linux 命令，或者物理机就是 linux 系统或者 MacOS。如果你想要学习进阶知识，linux 已经是必不可少的一个组件了。这篇博客记录一下 linux 下常被混淆的 du/df 命令。
+df df 就是 “disk free” 的缩写，一般是用来快速浏览你的文件系统，会显示所有磁盘的大小，使用空间，剩余空间，使用百分比还有磁盘挂载到哪个分区上了。使用的时候一般要带上 -h 参数来增加可读性。这些数据都是从挂载点或者文件系统级别计算出来的，比较 “宏观”。
+而且，-h 标记会使你的数据四舍五入更方便显示，比如它显示 3G 的大小，实际上可能是 2.9G 或者 3.1G，并不确定。
+du du 就是 “disk usage” 的缩写，如果你需要计算某个特定目录大小的时候非常好用。一般搭配 -sh 参数让结果更易读，比如这样：
+df VS. du 看了这两个命令大致用法后，它们在使用场景是什么呢，众所周知不结合使用场景的技术都是耍流氓。大致可以这样总结：df 命令提供一个关于你整个文件系统的概览，比如你多少空间正在使用等等，du 命令更倾向于计算某个目录的精确快照。
+如果非要说哪个的结果更有用一点，我觉得是 du。举个例子，我在 /var 目录下安装一个第三方包时遇到了一个目录空间不足的错误，那么我就可以先跑一下 df 命令去看看这个目录的空间来确认一下这是不是真的。我如果看到 /var 有足够空间，那我会接着跑一下 du /var 去看看是它的哪个子目录因为空间不够报的错。这样我就可以一直通过 df  去缩小出错目录的范围，直到找到问题。
+理解这些命令的区别能让我们串联使用这些工具，从而更快的定位并解决我们所面临的绝大多数的问题。</description>
+    </item>
+    
+  </channel>
+</rss>

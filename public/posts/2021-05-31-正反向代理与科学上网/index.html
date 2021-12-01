@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="正/反向代理与科学上网">
+<meta itemprop="description" content="代理
+你可能听过许多 反向代理（Reverse Proxy） 软件例如 Nginx、Apache 等，它们性能优越，被广泛应用于实际场景中，那么你是否知道 “反向” 是什么意思，为什么叫反向呢，明白这个问题有助于我们更深入的理解它们。还有许多框架中常用的的 控制反转（IOC）/依赖注入（DI） 等概念，你是否理解 反转 或 注入 的真正含义。
+既然有反向代理，就有正向代理，常用的科学上网就是使用了这个技术，你所见过的例如 ss/ssr/socks5 等等仅仅是协议名，配合上一些混淆方式，它们的技术原理还是 正向代理（ Forward Proxy）。
+之前我在「刷」面试题的时候，就遇到过相关问题，“墙以及科学上网的原理”。相信读完这本文你会得到答案。
+在了解正反向代理之前先牢记一句话，反向代理 代理并 隐藏服务端，正向代理与之相反，隐藏客户端。
+反向代理 OK，记住了这句话，想想 Nginx/Apache 的功能，你将服务部署在服务器上，只公开了 80/443 端口，而内部服务有很多个，通过不同域名访问，然后使用 Nginx/Apache 来接受外界请求，利用提供的指令，例如 sever_name，listen，index，location 来控制其进行转发到不同的内部端口上，由于其使用了非常高效的 epoll IO多路复用模型，效率非常高。
+那么你的脑海中应该有大致这么一张图，类似这样：
+Reverse Proxy &#43;------------------------------------------------------&#43; | | | &#43;---------&#43; | | &#43;-------&gt; | Server1 | | | | &#43;---------&#43; | &#43;--------------&#43; | &#43;-----------------&#43; | | | | | | | | &#43;---------&#43; | | Client &#43;-----------&#43;--&gt;| google.">
+<meta itemprop="datePublished" content="2021-05-31T15:33:50+00:00" />
+<meta itemprop="dateModified" content="2021-05-31T15:33:50+00:00" />
+<meta itemprop="wordCount" content="173">
+
+
+
+<meta itemprop="keywords" content="代理," />
+<meta property="og:title" content="正/反向代理与科学上网" />
+<meta property="og:description" content="代理
+你可能听过许多 反向代理（Reverse Proxy） 软件例如 Nginx、Apache 等，它们性能优越，被广泛应用于实际场景中，那么你是否知道 “反向” 是什么意思，为什么叫反向呢，明白这个问题有助于我们更深入的理解它们。还有许多框架中常用的的 控制反转（IOC）/依赖注入（DI） 等概念，你是否理解 反转 或 注入 的真正含义。
+既然有反向代理，就有正向代理，常用的科学上网就是使用了这个技术，你所见过的例如 ss/ssr/socks5 等等仅仅是协议名，配合上一些混淆方式，它们的技术原理还是 正向代理（ Forward Proxy）。
+之前我在「刷」面试题的时候，就遇到过相关问题，“墙以及科学上网的原理”。相信读完这本文你会得到答案。
+在了解正反向代理之前先牢记一句话，反向代理 代理并 隐藏服务端，正向代理与之相反，隐藏客户端。
+反向代理 OK，记住了这句话，想想 Nginx/Apache 的功能，你将服务部署在服务器上，只公开了 80/443 端口，而内部服务有很多个，通过不同域名访问，然后使用 Nginx/Apache 来接受外界请求，利用提供的指令，例如 sever_name，listen，index，location 来控制其进行转发到不同的内部端口上，由于其使用了非常高效的 epoll IO多路复用模型，效率非常高。
+那么你的脑海中应该有大致这么一张图，类似这样：
+Reverse Proxy &#43;------------------------------------------------------&#43; | | | &#43;---------&#43; | | &#43;-------&gt; | Server1 | | | | &#43;---------&#43; | &#43;--------------&#43; | &#43;-----------------&#43; | | | | | | | | &#43;---------&#43; | | Client &#43;-----------&#43;--&gt;| google." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kcode.icu/posts/2021-05-31-%E6%AD%A3%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" />
+<meta property="article:published_time" content="2021-05-31T15:33:50+00:00" />
+<meta property="article:modified_time" content="2021-05-31T15:33:50+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="正/反向代理与科学上网"/>
+<meta name="twitter:description" content="代理
+你可能听过许多 反向代理（Reverse Proxy） 软件例如 Nginx、Apache 等，它们性能优越，被广泛应用于实际场景中，那么你是否知道 “反向” 是什么意思，为什么叫反向呢，明白这个问题有助于我们更深入的理解它们。还有许多框架中常用的的 控制反转（IOC）/依赖注入（DI） 等概念，你是否理解 反转 或 注入 的真正含义。
+既然有反向代理，就有正向代理，常用的科学上网就是使用了这个技术，你所见过的例如 ss/ssr/socks5 等等仅仅是协议名，配合上一些混淆方式，它们的技术原理还是 正向代理（ Forward Proxy）。
+之前我在「刷」面试题的时候，就遇到过相关问题，“墙以及科学上网的原理”。相信读完这本文你会得到答案。
+在了解正反向代理之前先牢记一句话，反向代理 代理并 隐藏服务端，正向代理与之相反，隐藏客户端。
+反向代理 OK，记住了这句话，想想 Nginx/Apache 的功能，你将服务部署在服务器上，只公开了 80/443 端口，而内部服务有很多个，通过不同域名访问，然后使用 Nginx/Apache 来接受外界请求，利用提供的指令，例如 sever_name，listen，index，location 来控制其进行转发到不同的内部端口上，由于其使用了非常高效的 epoll IO多路复用模型，效率非常高。
+那么你的脑海中应该有大致这么一张图，类似这样：
+Reverse Proxy &#43;------------------------------------------------------&#43; | | | &#43;---------&#43; | | &#43;-------&gt; | Server1 | | | | &#43;---------&#43; | &#43;--------------&#43; | &#43;-----------------&#43; | | | | | | | | &#43;---------&#43; | | Client &#43;-----------&#43;--&gt;| google."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>正/反向代理与科学上网</title>
+	<link rel="stylesheet" href="https://kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://kcode.icu/">wasabi</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://kcode.icu/posts/">文章</a>
+					<a href="https://kcode.icu/summary">总结</a>
+					<a href="https://kcode.icu/chore">杂项</a>
+					<a href="https://kcode.icu/go">Go系列</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://kcode.icu/posts/">文章</a></li>
+			<li><a href="https://kcode.icu/tags/">标签</a></li>
+			<li><a href="https://kcode.icu/about/">关于</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>May 31, 2021</span></div>
+				<h1>正/反向代理与科学上网</h1>
+			</header>
+			<div class="content">
+				<p>代理</p>
+<p>你可能听过许多 <strong>反向代理（Reverse Proxy）</strong> 软件例如 Nginx、Apache 等，它们性能优越，被广泛应用于实际场景中，那么你是否知道 “反向” 是什么意思，为什么叫反向呢，明白这个问题有助于我们更深入的理解它们。还有许多框架中常用的的 <strong>控制反转（IOC）/依赖注入（DI）</strong> 等概念，你是否理解 <strong>反转</strong> 或 <strong>注入</strong> 的真正含义。</p>
+<p>既然有反向代理，就有正向代理，常用的科学上网就是使用了这个技术，你所见过的例如 ss/ssr/socks5 等等仅仅是协议名，配合上一些混淆方式，它们的技术原理还是 <strong>正向代理（ Forward Proxy）</strong>。</p>
+<p>之前我在「刷」面试题的时候，就遇到过相关问题，“墙以及科学上网的原理”。相信读完这本文你会得到答案。</p>
+<p>在了解正反向代理之前先牢记一句话，<code>反向代理</code> 代理并 <strong>隐藏服务端</strong>，<code>正向代理</code>与之相反，<strong>隐藏客户端</strong>。</p>
+<h2 id="反向代理">反向代理<a href="#反向代理" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>OK，记住了这句话，想想 Nginx/Apache 的功能，你将服务部署在服务器上，只公开了 80/443 端口，而内部服务有很多个，通过不同域名访问，然后使用 Nginx/Apache 来接受外界请求，利用提供的指令，例如 <code>sever_name</code>，<code>listen</code>，<code>index</code>，<code>location</code> 来控制其进行转发到不同的内部端口上，由于其使用了非常高效的 epoll IO多路复用模型，效率非常高。</p>
+<p>那么你的脑海中应该有大致这么一张图，类似这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">                                 Reverse Proxy
+
+                           +------------------------------------------------------+
+                           <span class="p">|</span>                                                      <span class="p">|</span>
+                           <span class="p">|</span>                                  +---------+         <span class="p">|</span>
+                           <span class="p">|</span>                        +-------&gt; <span class="p">|</span> Server1 <span class="p">|</span>         <span class="p">|</span>
+                           <span class="p">|</span>                        <span class="p">|</span>         +---------+         <span class="p">|</span>
++--------------+           <span class="p">|</span>   +-----------------+  <span class="p">|</span>                             <span class="p">|</span>
+<span class="p">|</span>              <span class="p">|</span>           <span class="p">|</span>   <span class="p">|</span>                 <span class="p">|</span>  <span class="p">|</span>         +---------+         <span class="p">|</span>
+<span class="p">|</span>    Client    +-----------+--&gt;<span class="p">|</span>   google.com    +-&gt;+--------&gt;<span class="p">|</span> Server2 <span class="p">|</span>         <span class="p">|</span>
+<span class="p">|</span>              <span class="p">|</span>           <span class="p">|</span>   <span class="p">|</span>                 <span class="p">|</span>  <span class="p">|</span>         +---------+         <span class="p">|</span>
++--------------+           <span class="p">|</span>   +-----------------+  <span class="p">|</span>           ...               <span class="p">|</span>
+                           <span class="p">|</span>                        <span class="p">|</span>         +---------+         <span class="p">|</span>
+                           <span class="p">|</span>                        +--------&gt;<span class="p">|</span> Server99<span class="p">|</span>         <span class="p">|</span>
+                           <span class="p">|</span>                                  +---------+         <span class="p">|</span>
+                           <span class="p">|</span>                                                      <span class="p">|</span>
+                           +------------------------------------------------------+
+</code></pre></div><h2 id="正向代理">正向代理<a href="#正向代理" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>与反向代理相反，正向代理的作用是隐藏客户端，比较容易理解的例子还是科学上网，直接访问会受到运营商防火墙的限制例如 DNS 污染等导致查询失败。</p>
+<p>而 “梯子”“代理”等等工具就是购买了一台服务器 S，在你需要请求这些受限网站 Google 时，直接请求 S，由于可以访问 S ，就由 S 替我们去访问 Google，再将结果返回给我们，就完成了一次 “科学上网”。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">                                        Forward Proxy
+
++-----------------------------------------------------+
+<span class="p">|</span>                                                     <span class="p">|</span>
+<span class="p">|</span>                                                     <span class="p">|</span>
+<span class="p">|</span>    +--------------+           +---------------+     <span class="p">|</span>             +--------------------+
+<span class="p">|</span>    <span class="p">|</span>              <span class="p">|</span>           <span class="p">|</span>               <span class="p">|</span>     <span class="p">|</span>             <span class="p">|</span>                    <span class="p">|</span>
+<span class="p">|</span>    <span class="p">|</span>    Client    +----------&gt;<span class="p">|</span>  Proxy Server +----&gt;<span class="p">|</span> -----------&gt;<span class="p">|</span>  Google/GitHub,etc <span class="p">|</span>
+<span class="p">|</span>    <span class="p">|</span>              <span class="p">|</span>           <span class="p">|</span>               <span class="p">|</span>     <span class="p">|</span>             <span class="p">|</span>                    <span class="p">|</span>
+<span class="p">|</span>    +--------------+           +---------------+     <span class="p">|</span>             +--------------------+
+<span class="p">|</span>                                                     <span class="p">|</span>
+<span class="p">|</span>                                                     <span class="p">|</span>
++-----------------------------------------------------+
+</code></pre></div><p>当然，大致过程很简单，但是其中的细节非常多。为了限制网民的这种行为，会对访问境外的流量进行分析，如果有可疑特征，则直接拦截。现在甚至研究出了利用机器学习等技术智能审查流量的机。因此通过 SS/SSR 的方式由于特征明显，已经基本被淘汰。</p>
+<h2 id="科学上网">科学上网<a href="#科学上网" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+			</div>
+			<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp" width="80%" height="60%"></div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://kcode.icu/tags/%E4%BB%A3%E7%90%86">代理</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>173 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-05-31 23:33 &#43;0800</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://kcode.icu/posts/interview/2021-06-05-%E5%A6%82%E4%BD%95%E5%8F%AA%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E5%9F%9F%E5%AE%9E%E7%8E%B0%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>面试官：如何只使用一个指针域实现双向链表</span>
+			</a>
+			<a class="prev-post" href="https://kcode.icu/posts/rpc/geektime-rpc/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>极客时间专栏《RPC实战与核心原理》读后笔记</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+						<script src="https://utteranc.es/client.js"
+							repo="sh1luo/sh1luo"
+							issue-term="pathname"
+							theme="github-light"
+							crossorigin="anonymous"
+							async>
+			</script>
+		</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2018 - 2021 <a href="https://kcode.icu/">wasabi</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-193315904-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+</body>
+
+</html>
