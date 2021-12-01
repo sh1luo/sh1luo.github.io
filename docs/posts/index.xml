@@ -6,8 +6,19 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-hans</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Sat, 19 Jun 2021 15:00:13 +0000</lastBuildDate>
+		<lastBuildDate>Sun, 21 Nov 2021 21:22:20 +0000</lastBuildDate>
 		<atom:link href="https://kcode.icu/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>聊聊22届秋招的体验</title>
+			<link>https://kcode.icu/posts/interview/2021-12-interview/</link>
+			<pubDate>Sun, 21 Nov 2021 21:22:20 +0000</pubDate>
+			
+			<guid>https://kcode.icu/posts/interview/2021-12-interview/</guid>
+			<description>今年的秋招早已结束了，因为我躺平了一个多月，所以这篇博客拖到了现在。</description>
+			<content type="html"><![CDATA[<p>今年的秋招早已结束了，因为我躺平了一个多月，所以这篇博客拖到了现在。</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>最近两个月及远程实习半个月小记</title>
