@@ -1,0 +1,735 @@
+<!doctype html><html lang=zh-hans><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=theme-color content="#494f5c"><meta name=msapplication-TileColor content="#494f5c"><meta itemprop=name content="Go 语言安全指南"><meta itemprop=description content="这是一些关于 Go 安全编码方案，旨在从源头规避漏洞。
+通用类 1. 代码实现类 1.1 内存管理 1.1.1【必须】切片长度校验  在对slice进行操作时，必须判断长度是否合法，防止程序panic  // bad: 未判断data的长度，可导致 index out of range func decode(data []byte) bool { if data[0] == 'F' && data[1] == 'U' && data[2] == 'Z' && data[3] == 'Z' && data[4] == 'E' && data[5] == 'R' { fmt.Println(&#34;Bad&#34;) return true } return false } // bad: slice bounds out of range func foo() { var slice = []int{0, 1, 2, 3, 4, 5, 6} fmt."><meta itemprop=datePublished content="2021-12-01T16:04:20+00:00"><meta itemprop=dateModified content="2021-12-01T16:04:20+00:00"><meta itemprop=wordCount content="1982"><meta itemprop=keywords content="Go,"><meta property="og:title" content="Go 语言安全指南"><meta property="og:description" content="这是一些关于 Go 安全编码方案，旨在从源头规避漏洞。
+通用类 1. 代码实现类 1.1 内存管理 1.1.1【必须】切片长度校验  在对slice进行操作时，必须判断长度是否合法，防止程序panic  // bad: 未判断data的长度，可导致 index out of range func decode(data []byte) bool { if data[0] == 'F' && data[1] == 'U' && data[2] == 'Z' && data[3] == 'Z' && data[4] == 'E' && data[5] == 'R' { fmt.Println(&#34;Bad&#34;) return true } return false } // bad: slice bounds out of range func foo() { var slice = []int{0, 1, 2, 3, 4, 5, 6} fmt."><meta property="og:type" content="article"><meta property="og:url" content="https://kcode.icu/posts/go/2021-12-01-go%E5%AE%89%E5%85%A8%E8%A7%84%E8%8C%83/"><meta property="article:published_time" content="2021-12-01T16:04:20+00:00"><meta property="article:modified_time" content="2021-12-01T16:04:20+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Go 语言安全指南"><meta name=twitter:description content="这是一些关于 Go 安全编码方案，旨在从源头规避漏洞。
+通用类 1. 代码实现类 1.1 内存管理 1.1.1【必须】切片长度校验  在对slice进行操作时，必须判断长度是否合法，防止程序panic  // bad: 未判断data的长度，可导致 index out of range func decode(data []byte) bool { if data[0] == 'F' && data[1] == 'U' && data[2] == 'Z' && data[3] == 'Z' && data[4] == 'E' && data[5] == 'R' { fmt.Println(&#34;Bad&#34;) return true } return false } // bad: slice bounds out of range func foo() { var slice = []int{0, 1, 2, 3, 4, 5, 6} fmt."><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color><link rel="shortcut icon" href=/favicon.ico><title>Go 语言安全指南</title><link rel=stylesheet href=https://kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css></head><body id=page><header id=site-header class="animated slideInUp faster"><div class="hdr-wrapper section-inner"><div class=hdr-left><div class=site-branding><a href=https://kcode.icu/>wasabi</a></div><nav class="site-nav hide-in-mobile"><a href=https://kcode.icu/posts/>文章</a>
+<a href=https://kcode.icu/summary>总结</a>
+<a href=https://kcode.icu/chore>杂项</a>
+<a href=https://kcode.icu/go>Go系列</a></nav></div><div class="hdr-right hdr-icons"><button id=toc-btn class="hdr-btn desktop-only-ib" title="Table of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3" y2="6"/><line x1="3" y1="12" x2="3" y2="12"/><line x1="3" y1="18" x2="3" y2="18"/></svg></button><span class="hdr-social hide-in-mobile"><a href=https://github.com/sh1luo target=_blank rel="noopener me" title=Github><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77a5.44 5.44.0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a><a href=mailto:silo1999@163.com target=_blank rel="noopener me" title=Email><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1.0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1.0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a><a href="http://wpa.qq.com/msgrd?v=3&uin=690898835&site=qq&menu=yes" target=_blank rel="noopener me" title=Qq><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></a></span><button id=menu-btn class=hdr-btn title=Menu><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></div></header><div id=mobile-menu class="animated fast"><ul><li><a href=https://kcode.icu/posts/>文章</a></li><li><a href=https://kcode.icu/tags/>标签</a></li><li><a href=https://kcode.icu/about/>关于</a></li></ul></div><main class="site-main section-inner animated fadeIn faster"><article class=thin><header class=post-header><div class=post-meta><span>Dec 1, 2021</span></div><h1>Go 语言安全指南</h1></header><div class=content><p></p><p>这是一些关于 Go 安全编码方案，旨在从源头规避漏洞。</p><h1 id=通用类>通用类<a href=#通用类 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h1><p></p><h2 id=1-代码实现类>1. 代码实现类<a href=#1-代码实现类 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p></p><h3 id=11-内存管理>1.1 内存管理<a href=#11-内存管理 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=111必须切片长度校验>1.1.1【必须】切片长度校验<a href=#111必须切片长度校验 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>在对slice进行操作时，必须判断长度是否合法，防止程序panic</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad: 未判断data的长度，可导致 index out of range
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>decode</span><span class=p>(</span><span class=nx>data</span> <span class=p>[]</span><span class=kt>byte</span><span class=p>)</span> <span class=kt>bool</span> <span class=p>{</span>
+	<span class=k>if</span> <span class=nx>data</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;F&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;U&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;Z&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;Z&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;E&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span><span class=p>[</span><span class=mi>5</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;R&#39;</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;Bad&#34;</span><span class=p>)</span>
+		<span class=k>return</span> <span class=kc>true</span>
+	<span class=p>}</span>
+	<span class=k>return</span> <span class=kc>false</span>
+<span class=p>}</span>
+
+<span class=c1>// bad: slice bounds out of range
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>foo</span><span class=p>()</span> <span class=p>{</span>
+	<span class=kd>var</span> <span class=nx>slice</span> <span class=p>=</span> <span class=p>[]</span><span class=kt>int</span><span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>5</span><span class=p>,</span> <span class=mi>6</span><span class=p>}</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>slice</span><span class=p>[:</span><span class=mi>10</span><span class=p>])</span>
+<span class=p>}</span>
+
+<span class=c1>// good: 使用data前应判断长度是否合法
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>decode</span><span class=p>(</span><span class=nx>data</span> <span class=p>[]</span><span class=kt>byte</span><span class=p>)</span> <span class=kt>bool</span> <span class=p>{</span>
+	<span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=nx>data</span><span class=p>)</span> <span class=o>==</span> <span class=mi>6</span> <span class=p>{</span>
+		<span class=k>if</span> <span class=nx>data</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;F&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;U&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;Z&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;Z&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;E&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>data</span><span class=p>[</span><span class=mi>5</span><span class=p>]</span> <span class=o>==</span> <span class=sc>&#39;R&#39;</span> <span class=p>{</span>
+			<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;Good&#34;</span><span class=p>)</span>
+			<span class=k>return</span> <span class=kc>true</span>
+		<span class=p>}</span>
+	<span class=p>}</span>
+	<span class=k>return</span> <span class=kc>false</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=112必须nil指针判断>1.1.2【必须】nil指针判断<a href=#112必须nil指针判断 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>进行指针操作时，必须判断该指针是否为nil，防止程序panic，尤其在进行结构体Unmarshal时</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kd>type</span> <span class=nx>Packet</span> <span class=kd>struct</span> <span class=p>{</span>
+	<span class=nx>PackeyType</span>    <span class=kt>uint8</span>
+	<span class=nx>PackeyVersion</span> <span class=kt>uint8</span>
+	<span class=nx>Data</span>          <span class=o>*</span><span class=nx>Data</span>
+<span class=p>}</span>
+
+<span class=kd>type</span> <span class=nx>Data</span> <span class=kd>struct</span> <span class=p>{</span>
+	<span class=nx>Stat</span> <span class=kt>uint8</span>
+	<span class=nx>Len</span>  <span class=kt>uint8</span>
+	<span class=nx>Buf</span>  <span class=p>[</span><span class=mi>8</span><span class=p>]</span><span class=kt>byte</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=p>(</span><span class=nx>p</span> <span class=o>*</span><span class=nx>Packet</span><span class=p>)</span> <span class=nf>UnmarshalBinary</span><span class=p>(</span><span class=nx>b</span> <span class=p>[]</span><span class=kt>byte</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
+	<span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=nx>b</span><span class=p>)</span> <span class=p>&lt;</span> <span class=mi>2</span> <span class=p>{</span>
+		<span class=k>return</span> <span class=nx>io</span><span class=p>.</span><span class=nx>EOF</span>
+	<span class=p>}</span>
+
+	<span class=nx>p</span><span class=p>.</span><span class=nx>PackeyType</span> <span class=p>=</span> <span class=nx>b</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+	<span class=nx>p</span><span class=p>.</span><span class=nx>PackeyVersion</span> <span class=p>=</span> <span class=nx>b</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
+
+	<span class=c1>// 若长度等于2，那么不会new Data
+</span><span class=c1></span>	<span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=nx>b</span><span class=p>)</span> <span class=p>&gt;</span> <span class=mi>2</span> <span class=p>{</span>
+		<span class=nx>p</span><span class=p>.</span><span class=nx>Data</span> <span class=p>=</span> <span class=nb>new</span><span class=p>(</span><span class=nx>Data</span><span class=p>)</span>
+	<span class=p>}</span>
+	<span class=k>return</span> <span class=kc>nil</span>
+<span class=p>}</span>
+
+<span class=c1>// bad: 未判断指针是否为nil
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>packet</span> <span class=o>:=</span> <span class=nb>new</span><span class=p>(</span><span class=nx>Packet</span><span class=p>)</span>
+	<span class=nx>data</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>([]</span><span class=kt>byte</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+	<span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>packet</span><span class=p>.</span><span class=nf>UnmarshalBinary</span><span class=p>(</span><span class=nx>data</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;Failed to unmarshal packet&#34;</span><span class=p>)</span>
+		<span class=k>return</span>
+	<span class=p>}</span>
+
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;Stat: %v\n&#34;</span><span class=p>,</span> <span class=nx>packet</span><span class=p>.</span><span class=nx>Data</span><span class=p>.</span><span class=nx>Stat</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=c1>// good: 判断Data指针是否为nil
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>packet</span> <span class=o>:=</span> <span class=nb>new</span><span class=p>(</span><span class=nx>Packet</span><span class=p>)</span>
+	<span class=nx>data</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>([]</span><span class=kt>byte</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+
+	<span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>packet</span><span class=p>.</span><span class=nf>UnmarshalBinary</span><span class=p>(</span><span class=nx>data</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;Failed to unmarshal packet&#34;</span><span class=p>)</span>
+		<span class=k>return</span>
+	<span class=p>}</span>
+
+	<span class=k>if</span> <span class=nx>packet</span><span class=p>.</span><span class=nx>Data</span> <span class=o>==</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=k>return</span>
+	<span class=p>}</span>
+
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;Stat: %v\n&#34;</span><span class=p>,</span> <span class=nx>packet</span><span class=p>.</span><span class=nx>Data</span><span class=p>.</span><span class=nx>Stat</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=113必须整数安全>1.1.3【必须】整数安全<a href=#113必须整数安全 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li><p>在进行数字运算操作时，需要做好长度限制，防止外部输入运算导致异常：</p><ul><li>确保无符号整数运算时不会反转</li><li>确保有符号整数运算时不会出现溢出</li><li>确保整型转换时不会出现截断错误</li><li>确保整型转换时不会出现符号错误</li></ul></li><li><p>以下场景必须严格进行长度限制：</p><ul><li>作为数组索引</li><li>作为对象的长度或者大小</li><li>作为数组的边界（如作为循环计数器）</li></ul></li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad: 未限制长度，导致整数溢出
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>overflow</span><span class=p>(</span><span class=nx>numControlByUser</span> <span class=kt>int32</span><span class=p>)</span> <span class=p>{</span>
+	<span class=kd>var</span> <span class=nx>numInt</span> <span class=kt>int32</span> <span class=p>=</span> <span class=mi>0</span>
+	<span class=nx>numInt</span> <span class=p>=</span> <span class=nx>numControlByUser</span> <span class=o>+</span> <span class=mi>1</span>
+	<span class=c1>// 对长度限制不当，导致整数溢出
+</span><span class=c1></span>	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;%d\n&#34;</span><span class=p>,</span> <span class=nx>numInt</span><span class=p>)</span>
+	<span class=c1>// 使用numInt，可能导致其他错误
+</span><span class=c1></span><span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nf>overflow</span><span class=p>(</span><span class=mi>2147483647</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=c1>// good
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>overflow</span><span class=p>(</span><span class=nx>numControlByUser</span> <span class=kt>int32</span><span class=p>)</span> <span class=p>{</span>
+	<span class=kd>var</span> <span class=nx>numInt</span> <span class=kt>int32</span> <span class=p>=</span> <span class=mi>0</span>
+	<span class=nx>numInt</span> <span class=p>=</span> <span class=nx>numControlByUser</span> <span class=o>+</span> <span class=mi>1</span>
+	<span class=k>if</span> <span class=nx>numInt</span> <span class=p>&lt;</span> <span class=mi>0</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;integer overflow&#34;</span><span class=p>)</span>
+		<span class=k>return</span>
+	<span class=p>}</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;integer ok&#34;</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nf>overflow</span><span class=p>(</span><span class=mi>2147483647</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=114必须make分配长度验证>1.1.4【必须】make分配长度验证<a href=#114必须make分配长度验证 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>在进行make分配内存时，需要对外部可控的长度进行校验，防止程序panic。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>parse</span><span class=p>(</span><span class=nx>lenControlByUser</span> <span class=kt>int</span><span class=p>,</span> <span class=nx>data</span> <span class=p>[]</span><span class=kt>byte</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>size</span> <span class=o>:=</span> <span class=nx>lenControlByUser</span>
+	<span class=c1>// 对外部传入的size，进行长度判断以免导致panic
+</span><span class=c1></span>	<span class=nx>buffer</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>([]</span><span class=kt>byte</span><span class=p>,</span> <span class=nx>size</span><span class=p>)</span>
+	<span class=nb>copy</span><span class=p>(</span><span class=nx>buffer</span><span class=p>,</span> <span class=nx>data</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=c1>// good
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>parse</span><span class=p>(</span><span class=nx>lenControlByUser</span> <span class=kt>int</span><span class=p>,</span> <span class=nx>data</span> <span class=p>[]</span><span class=kt>byte</span><span class=p>)</span> <span class=p>([]</span><span class=kt>byte</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>size</span> <span class=o>:=</span> <span class=nx>lenControlByUser</span>
+	<span class=c1>// 限制外部可控的长度大小范围
+</span><span class=c1></span>	<span class=k>if</span> <span class=nx>size</span> <span class=p>&gt;</span> <span class=mi>64</span><span class=o>*</span><span class=mi>1024</span><span class=o>*</span><span class=mi>1024</span> <span class=p>{</span>
+		<span class=k>return</span> <span class=kc>nil</span><span class=p>,</span> <span class=nx>errors</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=s>&#34;value too large&#34;</span><span class=p>)</span>
+	<span class=p>}</span>
+	<span class=nx>buffer</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>([]</span><span class=kt>byte</span><span class=p>,</span> <span class=nx>size</span><span class=p>)</span>
+	<span class=nb>copy</span><span class=p>(</span><span class=nx>buffer</span><span class=p>,</span> <span class=nx>data</span><span class=p>)</span>
+	<span class=k>return</span> <span class=nx>buffer</span><span class=p>,</span> <span class=kc>nil</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=115必须禁止setfinalizer和指针循环引用同时使用>1.1.5【必须】禁止SetFinalizer和指针循环引用同时使用<a href=#115必须禁止setfinalizer和指针循环引用同时使用 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>当一个对象从被GC选中到移除内存之前，runtime.SetFinalizer()都不会执行，即使程序正常结束或者发生错误。由指针构成的“循环引用”虽然能被GC正确处理，但由于无法确定Finalizer依赖顺序，从而无法调用runtime.SetFinalizer()，导致目标对象无法变成可达状态，从而造成内存无法被回收。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>foo</span><span class=p>()</span> <span class=p>{</span>
+	<span class=kd>var</span> <span class=nx>a</span><span class=p>,</span> <span class=nx>b</span> <span class=nx>Data</span>
+	<span class=nx>a</span><span class=p>.</span><span class=nx>o</span> <span class=p>=</span> <span class=o>&amp;</span><span class=nx>b</span>
+	<span class=nx>b</span><span class=p>.</span><span class=nx>o</span> <span class=p>=</span> <span class=o>&amp;</span><span class=nx>a</span>
+
+	<span class=c1>// 指针循环引用，SetFinalizer()无法正常调用
+</span><span class=c1></span>	<span class=nx>runtime</span><span class=p>.</span><span class=nf>SetFinalizer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>a</span><span class=p>,</span> <span class=kd>func</span><span class=p>(</span><span class=nx>d</span> <span class=o>*</span><span class=nx>Data</span><span class=p>)</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;a %p final.\n&#34;</span><span class=p>,</span> <span class=nx>d</span><span class=p>)</span>
+	<span class=p>})</span>
+	<span class=nx>runtime</span><span class=p>.</span><span class=nf>SetFinalizer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>b</span><span class=p>,</span> <span class=kd>func</span><span class=p>(</span><span class=nx>d</span> <span class=o>*</span><span class=nx>Data</span><span class=p>)</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;b %p final.\n&#34;</span><span class=p>,</span> <span class=nx>d</span><span class=p>)</span>
+	<span class=p>})</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=k>for</span> <span class=p>{</span>
+		<span class=nf>foo</span><span class=p>()</span>
+		<span class=nx>time</span><span class=p>.</span><span class=nf>Sleep</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Millisecond</span><span class=p>)</span>
+	<span class=p>}</span>
+<span class=p>}</span>
+
+</code></pre></div><h4 id=116必须禁止重复释放channel>1.1.6【必须】禁止重复释放channel<a href=#116必须禁止重复释放channel class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>重复释放一般存在于异常流程判断中，如果恶意攻击者构造出异常条件使程序重复释放channel，则会触发运行时panic，从而造成DoS攻击。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>foo</span><span class=p>(</span><span class=nx>c</span> <span class=kd>chan</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+	<span class=k>defer</span> <span class=nb>close</span><span class=p>(</span><span class=nx>c</span><span class=p>)</span>
+	<span class=nx>err</span> <span class=o>:=</span> <span class=nf>processBusiness</span><span class=p>()</span>
+	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=nx>c</span> <span class=o>&lt;-</span> <span class=mi>0</span>
+		<span class=nb>close</span><span class=p>(</span><span class=nx>c</span><span class=p>)</span> <span class=c1>// 重复释放channel
+</span><span class=c1></span>		<span class=k>return</span>
+	<span class=p>}</span>
+	<span class=nx>c</span> <span class=o>&lt;-</span> <span class=mi>1</span>
+<span class=p>}</span>
+
+<span class=c1>// good
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>foo</span><span class=p>(</span><span class=nx>c</span> <span class=kd>chan</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+	<span class=k>defer</span> <span class=nb>close</span><span class=p>(</span><span class=nx>c</span><span class=p>)</span> <span class=c1>// 使用defer延迟关闭channel
+</span><span class=c1></span>	<span class=nx>err</span> <span class=o>:=</span> <span class=nf>processBusiness</span><span class=p>()</span>
+	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=nx>c</span> <span class=o>&lt;-</span> <span class=mi>0</span>
+		<span class=k>return</span>
+	<span class=p>}</span>
+	<span class=nx>c</span> <span class=o>&lt;-</span> <span class=mi>1</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=117必须确保每个协程都能退出>1.1.7【必须】确保每个协程都能退出<a href=#117必须确保每个协程都能退出 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>启动一个协程就会做一个入栈操作，在系统不退出的情况下，协程也没有设置退出条件，则相当于协程失去了控制，它占用的资源无法回收，可能会导致内存泄露。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad: 协程没有设置退出条件
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>doWaiter</span><span class=p>(</span><span class=nx>name</span> <span class=kt>string</span><span class=p>,</span> <span class=nx>second</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+	<span class=k>for</span> <span class=p>{</span>
+		<span class=nx>time</span><span class=p>.</span><span class=nf>Sleep</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nf>Duration</span><span class=p>(</span><span class=nx>second</span><span class=p>)</span> <span class=o>*</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>name</span><span class=p>,</span> <span class=s>&#34; is ready!&#34;</span><span class=p>)</span>
+	<span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=118推荐不使用unsafe包>1.1.8【推荐】不使用unsafe包<a href=#118推荐不使用unsafe包 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>由于unsafe包绕过了 Golang 的内存安全原则，一般来说使用该库是不安全的，可导致内存破坏，尽量避免使用该包。若必须要使用unsafe操作指针，必须做好安全校验。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad: 通过unsafe操作原始指针
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>unsafePointer</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>b</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>([]</span><span class=kt>byte</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+	<span class=nx>foo</span> <span class=o>:=</span> <span class=p>(</span><span class=o>*</span><span class=kt>int</span><span class=p>)(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=nb>uintptr</span><span class=p>(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>b</span><span class=p>[</span><span class=mi>0</span><span class=p>]))</span> <span class=o>+</span> <span class=nb>uintptr</span><span class=p>(</span><span class=mh>0xfffffffe</span><span class=p>)))</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Print</span><span class=p>(</span><span class=o>*</span><span class=nx>foo</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=c1>// [signal SIGSEGV: segmentation violation code=0x1 addr=0xc100068f55 pc=0x49142b]
+</span><span class=c1></span>
+</code></pre></div><h4 id=119推荐不使用slice作为函数入参>1.1.9【推荐】不使用slice作为函数入参<a href=#119推荐不使用slice作为函数入参 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>slice在作为函数入参时，函数内对slice的修改可能会影响原始数据</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go>  <span class=c1>// bad
+</span><span class=c1></span>  <span class=c1>// slice作为函数入参时包含原始数组指针
+</span><span class=c1></span>  <span class=kd>func</span> <span class=nf>modify</span><span class=p>(</span><span class=nx>array</span> <span class=p>[]</span><span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+      <span class=nx>array</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=p>=</span> <span class=mi>10</span> <span class=c1>// 对入参slice的元素修改会影响原始数据
+</span><span class=c1></span>  <span class=p>}</span>
+  
+  <span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+      <span class=nx>array</span> <span class=o>:=</span> <span class=p>[]</span><span class=kt>int</span><span class=p>{</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>5</span><span class=p>}</span>
+  
+      <span class=nf>modify</span><span class=p>(</span><span class=nx>array</span><span class=p>)</span>
+      <span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>array</span><span class=p>)</span> <span class=c1>// output：[10 2 3 4 5]
+</span><span class=c1></span>  <span class=p>}</span>
+
+  <span class=c1>// good
+</span><span class=c1></span>  <span class=c1>// 数组作为函数入参，而不是slice
+</span><span class=c1></span>  <span class=kd>func</span> <span class=nf>modify</span><span class=p>(</span><span class=nx>array</span> <span class=p>[</span><span class=mi>5</span><span class=p>]</span><span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+    <span class=nx>array</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=p>=</span> <span class=mi>10</span>
+  <span class=p>}</span>
+
+  <span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+      <span class=c1>// 传入数组，注意数组与slice的区别
+</span><span class=c1></span>      <span class=nx>array</span> <span class=o>:=</span> <span class=p>[</span><span class=mi>5</span><span class=p>]</span><span class=kt>int</span><span class=p>{</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>5</span><span class=p>}</span>
+  
+      <span class=nf>modify</span><span class=p>(</span><span class=nx>array</span><span class=p>)</span>
+      <span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>array</span><span class=p>)</span>
+  <span class=p>}</span>
+  
+</code></pre></div><p></p><h3 id=12-文件操作>1.2 文件操作<a href=#12-文件操作 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=121必须-路径穿越检查>1.2.1【必须】 路径穿越检查<a href=#121必须-路径穿越检查 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>在进行文件操作时，如果对外部传入的文件名未做限制，可能导致任意文件读取或者任意文件写入，严重可能导致代码执行。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad: 任意文件读取
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>handler</span><span class=p>(</span><span class=nx>w</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>r</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>path</span> <span class=o>:=</span> <span class=nx>r</span><span class=p>.</span><span class=nx>URL</span><span class=p>.</span><span class=nf>Query</span><span class=p>()[</span><span class=s>&#34;path&#34;</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span>
+
+	<span class=c1>// 未过滤文件路径，可能导致任意文件读取
+</span><span class=c1></span>	<span class=nx>data</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>ioutil</span><span class=p>.</span><span class=nf>ReadFile</span><span class=p>(</span><span class=nx>path</span><span class=p>)</span>
+	<span class=nx>w</span><span class=p>.</span><span class=nf>Write</span><span class=p>(</span><span class=nx>data</span><span class=p>)</span>
+
+	<span class=c1>// 对外部传入的文件名变量，还需要验证是否存在../等路径穿越的文件名
+</span><span class=c1></span>	<span class=nx>data</span><span class=p>,</span> <span class=nx>_</span> <span class=p>=</span> <span class=nx>ioutil</span><span class=p>.</span><span class=nf>ReadFile</span><span class=p>(</span><span class=nx>filepath</span><span class=p>.</span><span class=nf>Join</span><span class=p>(</span><span class=s>&#34;/home/user/&#34;</span><span class=p>,</span> <span class=nx>path</span><span class=p>))</span>
+	<span class=nx>w</span><span class=p>.</span><span class=nf>Write</span><span class=p>(</span><span class=nx>data</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=c1>// bad: 任意文件写入
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>unzip</span><span class=p>(</span><span class=nx>f</span> <span class=kt>string</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>r</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>zip</span><span class=p>.</span><span class=nf>OpenReader</span><span class=p>(</span><span class=nx>f</span><span class=p>)</span>
+	<span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>f</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>r</span><span class=p>.</span><span class=nx>File</span> <span class=p>{</span>
+		<span class=nx>p</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>filepath</span><span class=p>.</span><span class=nf>Abs</span><span class=p>(</span><span class=nx>f</span><span class=p>.</span><span class=nx>Name</span><span class=p>)</span>
+		<span class=c1>// 未验证压缩文件名，可能导致../等路径穿越，任意文件路径写入
+</span><span class=c1></span>		<span class=nx>ioutil</span><span class=p>.</span><span class=nf>WriteFile</span><span class=p>(</span><span class=nx>p</span><span class=p>,</span> <span class=p>[]</span><span class=nb>byte</span><span class=p>(</span><span class=s>&#34;present&#34;</span><span class=p>),</span> <span class=mo>0640</span><span class=p>)</span>
+	<span class=p>}</span>
+<span class=p>}</span>
+
+<span class=c1>// good: 检查压缩的文件名是否包含..路径穿越特征字符，防止任意写入
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>unzipGood</span><span class=p>(</span><span class=nx>f</span> <span class=kt>string</span><span class=p>)</span> <span class=kt>bool</span> <span class=p>{</span>
+	<span class=nx>r</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>zip</span><span class=p>.</span><span class=nf>OpenReader</span><span class=p>(</span><span class=nx>f</span><span class=p>)</span>
+	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;read zip file fail&#34;</span><span class=p>)</span>
+		<span class=k>return</span> <span class=kc>false</span>
+	<span class=p>}</span>
+	<span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>f</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>r</span><span class=p>.</span><span class=nx>File</span> <span class=p>{</span>
+		<span class=k>if</span> <span class=p>!</span><span class=nx>strings</span><span class=p>.</span><span class=nf>Contains</span><span class=p>(</span><span class=nx>f</span><span class=p>.</span><span class=nx>Name</span><span class=p>,</span> <span class=s>&#34;..&#34;</span><span class=p>)</span> <span class=p>{</span>
+			<span class=nx>p</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>filepath</span><span class=p>.</span><span class=nf>Abs</span><span class=p>(</span><span class=nx>f</span><span class=p>.</span><span class=nx>Name</span><span class=p>)</span>
+			<span class=nx>ioutil</span><span class=p>.</span><span class=nf>WriteFile</span><span class=p>(</span><span class=nx>p</span><span class=p>,</span> <span class=p>[]</span><span class=nb>byte</span><span class=p>(</span><span class=s>&#34;present&#34;</span><span class=p>),</span> <span class=mo>0640</span><span class=p>)</span>
+		<span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+			<span class=k>return</span> <span class=kc>false</span>
+		<span class=p>}</span>
+	<span class=p>}</span>
+	<span class=k>return</span> <span class=kc>true</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=122必须-文件访问权限>1.2.2【必须】 文件访问权限<a href=#122必须-文件访问权限 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>根据创建文件的敏感性设置不同级别的访问权限，以防止敏感数据被任意权限用户读取。例如，设置文件权限为：<code>-rw-r-----</code></li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=nx>ioutil</span><span class=p>.</span><span class=nf>WriteFile</span><span class=p>(</span><span class=nx>p</span><span class=p>,</span> <span class=p>[]</span><span class=nb>byte</span><span class=p>(</span><span class=s>&#34;present&#34;</span><span class=p>),</span> <span class=mo>0640</span><span class=p>)</span>
+</code></pre></div><p></p><h3 id=13-系统接口>1.3 系统接口<a href=#13-系统接口 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><p><strong>1.3.1【必须】命令执行检查</strong></p><ul><li>使用<code>exec.Command</code>、<code>exec.CommandContext</code>、<code>syscall.StartProcess</code>、<code>os.StartProcess</code>等函数时，第一个参数（path）直接取外部输入值时，应使用白名单限定可执行的命令范围，不允许传入<code>bash</code>、<code>cmd</code>、<code>sh</code>等命令；</li><li>使用<code>exec.Command</code>、<code>exec.CommandContext</code>等函数时，通过<code>bash</code>、<code>cmd</code>、<code>sh</code>等创建shell，-c后的参数（arg）拼接外部输入，应过滤\n $ & ; | ' " ( ) `等潜在恶意字符；</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>foo</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>userInputedVal</span> <span class=o>:=</span> <span class=s>&#34;&amp;&amp; echo &#39;hello&#39;&#34;</span> <span class=c1>// 假设外部传入该变量值
+</span><span class=c1></span>	<span class=nx>cmdName</span> <span class=o>:=</span> <span class=s>&#34;ping &#34;</span> <span class=o>+</span> <span class=nx>userInputedVal</span>
+
+	<span class=c1>// 未判断外部输入是否存在命令注入字符，结合sh可造成命令注入
+</span><span class=c1></span>	<span class=nx>cmd</span> <span class=o>:=</span> <span class=nx>exec</span><span class=p>.</span><span class=nf>Command</span><span class=p>(</span><span class=s>&#34;sh&#34;</span><span class=p>,</span> <span class=s>&#34;-c&#34;</span><span class=p>,</span> <span class=nx>cmdName</span><span class=p>)</span>
+	<span class=nx>output</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>cmd</span><span class=p>.</span><span class=nf>CombinedOutput</span><span class=p>()</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nb>string</span><span class=p>(</span><span class=nx>output</span><span class=p>))</span>
+
+	<span class=nx>cmdName</span> <span class=o>:=</span> <span class=s>&#34;ls&#34;</span>
+	<span class=c1>// 未判断外部输入是否是预期命令
+</span><span class=c1></span>	<span class=nx>cmd</span> <span class=o>:=</span> <span class=nx>exec</span><span class=p>.</span><span class=nf>Command</span><span class=p>(</span><span class=nx>cmdName</span><span class=p>)</span>
+	<span class=nx>output</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>cmd</span><span class=p>.</span><span class=nf>CombinedOutput</span><span class=p>()</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nb>string</span><span class=p>(</span><span class=nx>output</span><span class=p>))</span>
+<span class=p>}</span>
+
+<span class=c1>// good
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>checkIllegal</span><span class=p>(</span><span class=nx>cmdName</span> <span class=kt>string</span><span class=p>)</span> <span class=kt>bool</span> <span class=p>{</span>
+	<span class=k>if</span> <span class=nx>strings</span><span class=p>.</span><span class=nf>Contains</span><span class=p>(</span><span class=nx>cmdName</span><span class=p>,</span> <span class=s>&#34;&amp;&#34;</span><span class=p>)</span> <span class=o>||</span> <span class=nx>strings</span><span class=p>.</span><span class=nf>Contains</span><span class=p>(</span><span class=nx>cmdName</span><span class=p>,</span> <span class=s>&#34;|&#34;</span><span class=p>)</span> <span class=o>||</span> <span class=nx>strings</span><span class=p>.</span><span class=nf>Contains</span><span class=p>(</span><span class=nx>cmdName</span><span class=p>,</span> <span class=s>&#34;;&#34;</span><span class=p>)</span> <span class=o>||</span>
+		<span class=nx>strings</span><span class=p>.</span><span class=nf>Contains</span><span class=p>(</span><span class=nx>cmdName</span><span class=p>,</span> <span class=s>&#34;$&#34;</span><span class=p>)</span> <span class=o>||</span> <span class=nx>strings</span><span class=p>.</span><span class=nf>Contains</span><span class=p>(</span><span class=nx>cmdName</span><span class=p>,</span> <span class=s>&#34;&#39;&#34;</span><span class=p>)</span> <span class=o>||</span> <span class=nx>strings</span><span class=p>.</span><span class=nf>Contains</span><span class=p>(</span><span class=nx>cmdName</span><span class=p>,</span> <span class=s>&#34;`&#34;</span><span class=p>)</span> <span class=o>||</span>
+		<span class=nx>strings</span><span class=p>.</span><span class=nf>Contains</span><span class=p>(</span><span class=nx>cmdName</span><span class=p>,</span> <span class=s>&#34;(&#34;</span><span class=p>)</span> <span class=o>||</span> <span class=nx>strings</span><span class=p>.</span><span class=nf>Contains</span><span class=p>(</span><span class=nx>cmdName</span><span class=p>,</span> <span class=s>&#34;)&#34;</span><span class=p>)</span> <span class=o>||</span> <span class=nx>strings</span><span class=p>.</span><span class=nf>Contains</span><span class=p>(</span><span class=nx>cmdName</span><span class=p>,</span> <span class=s>&#34;\&#34;&#34;</span><span class=p>)</span> <span class=p>{</span>
+		<span class=k>return</span> <span class=kc>true</span>
+	<span class=p>}</span>
+	<span class=k>return</span> <span class=kc>false</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>userInputedVal</span> <span class=o>:=</span> <span class=s>&#34;&amp;&amp; echo &#39;hello&#39;&#34;</span>
+	<span class=nx>cmdName</span> <span class=o>:=</span> <span class=s>&#34;ping &#34;</span> <span class=o>+</span> <span class=nx>userInputedVal</span>
+
+	<span class=k>if</span> <span class=nf>checkIllegal</span><span class=p>(</span><span class=nx>cmdName</span><span class=p>)</span> <span class=p>{</span> <span class=c1>// 检查传给sh的命令是否有特殊字符
+</span><span class=c1></span>		<span class=k>return</span> <span class=c1>// 存在特殊字符直接return
+</span><span class=c1></span>	<span class=p>}</span>
+
+	<span class=nx>cmd</span> <span class=o>:=</span> <span class=nx>exec</span><span class=p>.</span><span class=nf>Command</span><span class=p>(</span><span class=s>&#34;sh&#34;</span><span class=p>,</span> <span class=s>&#34;-c&#34;</span><span class=p>,</span> <span class=nx>cmdName</span><span class=p>)</span>
+	<span class=nx>output</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>cmd</span><span class=p>.</span><span class=nf>CombinedOutput</span><span class=p>()</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nb>string</span><span class=p>(</span><span class=nx>output</span><span class=p>))</span>
+<span class=p>}</span>
+</code></pre></div><p></p><h3 id=14-通信安全>1.4 通信安全<a href=#14-通信安全 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=141必须网络通信采用tls方式>1.4.1【必须】网络通信采用TLS方式<a href=#141必须网络通信采用tls方式 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>明文传输的通信协议目前已被验证存在较大安全风险，被中间人劫持后可能导致许多安全风险，因此必须采用至少TLS的安全通信方式保证通信安全，例如gRPC/Websocket都使用TLS1.3。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// good
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>http</span><span class=p>.</span><span class=nf>HandleFunc</span><span class=p>(</span><span class=s>&#34;/&#34;</span><span class=p>,</span> <span class=kd>func</span><span class=p>(</span><span class=nx>w</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>req</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+		<span class=nx>w</span><span class=p>.</span><span class=nf>Header</span><span class=p>().</span><span class=nf>Add</span><span class=p>(</span><span class=s>&#34;Strict-Transport-Security&#34;</span><span class=p>,</span> <span class=s>&#34;max-age=63072000; includeSubDomains&#34;</span><span class=p>)</span>
+		<span class=nx>w</span><span class=p>.</span><span class=nf>Write</span><span class=p>([]</span><span class=nb>byte</span><span class=p>(</span><span class=s>&#34;This is an example server.\n&#34;</span><span class=p>))</span>
+	<span class=p>})</span>
+
+	<span class=c1>// 服务器配置证书与私钥
+</span><span class=c1></span>	<span class=nx>log</span><span class=p>.</span><span class=nf>Fatal</span><span class=p>(</span><span class=nx>http</span><span class=p>.</span><span class=nf>ListenAndServeTLS</span><span class=p>(</span><span class=s>&#34;:443&#34;</span><span class=p>,</span> <span class=s>&#34;yourCert.pem&#34;</span><span class=p>,</span> <span class=s>&#34;yourKey.pem&#34;</span><span class=p>,</span> <span class=kc>nil</span><span class=p>))</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=142推荐tls启用证书验证>1.4.2【推荐】TLS启用证书验证<a href=#142推荐tls启用证书验证 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>TLS证书应当是有效的、未过期的，且配置正确的域名，生产环境的服务端应启用证书验证。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad
+</span><span class=c1></span><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;crypto/tls&#34;</span>
+	<span class=s>&#34;net/http&#34;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nf>doAuthReq</span><span class=p>(</span><span class=nx>authReq</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Response</span> <span class=p>{</span>
+	<span class=nx>tr</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>http</span><span class=p>.</span><span class=nx>Transport</span><span class=p>{</span>
+		<span class=nx>TLSClientConfig</span><span class=p>:</span> <span class=o>&amp;</span><span class=nx>tls</span><span class=p>.</span><span class=nx>Config</span><span class=p>{</span><span class=nx>InsecureSkipVerify</span><span class=p>:</span> <span class=kc>true</span><span class=p>},</span>
+	<span class=p>}</span>
+	<span class=nx>client</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>http</span><span class=p>.</span><span class=nx>Client</span><span class=p>{</span><span class=nx>Transport</span><span class=p>:</span> <span class=nx>tr</span><span class=p>}</span>
+	<span class=nx>res</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>client</span><span class=p>.</span><span class=nf>Do</span><span class=p>(</span><span class=nx>authReq</span><span class=p>)</span>
+	<span class=k>return</span> <span class=nx>res</span>
+<span class=p>}</span>
+
+<span class=c1>// good
+</span><span class=c1></span><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;crypto/tls&#34;</span>
+	<span class=s>&#34;net/http&#34;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nf>doAuthReq</span><span class=p>(</span><span class=nx>authReq</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Response</span> <span class=p>{</span>
+	<span class=nx>tr</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>http</span><span class=p>.</span><span class=nx>Transport</span><span class=p>{</span>
+		<span class=nx>TLSClientConfig</span><span class=p>:</span> <span class=o>&amp;</span><span class=nx>tls</span><span class=p>.</span><span class=nx>Config</span><span class=p>{</span><span class=nx>InsecureSkipVerify</span><span class=p>:</span> <span class=kc>false</span><span class=p>},</span>
+	<span class=p>}</span>
+	<span class=nx>client</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>http</span><span class=p>.</span><span class=nx>Client</span><span class=p>{</span><span class=nx>Transport</span><span class=p>:</span> <span class=nx>tr</span><span class=p>}</span>
+	<span class=nx>res</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>client</span><span class=p>.</span><span class=nf>Do</span><span class=p>(</span><span class=nx>authReq</span><span class=p>)</span>
+	<span class=k>return</span> <span class=nx>res</span>
+<span class=p>}</span>
+</code></pre></div><p></p><h3 id=15-敏感数据保护>1.5 敏感数据保护<a href=#15-敏感数据保护 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=151必须敏感信息访问>1.5.1【必须】敏感信息访问<a href=#151必须敏感信息访问 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>禁止将敏感信息硬编码在程序中，既可能会将敏感信息暴露给攻击者，也会增加代码管理和维护的难度</li><li>使用配置中心系统统一托管密钥等敏感信息</li></ul><h4 id=152必须敏感数据输出>1.5.2【必须】敏感数据输出<a href=#152必须敏感数据输出 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>只输出必要的最小数据集，避免多余字段暴露引起敏感信息泄露</li><li>不能在日志保存密码（包括明文密码和密文密码）、密钥和其它敏感信息</li><li>对于必须输出的敏感信息，必须进行合理脱敏展示</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>serve</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>http</span><span class=p>.</span><span class=nf>HandleFunc</span><span class=p>(</span><span class=s>&#34;/register&#34;</span><span class=p>,</span> <span class=kd>func</span><span class=p>(</span><span class=nx>w</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>r</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+		<span class=nx>r</span><span class=p>.</span><span class=nf>ParseForm</span><span class=p>()</span>
+		<span class=nx>user</span> <span class=o>:=</span> <span class=nx>r</span><span class=p>.</span><span class=nx>Form</span><span class=p>.</span><span class=nf>Get</span><span class=p>(</span><span class=s>&#34;user&#34;</span><span class=p>)</span>
+		<span class=nx>pw</span> <span class=o>:=</span> <span class=nx>r</span><span class=p>.</span><span class=nx>Form</span><span class=p>.</span><span class=nf>Get</span><span class=p>(</span><span class=s>&#34;password&#34;</span><span class=p>)</span>
+
+		<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;Registering new user %s with password %s.\n&#34;</span><span class=p>,</span> <span class=nx>user</span><span class=p>,</span> <span class=nx>pw</span><span class=p>)</span>
+	<span class=p>})</span>
+	<span class=nx>http</span><span class=p>.</span><span class=nf>ListenAndServe</span><span class=p>(</span><span class=s>&#34;:80&#34;</span><span class=p>,</span> <span class=kc>nil</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=c1>// good
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>serve1</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>http</span><span class=p>.</span><span class=nf>HandleFunc</span><span class=p>(</span><span class=s>&#34;/register&#34;</span><span class=p>,</span> <span class=kd>func</span><span class=p>(</span><span class=nx>w</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>r</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+		<span class=nx>r</span><span class=p>.</span><span class=nf>ParseForm</span><span class=p>()</span>
+		<span class=nx>user</span> <span class=o>:=</span> <span class=nx>r</span><span class=p>.</span><span class=nx>Form</span><span class=p>.</span><span class=nf>Get</span><span class=p>(</span><span class=s>&#34;user&#34;</span><span class=p>)</span>
+		<span class=nx>pw</span> <span class=o>:=</span> <span class=nx>r</span><span class=p>.</span><span class=nx>Form</span><span class=p>.</span><span class=nf>Get</span><span class=p>(</span><span class=s>&#34;password&#34;</span><span class=p>)</span>
+
+		<span class=nx>log</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;Registering new user %s.\n&#34;</span><span class=p>,</span> <span class=nx>user</span><span class=p>)</span>
+
+		<span class=c1>// ...
+</span><span class=c1></span>		<span class=nf>use</span><span class=p>(</span><span class=nx>pw</span><span class=p>)</span>
+	<span class=p>})</span>
+	<span class=nx>http</span><span class=p>.</span><span class=nf>ListenAndServe</span><span class=p>(</span><span class=s>&#34;:80&#34;</span><span class=p>,</span> <span class=kc>nil</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div><ul><li>避免通过GET方法、代码注释、自动填充、缓存等方式泄露敏感信息</li></ul><h4 id=153必须敏感数据存储>1.5.3【必须】敏感数据存储<a href=#153必须敏感数据存储 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>敏感数据应使用SHA2、RSA等算法进行加密存储</li><li>敏感数据应使用独立的存储层，并在访问层开启访问控制</li><li>包含敏感信息的临时文件或缓存一旦不再需要应立刻删除</li></ul><h4 id=154必须异常处理和日志记录>1.5.4【必须】异常处理和日志记录<a href=#154必须异常处理和日志记录 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>应合理使用panic、recover、defer处理系统异常，避免出错信息输出到前端</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=k>defer</span> <span class=kd>func</span> <span class=p>()</span> <span class=p>{</span>
+	<span class=k>if</span> <span class=nx>r</span> <span class=o>:=</span> <span class=nb>recover</span><span class=p>();</span> <span class=nx>r</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;Recovered in start()&#34;</span><span class=p>)</span>
+	<span class=p>}</span>
+<span class=p>}()</span>
+</code></pre></div><ul><li>对外环境禁止开启debug模式，或将程序运行日志输出到前端</li></ul><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>// bad
+dlv --listen<span class=o>=</span>:2345 --headless<span class=o>=</span><span class=nb>true</span> --api-version<span class=o>=</span><span class=m>2</span> debug test.go
+// good
+dlv debug test.go
+</code></pre></div><p></p><h3 id=16-加密解密>1.6 加密解密<a href=#16-加密解密 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=161必须不得硬编码密码密钥>1.6.1【必须】不得硬编码密码/密钥<a href=#161必须不得硬编码密码密钥 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>在进行用户登陆，加解密算法等操作时，不得在代码里硬编码密钥或密码，可通过变换算法或者配置等方式设置密码或者密钥。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad
+</span><span class=c1></span><span class=kd>const</span> <span class=p>(</span>
+	<span class=nx>user</span>     <span class=p>=</span> <span class=s>&#34;dbuser&#34;</span>
+	<span class=nx>password</span> <span class=p>=</span> <span class=s>&#34;s3cretp4ssword&#34;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nf>connect</span><span class=p>()</span> <span class=o>*</span><span class=nx>sql</span><span class=p>.</span><span class=nx>DB</span> <span class=p>{</span>
+	<span class=nx>connStr</span> <span class=o>:=</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Sprintf</span><span class=p>(</span><span class=s>&#34;postgres://%s:%s@localhost/pqgotest&#34;</span><span class=p>,</span> <span class=nx>user</span><span class=p>,</span> <span class=nx>password</span><span class=p>)</span>
+	<span class=nx>db</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>sql</span><span class=p>.</span><span class=nf>Open</span><span class=p>(</span><span class=s>&#34;postgres&#34;</span><span class=p>,</span> <span class=nx>connStr</span><span class=p>)</span>
+	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=k>return</span> <span class=kc>nil</span>
+	<span class=p>}</span>
+	<span class=k>return</span> <span class=nx>db</span>
+<span class=p>}</span>
+
+<span class=c1>// bad
+</span><span class=c1></span><span class=kd>var</span> <span class=p>(</span>
+	<span class=nx>commonkey</span> <span class=p>=</span> <span class=p>[]</span><span class=nb>byte</span><span class=p>(</span><span class=s>&#34;0123456789abcdef&#34;</span><span class=p>)</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nf>AesEncrypt</span><span class=p>(</span><span class=nx>plaintext</span> <span class=kt>string</span><span class=p>)</span> <span class=p>(</span><span class=kt>string</span><span class=p>,</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>block</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>aes</span><span class=p>.</span><span class=nf>NewCipher</span><span class=p>(</span><span class=nx>commonkey</span><span class=p>)</span>
+	<span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=k>return</span> <span class=s>&#34;&#34;</span><span class=p>,</span> <span class=nx>err</span>
+	<span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=162必须密钥存储安全>1.6.2【必须】密钥存储安全<a href=#162必须密钥存储安全 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>在使用对称密码算法时，需要保护好加密密钥。当算法涉及敏感、业务数据时，可通过非对称算法协商加密密钥。其他较为不敏感的数据加密，可以通过变换算法等方式保护密钥。</li></ul><h4 id=163推荐不使用弱密码算法>1.6.3【推荐】不使用弱密码算法<a href=#163推荐不使用弱密码算法 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>在使用加密算法时，不建议使用加密强度较弱的算法。</li></ul><pre><code>// bad
+crypto/des，crypto/md5，crypto/sha1，crypto/rc4等。
+
+// good
+crypto/rsa，crypto/aes等。
+</code></pre><p></p><h3 id=17-正则表达式>1.7 正则表达式<a href=#17-正则表达式 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=171推荐使用regexp进行正则表达式匹配>1.7.1【推荐】使用regexp进行正则表达式匹配<a href=#171推荐使用regexp进行正则表达式匹配 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>正则表达式编写不恰当可被用于DoS攻击，造成服务不可用，推荐使用regexp包进行正则表达式匹配。regexp保证了线性时间性能和优雅的失败：对解析器、编译器和执行引擎都进行了内存限制。但regexp不支持以下正则表达式特性，如业务依赖这些特性，则regexp不适合使用。<ul><li>回溯引用<a href=https://www.regular-expressions.info/backref.html>Backreferences</a></li><li>查看<a href=https://www.regular-expressions.info/lookaround.html>Lookaround</a></li></ul></li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// good
+</span><span class=c1></span><span class=nx>matched</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>regexp</span><span class=p>.</span><span class=nf>MatchString</span><span class=p>(</span><span class=s>`a.b`</span><span class=p>,</span> <span class=s>&#34;aaxbb&#34;</span><span class=p>)</span>
+<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>matched</span><span class=p>)</span> <span class=c1>// true
+</span><span class=c1></span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>     <span class=c1>// nil
+</span></code></pre></div><p></p><h1 id=后台类>后台类<a href=#后台类 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h1><p></p><h2 id=1-代码实现类-1>1 代码实现类<a href=#1-代码实现类-1 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p></p><h3 id=11-输入校验>1.1 输入校验<a href=#11-输入校验 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=111必须按类型进行数据校验>1.1.1【必须】按类型进行数据校验<a href=#111必须按类型进行数据校验 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>所有外部输入的参数，应使用<code>validator</code>进行白名单校验，校验内容包括但不限于数据长度、数据范围、数据类型与格式，校验不通过的应当拒绝</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// good
+</span><span class=c1></span><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;fmt&#34;</span>
+	<span class=s>&#34;github.com/go-playground/validator/v10&#34;</span>
+<span class=p>)</span>
+
+<span class=kd>var</span> <span class=nx>validate</span> <span class=o>*</span><span class=nx>validator</span><span class=p>.</span><span class=nx>Validate</span>
+
+<span class=kd>func</span> <span class=nf>validateVariable</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>myEmail</span> <span class=o>:=</span> <span class=s>&#34;abc@tencent.com&#34;</span>
+	<span class=nx>errs</span> <span class=o>:=</span> <span class=nx>validate</span><span class=p>.</span><span class=nf>Var</span><span class=p>(</span><span class=nx>myEmail</span><span class=p>,</span> <span class=s>&#34;required,email&#34;</span><span class=p>)</span>
+	<span class=k>if</span> <span class=nx>errs</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>errs</span><span class=p>)</span>
+		<span class=k>return</span>
+		<span class=c1>//停止执行
+</span><span class=c1></span>	<span class=p>}</span>
+	<span class=c1>// 验证通过，继续执行
+</span><span class=c1></span>	<span class=o>...</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>validate</span> <span class=p>=</span> <span class=nx>validator</span><span class=p>.</span><span class=nf>New</span><span class=p>()</span>
+	<span class=nf>validateVariable</span><span class=p>()</span>
+<span class=p>}</span>
+</code></pre></div><ul><li>无法通过白名单校验的应使用<code>html.EscapeString</code>、<code>text/template</code>或<code>bluemonday</code>对<code>&lt;, >, &, ',"</code>等字符进行过滤或编码</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;text/template&#34;</span>
+<span class=p>)</span>
+
+<span class=c1>// TestHTMLEscapeString HTML特殊字符转义
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>main</span><span class=p>(</span><span class=nx>inputValue</span> <span class=kt>string</span><span class=p>)</span> <span class=kt>string</span> <span class=p>{</span>
+	<span class=nx>escapedResult</span> <span class=o>:=</span> <span class=nx>template</span><span class=p>.</span><span class=nf>HTMLEscapeString</span><span class=p>(</span><span class=nx>inputValue</span><span class=p>)</span>
+	<span class=k>return</span> <span class=nx>escapedResult</span>
+<span class=p>}</span>
+</code></pre></div><p></p><h3 id=12-sql操作>1.2 SQL操作<a href=#12-sql操作 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=121必须sql语句默认使用预编译并绑定变量>1.2.1【必须】SQL语句默认使用预编译并绑定变量<a href=#121必须sql语句默认使用预编译并绑定变量 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>使用<code>database/sql</code>的prepare、Query或使用GORM等ORM执行SQL操作</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;github.com/jinzhu/gorm&#34;</span>
+	<span class=nx>_</span> <span class=s>&#34;github.com/jinzhu/gorm/dialects/sqlite&#34;</span>
+<span class=p>)</span>
+
+<span class=kd>type</span> <span class=nx>Product</span> <span class=kd>struct</span> <span class=p>{</span>
+	<span class=nx>gorm</span><span class=p>.</span><span class=nx>Model</span>
+	<span class=nx>Code</span>  <span class=kt>string</span>
+	<span class=nx>Price</span> <span class=kt>uint</span>
+<span class=p>}</span>
+
+<span class=o>...</span>
+<span class=kd>var</span> <span class=nx>product</span> <span class=nx>Product</span>
+<span class=o>...</span>
+<span class=nx>db</span><span class=p>.</span><span class=nf>First</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>product</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</code></pre></div><ul><li>使用参数化查询，禁止拼接SQL语句，另外对于传入参数用于order by或表名的需要通过校验</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad
+</span><span class=c1></span><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;database/sql&#34;</span>
+	<span class=s>&#34;fmt&#34;</span>
+	<span class=s>&#34;net/http&#34;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nf>handler</span><span class=p>(</span><span class=nx>db</span> <span class=o>*</span><span class=nx>sql</span><span class=p>.</span><span class=nx>DB</span><span class=p>,</span> <span class=nx>req</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>q</span> <span class=o>:=</span> <span class=nx>fmt</span><span class=p>.</span><span class=nf>Sprintf</span><span class=p>(</span><span class=s>&#34;SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY=&#39;%s&#39; ORDER BY PRICE&#34;</span><span class=p>,</span>
+		<span class=nx>req</span><span class=p>.</span><span class=nx>URL</span><span class=p>.</span><span class=nf>Query</span><span class=p>()[</span><span class=s>&#34;category&#34;</span><span class=p>])</span>
+	<span class=nx>db</span><span class=p>.</span><span class=nf>Query</span><span class=p>(</span><span class=nx>q</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=c1>// good
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>handlerGood</span><span class=p>(</span><span class=nx>db</span> <span class=o>*</span><span class=nx>sql</span><span class=p>.</span><span class=nx>DB</span><span class=p>,</span> <span class=nx>req</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+	<span class=c1>// 使用?占位符
+</span><span class=c1></span>	<span class=nx>q</span> <span class=o>:=</span> <span class=s>&#34;SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY=&#39;?&#39; ORDER BY PRICE&#34;</span>
+	<span class=nx>db</span><span class=p>.</span><span class=nf>Query</span><span class=p>(</span><span class=nx>q</span><span class=p>,</span> <span class=nx>req</span><span class=p>.</span><span class=nx>URL</span><span class=p>.</span><span class=nf>Query</span><span class=p>()[</span><span class=s>&#34;category&#34;</span><span class=p>])</span>
+<span class=p>}</span>
+</code></pre></div><p></p><h3 id=13-网络请求>1.3 网络请求<a href=#13-网络请求 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=131必须资源请求过滤验证>1.3.1【必须】资源请求过滤验证<a href=#131必须资源请求过滤验证 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li><p>使用<code>"net/http"</code>下的方法<code>http.Get(url)</code>、<code>http.Post(url, contentType, body)</code>、<code>http.Head(url)</code>、<code>http.PostForm(url, data)</code>、<code>http.Do(req)</code>时，如变量值外部可控（指从参数中动态获取），应对请求目标进行严格的安全校验。</p></li><li><p>如请求资源域名归属固定的范围，如只允许<code>a.qq.com</code>和<code>b.qq.com</code>，应做白名单限制。如不适用白名单，则推荐的校验逻辑步骤是：</p><ul><li><p>第 1 步、只允许HTTP或HTTPS协议</p></li><li><p>第 2 步、解析目标URL，获取其HOST</p></li><li><p>第 3 步、解析HOST，获取HOST指向的IP地址转换成Long型</p></li><li><p>第 4 步、检查IP地址是否为内网IP，网段有：</p><pre><code>// 以RFC定义的专有网络为例，如有自定义私有网段亦应加入禁止访问列表。
+10.0.0.0/8
+172.16.0.0/12
+192.168.0.0/16
+127.0.0.0/8
+</code></pre></li><li><p>第 5 步、请求URL</p></li><li><p>第 6 步、如有跳转，跳转后执行1，否则绑定经校验的ip和域名，对URL发起请求</p></li></ul></li><li><p>官方库<code>encoding/xml</code>不支持外部实体引用，使用该库可避免xxe漏洞</p></li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;encoding/xml&#34;</span>
+	<span class=s>&#34;fmt&#34;</span>
+	<span class=s>&#34;os&#34;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=kd>type</span> <span class=nx>Person</span> <span class=kd>struct</span> <span class=p>{</span>
+		<span class=nx>XMLName</span>  <span class=nx>xml</span><span class=p>.</span><span class=nx>Name</span> <span class=s>`xml:&#34;person&#34;`</span>
+		<span class=nx>Id</span>       <span class=kt>int</span>      <span class=s>`xml:&#34;id,attr&#34;`</span>
+		<span class=nx>UserName</span> <span class=kt>string</span>   <span class=s>`xml:&#34;name&gt;first&#34;`</span>
+		<span class=nx>Comment</span>  <span class=kt>string</span>   <span class=s>`xml:&#34;,comment&#34;`</span>
+	<span class=p>}</span>
+
+	<span class=nx>v</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>Person</span><span class=p>{</span><span class=nx>Id</span><span class=p>:</span> <span class=mi>13</span><span class=p>,</span> <span class=nx>UserName</span><span class=p>:</span> <span class=s>&#34;John&#34;</span><span class=p>}</span>
+	<span class=nx>v</span><span class=p>.</span><span class=nx>Comment</span> <span class=p>=</span> <span class=s>&#34; Need more details. &#34;</span>
+
+	<span class=nx>enc</span> <span class=o>:=</span> <span class=nx>xml</span><span class=p>.</span><span class=nf>NewEncoder</span><span class=p>(</span><span class=nx>os</span><span class=p>.</span><span class=nx>Stdout</span><span class=p>)</span>
+	<span class=nx>enc</span><span class=p>.</span><span class=nf>Indent</span><span class=p>(</span><span class=s>&#34;  &#34;</span><span class=p>,</span> <span class=s>&#34;    &#34;</span><span class=p>)</span>
+	<span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>enc</span><span class=p>.</span><span class=nf>Encode</span><span class=p>(</span><span class=nx>v</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;error: %v\n&#34;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+	<span class=p>}</span>
+
+<span class=p>}</span>
+</code></pre></div><p></p><h3 id=14-服务器端渲染>1.4 服务器端渲染<a href=#14-服务器端渲染 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=141必须模板渲染过滤验证>1.4.1【必须】模板渲染过滤验证<a href=#141必须模板渲染过滤验证 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>使用<code>text/template</code>或者<code>html/template</code>渲染模板时禁止将外部输入参数引入模板，或仅允许引入白名单内字符。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>handler</span><span class=p>(</span><span class=nx>w</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>r</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>r</span><span class=p>.</span><span class=nf>ParseForm</span><span class=p>()</span>
+	<span class=nx>x</span> <span class=o>:=</span> <span class=nx>r</span><span class=p>.</span><span class=nx>Form</span><span class=p>.</span><span class=nf>Get</span><span class=p>(</span><span class=s>&#34;name&#34;</span><span class=p>)</span>
+
+	<span class=kd>var</span> <span class=nx>tmpl</span> <span class=p>=</span> <span class=s>`&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;body&gt;
+</span><span class=s>    &lt;form action=&#34;/&#34; method=&#34;post&#34;&gt;
+</span><span class=s>        First name:&lt;br&gt;
+</span><span class=s>    &lt;input type=&#34;text&#34; name=&#34;name&#34; value=&#34;&#34;&gt;
+</span><span class=s>    &lt;input type=&#34;submit&#34; value=&#34;Submit&#34;&gt;
+</span><span class=s>    &lt;/form&gt;&lt;p&gt;`</span> <span class=o>+</span> <span class=nx>x</span> <span class=o>+</span> <span class=s>` &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;`</span>
+
+	<span class=nx>t</span> <span class=o>:=</span> <span class=nx>template</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=s>&#34;main&#34;</span><span class=p>)</span>
+	<span class=nx>t</span><span class=p>,</span> <span class=nx>_</span> <span class=p>=</span> <span class=nx>t</span><span class=p>.</span><span class=nf>Parse</span><span class=p>(</span><span class=nx>tmpl</span><span class=p>)</span>
+	<span class=nx>t</span><span class=p>.</span><span class=nf>Execute</span><span class=p>(</span><span class=nx>w</span><span class=p>,</span> <span class=s>&#34;Hello&#34;</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=c1>// good
+</span><span class=c1></span><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;fmt&#34;</span>
+	<span class=s>&#34;github.com/go-playground/validator/v10&#34;</span>
+<span class=p>)</span>
+
+<span class=kd>var</span> <span class=nx>validate</span> <span class=o>*</span><span class=nx>validator</span><span class=p>.</span><span class=nx>Validate</span>
+<span class=nx>validate</span> <span class=p>=</span> <span class=nx>validator</span><span class=p>.</span><span class=nf>New</span><span class=p>()</span>
+
+<span class=kd>func</span> <span class=nf>validateVariable</span><span class=p>(</span><span class=nx>val</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>errs</span> <span class=o>:=</span> <span class=nx>validate</span><span class=p>.</span><span class=nf>Var</span><span class=p>(</span><span class=nx>val</span><span class=p>,</span> <span class=s>&#34;gte=1,lte=100&#34;</span><span class=p>)</span> <span class=c1>// 限制必须是1-100的正整数
+</span><span class=c1></span>	<span class=k>if</span> <span class=nx>errs</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>errs</span><span class=p>)</span>
+		<span class=k>return</span> <span class=kc>false</span>
+	<span class=p>}</span>
+	<span class=k>return</span> <span class=kc>true</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>handler</span><span class=p>(</span><span class=nx>w</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>r</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>r</span><span class=p>.</span><span class=nf>ParseForm</span><span class=p>()</span>
+	<span class=nx>x</span> <span class=o>:=</span> <span class=nx>r</span><span class=p>.</span><span class=nx>Form</span><span class=p>.</span><span class=nf>Get</span><span class=p>(</span><span class=s>&#34;name&#34;</span><span class=p>)</span>
+
+	<span class=k>if</span> <span class=nf>validateVariable</span><span class=p>(</span><span class=nx>x</span><span class=p>)</span> <span class=p>{</span>
+		<span class=kd>var</span> <span class=nx>tmpl</span> <span class=p>=</span> <span class=s>`&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;body&gt;
+</span><span class=s>            &lt;form action=&#34;/&#34; method=&#34;post&#34;&gt;
+</span><span class=s>            First name:&lt;br&gt;
+</span><span class=s>            &lt;input type=&#34;text&#34; name=&#34;name&#34; value=&#34;&#34;&gt;
+</span><span class=s>            &lt;input type=&#34;submit&#34; value=&#34;Submit&#34;&gt;
+</span><span class=s>            &lt;/form&gt;&lt;p&gt;`</span> <span class=o>+</span> <span class=nx>x</span> <span class=o>+</span> <span class=s>` &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;`</span>
+		<span class=nx>t</span> <span class=o>:=</span> <span class=nx>template</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=s>&#34;main&#34;</span><span class=p>)</span>
+		<span class=nx>t</span><span class=p>,</span> <span class=nx>_</span> <span class=p>=</span> <span class=nx>t</span><span class=p>.</span><span class=nf>Parse</span><span class=p>(</span><span class=nx>tmpl</span><span class=p>)</span>
+		<span class=nx>t</span><span class=p>.</span><span class=nf>Execute</span><span class=p>(</span><span class=nx>w</span><span class=p>,</span> <span class=s>&#34;Hello&#34;</span><span class=p>)</span>
+	<span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+		<span class=c1>// ...
+</span><span class=c1></span>	<span class=p>}</span>
+<span class=p>}</span>
+
+</code></pre></div><p></p><h3 id=15-web跨域>1.5 Web跨域<a href=#15-web跨域 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=151必须跨域资源共享cors限制请求来源>1.5.1【必须】跨域资源共享CORS限制请求来源<a href=#151必须跨域资源共享cors限制请求来源 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>CORS请求保护不当可导致敏感信息泄漏，因此应当严格设置Access-Control-Allow-Origin使用同源策略进行保护。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// good
+</span><span class=c1></span><span class=nx>c</span> <span class=o>:=</span> <span class=nx>cors</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=nx>cors</span><span class=p>.</span><span class=nx>Options</span><span class=p>{</span>
+	<span class=nx>AllowedOrigins</span><span class=p>:</span>   <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=s>&#34;http://qq.com&#34;</span><span class=p>,</span> <span class=s>&#34;https://qq.com&#34;</span><span class=p>},</span>
+	<span class=nx>AllowCredentials</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+	<span class=nx>Debug</span><span class=p>:</span>            <span class=kc>false</span><span class=p>,</span>
+<span class=p>})</span>
+
+<span class=c1>// 引入中间件
+</span><span class=c1></span><span class=nx>handler</span> <span class=p>=</span> <span class=nx>c</span><span class=p>.</span><span class=nf>Handler</span><span class=p>(</span><span class=nx>handler</span><span class=p>)</span>
+</code></pre></div><p></p><h3 id=16-响应输出>1.6 响应输出<a href=#16-响应输出 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=161-必须设置正确的http响应包类型>1.6.1 【必须】设置正确的HTTP响应包类型<a href=#161-必须设置正确的http响应包类型 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>响应头Content-Type与实际响应内容，应保持一致。如：API响应数据类型是json，则响应头使用<code>application/json</code>；若为xml，则设置为<code>text/xml</code>。</li></ul><h4 id=162-必须添加安全响应头>1.6.2 【必须】添加安全响应头<a href=#162-必须添加安全响应头 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>所有接口、页面，添加响应头 <code>X-Content-Type-Options: nosniff</code>。</li><li>所有接口、页面，添加响应头<code>X-Frame-Options </code>。按需合理设置其允许范围，包括：<code>DENY</code>、<code>SAMEORIGIN</code>、<code>ALLOW-FROM origin</code>。用法参考：<a href=https://developer.mozilla.org/zh-CN/docs/Web/HTTP/X-Frame-Options>MDN文档</a></li></ul><h4 id=163必须外部输入拼接到http响应头中需进行过滤>1.6.3【必须】外部输入拼接到HTTP响应头中需进行过滤<a href=#163必须外部输入拼接到http响应头中需进行过滤 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>应尽量避免外部可控参数拼接到HTTP响应头中，如业务需要则需要过滤掉<code>\r</code>、<code>\n</code>等换行符，或者拒绝携带换行符号的外部输入。</li></ul><h4 id=164必须外部输入拼接到response页面前进行编码处理>1.6.4【必须】外部输入拼接到response页面前进行编码处理<a href=#164必须外部输入拼接到response页面前进行编码处理 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>直出html页面或使用模板生成html页面的，推荐使用<code>text/template</code>自动编码，或者使用<code>html.EscapeString</code>或<code>text/template</code>对<code>&lt;, >, &, ',"</code>等字符进行编码。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;html/template&#34;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nf>outtemplate</span><span class=p>(</span><span class=nx>w</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>r</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>param1</span> <span class=o>:=</span> <span class=nx>r</span><span class=p>.</span><span class=nx>URL</span><span class=p>.</span><span class=nf>Query</span><span class=p>().</span><span class=nf>Get</span><span class=p>(</span><span class=s>&#34;param1&#34;</span><span class=p>)</span>
+	<span class=nx>tmpl</span> <span class=o>:=</span> <span class=nx>template</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=s>&#34;hello&#34;</span><span class=p>)</span>
+	<span class=nx>tmpl</span><span class=p>,</span> <span class=nx>_</span> <span class=p>=</span> <span class=nx>tmpl</span><span class=p>.</span><span class=nf>Parse</span><span class=p>(</span><span class=s>`</span><span class=cp>{{</span><span class=nx>define</span><span class=w> </span><span class=s>&#34;T&#34;</span><span class=cp>}}{{</span><span class=na>.</span><span class=cp>}}{{</span><span class=k>end</span><span class=cp>}}</span><span class=s>`</span><span class=p>)</span>
+	<span class=nx>tmpl</span><span class=p>.</span><span class=nf>ExecuteTemplate</span><span class=p>(</span><span class=nx>w</span><span class=p>,</span> <span class=s>&#34;T&#34;</span><span class=p>,</span> <span class=nx>param1</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div><p></p><h3 id=17-会话管理>1.7 会话管理<a href=#17-会话管理 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=171必须安全维护session信息>1.7.1【必须】安全维护session信息<a href=#171必须安全维护session信息 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>用户登录时应重新生成session，退出登录后应清理session。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;github.com/gorilla/handlers&#34;</span>
+	<span class=s>&#34;github.com/gorilla/mux&#34;</span>
+	<span class=s>&#34;net/http&#34;</span>
+<span class=p>)</span>
+
+<span class=c1>// 创建cookie
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>setToken</span><span class=p>(</span><span class=nx>res</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>req</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>expireToken</span> <span class=o>:=</span> <span class=nx>time</span><span class=p>.</span><span class=nf>Now</span><span class=p>().</span><span class=nf>Add</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Minute</span> <span class=o>*</span> <span class=mi>30</span><span class=p>).</span><span class=nf>Unix</span><span class=p>()</span>
+	<span class=nx>expireCookie</span> <span class=o>:=</span> <span class=nx>time</span><span class=p>.</span><span class=nf>Now</span><span class=p>().</span><span class=nf>Add</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Minute</span> <span class=o>*</span> <span class=mi>30</span><span class=p>)</span>
+
+	<span class=c1>//...
+</span><span class=c1></span>
+	<span class=nx>cookie</span> <span class=o>:=</span> <span class=nx>http</span><span class=p>.</span><span class=nx>Cookie</span><span class=p>{</span>
+		<span class=nx>Name</span><span class=p>:</span>     <span class=s>&#34;Auth&#34;</span><span class=p>,</span>
+		<span class=nx>Value</span><span class=p>:</span>    <span class=nx>signedToken</span><span class=p>,</span>
+		<span class=nx>Expires</span><span class=p>:</span>  <span class=nx>expireCookie</span><span class=p>,</span> <span class=c1>// 过期失效
+</span><span class=c1></span>		<span class=nx>HttpOnly</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+		<span class=nx>Path</span><span class=p>:</span>     <span class=s>&#34;/&#34;</span><span class=p>,</span>
+		<span class=nx>Domain</span><span class=p>:</span>   <span class=s>&#34;127.0.0.1&#34;</span><span class=p>,</span>
+		<span class=nx>Secure</span><span class=p>:</span>   <span class=kc>true</span><span class=p>,</span>
+	<span class=p>}</span>
+
+	<span class=nx>http</span><span class=p>.</span><span class=nf>SetCookie</span><span class=p>(</span><span class=nx>res</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>cookie</span><span class=p>)</span>
+	<span class=nx>http</span><span class=p>.</span><span class=nf>Redirect</span><span class=p>(</span><span class=nx>res</span><span class=p>,</span> <span class=nx>req</span><span class=p>,</span> <span class=s>&#34;/profile&#34;</span><span class=p>,</span> <span class=mi>307</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=c1>// 删除cookie
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>logout</span><span class=p>(</span><span class=nx>res</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>req</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>deleteCookie</span> <span class=o>:=</span> <span class=nx>http</span><span class=p>.</span><span class=nx>Cookie</span><span class=p>{</span>
+		<span class=nx>Name</span><span class=p>:</span>    <span class=s>&#34;Auth&#34;</span><span class=p>,</span>
+		<span class=nx>Value</span><span class=p>:</span>   <span class=s>&#34;none&#34;</span><span class=p>,</span>
+		<span class=nx>Expires</span><span class=p>:</span> <span class=nx>time</span><span class=p>.</span><span class=nf>Now</span><span class=p>(),</span>
+	<span class=p>}</span>
+	<span class=nx>http</span><span class=p>.</span><span class=nf>SetCookie</span><span class=p>(</span><span class=nx>res</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>deleteCookie</span><span class=p>)</span>
+	<span class=k>return</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=172必须csrf防护>1.7.2【必须】CSRF防护<a href=#172必须csrf防护 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>涉及系统敏感操作或可读取敏感信息的接口应校验<code>Referer</code>或添加<code>csrf_token</code>。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// good
+</span><span class=c1></span><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;github.com/gorilla/csrf&#34;</span>
+	<span class=s>&#34;github.com/gorilla/mux&#34;</span>
+	<span class=s>&#34;net/http&#34;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>r</span> <span class=o>:=</span> <span class=nx>mux</span><span class=p>.</span><span class=nf>NewRouter</span><span class=p>()</span>
+	<span class=nx>r</span><span class=p>.</span><span class=nf>HandleFunc</span><span class=p>(</span><span class=s>&#34;/signup&#34;</span><span class=p>,</span> <span class=nx>ShowSignupForm</span><span class=p>)</span>
+	<span class=nx>r</span><span class=p>.</span><span class=nf>HandleFunc</span><span class=p>(</span><span class=s>&#34;/signup/post&#34;</span><span class=p>,</span> <span class=nx>SubmitSignupForm</span><span class=p>)</span>
+	<span class=c1>// 使用csrf_token验证
+</span><span class=c1></span>	<span class=nx>http</span><span class=p>.</span><span class=nf>ListenAndServe</span><span class=p>(</span><span class=s>&#34;:8000&#34;</span><span class=p>,</span>
+		<span class=nx>csrf</span><span class=p>.</span><span class=nf>Protect</span><span class=p>([]</span><span class=nb>byte</span><span class=p>(</span><span class=s>&#34;32-byte-long-auth-key&#34;</span><span class=p>))(</span><span class=nx>r</span><span class=p>))</span>
+<span class=p>}</span>
+</code></pre></div><p></p><h3 id=18-访问控制>1.8 访问控制<a href=#18-访问控制 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=181必须默认鉴权>1.8.1【必须】默认鉴权<a href=#181必须默认鉴权 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li><p>除非资源完全可对外开放，否则系统默认进行身份认证，使用白名单的方式放开不需要认证的接口或页面。</p></li><li><p>根据资源的机密程度和用户角色，以最小权限原则，设置不同级别的权限，如完全公开、登录可读、登录可写、特定用户可读、特定用户可写等</p></li><li><p>涉及用户自身相关的数据的读写必须验证登录态用户身份及其权限，避免越权操作</p><div class=highlight><pre class=chroma><code class=language-sql data-lang=sql><span class=c1>-- 伪代码
+</span><span class=c1></span><span class=k>select</span> <span class=n>id</span> <span class=k>from</span> <span class=k>table</span> <span class=k>where</span> <span class=n>id</span><span class=o>=</span><span class=p>:</span><span class=n>id</span> <span class=k>and</span> <span class=n>userid</span><span class=o>=</span><span class=k>session</span><span class=p>.</span><span class=n>userid</span>
+</code></pre></div></li><li><p>没有独立账号体系的外网服务使用<code>QQ</code>或<code>微信</code>登录，内网服务使用<code>统一登录服务</code>登录，其他使用账号密码登录的服务需要增加验证码等二次验证</p></li></ul><p></p><h3 id=19-并发保护>1.9 并发保护<a href=#19-并发保护 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=191必须禁止在闭包中直接调用循环变量>1.9.1【必须】禁止在闭包中直接调用循环变量<a href=#191必须禁止在闭包中直接调用循环变量 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>在循环中启动协程，当协程中使用到了循环的索引值，由于多个协程同时使用同一个变量会产生数据竞争，造成执行结果异常。</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>runtime</span><span class=p>.</span><span class=nf>GOMAXPROCS</span><span class=p>(</span><span class=nx>runtime</span><span class=p>.</span><span class=nf>NumCPU</span><span class=p>())</span>
+	<span class=kd>var</span> <span class=nx>group</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+
+	<span class=k>for</span> <span class=nx>i</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>i</span> <span class=p>&lt;</span> <span class=mi>5</span><span class=p>;</span> <span class=nx>i</span><span class=o>++</span> <span class=p>{</span>
+		<span class=nx>group</span><span class=p>.</span><span class=nf>Add</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+		<span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+			<span class=k>defer</span> <span class=nx>group</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+			<span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;%-2d&#34;</span><span class=p>,</span> <span class=nx>i</span><span class=p>)</span> <span class=c1>// 这里打印的i不是所期望的
+</span><span class=c1></span>		<span class=p>}()</span>
+	<span class=p>}</span>
+	<span class=nx>group</span><span class=p>.</span><span class=nf>Wait</span><span class=p>()</span>
+<span class=p>}</span>
+
+<span class=c1>// good
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>runtime</span><span class=p>.</span><span class=nf>GOMAXPROCS</span><span class=p>(</span><span class=nx>runtime</span><span class=p>.</span><span class=nf>NumCPU</span><span class=p>())</span>
+	<span class=kd>var</span> <span class=nx>group</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+
+	<span class=k>for</span> <span class=nx>i</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>i</span> <span class=p>&lt;</span> <span class=mi>5</span><span class=p>;</span> <span class=nx>i</span><span class=o>++</span> <span class=p>{</span>
+		<span class=nx>group</span><span class=p>.</span><span class=nf>Add</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+		<span class=k>go</span> <span class=kd>func</span><span class=p>(</span><span class=nx>j</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+			<span class=k>defer</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+				<span class=k>if</span> <span class=nx>r</span> <span class=o>:=</span> <span class=nb>recover</span><span class=p>();</span> <span class=nx>r</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+					<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;Recovered in start()&#34;</span><span class=p>)</span>
+				<span class=p>}</span>
+				<span class=nx>group</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+			<span class=p>}()</span>
+			<span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=s>&#34;%-2d&#34;</span><span class=p>,</span> <span class=nx>j</span><span class=p>)</span> <span class=c1>// 闭包内部使用局部变量
+</span><span class=c1></span>		<span class=p>}(</span><span class=nx>i</span><span class=p>)</span> <span class=c1>// 把循环变量显式地传给协程
+</span><span class=c1></span>	<span class=p>}</span>
+	<span class=nx>group</span><span class=p>.</span><span class=nf>Wait</span><span class=p>()</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=192必须禁止并发写map>1.9.2【必须】禁止并发写map<a href=#192必须禁止并发写map class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><ul><li>并发写map容易造成程序崩溃并异常退出，建议加锁保护</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// bad
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>m</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>map</span><span class=p>[</span><span class=kt>int</span><span class=p>]</span><span class=kt>int</span><span class=p>)</span>
+	<span class=c1>// 并发读写
+</span><span class=c1></span>	<span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+		<span class=k>for</span> <span class=p>{</span>
+			<span class=nx>_</span> <span class=p>=</span> <span class=nx>m</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
+		<span class=p>}</span>
+	<span class=p>}()</span>
+	<span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+		<span class=k>for</span> <span class=p>{</span>
+			<span class=nx>m</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=p>=</span> <span class=mi>1</span>
+		<span class=p>}</span>
+	<span class=p>}()</span>
+	<span class=k>select</span> <span class=p>{}</span>
+<span class=p>}</span>
+</code></pre></div><h4 id=193必须确保并发安全>1.9.3【必须】确保并发安全<a href=#193必须确保并发安全 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><p>敏感操作如果未作并发安全限制，可导致数据读写异常，造成业务逻辑限制被绕过。可通过同步锁或者原子操作进行防护。</p><p>通过同步锁共享内存</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// good
+</span><span class=c1></span><span class=kd>var</span> <span class=nx>count</span> <span class=kt>int</span>
+
+<span class=kd>func</span> <span class=nf>Count</span><span class=p>(</span><span class=nx>lock</span> <span class=o>*</span><span class=nx>sync</span><span class=p>.</span><span class=nx>Mutex</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>lock</span><span class=p>.</span><span class=nf>Lock</span><span class=p>()</span> <span class=c1>// 加写锁
+</span><span class=c1></span>	<span class=nx>count</span><span class=o>++</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>count</span><span class=p>)</span>
+	<span class=nx>lock</span><span class=p>.</span><span class=nf>Unlock</span><span class=p>()</span> <span class=c1>// 解写锁，任何一个Lock()或RLock()均需要保证对应有Unlock()或RUnlock()
+</span><span class=c1></span><span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>lock</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>sync</span><span class=p>.</span><span class=nx>Mutex</span><span class=p>{}</span>
+	<span class=k>for</span> <span class=nx>i</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>i</span> <span class=p>&lt;</span> <span class=mi>10</span><span class=p>;</span> <span class=nx>i</span><span class=o>++</span> <span class=p>{</span>
+		<span class=k>go</span> <span class=nf>Count</span><span class=p>(</span><span class=nx>lock</span><span class=p>)</span> <span class=c1>// 传递指针是为了防止函数内的锁和调用锁不一致
+</span><span class=c1></span>	<span class=p>}</span>
+	<span class=k>for</span> <span class=p>{</span>
+		<span class=nx>lock</span><span class=p>.</span><span class=nf>Lock</span><span class=p>()</span>
+		<span class=nx>c</span> <span class=o>:=</span> <span class=nx>count</span>
+		<span class=nx>lock</span><span class=p>.</span><span class=nf>Unlock</span><span class=p>()</span>
+		<span class=nx>runtime</span><span class=p>.</span><span class=nf>Gosched</span><span class=p>()</span> <span class=c1>// 交出时间片给协程
+</span><span class=c1></span>		<span class=k>if</span> <span class=nx>c</span> <span class=p>&gt;</span> <span class=mi>10</span> <span class=p>{</span>
+			<span class=k>break</span>
+		<span class=p>}</span>
+	<span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div><ul><li>使用<code>sync/atomic</code>执行原子操作</li></ul><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>// good
+</span><span class=c1></span><span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;sync&#34;</span>
+	<span class=s>&#34;sync/atomic&#34;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=kd>type</span> <span class=nx>Map</span> <span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>string</span>
+	<span class=kd>var</span> <span class=nx>m</span> <span class=nx>atomic</span><span class=p>.</span><span class=nx>Value</span>
+	<span class=nx>m</span><span class=p>.</span><span class=nf>Store</span><span class=p>(</span><span class=nb>make</span><span class=p>(</span><span class=nx>Map</span><span class=p>))</span>
+	<span class=kd>var</span> <span class=nx>mu</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>Mutex</span> <span class=c1>// used only by writers
+</span><span class=c1></span>	<span class=nx>read</span> <span class=o>:=</span> <span class=kd>func</span><span class=p>(</span><span class=nx>key</span> <span class=kt>string</span><span class=p>)</span> <span class=p>(</span><span class=nx>val</span> <span class=kt>string</span><span class=p>)</span> <span class=p>{</span>
+		<span class=nx>m1</span> <span class=o>:=</span> <span class=nx>m</span><span class=p>.</span><span class=nf>Load</span><span class=p>().(</span><span class=nx>Map</span><span class=p>)</span>
+		<span class=k>return</span> <span class=nx>m1</span><span class=p>[</span><span class=nx>key</span><span class=p>]</span>
+	<span class=p>}</span>
+	<span class=nx>insert</span> <span class=o>:=</span> <span class=kd>func</span><span class=p>(</span><span class=nx>key</span><span class=p>,</span> <span class=nx>val</span> <span class=kt>string</span><span class=p>)</span> <span class=p>{</span>
+		<span class=nx>mu</span><span class=p>.</span><span class=nf>Lock</span><span class=p>()</span> <span class=c1>// 与潜在写入同步
+</span><span class=c1></span>		<span class=k>defer</span> <span class=nx>mu</span><span class=p>.</span><span class=nf>Unlock</span><span class=p>()</span>
+		<span class=nx>m1</span> <span class=o>:=</span> <span class=nx>m</span><span class=p>.</span><span class=nf>Load</span><span class=p>().(</span><span class=nx>Map</span><span class=p>)</span> <span class=c1>// 导入struct当前数据
+</span><span class=c1></span>		<span class=nx>m2</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=nx>Map</span><span class=p>)</span>      <span class=c1>// 创建新值
+</span><span class=c1></span>		<span class=k>for</span> <span class=nx>k</span><span class=p>,</span> <span class=nx>v</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>m1</span> <span class=p>{</span>
+			<span class=nx>m2</span><span class=p>[</span><span class=nx>k</span><span class=p>]</span> <span class=p>=</span> <span class=nx>v</span>
+		<span class=p>}</span>
+		<span class=nx>m2</span><span class=p>[</span><span class=nx>key</span><span class=p>]</span> <span class=p>=</span> <span class=nx>val</span>
+		<span class=nx>m</span><span class=p>.</span><span class=nf>Store</span><span class=p>(</span><span class=nx>m2</span><span class=p>)</span> <span class=c1>// 用新的替代当前对象
+</span><span class=c1></span>	<span class=p>}</span>
+	<span class=nx>_</span><span class=p>,</span> <span class=nx>_</span> <span class=p>=</span> <span class=nx>read</span><span class=p>,</span> <span class=nx>insert</span>
+<span class=p>}</span>
+</code></pre></div></div><div class=content><br><img src=https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp width=80% height=60%></div><hr class=post-end><footer class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://kcode.icu/tags/go>Go</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>1982 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2021-12-01 16:04 +0000</p></footer></article><aside id=toc class=show-toc><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><a href=#1-代码实现类>1. 代码实现类</a><ul><li><a href=#11-内存管理>1.1 内存管理</a></li><li><a href=#12-文件操作>1.2 文件操作</a></li><li><a href=#13-系统接口>1.3 系统接口</a></li><li><a href=#14-通信安全>1.4 通信安全</a></li><li><a href=#15-敏感数据保护>1.5 敏感数据保护</a></li><li><a href=#16-加密解密>1.6 加密解密</a></li><li><a href=#17-正则表达式>1.7 正则表达式</a></li></ul></li></ul><ul><li><a href=#1-代码实现类-1>1 代码实现类</a><ul><li><a href=#11-输入校验>1.1 输入校验</a></li><li><a href=#12-sql操作>1.2 SQL操作</a></li><li><a href=#13-网络请求>1.3 网络请求</a></li><li><a href=#14-服务器端渲染>1.4 服务器端渲染</a></li><li><a href=#15-web跨域>1.5 Web跨域</a></li><li><a href=#16-响应输出>1.6 响应输出</a></li><li><a href=#17-会话管理>1.7 会话管理</a></li><li><a href=#18-访问控制>1.8 访问控制</a></li><li><a href=#19-并发保护>1.9 并发保护</a></li></ul></li></ul></nav></aside><div class="post-nav thin"><a class=prev-post href=https://kcode.icu/posts/interview/2021-12-interview/><span class=post-nav-label>Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><br><span>聊聊22届秋招的体验</span></a></div><div id=comments class=thin><script src=https://utteranc.es/client.js repo=sh1luo/sh1luo issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer id=site-footer class="section-inner thin animated fadeIn faster"><p>&copy; 2018 - 2021 <a href=https://kcode.icu/>wasabi</a></p><p>Made with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> &#183; Theme <a href=https://github.com/Track3/hermit target=_blank rel=noopener>Hermit</a> &#183; <a href=https://kcode.icu/post/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a></p></footer><script src=https://kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-193315904-1','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

@@ -1,23 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>博客 on wasabi</title>
-    <link>https://www.kcode.icu/tags/%E5%8D%9A%E5%AE%A2/</link>
-    <description>Recent content in 博客 on wasabi</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-hans</language>
-    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 20 Jan 2021 15:45:13 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>在线博客的图床解决方案</title>
-      <link>https://www.kcode.icu/posts/chore/blog_imgs/</link>
-      <pubDate>Wed, 20 Jan 2021 15:45:13 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/chore/blog_imgs/</guid>
-      <description>很多人应该都听说过来人说过要写博客进行总结记录，一是说自己学习过程的复盘，二是在某些时候向不认识自己的人间接显示自己的大致水平。不过如果没有人“手把手”教的话我相信还会遇到各种各样的问题的，这篇文章就介绍一下在博客中必不可少的图片网络地址解决方法，也就是图床。它的目标是在你写文章的过程中可以一键插入目标图片并自动上传到网络，就像你使用本地图片一样快捷。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>博客 on wasabi</title><link>https://kcode.icu/tags/%E5%8D%9A%E5%AE%A2/</link><description>Recent content in 博客 on wasabi</description><generator>Hugo -- gohugo.io</generator><language>zh-hans</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 20 Jan 2021 15:45:13 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml"/><item><title>在线博客的图床解决方案</title><link>https://kcode.icu/posts/chore/blog_imgs/</link><pubDate>Wed, 20 Jan 2021 15:45:13 +0000</pubDate><guid>https://kcode.icu/posts/chore/blog_imgs/</guid><description>很多人应该都听说过来人说过要写博客进行总结记录，一是说自己学习过程的复盘，二是在某些时候向不认识自己的人间接显示自己的大致水平。不过如果没有人“手把手”教的话我相信还会遇到各种各样的问题的，这篇文章就介绍一下在博客中必不可少的图片网络地址解决方法，也就是图床。它的目标是在你写文章的过程中可以一键插入目标图片并自动上传到网络，就像你使用本地图片一样快捷。
 图床的目的就是把你的本地图片上传上去，从而能获得它的网络地址。当然了，只使用图床也是可以的，但是需要配合对应的工具上传拿 URL（比如 OSS）或者纯手动（GitHub/Gitee），非常不方便 一点也不极客，所以需要配合其他工具一键快速拿到它对应的网络地址（URL），所以我在下面介绍了我使用到的工具，仅供参考。
- 评估用的稳定性指你上传的图片会不会在某个不确定的时间突然挂掉，让你的文章出现大量图片 404 丢失的情况。
- 图床 这里我介绍三种图床，列出优缺点。可以根据需要进行选择。
+评估用的稳定性指你上传的图片会不会在某个不确定的时间突然挂掉，让你的文章出现大量图片 404 丢失的情况。
+图床 这里我介绍三种图床，列出优缺点。可以根据需要进行选择。
 GitHub/Gitee GitHub 和 Gitee 是干什么的我就不多说了，它们也是可以作为图床使用的，前者境内访问较慢，后者较快。没有账号可以免费注册一个，然后随便创建一个公开仓库，把图片上传上去就可以获取它的 URL 了，比较简单粗暴。
 优点：稳定性较好，空间无限，上手难度较简单
 缺点：无法阻止盗链，无法管理（原本目的就不是作为图床，没有统计流量等功能）。
@@ -33,26 +17,13 @@ OSS OSS （Object Storage Service）即对象存储服务，用来做个人博�
 工具 这里就介绍我使用的两个配合工具，其他的可以自行搜索。
 typora typora 是一款 Markdown 文本编辑软件，我相信写过 Markdown 的都听说过，它的特点是真正的实时显示，不左右分栏，扩展性强，灵活可配置。我个人平时写 Markdown 文本都是使用这个软件，具体可以去它的官网首页看，十分推荐。
 PicGo PicGo 是一款使用 Node + Electron 开发的跨平台可视化图片上传开源软件，支持 N 种图床平台，配置灵活简单，最重要的是它支持插件功能，理论上支持任意图床平台的使用（需要提供相应上传下载的 API），可以自行开发插件。操作也比较简单，把图片拖到框里就可以拿到 URL。这张图是 gitee 相关配置，其他平台类似，只需若干个必要参数即可：
-配合使用 前面说的这两种工具可以结合使用快速进行写作，在 typora 主界面上方，文件-&amp;gt;偏好设置-&amp;gt;图像，修改 PicGo 路径为你安装的路径下的 exe 地址。这样就可以做到你在 typora 里编辑时直接粘贴图片到文档里一键点击上传，非常方便。当然了，如果你不需要 typora，或者使用的是别的 Markdown 编辑器，也可以只使用 PicGo。</description>
-    </item>
-    
-    <item>
-      <title>几经周折的博客变迁史</title>
-      <link>https://www.kcode.icu/posts/chore/blog_journey/</link>
-      <pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/chore/blog_journey/</guid>
-      <description>仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
- 尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。 使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。 发现了国内访问速度更快的 Gitee Page。 再次购买域名，使用 CDN 加速国外空间，未果（下文说）&amp;hellip;&amp;hellip;  前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
+配合使用 前面说的这两种工具可以结合使用快速进行写作，在 typora 主界面上方，文件-&amp;gt;偏好设置-&amp;gt;图像，修改 PicGo 路径为你安装的路径下的 exe 地址。这样就可以做到你在 typora 里编辑时直接粘贴图片到文档里一键点击上传，非常方便。当然了，如果你不需要 typora，或者使用的是别的 Markdown 编辑器，也可以只使用 PicGo。</description></item><item><title>几经周折的博客变迁史</title><link>https://kcode.icu/posts/chore/blog_journey/</link><pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate><guid>https://kcode.icu/posts/chore/blog_journey/</guid><description>仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
+尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。 使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。 发现了国内访问速度更快的 Gitee Page。 再次购买域名，使用 CDN 加速国外空间，未果（下文说）&amp;hellip;&amp;hellip; 前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
 当时配置那个 A 记录，CNAME 记录啥的根本不知道是什么东西，也不知道 DNS 是什么，就是配，成功了就行，不成功就猜，一个个试呗。现在想想，真的是走了不少弯路，如果能系统地学一下多好。不过这些问题也都在我后来的实践以及学习过程中逐一解决了，现在遇到问题也不用像没头苍蝇一样乱撞了，这种感觉很不错 :)
 这件事也让我大致理解了一句老话，大致是这么说的：真正厉害的技术人员不是说他写程序一定要多么多么厉害，而是他有非常强悍的问题定位能力（trouble shooting），能解决别人解决不了的问题，而这一切都源自于无数经验的积累以及深度的思考。
 下面说我的最后一次迁移：)
- 之所以有两个部分是因为买了域名后才发现必须要国内域名并且备案，才能加速国内。我买的是国外域名所以没办法，最后就用 GitHub Page + 自定义域名了。
- GitHub Page+自定义域名 这种方案比较简单（因为GitHub 都帮我们做了），这也是我现在的方式，只不过我的域名是国外的，所以没办法使用 CDN 加速。
+之所以有两个部分是因为买了域名后才发现必须要国内域名并且备案，才能加速国内。我买的是国外域名所以没办法，最后就用 GitHub Page + 自定义域名了。
+GitHub Page+自定义域名 这种方案比较简单（因为GitHub 都帮我们做了），这也是我现在的方式，只不过我的域名是国外的，所以没办法使用 CDN 加速。
 你首先需要创建一个名为 &amp;lt;YourGitHubName&amp;gt;.github.io 的仓库，比如 sh1luo.github.io，然后购买一个域名（国内国外都行，国内要备案），因为我们是要使用 GitHub 的自定义域名，所以需要使用 CNAME 记录，在域名服务器处添加两条CNAME 记录 ，就像这样
 我是国外的域名，不能使用国内 CDN 加速，正好 CloudFlare 提供免费全球 CDN，虽然效果一般，但是它提供的免费功能也是非常的多，包括各种流量统计分析，也是很良心了。想使用 CloudFlare 当 DNS 服务器做法也非常简单。注册一个账号填上域名信息，然后会提供给我们两个 DNS 服务器域名，我们把原域名服务器商的 NameServers 改成新解析服务器提供的就好了。
-当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加两条 CNAME 记录，然后在 GitHub Pages 仓库的发布分支放一个 CNAME 文件，文件内容就是你的 CNAME 地址就可以了，它会自动帮你设置为这个域名并搞定一切的:)</description>
-    </item>
-    
-  </channel>
-</rss>
+当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加两条 CNAME 记录，然后在 GitHub Pages 仓库的发布分支放一个 CNAME 文件，文件内容就是你的 CNAME 地址就可以了，它会自动帮你设置为这个域名并搞定一切的:)</description></item></channel></rss>

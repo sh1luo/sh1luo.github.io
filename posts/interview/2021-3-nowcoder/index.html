@@ -1,23 +1,13 @@
-<!DOCTYPE html>
-<html lang="zh-hans">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<meta name="theme-color" content="#494f5c">
-	<meta name="msapplication-TileColor" content="#494f5c">
-<meta itemprop="name" content="大三实习求职之旅">
-<meta itemprop="description" content="说在前面 经常“吸”社区，也要时不时反馈一点，一起延续开源精神。
+<!doctype html><html lang=zh-hans><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=theme-color content="#494f5c"><meta name=msapplication-TileColor content="#494f5c"><meta itemprop=name content="大三上学期好未来字节腾讯实习面经"><meta itemprop=description content="说在前面 经常“吸”社区，也要时不时反馈一点，一起延续开源精神。
 个人情况：22 届双非一本，从去年 12 月开始面试找寒假的实习，由于学校疫情原因没去成功，于是经过寒假复习“二战”。先后面了跟谁学，腾讯，字节，阿里。
-由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C&#43;&#43; 用来写题，有的问题可能不具有参考价值，理性看待。
+由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C++ 用来写题，有的问题可能不具有参考价值，理性看待。
 另外有的问题确实记不得了，大家不要太看重问题，因为大部分都是八股的题型，网上一搜一大堆，博客的总结能几万字，但是没有面试官喜欢听这种东西，都是搞技术的不喜欢花里胡哨，我曾经就因为答协程区别和特点被反问 你这个有点像背的，，不过我也没反驳，下次总结避免就好了。你要答出问题的本质，底层的思考，说出跟别人不一样的地方，用有些面试官的话来说就是 这个问题我只想听你说一句话，我看我能不能听到。说白了就是你说了一大堆可能在对面听来都没听到，说不到点子上等于没说。
 另外本文我主要突出面试过程，不是面试问题的总结帖（有的问题我真的记不得了 :(。
 好了，不说废话了，大家看正文吧，有什么问题欢迎找我聊~
 跟谁学两面 oc，第一次面试 一面 自我介绍
 项目：
   用go写的rpc框架的具体功能细节，注册中心单机还是分布式的，其中一个挂了怎么办？一致性，可靠性怎么保证的。超时控制，加锁和管道支持并发，单机（考虑了多机情况，说了已经在todo里了）。
-  Go&#43;QML 利用cgo实现的跨平台桌面应用功能，场景，为什么要写这个东西？ 我说为了性能，追问性能如何体现，如何测试的，如何优化。答宏观上从任务管理器，top中看，细节上从pprof进行性能定位调优，从火焰图上看。追问pprof还有什么功能，你一般是怎么定位问题的？回答还是先具体再细节。
+  Go+QML 利用cgo实现的跨平台桌面应用功能，场景，为什么要写这个东西？ 我说为了性能，追问性能如何体现，如何测试的，如何优化。答宏观上从任务管理器，top中看，细节上从pprof进行性能定位调优，从火焰图上看。追问pprof还有什么功能，你一般是怎么定位问题的？回答还是先具体再细节。
   这时候我就俩项目，后面怕不够，又想拿go写个web的，正好学校说需要重构某个子选课系统，就跟同学接了，这个下面说。
 写个快排？时分复杂度分析？看你了解过go的标准库实现，说说go的快排源码怎么实现的，答三数取中，根据数据量选择多种排序方式组合，追问细节我就不知道i了，，确实没看过这个。。他说没事。
 协程与线程区别？为什么快，快在哪了？自定义了4个伪寄存器 fp sp sb pc，轻量，初始2KB动态伸缩，由runtime管理，对os透明等等各种原因，又说了以下gmp调度的优势。追问寄存器是什么，你对寄存器还有什么了解。我说了一点关于go和c 在寄存器方面使用的不同，函数传参，调用堆栈等等，扯了点汇编区别，就又问了几个汇编指令，过了。
@@ -26,7 +16,7 @@ rpc与http区别，使用场景，自己总结一下再说几条
 还有点八股没啥难的 有点忘了。。
 也没问啥难点一面就过了
 二面部门leader 详细聊虚拟地址与物理地址，为什么分这俩，段页作用，为什么内存占用能比实际要大的多（还是虚拟地址作用），循序渐进的从现象到技术实现来问，不是考试。
-go&#43;qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来这个项目好多面试官也不懂，cgo特性一是用起来结合其他语言的时候确实有坑点，二是拿go写gui有点杀马特，不招人待见？
+go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来这个项目好多面试官也不懂，cgo特性一是用起来结合其他语言的时候确实有坑点，二是拿go写gui有点杀马特，不招人待见？
 闲聊网络跟os，最后问了个智力问题，就过了。
 总结 感觉难度不大，缺人进来打杂，要求不高。问了一下前辈，说加班严重，校招的话工资高了可以放备选考虑去。。面试体验还不错，自己缺乏一点回答技巧上的经验，聊技术不能一下到点子上，废话略多。
 字节二面挂，腾讯二面挂 这俩对我帮助最大。
@@ -34,30 +24,21 @@ go&#43;qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出�
 自己感觉有了点面试方面的经验，就投了较大的厂，遭到毒打。
 字节一面是算法面，最后写了个单链表归并非递归，勉强通过。
 二面上来扣20分钟rpc项目，挖出你这个项目的所有特点为止：
- 序列化方式有哪几个，区别是什么，自己写过吗 协议用的哪个，为啥不用udp &hellip;鞭打。。。  当时确实缺少对项目的深度思考，也是参考了声哥的项目，不过他是java写的，用go写起来参考了不少框架源码，rpcx，grpc，实现起来略费劲，时间仓促，底层思考略少。
+ 序列化方式有哪几个，区别是什么，自己写过吗 协议用的哪个，为啥不用udp &mldr;鞭打。。。  当时确实缺少对项目的深度思考，也是参考了声哥的项目，不过他是java写的，用go写起来参考了不少框架源码，rpcx，grpc，实现起来略费劲，时间仓促，底层思考略少。
 二面挂是因为问了个快排复杂度，详细分析这三个时间复杂度的结果，怎么来的这个值，举例子说明等等，自己算法这方面当时确实弱项，挂了正常。
 腾讯 腾讯对我最大的帮助是看源码，有的东西嚼别人的东西是不够的，应该学习一手资料，详情参考曹大的博客《工程师应该怎么学习》。还是太菜了，缺乏深度思考
 几个亿找中位数
 搜索树旋转过程
-对面应该是c&#43;&#43;的，问我map，我说我用go，他就说go也行，你说说go map 时间复杂度，为啥是这个值，为什么这么多数，O1能直接访问到，当时map只了解了一点，遂答的浅。">
-<meta itemprop="datePublished" content="2021-03-30T17:20:20+00:00" />
-<meta itemprop="dateModified" content="2021-03-30T17:20:20+00:00" />
-<meta itemprop="wordCount" content="99">
-
-
-
-<meta itemprop="keywords" content="面经," />
-<meta property="og:title" content="大三实习求职之旅" />
-<meta property="og:description" content="说在前面 经常“吸”社区，也要时不时反馈一点，一起延续开源精神。
+对面应该是c++的，问我map，我说我用go，他就说go也行，你说说go map 时间复杂度，为啥是这个值，为什么这么多数，O1能直接访问到，当时map只了解了一点，遂答的浅。"><meta itemprop=datePublished content="2021-03-30T17:20:20+00:00"><meta itemprop=dateModified content="2021-03-30T17:20:20+00:00"><meta itemprop=wordCount content="99"><meta itemprop=keywords content="面经,"><meta property="og:title" content="大三上学期好未来字节腾讯实习面经"><meta property="og:description" content="说在前面 经常“吸”社区，也要时不时反馈一点，一起延续开源精神。
 个人情况：22 届双非一本，从去年 12 月开始面试找寒假的实习，由于学校疫情原因没去成功，于是经过寒假复习“二战”。先后面了跟谁学，腾讯，字节，阿里。
-由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C&#43;&#43; 用来写题，有的问题可能不具有参考价值，理性看待。
+由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C++ 用来写题，有的问题可能不具有参考价值，理性看待。
 另外有的问题确实记不得了，大家不要太看重问题，因为大部分都是八股的题型，网上一搜一大堆，博客的总结能几万字，但是没有面试官喜欢听这种东西，都是搞技术的不喜欢花里胡哨，我曾经就因为答协程区别和特点被反问 你这个有点像背的，，不过我也没反驳，下次总结避免就好了。你要答出问题的本质，底层的思考，说出跟别人不一样的地方，用有些面试官的话来说就是 这个问题我只想听你说一句话，我看我能不能听到。说白了就是你说了一大堆可能在对面听来都没听到，说不到点子上等于没说。
 另外本文我主要突出面试过程，不是面试问题的总结帖（有的问题我真的记不得了 :(。
 好了，不说废话了，大家看正文吧，有什么问题欢迎找我聊~
 跟谁学两面 oc，第一次面试 一面 自我介绍
 项目：
   用go写的rpc框架的具体功能细节，注册中心单机还是分布式的，其中一个挂了怎么办？一致性，可靠性怎么保证的。超时控制，加锁和管道支持并发，单机（考虑了多机情况，说了已经在todo里了）。
-  Go&#43;QML 利用cgo实现的跨平台桌面应用功能，场景，为什么要写这个东西？ 我说为了性能，追问性能如何体现，如何测试的，如何优化。答宏观上从任务管理器，top中看，细节上从pprof进行性能定位调优，从火焰图上看。追问pprof还有什么功能，你一般是怎么定位问题的？回答还是先具体再细节。
+  Go+QML 利用cgo实现的跨平台桌面应用功能，场景，为什么要写这个东西？ 我说为了性能，追问性能如何体现，如何测试的，如何优化。答宏观上从任务管理器，top中看，细节上从pprof进行性能定位调优，从火焰图上看。追问pprof还有什么功能，你一般是怎么定位问题的？回答还是先具体再细节。
   这时候我就俩项目，后面怕不够，又想拿go写个web的，正好学校说需要重构某个子选课系统，就跟同学接了，这个下面说。
 写个快排？时分复杂度分析？看你了解过go的标准库实现，说说go的快排源码怎么实现的，答三数取中，根据数据量选择多种排序方式组合，追问细节我就不知道i了，，确实没看过这个。。他说没事。
 协程与线程区别？为什么快，快在哪了？自定义了4个伪寄存器 fp sp sb pc，轻量，初始2KB动态伸缩，由runtime管理，对os透明等等各种原因，又说了以下gmp调度的优势。追问寄存器是什么，你对寄存器还有什么了解。我说了一点关于go和c 在寄存器方面使用的不同，函数传参，调用堆栈等等，扯了点汇编区别，就又问了几个汇编指令，过了。
@@ -66,7 +47,7 @@ rpc与http区别，使用场景，自己总结一下再说几条
 还有点八股没啥难的 有点忘了。。
 也没问啥难点一面就过了
 二面部门leader 详细聊虚拟地址与物理地址，为什么分这俩，段页作用，为什么内存占用能比实际要大的多（还是虚拟地址作用），循序渐进的从现象到技术实现来问，不是考试。
-go&#43;qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来这个项目好多面试官也不懂，cgo特性一是用起来结合其他语言的时候确实有坑点，二是拿go写gui有点杀马特，不招人待见？
+go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来这个项目好多面试官也不懂，cgo特性一是用起来结合其他语言的时候确实有坑点，二是拿go写gui有点杀马特，不招人待见？
 闲聊网络跟os，最后问了个智力问题，就过了。
 总结 感觉难度不大，缺人进来打杂，要求不高。问了一下前辈，说加班严重，校招的话工资高了可以放备选考虑去。。面试体验还不错，自己缺乏一点回答技巧上的经验，聊技术不能一下到点子上，废话略多。
 字节二面挂，腾讯二面挂 这俩对我帮助最大。
@@ -74,28 +55,21 @@ go&#43;qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出�
 自己感觉有了点面试方面的经验，就投了较大的厂，遭到毒打。
 字节一面是算法面，最后写了个单链表归并非递归，勉强通过。
 二面上来扣20分钟rpc项目，挖出你这个项目的所有特点为止：
- 序列化方式有哪几个，区别是什么，自己写过吗 协议用的哪个，为啥不用udp &hellip;鞭打。。。  当时确实缺少对项目的深度思考，也是参考了声哥的项目，不过他是java写的，用go写起来参考了不少框架源码，rpcx，grpc，实现起来略费劲，时间仓促，底层思考略少。
+ 序列化方式有哪几个，区别是什么，自己写过吗 协议用的哪个，为啥不用udp &mldr;鞭打。。。  当时确实缺少对项目的深度思考，也是参考了声哥的项目，不过他是java写的，用go写起来参考了不少框架源码，rpcx，grpc，实现起来略费劲，时间仓促，底层思考略少。
 二面挂是因为问了个快排复杂度，详细分析这三个时间复杂度的结果，怎么来的这个值，举例子说明等等，自己算法这方面当时确实弱项，挂了正常。
 腾讯 腾讯对我最大的帮助是看源码，有的东西嚼别人的东西是不够的，应该学习一手资料，详情参考曹大的博客《工程师应该怎么学习》。还是太菜了，缺乏深度思考
 几个亿找中位数
 搜索树旋转过程
-对面应该是c&#43;&#43;的，问我map，我说我用go，他就说go也行，你说说go map 时间复杂度，为啥是这个值，为什么这么多数，O1能直接访问到，当时map只了解了一点，遂答的浅。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/interview/2021-3-nowcoder/" />
-<meta property="article:published_time" content="2021-03-30T17:20:20+00:00" />
-<meta property="article:modified_time" content="2021-03-30T17:20:20+00:00" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="大三实习求职之旅"/>
-<meta name="twitter:description" content="说在前面 经常“吸”社区，也要时不时反馈一点，一起延续开源精神。
+对面应该是c++的，问我map，我说我用go，他就说go也行，你说说go map 时间复杂度，为啥是这个值，为什么这么多数，O1能直接访问到，当时map只了解了一点，遂答的浅。"><meta property="og:type" content="article"><meta property="og:url" content="https://kcode.icu/posts/interview/2021-3-nowcoder/"><meta property="article:published_time" content="2021-03-30T17:20:20+00:00"><meta property="article:modified_time" content="2021-03-30T17:20:20+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="大三上学期好未来字节腾讯实习面经"><meta name=twitter:description content="说在前面 经常“吸”社区，也要时不时反馈一点，一起延续开源精神。
 个人情况：22 届双非一本，从去年 12 月开始面试找寒假的实习，由于学校疫情原因没去成功，于是经过寒假复习“二战”。先后面了跟谁学，腾讯，字节，阿里。
-由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C&#43;&#43; 用来写题，有的问题可能不具有参考价值，理性看待。
+由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C++ 用来写题，有的问题可能不具有参考价值，理性看待。
 另外有的问题确实记不得了，大家不要太看重问题，因为大部分都是八股的题型，网上一搜一大堆，博客的总结能几万字，但是没有面试官喜欢听这种东西，都是搞技术的不喜欢花里胡哨，我曾经就因为答协程区别和特点被反问 你这个有点像背的，，不过我也没反驳，下次总结避免就好了。你要答出问题的本质，底层的思考，说出跟别人不一样的地方，用有些面试官的话来说就是 这个问题我只想听你说一句话，我看我能不能听到。说白了就是你说了一大堆可能在对面听来都没听到，说不到点子上等于没说。
 另外本文我主要突出面试过程，不是面试问题的总结帖（有的问题我真的记不得了 :(。
 好了，不说废话了，大家看正文吧，有什么问题欢迎找我聊~
 跟谁学两面 oc，第一次面试 一面 自我介绍
 项目：
   用go写的rpc框架的具体功能细节，注册中心单机还是分布式的，其中一个挂了怎么办？一致性，可靠性怎么保证的。超时控制，加锁和管道支持并发，单机（考虑了多机情况，说了已经在todo里了）。
-  Go&#43;QML 利用cgo实现的跨平台桌面应用功能，场景，为什么要写这个东西？ 我说为了性能，追问性能如何体现，如何测试的，如何优化。答宏观上从任务管理器，top中看，细节上从pprof进行性能定位调优，从火焰图上看。追问pprof还有什么功能，你一般是怎么定位问题的？回答还是先具体再细节。
+  Go+QML 利用cgo实现的跨平台桌面应用功能，场景，为什么要写这个东西？ 我说为了性能，追问性能如何体现，如何测试的，如何优化。答宏观上从任务管理器，top中看，细节上从pprof进行性能定位调优，从火焰图上看。追问pprof还有什么功能，你一般是怎么定位问题的？回答还是先具体再细节。
   这时候我就俩项目，后面怕不够，又想拿go写个web的，正好学校说需要重构某个子选课系统，就跟同学接了，这个下面说。
 写个快排？时分复杂度分析？看你了解过go的标准库实现，说说go的快排源码怎么实现的，答三数取中，根据数据量选择多种排序方式组合，追问细节我就不知道i了，，确实没看过这个。。他说没事。
 协程与线程区别？为什么快，快在哪了？自定义了4个伪寄存器 fp sp sb pc，轻量，初始2KB动态伸缩，由runtime管理，对os透明等等各种原因，又说了以下gmp调度的优势。追问寄存器是什么，你对寄存器还有什么了解。我说了一点关于go和c 在寄存器方面使用的不同，函数传参，调用堆栈等等，扯了点汇编区别，就又问了几个汇编指令，过了。
@@ -104,7 +78,7 @@ rpc与http区别，使用场景，自己总结一下再说几条
 还有点八股没啥难的 有点忘了。。
 也没问啥难点一面就过了
 二面部门leader 详细聊虚拟地址与物理地址，为什么分这俩，段页作用，为什么内存占用能比实际要大的多（还是虚拟地址作用），循序渐进的从现象到技术实现来问，不是考试。
-go&#43;qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来这个项目好多面试官也不懂，cgo特性一是用起来结合其他语言的时候确实有坑点，二是拿go写gui有点杀马特，不招人待见？
+go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来这个项目好多面试官也不懂，cgo特性一是用起来结合其他语言的时候确实有坑点，二是拿go写gui有点杀马特，不招人待见？
 闲聊网络跟os，最后问了个智力问题，就过了。
 总结 感觉难度不大，缺人进来打杂，要求不高。问了一下前辈，说加班严重，校招的话工资高了可以放备选考虑去。。面试体验还不错，自己缺乏一点回答技巧上的经验，聊技术不能一下到点子上，废话略多。
 字节二面挂，腾讯二面挂 这俩对我帮助最大。
@@ -112,193 +86,13 @@ go&#43;qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出�
 自己感觉有了点面试方面的经验，就投了较大的厂，遭到毒打。
 字节一面是算法面，最后写了个单链表归并非递归，勉强通过。
 二面上来扣20分钟rpc项目，挖出你这个项目的所有特点为止：
- 序列化方式有哪几个，区别是什么，自己写过吗 协议用的哪个，为啥不用udp &hellip;鞭打。。。  当时确实缺少对项目的深度思考，也是参考了声哥的项目，不过他是java写的，用go写起来参考了不少框架源码，rpcx，grpc，实现起来略费劲，时间仓促，底层思考略少。
+ 序列化方式有哪几个，区别是什么，自己写过吗 协议用的哪个，为啥不用udp &mldr;鞭打。。。  当时确实缺少对项目的深度思考，也是参考了声哥的项目，不过他是java写的，用go写起来参考了不少框架源码，rpcx，grpc，实现起来略费劲，时间仓促，底层思考略少。
 二面挂是因为问了个快排复杂度，详细分析这三个时间复杂度的结果，怎么来的这个值，举例子说明等等，自己算法这方面当时确实弱项，挂了正常。
 腾讯 腾讯对我最大的帮助是看源码，有的东西嚼别人的东西是不够的，应该学习一手资料，详情参考曹大的博客《工程师应该怎么学习》。还是太菜了，缺乏深度思考
 几个亿找中位数
 搜索树旋转过程
-对面应该是c&#43;&#43;的，问我map，我说我用go，他就说go也行，你说说go map 时间复杂度，为啥是这个值，为什么这么多数，O1能直接访问到，当时map只了解了一点，遂答的浅。"/>
-
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-	<link rel="manifest" href="/site.webmanifest">
-	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
-	<link rel="shortcut icon" href="/favicon.ico">
-
-	<title>大三实习求职之旅</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
-	
-</head>
-
-<body id="page">
-	
-	<header id="site-header" class="animated slideInUp faster">
-		<div class="hdr-wrapper section-inner">
-			<div class="hdr-left">
-				<div class="site-branding">
-					<a href="https://www.kcode.icu/">wasabi</a>
-				</div>
-				<nav class="site-nav hide-in-mobile">
-					<a href="https://www.kcode.icu/posts/">文章</a>
-					<a href="https://www.kcode.icu/summary">总结</a>
-					<a href="https://www.kcode.icu/chore">杂项</a>
-					<a href="https://www.kcode.icu/go">Go系列</a>
-				</nav>
-			</div>
-			<div class="hdr-right hdr-icons">
-				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
-			</div>
-		</div>
-	</header>
-	<div id="mobile-menu" class="animated fast">
-		<ul>
-			<li><a href="https://www.kcode.icu/posts/">文章</a></li>
-			<li><a href="https://www.kcode.icu/tags/">标签</a></li>
-			<li><a href="https://www.kcode.icu/about/">关于</a></li>
-		</ul>
-	</div>
-
-
-	<main class="site-main section-inner animated fadeIn faster">
-		<article class="thin">
-			<header class="post-header">
-				<div class="post-meta"><span>Mar 30, 2021</span></div>
-				<h1>大三实习求职之旅</h1>
-			</header>
-			<div class="content">
-				<h2 id="说在前面">说在前面<a href="#说在前面" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<p>经常“吸”社区，也要时不时反馈一点，一起延续开源精神。</p>
-<p>个人情况：22 届双非一本，从去年 12 月开始面试找寒假的实习，由于学校疫情原因没去成功，于是经过寒假复习“二战”。先后面了跟谁学，腾讯，字节，阿里。</p>
-<p>由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C++ 用来写题，有的问题可能不具有参考价值，理性看待。</p>
-<p>另外有的问题确实记不得了，大家不要太看重问题，因为大部分都是八股的题型，网上一搜一大堆，博客的总结能几万字，但是没有面试官喜欢听这种东西，都是搞技术的不喜欢花里胡哨，我曾经就因为答协程区别和特点被反问 你这个有点像背的，，不过我也没反驳，下次总结避免就好了。你要答出问题的本质，底层的思考，说出跟别人不一样的地方，用有些面试官的话来说就是 这个问题我只想听你说一句话，我看我能不能听到。说白了就是你说了一大堆可能在对面听来都没听到，说不到点子上等于没说。</p>
-<p>另外本文我主要突出面试过程，不是面试问题的总结帖（有的问题我真的记不得了 :(。</p>
-<p>好了，不说废话了，大家看正文吧，有什么问题欢迎找我聊~</p>
-<h3 id="跟谁学两面-oc第一次面试">跟谁学两面 oc，第一次面试<a href="#跟谁学两面-oc第一次面试" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-<h4 id="一面">一面<a href="#一面" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-<p>自我介绍</p>
-<p>项目：</p>
-<ul>
-<li>
-<p>用go写的rpc框架的具体功能细节，注册中心单机还是分布式的，其中一个挂了怎么办？一致性，可靠性怎么保证的。超时控制，加锁和管道支持并发，单机（考虑了多机情况，说了已经在todo里了）。</p>
-</li>
-<li>
-<p>Go+QML 利用cgo实现的跨平台桌面应用功能，场景，<strong>为什么要写这个东西？</strong> 我说为了性能，追问性能如何体现，如何测试的，如何优化。答宏观上从任务管理器，top中看，细节上从pprof进行性能定位调优，从火焰图上看。追问pprof还有什么功能，你一般是怎么定位问题的？回答还是先具体再细节。</p>
-</li>
-</ul>
-<p>这时候我就俩项目，后面怕不够，又想拿go写个web的，正好学校说需要重构某个子选课系统，就跟同学接了，这个下面说。</p>
-<p>写个快排？时分复杂度分析？看你了解过go的标准库实现，说说go的快排源码怎么实现的，答三数取中，根据数据量选择多种排序方式组合，追问细节我就不知道i了，，确实没看过这个。。他说没事。</p>
-<p>协程与线程区别？为什么快，快在哪了？自定义了4个伪寄存器 fp sp sb pc，轻量，初始2KB动态伸缩，由runtime管理，对os透明等等各种原因，又说了以下gmp调度的优势。追问寄存器是什么，你对寄存器还有什么了解。我说了一点关于go和c 在寄存器方面使用的不同，函数传参，调用堆栈等等，扯了点汇编区别，就又问了几个汇编指令，过了。</p>
-<p>虚拟地址，物理地址区别</p>
-<p>rpc与http区别，使用场景，自己总结一下再说几条</p>
-<p>还有点八股没啥难的 有点忘了。。</p>
-<p>也没问啥难点一面就过了</p>
-<h4 id="二面部门leader">二面部门leader<a href="#二面部门leader" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-<p>详细聊虚拟地址与物理地址，为什么分这俩，段页作用，为什么内存占用能比实际要大的多（还是虚拟地址作用），循序渐进的从现象到技术实现来问，不是考试。</p>
-<p>go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来这个项目好多面试官也不懂，cgo特性一是用起来结合其他语言的时候确实有坑点，二是拿go写gui有点杀马特，不招人待见？</p>
-<p>闲聊网络跟os，最后问了个智力问题，就过了。</p>
-<h4 id="总结">总结<a href="#总结" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-<p>感觉难度不大，缺人进来打杂，要求不高。问了一下前辈，说加班严重，校招的话工资高了可以放备选考虑去。。面试体验还不错，自己缺乏一点回答技巧上的经验，聊技术不能一下到点子上，废话略多。</p>
-<h3 id="字节二面挂腾讯二面挂">字节二面挂，腾讯二面挂<a href="#字节二面挂腾讯二面挂" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-<p>这俩对我帮助最大。</p>
-<h4 id="字节">字节<a href="#字节" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-<p>字节对我最大的帮助是深度思考算法，为什么要这么写，别的方法行不行？</p>
-<p>自己感觉有了点面试方面的经验，就投了较大的厂，遭到毒打。</p>
-<p>字节一面是算法面，最后写了个单链表归并非递归，勉强通过。</p>
-<p>二面上来扣20分钟rpc项目，挖出你这个项目的所有特点为止：</p>
-<ul>
-<li>序列化方式有哪几个，区别是什么，自己写过吗</li>
-<li>协议用的哪个，为啥不用udp</li>
-<li>&hellip;鞭打。。。</li>
-</ul>
-<p>当时确实缺少对项目的深度思考，也是参考了声哥的项目，不过他是java写的，用go写起来参考了不少框架源码，rpcx，grpc，实现起来略费劲，时间仓促，底层思考略少。</p>
-<p>二面挂是因为问了个快排复杂度，详细分析这三个时间复杂度的结果，怎么来的这个值，举例子说明等等，自己算法这方面当时确实弱项，挂了正常。</p>
-<h4 id="腾讯">腾讯<a href="#腾讯" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-<p>腾讯对我最大的帮助是看源码，有的东西嚼别人的东西是不够的，应该学习一手资料，详情参考曹大的博客《工程师应该怎么学习》。还是太菜了，缺乏深度思考</p>
-<p>几个亿找中位数</p>
-<p>搜索树旋转过程</p>
-<p>对面应该是c++的，问我map，我说我用go，他就说go也行，你说说go map 时间复杂度，为啥是这个值，为什么这么多数，O1能直接访问到，当时map只了解了一点，遂答的浅。</p>
-<p>问 gc，gmp模型</p>
-<p>后面忘了。</p>
-<p>从这里开始，我去把go map的源码包括 runtime/map.go还有相关的汇编代码过了3.4遍，逐行注释源码，写成了博客，这才有了后续跟阿里面试官（技术专家）扯map 20分钟，详细问到扩容的代码实现。。</p>
-<p>也看了channel的源码，挺多的，假期期间算是把底层源码这块入了个门，能扯几句了。</p>
-<h3 id="阿里三面挂">阿里三面挂<a href="#阿里三面挂" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-<p>笔试算法还是写的不好。</p>
-<p>这个是寒假回来的了，阿里云的，一面跟技术专家聊了45min，面试官应该是c++的，懂go，全程比较愉快，最后15分钟写了个题，改编版无重复字符最长字串，10分钟a了就过了。这里记录几个有意思的问题：</p>
-<ul>
-<li>有什么方法可以让函数无限递归不爆栈？（尾递归，返回还是函数本身，栈帧覆盖）</li>
-<li>什么方法可以限制从堆分配内存的内存范围？（不会）</li>
-<li>逃逸分析，有哪些情况会逃逸，为什么？（go的逃逸分析）</li>
-<li>内部布局，系统空间和用户空间，系统空间有中断向量表等不可访问资源，用户空间就是代码段，数据段，堆栈等等。</li>
-</ul>
-<p>二面是笔试面，1小时俩题，20分钟a了，接雨水改编版，左视图。问思路，把接雨水改了改，写完了过了</p>
-<p>三面应该是主管，到这里的时候项目补了个选课系统，全程问项目整体设计，不具体扣到最深的细节，又问了职业规划，除了go 还意向什么语言，答py c++ rust也可，，貌似对c++意愿不够，其实我c++还可以的，go封装太多了，其实挺想学c++的，之后对方声音变低了，还问了俩问题就结束了，最后问一面的技术专家说原因是笔试不好所以挂了。。</p>
-<p>原因我是没想明白，，二面不是补笔试都a了，问题也都答了。。玄学，也不纠结。</p>
-<h3 id="阿里区块链测开">阿里区块链测开<a href="#阿里区块链测开" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-<p>被捞了。一面摸底面，先问你学过哪几个方向，答网络os组原都学过，于是每个都问了一遍，问题有点多，记不住了，挑几个印象深的吧，不分先后：</p>
-<ul>
-<li>docker用过吗，隔离实现底层？dockerfile，dockercompose，指令说几个，看我说了expose，问端口映射方式，追问冒号左右哪个是主机哪个是容器。。。我还真忘了，上一个dockercompose和dockerfile是几个月前了。。</li>
-<li>vlan了解吗，学校做过，但没深入了解。对方看我不太懂就没追问。。</li>
-<li>https详细握手过程，说了tls 12 13，psk，sessionid，sessionticket，ecdhe，rsa反正一大堆，你懂的。</li>
-<li>从源码到二进制代码的整个流程，编译链接载入内存等等。我说了这里看到的地址都是虚拟地址，平常看到的0xc00000xxxx里的c是虚拟地址与物理地址的转换表的下标，瞎扯了程序领空和用户领空的区别。</li>
-</ul>
-<p>昨晚突击二面，我说不想测开，他说给我转到平台研发部，还详细说了一下他们部门的工作，说不是BS架构，没后端，只能到平台研发，是C++，我就说也行，面试3分钟就结束了。</p>
-<h3 id="腾讯过">腾讯过<a href="#腾讯过" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-<p>开学面了俩除了阿里云就是这个，比较顺，刚oc。</p>
-<p>一面是俩人，问项目，应用层协议，https过程，最后写了个树的题，递归写的比较简单，忘了。。</p>
-<p>二面就20分钟，全程问go rpc，穿插一些网络方面的问题，比如tcp udp选择，区别，技术实现等等，没写题。有的问题我感觉答的不好，比如序列化是自己实现的吗，我说用标准库，感觉对方有点失望，我也意识到这个应该自己写一下锻炼锻炼。感觉对方也不是很满意要凉了，最后还是过了，莫名其妙。</p>
-
-			</div>
-			<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp"></div>
-			<hr class="post-end">
-			<footer class="post-info">
-				<p>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/%E9%9D%A2%E7%BB%8F">面经</a></span>
-				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>99 Words</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-03-31 01:20 &#43;0800</p>
-			</footer>
-		</article>
-		<div class="post-nav thin">
-			<a class="next-post" href="https://www.kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Go 使用的 plan9 汇编语言初探</span>
-			</a>
-			<a class="prev-post" href="https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</span>
-			</a>
-		</div>
-		<div id="comments" class="thin">
-						<script src="https://utteranc.es/client.js"
-							repo="sh1luo/sh1luo"
-							issue-term="pathname"
-							theme="github-light"
-							crossorigin="anonymous"
-							async>
-			</script>
-		</div>
-	</main>
-
-	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
-		<p>
-			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
-		</p>
-	</footer>
-
-
-	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-193315904-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-</body>
-
-</html>
+对面应该是c++的，问我map，我说我用go，他就说go也行，你说说go map 时间复杂度，为啥是这个值，为什么这么多数，O1能直接访问到，当时map只了解了一点，遂答的浅。"><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color><link rel="shortcut icon" href=/favicon.ico><title>大三上学期好未来字节腾讯实习面经</title><link rel=stylesheet href=https://kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css></head><body id=page><header id=site-header class="animated slideInUp faster"><div class="hdr-wrapper section-inner"><div class=hdr-left><div class=site-branding><a href=https://kcode.icu/>wasabi</a></div><nav class="site-nav hide-in-mobile"><a href=https://kcode.icu/posts/>文章</a>
+<a href=https://kcode.icu/summary>总结</a>
+<a href=https://kcode.icu/chore>杂项</a>
+<a href=https://kcode.icu/go>Go系列</a></nav></div><div class="hdr-right hdr-icons"><span class="hdr-social hide-in-mobile"><a href=https://github.com/sh1luo target=_blank rel="noopener me" title=Github><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77a5.44 5.44.0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a><a href=mailto:silo1999@163.com target=_blank rel="noopener me" title=Email><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1.0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1.0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a><a href="http://wpa.qq.com/msgrd?v=3&uin=690898835&site=qq&menu=yes" target=_blank rel="noopener me" title=Qq><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></a></span><button id=menu-btn class=hdr-btn title=Menu><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></div></header><div id=mobile-menu class="animated fast"><ul><li><a href=https://kcode.icu/posts/>文章</a></li><li><a href=https://kcode.icu/tags/>标签</a></li><li><a href=https://kcode.icu/about/>关于</a></li></ul></div><main class="site-main section-inner animated fadeIn faster"><article class=thin><header class=post-header><div class=post-meta><span>Mar 30, 2021</span></div><h1>大三上学期好未来字节腾讯实习面经</h1></header><div class=content><h2 id=说在前面>说在前面<a href=#说在前面 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>经常“吸”社区，也要时不时反馈一点，一起延续开源精神。</p><p>个人情况：22 届双非一本，从去年 12 月开始面试找寒假的实习，由于学校疫情原因没去成功，于是经过寒假复习“二战”。先后面了跟谁学，腾讯，字节，阿里。</p><p>由于我个人情况特殊，从大一开始使用 Go 语言到现在，了解比较多，C++ 用来写题，有的问题可能不具有参考价值，理性看待。</p><p>另外有的问题确实记不得了，大家不要太看重问题，因为大部分都是八股的题型，网上一搜一大堆，博客的总结能几万字，但是没有面试官喜欢听这种东西，都是搞技术的不喜欢花里胡哨，我曾经就因为答协程区别和特点被反问 你这个有点像背的，，不过我也没反驳，下次总结避免就好了。你要答出问题的本质，底层的思考，说出跟别人不一样的地方，用有些面试官的话来说就是 这个问题我只想听你说一句话，我看我能不能听到。说白了就是你说了一大堆可能在对面听来都没听到，说不到点子上等于没说。</p><p>另外本文我主要突出面试过程，不是面试问题的总结帖（有的问题我真的记不得了 :(。</p><p>好了，不说废话了，大家看正文吧，有什么问题欢迎找我聊~</p><h3 id=跟谁学两面-oc第一次面试>跟谁学两面 oc，第一次面试<a href=#跟谁学两面-oc第一次面试 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><h4 id=一面>一面<a href=#一面 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><p>自我介绍</p><p>项目：</p><ul><li><p>用go写的rpc框架的具体功能细节，注册中心单机还是分布式的，其中一个挂了怎么办？一致性，可靠性怎么保证的。超时控制，加锁和管道支持并发，单机（考虑了多机情况，说了已经在todo里了）。</p></li><li><p>Go+QML 利用cgo实现的跨平台桌面应用功能，场景，<strong>为什么要写这个东西？</strong> 我说为了性能，追问性能如何体现，如何测试的，如何优化。答宏观上从任务管理器，top中看，细节上从pprof进行性能定位调优，从火焰图上看。追问pprof还有什么功能，你一般是怎么定位问题的？回答还是先具体再细节。</p></li></ul><p>这时候我就俩项目，后面怕不够，又想拿go写个web的，正好学校说需要重构某个子选课系统，就跟同学接了，这个下面说。</p><p>写个快排？时分复杂度分析？看你了解过go的标准库实现，说说go的快排源码怎么实现的，答三数取中，根据数据量选择多种排序方式组合，追问细节我就不知道i了，，确实没看过这个。。他说没事。</p><p>协程与线程区别？为什么快，快在哪了？自定义了4个伪寄存器 fp sp sb pc，轻量，初始2KB动态伸缩，由runtime管理，对os透明等等各种原因，又说了以下gmp调度的优势。追问寄存器是什么，你对寄存器还有什么了解。我说了一点关于go和c 在寄存器方面使用的不同，函数传参，调用堆栈等等，扯了点汇编区别，就又问了几个汇编指令，过了。</p><p>虚拟地址，物理地址区别</p><p>rpc与http区别，使用场景，自己总结一下再说几条</p><p>还有点八股没啥难的 有点忘了。。</p><p>也没问啥难点一面就过了</p><h4 id=二面部门leader>二面部门leader<a href=#二面部门leader class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><p>详细聊虚拟地址与物理地址，为什么分这俩，段页作用，为什么内存占用能比实际要大的多（还是虚拟地址作用），循序渐进的从现象到技术实现来问，不是考试。</p><p>go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来这个项目好多面试官也不懂，cgo特性一是用起来结合其他语言的时候确实有坑点，二是拿go写gui有点杀马特，不招人待见？</p><p>闲聊网络跟os，最后问了个智力问题，就过了。</p><h4 id=总结>总结<a href=#总结 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><p>感觉难度不大，缺人进来打杂，要求不高。问了一下前辈，说加班严重，校招的话工资高了可以放备选考虑去。。面试体验还不错，自己缺乏一点回答技巧上的经验，聊技术不能一下到点子上，废话略多。</p><h3 id=字节二面挂腾讯二面挂>字节二面挂，腾讯二面挂<a href=#字节二面挂腾讯二面挂 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><p>这俩对我帮助最大。</p><h4 id=字节>字节<a href=#字节 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><p>字节对我最大的帮助是深度思考算法，为什么要这么写，别的方法行不行？</p><p>自己感觉有了点面试方面的经验，就投了较大的厂，遭到毒打。</p><p>字节一面是算法面，最后写了个单链表归并非递归，勉强通过。</p><p>二面上来扣20分钟rpc项目，挖出你这个项目的所有特点为止：</p><ul><li>序列化方式有哪几个，区别是什么，自己写过吗</li><li>协议用的哪个，为啥不用udp</li><li>&mldr;鞭打。。。</li></ul><p>当时确实缺少对项目的深度思考，也是参考了声哥的项目，不过他是java写的，用go写起来参考了不少框架源码，rpcx，grpc，实现起来略费劲，时间仓促，底层思考略少。</p><p>二面挂是因为问了个快排复杂度，详细分析这三个时间复杂度的结果，怎么来的这个值，举例子说明等等，自己算法这方面当时确实弱项，挂了正常。</p><h4 id=腾讯>腾讯<a href=#腾讯 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><p>腾讯对我最大的帮助是看源码，有的东西嚼别人的东西是不够的，应该学习一手资料，详情参考曹大的博客《工程师应该怎么学习》。还是太菜了，缺乏深度思考</p><p>几个亿找中位数</p><p>搜索树旋转过程</p><p>对面应该是c++的，问我map，我说我用go，他就说go也行，你说说go map 时间复杂度，为啥是这个值，为什么这么多数，O1能直接访问到，当时map只了解了一点，遂答的浅。</p><p>问 gc，gmp模型</p><p>后面忘了。</p><p>从这里开始，我去把go map的源码包括 runtime/map.go还有相关的汇编代码过了3.4遍，逐行注释源码，写成了博客，这才有了后续跟阿里面试官（技术专家）扯map 20分钟，详细问到扩容的代码实现。。</p><p>也看了channel的源码，挺多的，假期期间算是把底层源码这块入了个门，能扯几句了。</p><h3 id=阿里三面挂>阿里三面挂<a href=#阿里三面挂 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><p>笔试算法还是写的不好。</p><p>这个是寒假回来的了，阿里云的，一面跟技术专家聊了45min，面试官应该是c++的，懂go，全程比较愉快，最后15分钟写了个题，改编版无重复字符最长字串，10分钟a了就过了。这里记录几个有意思的问题：</p><ul><li>有什么方法可以让函数无限递归不爆栈？（尾递归，返回还是函数本身，栈帧覆盖）</li><li>什么方法可以限制从堆分配内存的内存范围？（不会）</li><li>逃逸分析，有哪些情况会逃逸，为什么？（go的逃逸分析）</li><li>内部布局，系统空间和用户空间，系统空间有中断向量表等不可访问资源，用户空间就是代码段，数据段，堆栈等等。</li></ul><p>二面是笔试面，1小时俩题，20分钟a了，接雨水改编版，左视图。问思路，把接雨水改了改，写完了过了</p><p>三面应该是主管，到这里的时候项目补了个选课系统，全程问项目整体设计，不具体扣到最深的细节，又问了职业规划，除了go 还意向什么语言，答py c++ rust也可，，貌似对c++意愿不够，其实我c++还可以的，go封装太多了，其实挺想学c++的，之后对方声音变低了，还问了俩问题就结束了，最后问一面的技术专家说原因是笔试不好所以挂了。。</p><p>原因我是没想明白，，二面不是补笔试都a了，问题也都答了。。玄学，也不纠结。</p><h3 id=阿里区块链测开>阿里区块链测开<a href=#阿里区块链测开 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><p>被捞了。一面摸底面，先问你学过哪几个方向，答网络os组原都学过，于是每个都问了一遍，问题有点多，记不住了，挑几个印象深的吧，不分先后：</p><ul><li>docker用过吗，隔离实现底层？dockerfile，dockercompose，指令说几个，看我说了expose，问端口映射方式，追问冒号左右哪个是主机哪个是容器。。。我还真忘了，上一个dockercompose和dockerfile是几个月前了。。</li><li>vlan了解吗，学校做过，但没深入了解。对方看我不太懂就没追问。。</li><li>https详细握手过程，说了tls 12 13，psk，sessionid，sessionticket，ecdhe，rsa反正一大堆，你懂的。</li><li>从源码到二进制代码的整个流程，编译链接载入内存等等。我说了这里看到的地址都是虚拟地址，平常看到的0xc00000xxxx里的c是虚拟地址与物理地址的转换表的下标，瞎扯了程序领空和用户领空的区别。</li></ul><p>昨晚突击二面，我说不想测开，他说给我转到平台研发部，还详细说了一下他们部门的工作，说不是BS架构，没后端，只能到平台研发，是C++，我就说也行，面试3分钟就结束了。</p><h3 id=腾讯过>腾讯过<a href=#腾讯过 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><p>开学面了俩除了阿里云就是这个，比较顺，刚oc。</p><p>一面是俩人，问项目，应用层协议，https过程，最后写了个树的题，递归写的比较简单，忘了。。</p><p>二面就20分钟，全程问go rpc，穿插一些网络方面的问题，比如tcp udp选择，区别，技术实现等等，没写题。有的问题我感觉答的不好，比如序列化是自己实现的吗，我说用标准库，感觉对方有点失望，我也意识到这个应该自己写一下锻炼锻炼。感觉对方也不是很满意要凉了，最后还是过了，莫名其妙。</p></div><div class=content><br><img src=https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp width=80% height=60%></div><hr class=post-end><footer class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://kcode.icu/tags/%E9%9D%A2%E7%BB%8F>面经</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>99 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2021-03-30 17:20 +0000</p></footer></article><div class="post-nav thin"><a class=next-post href=https://kcode.icu/posts/go/2021-03-20-go-%E4%BD%BF%E7%94%A8%E7%9A%84-plan9-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E5%88%9D%E6%8E%A2/><span class=post-nav-label><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>&nbsp;Newer</span><br><span>Go 使用的 plan9 汇编语言初探</span></a>
+<a class=prev-post href=https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/><span class=post-nav-label>Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><br><span>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</span></a></div><div id=comments class=thin><script src=https://utteranc.es/client.js repo=sh1luo/sh1luo issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer id=site-footer class="section-inner thin animated fadeIn faster"><p>&copy; 2018 - 2021 <a href=https://kcode.icu/>wasabi</a></p><p>Made with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> &#183; Theme <a href=https://github.com/Track3/hermit target=_blank rel=noopener>Hermit</a> &#183; <a href=https://kcode.icu/post/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a></p></footer><script src=https://kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-193315904-1','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

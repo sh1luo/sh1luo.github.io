@@ -1,246 +1,74 @@
-<!DOCTYPE html>
-<html lang="zh-hans">
+<!doctype html><html lang=zh-hans><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=theme-color content="#494f5c"><meta name=msapplication-TileColor content="#494f5c"><meta itemprop=name content="Go unsafe.Pointer、uintptr、Pointer之间的区别与联系"><meta itemprop=description content="前几天见到了一个问题：
+uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
+type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &#34;goooo&#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
+fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&mldr;），那你再看一段代码：
+//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
+函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048Byte，是固定在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。"><meta itemprop=datePublished content="2021-03-14T13:35:20+00:00"><meta itemprop=dateModified content="2021-03-14T13:35:20+00:00"><meta itemprop=wordCount content="342"><meta itemprop=keywords content="Go,源码,"><meta property="og:title" content="Go unsafe.Pointer、uintptr、Pointer之间的区别与联系"><meta property="og:description" content="前几天见到了一个问题：
+uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
+type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &#34;goooo&#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
+fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&mldr;），那你再看一段代码：
+//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
+函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048Byte，是固定在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。"><meta property="og:type" content="article"><meta property="og:url" content="https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/"><meta property="article:published_time" content="2021-03-14T13:35:20+00:00"><meta property="article:modified_time" content="2021-03-14T13:35:20+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Go unsafe.Pointer、uintptr、Pointer之间的区别与联系"><meta name=twitter:description content="前几天见到了一个问题：
+uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
+type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &#34;goooo&#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
+fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&mldr;），那你再看一段代码：
+//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
+函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048Byte，是固定在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。"><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color><link rel="shortcut icon" href=/favicon.ico><title>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</title><link rel=stylesheet href=https://kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css></head><body id=page><header id=site-header class="animated slideInUp faster"><div class="hdr-wrapper section-inner"><div class=hdr-left><div class=site-branding><a href=https://kcode.icu/>wasabi</a></div><nav class="site-nav hide-in-mobile"><a href=https://kcode.icu/posts/>文章</a>
+<a href=https://kcode.icu/summary>总结</a>
+<a href=https://kcode.icu/chore>杂项</a>
+<a href=https://kcode.icu/go>Go系列</a></nav></div><div class="hdr-right hdr-icons"><span class="hdr-social hide-in-mobile"><a href=https://github.com/sh1luo target=_blank rel="noopener me" title=Github><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77a5.44 5.44.0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a><a href=mailto:silo1999@163.com target=_blank rel="noopener me" title=Email><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1.0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1.0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a><a href="http://wpa.qq.com/msgrd?v=3&uin=690898835&site=qq&menu=yes" target=_blank rel="noopener me" title=Qq><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></a></span><button id=menu-btn class=hdr-btn title=Menu><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></div></header><div id=mobile-menu class="animated fast"><ul><li><a href=https://kcode.icu/posts/>文章</a></li><li><a href=https://kcode.icu/tags/>标签</a></li><li><a href=https://kcode.icu/about/>关于</a></li></ul></div><main class="site-main section-inner animated fadeIn faster"><article class=thin><header class=post-header><div class=post-meta><span>Mar 14, 2021</span></div><h1>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</h1></header><div class=content><p>前几天见到了一个问题：</p><pre><code>uintptr与 unsafe.Pointer 有什么区别？
+</code></pre><p>你可能曾经看到过类似这样的代码：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kd>type</span> <span class=nx>T</span> <span class=kd>struct</span> <span class=p>{</span>
+    <span class=nx>a</span> <span class=kt>uint8</span>
+    <span class=nx>b</span> <span class=kt>bool</span>
+    <span class=nx>c</span> <span class=kt>string</span>
+<span class=p>}</span>
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<meta name="theme-color" content="#494f5c">
-	<meta name="msapplication-TileColor" content="#494f5c">
-<meta itemprop="name" content="Go unsafe.Pointer、uintptr、Pointer之间的区别与联系">
-<meta itemprop="description" content="前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
-type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &#34;goooo&#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;a)) &#43; unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
-fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&hellip;），那你再看一段代码：
-//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
-函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048Byte，是固定在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。">
-<meta itemprop="datePublished" content="2021-03-14T13:35:20+00:00" />
-<meta itemprop="dateModified" content="2021-03-14T13:35:20+00:00" />
-<meta itemprop="wordCount" content="342">
+<span class=nx>t</span> <span class=o>:=</span> <span class=nx>T</span><span class=p>{</span><span class=nx>a</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span> <span class=nx>b</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span> <span class=nx>c</span><span class=p>:</span> <span class=s>&#34;goooo&#34;</span><span class=p>}</span>
+<span class=nx>Tc</span> <span class=o>:=</span> <span class=o>*</span><span class=p>(</span><span class=o>*</span><span class=kt>string</span><span class=p>)(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=nb>uintptr</span><span class=p>(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>a</span><span class=p>))</span> <span class=o>+</span> <span class=nx>unsafe</span><span class=p>.</span><span class=nf>Offsetof</span><span class=p>(</span><span class=nx>T</span><span class=p>{}.</span><span class=nx>c</span><span class=p>)))</span>
+<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>Tc</span><span class=p>)</span>
+</code></pre></div><p>这一行代码看似实现的功能非常复杂，其实它就是等价于：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>t</span><span class=p>.</span><span class=nx>c</span><span class=p>)</span>
+</code></pre></div><p>从某种意义上来说，这好像没什么用（确实没啥作用&mldr;），那你再看一段代码：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=c1>//go:nosplit
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>Bytes2String</span><span class=p>(</span><span class=nx>bs</span> <span class=p>[]</span><span class=kt>byte</span><span class=p>)</span> <span class=kt>string</span> <span class=p>{</span>
+    <span class=k>return</span> <span class=o>*</span><span class=p>(</span><span class=o>*</span><span class=kt>string</span><span class=p>)(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>bs</span><span class=p>))</span>
+<span class=p>}</span>
 
+<span class=c1>//go:nosplit
+</span><span class=c1></span><span class=kd>func</span> <span class=nf>String2Bytes</span><span class=p>(</span><span class=nx>s</span> <span class=kt>string</span><span class=p>)</span> <span class=p>[]</span><span class=kt>byte</span> <span class=p>{</span>
+    <span class=nx>ss</span> <span class=o>:=</span> <span class=o>*</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=nb>uintptr</span><span class=p>(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>s</span><span class=p>))</span>
+    <span class=nx>b</span> <span class=o>:=</span> <span class=p>[</span><span class=mi>3</span><span class=p>]</span><span class=kt>uintptr</span><span class=p>{</span><span class=nx>ss</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=nx>ss</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=nx>ss</span><span class=p>[</span><span class=mi>1</span><span class=p>]}</span>
+    <span class=k>return</span> <span class=o>*</span><span class=p>(</span><span class=o>*</span><span class=p>[]</span><span class=kt>byte</span><span class=p>)(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>b</span><span class=p>))</span>
+<span class=p>}</span>
+</code></pre></div><p>这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。</p><p>函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048Byte，是固定在源码中的。而 <code>go:nosplit</code> 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</p><p>这段代码通过 unsafe.Pointer 类型实现了从 float64 强转 uint64 的效果，出自标准库。</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kd>func</span> <span class=nf>Float64bits</span><span class=p>(</span><span class=nx>f</span> <span class=kt>float64</span><span class=p>)</span> <span class=kt>uint64</span> <span class=p>{</span>
+    <span class=k>return</span> <span class=o>*</span><span class=p>(</span><span class=o>*</span><span class=kt>uint64</span><span class=p>)(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>f</span><span class=p>))</span>
+<span class=p>}</span>
+</code></pre></div><h2 id=unsafe包>unsafe包<a href=#unsafe包 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p><code>Go</code> 语言本身由于类型系统的原因，不支持指针的运算操作，对于指针的使用进行了极大的限制，不像 <code>C/C++</code> 语言那样对指针 “为所欲为”，也不像 <code>Java</code> 语言中那样根本不提供指针，采取了一种折中方案，只支持常见的取址（&），取值（*）操作。但是为了有些场合的需要，还是提供了一个用来直接无视类型系统而直接操作的特性，这便是 <code>unsafe</code> 包提供的能力。</p><p><code>unsafe</code> 包开放了一个类型，三个函数，分别是：</p><ul><li>Pointer ，任意指针类型，类似于 C/C++ 语言中的 void* 类型</li><li>Alignof(x ArbitraryType) uintptr 函数，计算变量内存对齐边界大小</li><li>Sizeof(x ArbitraryType) uintptr 函数，计算该类型所占用内存大小，不包含底层数据大小</li><li>Offsetof(x ArbitraryType) uintptr 函数，计算该变量相对于结构体首地址的地址偏移</li></ul><blockquote><p>看源码过程中可能会看到 <code>ArbitraryType</code> 类型，而 <code>Pointer</code> 就是 <code>ArbitraryType</code> 类型，不必疑惑，这个类型没有任何实际意义，仅仅代表了它可以是任意 <code>Go</code> 语言类型，不是 <code>unsafe</code> 包的组成部分。</p></blockquote><p>Go 语言类型系统的限制，不允许进行指针运算，比如：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=nx>a</span> <span class=o>:=</span> <span class=mi>1</span>
+<span class=nx>pa</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>a</span>
+<span class=nx>pa</span><span class=o>++</span>
+</code></pre></div><p>编译器无法通过这种写法，会报不支持这种运算的错误：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=err>#</span> <span class=nx>command</span><span class=o>-</span><span class=nx>line</span><span class=o>-</span><span class=nx>arguments</span>
+<span class=p>.</span><span class=err>\</span><span class=nx>notify</span><span class=p>.</span><span class=k>go</span><span class=p>:</span><span class=mi>17</span><span class=p>:</span><span class=mi>5</span><span class=p>:</span> <span class=nx>invalid</span> <span class=nx>operation</span><span class=p>:</span> <span class=nx>pa</span><span class=o>++</span> <span class=p>(</span><span class=nx>non</span><span class=o>-</span><span class=nx>numeric</span> <span class=kd>type</span> <span class=o>*</span><span class=kt>int</span><span class=p>)</span>
+</code></pre></div><p>这 “一类型，三函数” 所提供的能力就是直接无视这个限制，直接进行地址运算，下面详细介绍这些能力。</p><h3 id=一类型pointer>一类型Pointer<a href=#一类型pointer class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><p><code>Pointer</code> 类型提供了 <code>uintptr</code> 与类型指针之间的转换中介，要想将任意指针类型 *p 转为 uintptr 来进行指针运算，需要先转换为 <code>Pointer</code> 类型，再转换为 <code>uintptr</code> 类型。</p><p><img src=https://blogimagee.oss-cn-beijing.aliyuncs.com/images/unsafe_uintptr_p.svg alt></p><h4 id=类型介绍>类型介绍<a href=#类型介绍 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><p>unsafe.Pointer 类型的定义非常简单，就是一个任意类型的指针表示：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kd>type</span> <span class=nx>ArbitraryType</span> <span class=kt>int</span>
+<span class=kd>type</span> <span class=nx>Pointer</span> <span class=o>*</span><span class=nx>ArbitraryType</span>
+</code></pre></div><p>自定义了一个命名类型 <code>ArbitraryType</code>，这个类型并没有什么实际含义，只是表示任意类型，在代码文档中使用。如果没有这个类型，那么 Sizeof 等函数的参数就是 int 类型，会让人费解。所以正如字面意思，<code>Pointer</code> 的含义就是 “任意类型的指针”。</p><h4 id=使用注意>使用注意<a href=#使用注意 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><p>除了上图描述的这个类型间转换规则外，还需要遵循几个固定的规则。</p><h5 id=uintptr变量无法保持对变量的引用>uintptr变量无法保持对变量的引用<a href=#uintptr变量无法保持对变量的引用 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h5><p>你不能这么做：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kd>var</span> <span class=nx>i</span> <span class=kt>int</span> <span class=p>=</span> <span class=mi>1</span>
+<span class=nx>up</span> <span class=o>:=</span> <span class=nb>uintptr</span><span class=p>(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>i</span><span class=p>))</span>
+<span class=c1>// after 1000 years...
+</span><span class=c1></span><span class=nf>Println</span><span class=p>(</span><span class=nx>i</span><span class=p>)</span> <span class=c1>// maybe panic!
+</span></code></pre></div><p><code>uintptr</code> 可以用来进行指针运算，实际上就是一个非常大的无符号整数类型，可以表示所有地址空间。上述代码可能会 panic 的原因是 i 变量可能会被 Garbage Collector（gc） 回收。一般这个 uintptr 类型只作为中间值参与运算。</p><h4 id=使用案例>使用案例<a href=#使用案例 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h4><p>go slice 的创建是通过 makeslice 创建，返回值是一个结构体：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kd>func</span> <span class=nf>makeslice</span><span class=p>(</span><span class=nx>et</span> <span class=o>*</span><span class=nx>_type</span><span class=p>,</span> <span class=nx>len</span><span class=p>,</span> <span class=nx>cap</span> <span class=kt>int</span><span class=p>)</span> <span class=nx>slice</span>
+</code></pre></div><p>我们可以通过以下两种方式获取切片的长度：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=nx>s</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>([]</span><span class=kt>int</span><span class=p>,</span> <span class=mi>8</span><span class=p>,</span> <span class=mi>8</span><span class=p>)</span>
+<span class=nf>Println</span><span class=p>(</span><span class=o>*</span><span class=p>(</span><span class=o>*</span><span class=kt>int</span><span class=p>)(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=nb>uintptr</span><span class=p>(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>s</span><span class=p>))</span> <span class=o>+</span> <span class=nb>uintptr</span><span class=p>(</span><span class=mi>8</span><span class=p>))))</span> <span class=c1>// 8
+</span><span class=c1></span><span class=nf>Println</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=nx>s</span><span class=p>))</span> <span class=c1>// 8
+</span></code></pre></div><p>把 <code>uintptr(8)</code> 改为 <code>uintptr(16)</code> 就可以获取到容量了。</p><p>如果我们想获取 map 的大小，需要有一点小小的改变，因为 map 的创建是通过 makemap 函数：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kd>func</span> <span class=nf>makemap</span><span class=p>(</span><span class=nx>t</span> <span class=o>*</span><span class=nx>maptype</span><span class=p>,</span> <span class=nx>hint</span> <span class=kt>int64</span><span class=p>,</span> <span class=nx>h</span> <span class=o>*</span><span class=nx>hmap</span><span class=p>,</span> <span class=nx>bucket</span> <span class=nx>unsafe</span><span class=p>.</span><span class=nx>Pointer</span><span class=p>)</span> <span class=o>*</span><span class=nx>hmap</span>
+</code></pre></div><p>该返回的是一个指针，由于再次取地址，是二级指针，所以我们稍稍修改一下代码：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=nx>mm</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>map</span><span class=p>[</span><span class=kt>int</span><span class=p>]</span><span class=kt>int</span><span class=p>,</span> <span class=mi>8</span><span class=p>)</span>
+<span class=nf>Println</span><span class=p>(</span><span class=o>**</span><span class=p>(</span><span class=o>**</span><span class=kt>int</span><span class=p>)(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>mm</span><span class=p>)))</span>  <span class=c1>// 8
+</span></code></pre></div><h3 id=三函数alignofsizeof和offsetof>三函数Alignof、Sizeof和Offsetof<a href=#三函数alignofsizeof和offsetof class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><p>看了上面的内容，可能会有一个疑问，这有什么用呢？不是有更优的 “常规” 解法吗？</p><p>我想说的是，除了 <code>zero-copy</code> 来转换 slice 与 string 这个例子之外，还有一个场景。</p><p>如果结构体成员私有，包外如何访问？你不能通过常规的运算符 &lsquo;.&rsquo; 来访问到私有字段，就要借助 unsafe 包了。通过 <code>unsafe.Sizeof</code> 函数计算偏移字段的大小和，直接获取到目标字段的地址偏移：</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kn>package</span> <span class=nx>a</span>
+<span class=kd>type</span> <span class=nx>T</span> <span class=kd>struct</span> <span class=p>{</span>
+    <span class=nx>a</span> <span class=kt>int</span>
+    <span class=nx>b</span> <span class=kt>bool</span>
+    <span class=nx>c</span> <span class=kt>byte</span>
+<span class=p>}</span>
 
-
-<meta itemprop="keywords" content="Go,源码," />
-<meta property="og:title" content="Go unsafe.Pointer、uintptr、Pointer之间的区别与联系" />
-<meta property="og:description" content="前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
-type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &#34;goooo&#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;a)) &#43; unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
-fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&hellip;），那你再看一段代码：
-//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
-函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048Byte，是固定在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/" />
-<meta property="article:published_time" content="2021-03-14T13:35:20+00:00" />
-<meta property="article:modified_time" content="2021-03-14T13:35:20+00:00" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Go unsafe.Pointer、uintptr、Pointer之间的区别与联系"/>
-<meta name="twitter:description" content="前几天见到了一个问题：
-uintptr与 unsafe.Pointer 有什么区别？你可能曾经看到过类似这样的代码：
-type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &#34;goooo&#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;a)) &#43; unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
-fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&hellip;），那你再看一段代码：
-//go:nosplit func Bytes2String(bs []byte) string { return *(*string)(unsafe.Pointer(&amp;bs)) } //go:nosplit func String2Bytes(s string) []byte { ss := *[2]uintptr(unsafe.Pointer(&amp;s)) b := [3]uintptr{ss[0], ss[1], ss[1]} return *(*[]byte)(unsafe.Pointer(&amp;b)) } 这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。
-函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048Byte，是固定在源码中的。而 go:nosplit 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。"/>
-
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-	<link rel="manifest" href="/site.webmanifest">
-	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
-	<link rel="shortcut icon" href="/favicon.ico">
-
-	<title>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
-	
-</head>
-
-<body id="page">
-	
-	<header id="site-header" class="animated slideInUp faster">
-		<div class="hdr-wrapper section-inner">
-			<div class="hdr-left">
-				<div class="site-branding">
-					<a href="https://www.kcode.icu/">wasabi</a>
-				</div>
-				<nav class="site-nav hide-in-mobile">
-					<a href="https://www.kcode.icu/posts/">文章</a>
-					<a href="https://www.kcode.icu/summary">总结</a>
-					<a href="https://www.kcode.icu/chore">杂项</a>
-					<a href="https://www.kcode.icu/go">Go系列</a>
-				</nav>
-			</div>
-			<div class="hdr-right hdr-icons">
-				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
-			</div>
-		</div>
-	</header>
-	<div id="mobile-menu" class="animated fast">
-		<ul>
-			<li><a href="https://www.kcode.icu/posts/">文章</a></li>
-			<li><a href="https://www.kcode.icu/tags/">标签</a></li>
-			<li><a href="https://www.kcode.icu/about/">关于</a></li>
-		</ul>
-	</div>
-
-
-	<main class="site-main section-inner animated fadeIn faster">
-		<article class="thin">
-			<header class="post-header">
-				<div class="post-meta"><span>Mar 14, 2021</span></div>
-				<h1>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</h1>
-			</header>
-			<div class="content">
-				<p>前几天见到了一个问题：</p>
-<pre><code>uintptr与 unsafe.Pointer 有什么区别？
-</code></pre><p>你可能曾经看到过类似这样的代码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">T</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">a</span> <span class="kt">uint8</span>
-    <span class="nx">b</span> <span class="kt">bool</span>
-    <span class="nx">c</span> <span class="kt">string</span>
-<span class="p">}</span>
-
-<span class="nx">t</span> <span class="o">:=</span> <span class="nx">T</span><span class="p">{</span><span class="nx">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">b</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">c</span><span class="p">:</span> <span class="s">&#34;goooo&#34;</span><span class="p">}</span>
-<span class="nx">Tc</span> <span class="o">:=</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="kt">string</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">a</span><span class="p">))</span> <span class="o">+</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Offsetof</span><span class="p">(</span><span class="nx">T</span><span class="p">{}.</span><span class="nx">c</span><span class="p">)))</span>
-<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">Tc</span><span class="p">)</span>
-</code></pre></div><p>这一行代码看似实现的功能非常复杂，其实它就是等价于：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">c</span><span class="p">)</span>
-</code></pre></div><p>从某种意义上来说，这好像没什么用（确实没啥作用&hellip;），那你再看一段代码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">//go:nosplit
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Bytes2String</span><span class="p">(</span><span class="nx">bs</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="kt">string</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">bs</span><span class="p">))</span>
-<span class="p">}</span>
-
-<span class="c1">//go:nosplit
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">String2Bytes</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
-    <span class="nx">ss</span> <span class="o">:=</span> <span class="o">*</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">s</span><span class="p">))</span>
-    <span class="nx">b</span> <span class="o">:=</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="kt">uintptr</span><span class="p">{</span><span class="nx">ss</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">ss</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">ss</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
-    <span class="k">return</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="p">[]</span><span class="kt">byte</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">b</span><span class="p">))</span>
-<span class="p">}</span>
-</code></pre></div><p>这两个函数实现了 []Byte 与 string 的互转，并且不需要申请任何内存，因为他们共享底层数据空间。</p>
-<p>函数前的类似注释的一行是一些指令，用来指示编译器进行一些用户的行为，Go 中的栈帧是可以根据需要动态增长的，一开始只有 2048Byte，是固定在源码中的。而 <code>go:nosplit</code> 就是表明函数栈空间无需动态增长，这在一定程度上增加了效率，但是如果你申请了过量的空间，就会导致程序因为爆栈而 panic。</p>
-<p>这段代码通过 unsafe.Pointer 类型实现了从 float64 强转 uint64 的效果，出自标准库。</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Float64bits</span><span class="p">(</span><span class="nx">f</span> <span class="kt">float64</span><span class="p">)</span> <span class="kt">uint64</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="kt">uint64</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">f</span><span class="p">))</span>
-<span class="p">}</span>
-</code></pre></div><h2 id="unsafe包">unsafe包<a href="#unsafe包" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<p><code>Go</code> 语言本身由于类型系统的原因，不支持指针的运算操作，对于指针的使用进行了极大的限制，不像 <code>C/C++</code> 语言那样对指针 “为所欲为”，也不像 <code>Java</code> 语言中那样根本不提供指针，采取了一种折中方案，只支持常见的取址（&amp;），取值（*）操作。但是为了有些场合的需要，还是提供了一个用来直接无视类型系统而直接操作的特性，这便是 <code>unsafe</code> 包提供的能力。</p>
-<p><code>unsafe</code> 包开放了一个类型，三个函数，分别是：</p>
-<ul>
-<li>Pointer ，任意指针类型，类似于 C/C++ 语言中的 void* 类型</li>
-<li>Alignof(x ArbitraryType) uintptr 函数，计算变量内存对齐边界大小</li>
-<li>Sizeof(x ArbitraryType) uintptr 函数，计算该类型所占用内存大小，不包含底层数据大小</li>
-<li>Offsetof(x ArbitraryType) uintptr 函数，计算该变量相对于结构体首地址的地址偏移</li>
-</ul>
-<blockquote>
-<p>看源码过程中可能会看到  <code>ArbitraryType</code> 类型，而 <code>Pointer</code> 就是 <code>ArbitraryType</code> 类型，不必疑惑，这个类型没有任何实际意义，仅仅代表了它可以是任意 <code>Go</code> 语言类型，不是 <code>unsafe</code> 包的组成部分。</p>
-</blockquote>
-<p>Go 语言类型系统的限制，不允许进行指针运算，比如：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">a</span> <span class="o">:=</span> <span class="mi">1</span>
-<span class="nx">pa</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">a</span>
-<span class="nx">pa</span><span class="o">++</span>
-</code></pre></div><p>编译器无法通过这种写法，会报不支持这种运算的错误：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="err">#</span> <span class="nx">command</span><span class="o">-</span><span class="nx">line</span><span class="o">-</span><span class="nx">arguments</span>
-<span class="p">.</span><span class="err">\</span><span class="nx">notify</span><span class="p">.</span><span class="k">go</span><span class="p">:</span><span class="mi">17</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span> <span class="nx">invalid</span> <span class="nx">operation</span><span class="p">:</span> <span class="nx">pa</span><span class="o">++</span> <span class="p">(</span><span class="nx">non</span><span class="o">-</span><span class="nx">numeric</span> <span class="kd">type</span> <span class="o">*</span><span class="kt">int</span><span class="p">)</span>
-</code></pre></div><p>这 “一类型，三函数” 所提供的能力就是直接无视这个限制，直接进行地址运算，下面详细介绍这些能力。</p>
-<h3 id="一类型pointer">一类型Pointer<a href="#一类型pointer" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-<p><code>Pointer</code> 类型提供了 <code>uintptr</code> 与类型指针之间的转换中介，要想将任意指针类型 *p 转为 uintptr 来进行指针运算，需要先转换为 <code>Pointer</code> 类型，再转换为 <code>uintptr</code> 类型。</p>
-<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/unsafe_uintptr_p.svg" alt=""></p>
-<h4 id="类型介绍">类型介绍<a href="#类型介绍" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-<p>unsafe.Pointer 类型的定义非常简单，就是一个任意类型的指针表示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">ArbitraryType</span> <span class="kt">int</span>
-<span class="kd">type</span> <span class="nx">Pointer</span> <span class="o">*</span><span class="nx">ArbitraryType</span>
-</code></pre></div><p>自定义了一个命名类型 <code>ArbitraryType</code>，这个类型并没有什么实际含义，只是表示任意类型，在代码文档中使用。如果没有这个类型，那么 Sizeof 等函数的参数就是 int 类型，会让人费解。所以正如字面意思，<code>Pointer</code> 的含义就是 “任意类型的指针”。</p>
-<h4 id="使用注意">使用注意<a href="#使用注意" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-<p>除了上图描述的这个类型间转换规则外，还需要遵循几个固定的规则。</p>
-<h5 id="uintptr变量无法保持对变量的引用">uintptr变量无法保持对变量的引用<a href="#uintptr变量无法保持对变量的引用" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h5>
-<p>你不能这么做：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">i</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">1</span>
-<span class="nx">up</span> <span class="o">:=</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">i</span><span class="p">))</span>
-<span class="c1">// after 1000 years...
-</span><span class="c1"></span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="c1">// maybe panic!
-</span></code></pre></div><p><code>uintptr</code> 可以用来进行指针运算，实际上就是一个非常大的无符号整数类型，可以表示所有地址空间。上述代码可能会 panic 的原因是 i 变量可能会被 Garbage Collector（gc） 回收。一般这个 uintptr 类型只作为中间值参与运算。</p>
-<h4 id="使用案例">使用案例<a href="#使用案例" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h4>
-<p>go slice 的创建是通过 makeslice 创建，返回值是一个结构体：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">makeslice</span><span class="p">(</span><span class="nx">et</span> <span class="o">*</span><span class="nx">_type</span><span class="p">,</span> <span class="nx">len</span><span class="p">,</span> <span class="nx">cap</span> <span class="kt">int</span><span class="p">)</span> <span class="nx">slice</span>
-</code></pre></div><p>我们可以通过以下两种方式获取切片的长度：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">s</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="nf">Println</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="kt">int</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">s</span><span class="p">))</span> <span class="o">+</span> <span class="nb">uintptr</span><span class="p">(</span><span class="mi">8</span><span class="p">))))</span> <span class="c1">// 8
-</span><span class="c1"></span><span class="nf">Println</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">))</span> <span class="c1">// 8
-</span></code></pre></div><p>把 <code>uintptr(8)</code> 改为 <code>uintptr(16)</code> 就可以获取到容量了。</p>
-<p>如果我们想获取 map 的大小，需要有一点小小的改变，因为 map 的创建是通过 makemap 函数：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">makemap</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">maptype</span><span class="p">,</span> <span class="nx">hint</span> <span class="kt">int64</span><span class="p">,</span> <span class="nx">h</span> <span class="o">*</span><span class="nx">hmap</span><span class="p">,</span> <span class="nx">bucket</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)</span> <span class="o">*</span><span class="nx">hmap</span>
-</code></pre></div><p>该返回的是一个指针，由于再次取地址，是二级指针，所以我们稍稍修改一下代码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">mm</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-<span class="nf">Println</span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="o">**</span><span class="kt">int</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">mm</span><span class="p">)))</span>  <span class="c1">// 8
-</span></code></pre></div><h3 id="三函数alignofsizeof和offsetof">三函数Alignof、Sizeof和Offsetof<a href="#三函数alignofsizeof和offsetof" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-<p>看了上面的内容，可能会有一个疑问，这有什么用呢？不是有更优的 “常规” 解法吗？</p>
-<p>我想说的是，除了 <code>zero-copy</code> 来转换 slice 与 string 这个例子之外，还有一个场景。</p>
-<p>如果结构体成员私有，包外如何访问？你不能通过常规的运算符 &lsquo;.&rsquo; 来访问到私有字段，就要借助 unsafe 包了。通过 <code>unsafe.Sizeof</code> 函数计算偏移字段的大小和，直接获取到目标字段的地址偏移：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">a</span>
-<span class="kd">type</span> <span class="nx">T</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">a</span> <span class="kt">int</span>
-    <span class="nx">b</span> <span class="kt">bool</span>
-    <span class="nx">c</span> <span class="kt">byte</span>
-<span class="p">}</span>
-
-<span class="kn">package</span> <span class="nx">b</span>
-<span class="nx">t</span> <span class="o">:=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">T</span><span class="p">{</span> <span class="nx">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">b</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">c</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span>
-<span class="nx">tc</span> <span class="o">:=</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="kt">byte</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">)(</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">t</span><span class="p">))</span> <span class="o">+</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="kc">true</span><span class="p">))</span>
-<span class="nf">Println</span><span class="p">(</span><span class="nx">tc</span><span class="p">)</span> <span class="c1">// 2
-</span></code></pre></div><h3 id="总结">总结<a href="#总结" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
-<p>Go 语言中和了 C/C++ 和 Java 语言对指针提供的能力，有效地解决了指针滥用导致内存泄露、非法访问等安全问题。通过静态语言的严格类型系统限制了一些内存操作，也提供了一个不安全但 “炫酷” 的 unsafe 包，标准库的源码许多都使用了 unsafe 包所提供了能力，高效简洁，让我们仿佛在看 C 系语言源码。这也不难理解，Go 语言的创始人之一正是 C 语言的创造者之一，许多设计思想优秀且独树一帜。</p>
-<p>不过之所以命名为 unsafe，也是因为可以直接绕过类型系统直接操作底层内存，会带来一定的安全问题，与 GC 的工作 “冲突”，所以需要我们谨慎使用。</p>
-
-			</div>
-			<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp"></div>
-			<hr class="post-end">
-			<footer class="post-info">
-				<p>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81">源码</a></span>
-				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>342 Words</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-03-14 21:35 &#43;0800</p>
-			</footer>
-		</article>
-		<div class="post-nav thin">
-			<a class="next-post" href="https://www.kcode.icu/posts/interview/2021-3-nowcoder/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>大三实习求职之旅</span>
-			</a>
-			<a class="prev-post" href="https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>深入理解 Go channel</span>
-			</a>
-		</div>
-		<div id="comments" class="thin">
-						<script src="https://utteranc.es/client.js"
-							repo="sh1luo/sh1luo"
-							issue-term="pathname"
-							theme="github-light"
-							crossorigin="anonymous"
-							async>
-			</script>
-		</div>
-	</main>
-
-	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
-		<p>
-			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
-		</p>
-	</footer>
-
-
-	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-193315904-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-</body>
-
-</html>
+<span class=kn>package</span> <span class=nx>b</span>
+<span class=nx>t</span> <span class=o>:=</span> <span class=nx>a</span><span class=p>.</span><span class=nx>T</span><span class=p>{</span> <span class=nx>a</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span> <span class=nx>b</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span> <span class=nx>c</span><span class=p>:</span> <span class=mi>2</span> <span class=p>}</span>
+<span class=nx>tc</span> <span class=o>:=</span> <span class=o>*</span><span class=p>(</span><span class=o>*</span><span class=kt>byte</span><span class=p>)(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nx>Pointer</span><span class=p>)(</span><span class=nb>uintptr</span><span class=p>(</span><span class=nx>unsafe</span><span class=p>.</span><span class=nf>Pointer</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>t</span><span class=p>))</span> <span class=o>+</span> <span class=nx>unsafe</span><span class=p>.</span><span class=nf>Sizeof</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=nx>unsafe</span><span class=p>.</span><span class=nf>Sizeof</span><span class=p>(</span><span class=kc>true</span><span class=p>))</span>
+<span class=nf>Println</span><span class=p>(</span><span class=nx>tc</span><span class=p>)</span> <span class=c1>// 2
+</span></code></pre></div><h3 id=总结>总结<a href=#总结 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h3><p>Go 语言中和了 C/C++ 和 Java 语言对指针提供的能力，有效地解决了指针滥用导致内存泄露、非法访问等安全问题。通过静态语言的严格类型系统限制了一些内存操作，也提供了一个不安全但 “炫酷” 的 unsafe 包，标准库的源码许多都使用了 unsafe 包所提供了能力，高效简洁，让我们仿佛在看 C 系语言源码。这也不难理解，Go 语言的创始人之一正是 C 语言的创造者之一，许多设计思想优秀且独树一帜。</p><p>不过之所以命名为 unsafe，也是因为可以直接绕过类型系统直接操作底层内存，会带来一定的安全问题，与 GC 的工作 “冲突”，所以需要我们谨慎使用。</p></div><div class=content><br><img src=https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp width=80% height=60%></div><hr class=post-end><footer class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://kcode.icu/tags/go>Go</a></span><span class=tag><a href=https://kcode.icu/tags/%E6%BA%90%E7%A0%81>源码</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>342 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2021-03-14 13:35 +0000</p></footer></article><div class="post-nav thin"><a class=next-post href=https://kcode.icu/posts/interview/2021-3-nowcoder/><span class=post-nav-label><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>&nbsp;Newer</span><br><span>大三上学期好未来字节腾讯实习面经</span></a>
+<a class=prev-post href=https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/><span class=post-nav-label>Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><br><span>深入理解 Go channel</span></a></div><div id=comments class=thin><script src=https://utteranc.es/client.js repo=sh1luo/sh1luo issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer id=site-footer class="section-inner thin animated fadeIn faster"><p>&copy; 2018 - 2021 <a href=https://kcode.icu/>wasabi</a></p><p>Made with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> &#183; Theme <a href=https://github.com/Track3/hermit target=_blank rel=noopener>Hermit</a> &#183; <a href=https://kcode.icu/post/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a></p></footer><script src=https://kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-193315904-1','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

@@ -1,20 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>翻译 on wasabi</title>
-    <link>https://www.kcode.icu/tags/%E7%BF%BB%E8%AF%91/</link>
-    <description>Recent content in 翻译 on wasabi</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-hans</language>
-    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 16 Mar 2020 16:46:08 +0000</lastBuildDate><atom:link href="https://www.kcode.icu/tags/%E7%BF%BB%E8%AF%91/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>优化Golang服务减少40%以上的CPU</title>
-      <link>https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</link>
-      <pubDate>Mon, 16 Mar 2020 16:46:08 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</guid>
-      <description>优化 Golang 服务来减少 40% 以上的 CPU 十年前，谷歌正在面临一个由 C++ 编译时间过长所造成的严重瓶颈，并且需要一个全新的方式来解决这个问题。谷歌的工程师们通过创造了一种新的被称作 Go （又名 Golang）的语言来应对挑战。这个新语言 Go 带来了 C++ 最好的部分（最主要的是它的性能和稳定性），又与 Python 的速度相结合，使得 Go 能够在实现并发的同时快速地使用多核心。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>翻译 on wasabi</title><link>https://kcode.icu/tags/%E7%BF%BB%E8%AF%91/</link><description>Recent content in 翻译 on wasabi</description><generator>Hugo -- gohugo.io</generator><language>zh-hans</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 16 Mar 2020 16:46:08 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E7%BF%BB%E8%AF%91/index.xml" rel="self" type="application/rss+xml"/><item><title>优化Golang服务减少40%以上的CPU</title><link>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</link><pubDate>Mon, 16 Mar 2020 16:46:08 +0000</pubDate><guid>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</guid><description>优化 Golang 服务来减少 40% 以上的 CPU 十年前，谷歌正在面临一个由 C++ 编译时间过长所造成的严重瓶颈，并且需要一个全新的方式来解决这个问题。谷歌的工程师们通过创造了一种新的被称作 Go （又名 Golang）的语言来应对挑战。这个新语言 Go 带来了 C++ 最好的部分（最主要的是它的性能和稳定性），又与 Python 的速度相结合，使得 Go 能够在实现并发的同时快速地使用多核心。
 在 Coralogix（译者注：一个提供全面日志分析的服务产品，官网），我们为了去给我们的客户提供关于他们日志实时的分析、警报和元数据，要去解析他们的日志。在解析阶段，我们需要非常快速地解析包含多个复杂规则的服务日志，这个目标是促使我们决定使用 Golang 的原因之一。
 这项新的服务现在就全天候的跑在生产阶段，尽管我们看到了非常好的结果，但是它也需要跑在高性能的机器上。这项 Go 的服务跑在一台 AWS m4.2xlarge 实例上 ，带有 8 CPUs 和 36 GB 的配置，每天要解析几十亿的日志。
 在这个阶段一切都运行正常，我们本可以自我感觉良好，但是那并不是我们在 Coralogix 想要的表现。我们想要更多的特性，比如性能等等，或者使用更少的 AWS 实例。为了改进，我们首先需要理解瓶颈的本质以及我们如何能够减少或者完全解决这些问题。
@@ -22,78 +6,38 @@
 首先，我们将 Go 升级到最新的稳定版本（这是软件生命周期中的关键一步）。我们是用的 Go 1.12.4版本，最新的是 1.13.8。根据 文档 ，Go 1.13 发行版在运行时库方面和一些其他主要利用内存使用的组件方面已经有了长足的进步。总之，使用最新的稳定版本能帮助我们节省许多工作。
 因此，内存消耗由大约 800 MB 降低到了仅 180 MB。
 第二，为了更好的理解我们的流程以及弄清楚我们应该在哪花费时间和资源，我们开始去进行分析。
-分析不同的服务和程序语言可能看起来很复杂并且令人望而生畏，但是对于 Go 来说它实际上十分容易，仅仅几个命令就能够描述清楚。Go 有一个专门的工具叫“pprof”，它通过监听一个路由（默认端口6060）能够应用在你的 app 上，并且使用 Go 的包来管理 HTTP 连接：</description>
-    </item>
-    
-    <item>
-      <title>超越代码的贡献:对于每一个人的开源</title>
-      <link>https://www.kcode.icu/posts/translation/20191204-contribute-beyond-code-open-source-for-everyone/</link>
-      <pubDate>Fri, 14 Feb 2020 21:21:55 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/translation/20191204-contribute-beyond-code-open-source-for-everyone/</guid>
-      <description>超越代码的贡献：对于每一个人的开源 开发者经常被鼓励去为开源做贡献。如果你不把自己当成一个开发者，那么踏上贡献这个旅程可能让人感到望而生畏。在过去的一年里，我发现参与开源 folk 的数量跌倒了谷底，这一定程度上与大家总是拿“但是我不是开发者”作为借口有关。在这篇文章中，我会分享一些关于为什么你应该为 Go OSS 项目做贡献，并且提供一些信息关于在哪贡献，包括一些额外的资源让你开始。
+分析不同的服务和程序语言可能看起来很复杂并且令人望而生畏，但是对于 Go 来说它实际上十分容易，仅仅几个命令就能够描述清楚。Go 有一个专门的工具叫“pprof”，它通过监听一个路由（默认端口6060）能够应用在你的 app 上，并且使用 Go 的包来管理 HTTP 连接：</description></item><item><title>超越代码的贡献:对于每一个人的开源</title><link>https://kcode.icu/posts/translation/20191204-contribute-beyond-code-open-source-for-everyone/</link><pubDate>Fri, 14 Feb 2020 21:21:55 +0000</pubDate><guid>https://kcode.icu/posts/translation/20191204-contribute-beyond-code-open-source-for-everyone/</guid><description>超越代码的贡献：对于每一个人的开源 开发者经常被鼓励去为开源做贡献。如果你不把自己当成一个开发者，那么踏上贡献这个旅程可能让人感到望而生畏。在过去的一年里，我发现参与开源 folk 的数量跌倒了谷底，这一定程度上与大家总是拿“但是我不是开发者”作为借口有关。在这篇文章中，我会分享一些关于为什么你应该为 Go OSS 项目做贡献，并且提供一些信息关于在哪贡献，包括一些额外的资源让你开始。
 你为什么应该贡献开源项目？ 参与开源是一份保持给予的礼物。每一个人都有他们的动机，但是以一个积极的角色和社区联系起来的好处包括：
- 提高学习和开发技巧。 你能够在与绩效评估无关的角色中练习合作技巧。并且由你工作之外的兴趣所驱动，你会发展出其他的技能。 构建和提高知名度。 你的雇主会受益于你参与了开源社区。你可以找到新的工作机会和潜在的同事。  你需要什么？ 首先，弄清楚你的雇主对于开源贡献的政策并且审查一下你的雇佣协议。虽然我认为每一个使用开源软件的公司都应该给他们的雇员一些时间去做贡献，但是开源政策经常有问题，尽管个体贡献在个人时间和个人设备的环境下。如果你的公司还没有一个政策（或者有一个受限的政策），我分享的 A Model IP and Open Source Contribution Policy 可能对于向你提供引导，去改善这个情况有帮助。
+提高学习和开发技巧。 你能够在与绩效评估无关的角色中练习合作技巧。并且由你工作之外的兴趣所驱动，你会发展出其他的技能。 构建和提高知名度。 你的雇主会受益于你参与了开源社区。你可以找到新的工作机会和潜在的同事。 你需要什么？ 首先，弄清楚你的雇主对于开源贡献的政策并且审查一下你的雇佣协议。虽然我认为每一个使用开源软件的公司都应该给他们的雇员一些时间去做贡献，但是开源政策经常有问题，尽管个体贡献在个人时间和个人设备的环境下。如果你的公司还没有一个政策（或者有一个受限的政策），我分享的 A Model IP and Open Source Contribution Policy 可能对于向你提供引导，去改善这个情况有帮助。
 特殊的软件需求会基于项目千变万化。对于一个还未实现这些实践的项目来说，你在基础设施方面（例如代码和配置持续部署管道）的技巧可能会十分有帮助。你在这些领域的经验可能会改变软件需求的方向；比如，某个特殊版本的 docker 和云 CLI 工具。
 如果你从未提交过 PR ，first-contributions project 有排练功能，作为这个仓库的一部分。每一个项目都会有一个工作流，并且可能会有多个不同的推荐，关于如何去提交一个 PR 。在这里学习基础知识对
 你十分有帮助，比在一个你感兴趣的项目上从 0 开始要好得多。
 什么样的贡献？ 除了开发功能外，贡献的领域还包括：
-   指导
-  文档（包括为社区活动写博客文章，比如Gopher Academy Advent 或者 liveblogging for GopherCon）
-  架构图
-  CI/CD 管道
-  基础设施代码
-   维护测试</description>
-    </item>
-    
-    <item>
-      <title>Go语言内存管理与内存清理</title>
-      <link>https://www.kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</link>
-      <pubDate>Fri, 14 Feb 2020 21:20:33 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</guid>
-      <description>Go：内存管理与内存清理 清理内存是一个过程，它能够让 Go 知道哪些内存段最近可用于分配。但是，它并不会使用将位置 0 的方式来清理内存。
+指导
+文档（包括为社区活动写博客文章，比如Gopher Academy Advent 或者 liveblogging for GopherCon）
+架构图
+CI/CD 管道
+基础设施代码
+维护测试</description></item><item><title>Go语言内存管理与内存清理</title><link>https://kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</link><pubDate>Fri, 14 Feb 2020 21:20:33 +0000</pubDate><guid>https://kcode.icu/posts/translation/20191109-go-memory-management-and-memory-sweep/</guid><description>Go：内存管理与内存清理 清理内存是一个过程，它能够让 Go 知道哪些内存段最近可用于分配。但是，它并不会使用将位置 0 的方式来清理内存。
 将内存置0 将内存置 0 的过程 —— 就是把内存段中的所有位赋值为 0 —— 是在分配过程中即时执行的。
 然后，第一个分配就开始了：
 分配过程将会再一次出现，之后， GC 将会启动去释放不再被使用的内存。在标记期间，GC 会用一个位图gcmarkBits 来跟踪在使用中的内存。让我们通过我们运行的程序以相同的示例为例，在第一个块不再被使用的地方。
- 有关更多关于标记和着色阶段的信息，我建议你阅读我的这篇文章 Go：GC 是如何标记内存的？
- 现在，我们可以使用 gomarkBits精确查看可用于分配的内存。Go 现在也使用gomarkBits 代替了allocBits ，这个操作就是内存清理：
+有关更多关于标记和着色阶段的信息，我建议你阅读我的这篇文章 Go：GC 是如何标记内存的？
+现在，我们可以使用 gomarkBits精确查看可用于分配的内存。Go 现在也使用gomarkBits 代替了allocBits ，这个操作就是内存清理：
 清理阶段 Go 提供了两种方式来清理内存：
- 使用一个工作程序在后台等待，一个一个的清理这些范围。 当分配需要一个范围的时候即时执行。  关于后台工作程序，当开始运行程序时，Go 将设置一个后台运行的 Worker（唯一的任务就是去清理内存），它将进入睡眠状态并等待内存段扫描：
+使用一个工作程序在后台等待，一个一个的清理这些范围。 当分配需要一个范围的时候即时执行。 关于后台工作程序，当开始运行程序时，Go 将设置一个后台运行的 Worker（唯一的任务就是去清理内存），它将进入睡眠状态并等待内存段扫描：
 与 GC 周期的冲突 正如之前看到的，由于后台只有一个 worker 在清理内存块，清理过程可能会花费一些时间。但是，我们可能想知道如果另一个 GC 周期在一次清理过程中启动会发生什么。在这种情况下，这个运行 GC 的 goroutine 就会在开始标记阶段前去协助完成剩余的清理工作。让我们举个例子看一下连续调用两次 GC，包含数千个对象的内存分配的过程。
- via：来源链接
+via：来源链接
 作者：Vincent Blanchon 译者：sh1luo 校对：[](https://github.com/
-本文由 GCTT 原创编译，Go中文网 荣誉推出</description>
-    </item>
-    
-    <item>
-      <title>Go的GC是怎样监听你的应用的？</title>
-      <link>https://www.kcode.icu/posts/translation/20191002-go-how-does-the-garbage-collector-watch-your-application/</link>
-      <pubDate>Wed, 01 Jan 2020 20:43:19 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/translation/20191002-go-how-does-the-garbage-collector-watch-your-application/</guid>
-      <description>Go: GC 是怎样监听你的应用的？ Go 语言的垃圾收集器 （下文简称 GC ）能够帮助到开发者，通过自动地释放掉一些程序中不再需要使用的内存。但是，跟踪并清理掉这些内存也可能影响我们程序的性能。Go 语言的 GC 旨在实现 这些目标 并且关注如下几个问题：
- 当程序被终止时，尽可能多的减少在这两个阶段的 STW （的次数） 。 一个 GC 周期的时间要少于 10 毫秒。 一次 GC 周期不能占用超过 25% 的 CPU 资源。  这是一些很有挑战性的目标，如果 GC 从我们的程序中了解到足够多的信息，它就能去解决这些问题。
+本文由 GCTT 原创编译，Go中文网 荣誉推出</description></item><item><title>Go的GC是怎样监听你的应用的？</title><link>https://kcode.icu/posts/translation/20191002-go-how-does-the-garbage-collector-watch-your-application/</link><pubDate>Wed, 01 Jan 2020 20:43:19 +0000</pubDate><guid>https://kcode.icu/posts/translation/20191002-go-how-does-the-garbage-collector-watch-your-application/</guid><description>Go: GC 是怎样监听你的应用的？ Go 语言的垃圾收集器 （下文简称 GC ）能够帮助到开发者，通过自动地释放掉一些程序中不再需要使用的内存。但是，跟踪并清理掉这些内存也可能影响我们程序的性能。Go 语言的 GC 旨在实现 这些目标 并且关注如下几个问题：
+当程序被终止时，尽可能多的减少在这两个阶段的 STW （的次数） 。 一个 GC 周期的时间要少于 10 毫秒。 一次 GC 周期不能占用超过 25% 的 CPU 资源。 这是一些很有挑战性的目标，如果 GC 从我们的程序中了解到足够多的信息，它就能去解决这些问题。
 到达堆阈值 GC 将会关注的第一个指标是堆的使用增长。默认情况下，它将在堆大小加倍时运行。这是一个在循环中分配内存的简单程序。
-func BenchmarkAllocationEveryMs(b *testing.B) { // need permanent allocation to clear see when the heap double its size 	var s *[]int tmp := make([]int, 1100000, 1100000) s = &amp;amp;tmp var a *[]int for i := 0; i &amp;lt; b.</description>
-    </item>
-    
-    <item>
-      <title>Go的随机数是怎样产生的？</title>
-      <link>https://www.kcode.icu/posts/translation/20191202-go-how-are-random-numbers-generated/</link>
-      <pubDate>Sun, 29 Dec 2019 21:14:55 +0000</pubDate>
-      
-      <guid>https://www.kcode.icu/posts/translation/20191202-go-how-are-random-numbers-generated/</guid>
-      <description>Go：随机数是怎样产生的？ 这篇文章基于 Go 1.13 版本
+func BenchmarkAllocationEveryMs(b *testing.B) { // need permanent allocation to clear see when the heap double its size var s *[]int tmp := make([]int, 1100000, 1100000) s = &amp;amp;tmp var a *[]int for i := 0; i &amp;lt; b.</description></item><item><title>Go的随机数是怎样产生的？</title><link>https://kcode.icu/posts/translation/20191202-go-how-are-random-numbers-generated/</link><pubDate>Sun, 29 Dec 2019 21:14:55 +0000</pubDate><guid>https://kcode.icu/posts/translation/20191202-go-how-are-random-numbers-generated/</guid><description>Go：随机数是怎样产生的？ 这篇文章基于 Go 1.13 版本
 Go 实现了两个包来产生随机数：
- 在包 math/rand 的一个伪随机数生成器（ PRNG ） 在包 crypto/rand 中实现的加密伪随机数生成器（ CPRNG ）  如果这两个包都产生了随机数，则将基于真正的随机数和性能之间取舍
+在包 math/rand 的一个伪随机数生成器（ PRNG ） 在包 crypto/rand 中实现的加密伪随机数生成器（ CPRNG ） 如果这两个包都产生了随机数，则将基于真正的随机数和性能之间取舍
 确定的结果 Go 的rand包会使用相同的源来产生一个确定的伪随机数序列。这个源会产生一个不变的数列，稍后在执行期间使用。将你的程序运行多次将会读到一个完全相同的序列并产生相同的结果。让我们用一个简单的例子来尝试一下：
 func main() { for i := 0; i &amp;lt; 4; i++ { println(rand.Intn(100)) } } 多次运行这个程序将会产生相同的结果：
-81874759由于源代码已经发布到 Go 的官方标准库中，因此任何运行此程序的计算机都会得到相同的结果。但是，由于 Go 仅保留一个生成的数字序列，我们可能想知道 Go 是如何管理用户请求的时间间隔的。Go 实际上使用此数字序列来播种一个产生这个随机数的源，然后获取其请求间隔的模。例如，运行相同的程序，最大值为 10，则模 10 的结果相同。
-1779让我们来看一下如何在每次运行我们的程序时得到不同的序列。
+81 87 47 59 由于源代码已经发布到 Go 的官方标准库中，因此任何运行此程序的计算机都会得到相同的结果。但是，由于 Go 仅保留一个生成的数字序列，我们可能想知道 Go 是如何管理用户请求的时间间隔的。Go 实际上使用此数字序列来播种一个产生这个随机数的源，然后获取其请求间隔的模。例如，运行相同的程序，最大值为 10，则模 10 的结果相同。
+1 7 7 9 让我们来看一下如何在每次运行我们的程序时得到不同的序列。
 播种 Go 提供一个方法， Seed(see int64) ，该方法能让你初始化这个默认序列。默认情况下，它会使用变量 1。使用另一个变量将会提供一个新的序列，但会保持确定性：
-func main() { rand.Seed(2) for i := 0; i &amp;lt; 4; i++ { println(rand.</description>
-    </item>
-    
-  </channel>
-</rss>
+func main() { rand.Seed(2) for i := 0; i &amp;lt; 4; i++ { println(rand.</description></item></channel></rss>

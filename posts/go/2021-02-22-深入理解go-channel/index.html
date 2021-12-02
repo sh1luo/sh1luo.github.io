@@ -1,184 +1,49 @@
-<!DOCTYPE html>
-<html lang="zh-hans">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<meta name="theme-color" content="#494f5c">
-	<meta name="msapplication-TileColor" content="#494f5c">
-<meta itemprop="name" content="深入理解 Go channel">
-<meta itemprop="description" content="Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
+<!doctype html><html lang=zh-hans><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=theme-color content="#494f5c"><meta name=msapplication-TileColor content="#494f5c"><meta itemprop=name content="深入理解 Go channel"><meta itemprop=description content="Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
 Go 语言倡导通过通信的方式共享内存，也就是减少锁的使用，尽量都通过 Channel 来进行协程间通信。
 其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
 两个实体 goroutine 通过 Channel 通信，收发消息。
 数据结构 Channel 是一种 带锁环状队列，运行时结构定义在 runtime/chan.hchan ，代码也比较容易理解。
-type hchan struct { qcount uint // 队列中元素数量 	dataqsiz uint // 环形队列总大小 	buf unsafe.Pointer // 底层数组指针 	elemsize uint16	// 元素大小 	closed uint32	// 是否已关闭 	elemtype *_type // 元素类型 	sendx uint // 发送端下标 	recvx uint // 接收端下标 	recvq waitq // 接收端等待队列 	sendq waitq // 发送端等待队列  // 保护 hchan 并发访问的字段 	lock mutex } type waitq struct { first *sudog	// 等待队列链表的头节点 	last *sudog	// 尾节点 } 通过两个指针指向发送端和接收端接下来的操作位置，结合锁机制完成数据操作，这是很容易想到的并发处理方式。runtime/chan.">
-<meta itemprop="datePublished" content="2021-02-25T19:35:20+00:00" />
-<meta itemprop="dateModified" content="2021-02-25T19:35:20+00:00" />
-<meta itemprop="wordCount" content="125">
-
-
-
-<meta itemprop="keywords" content="Go,源码," />
-<meta property="og:title" content="深入理解 Go channel" />
-<meta property="og:description" content="Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
+type hchan struct { qcount uint // 队列中元素数量 	dataqsiz uint // 环形队列总大小 	buf unsafe.Pointer // 底层数组指针 	elemsize uint16	// 元素大小 	closed uint32	// 是否已关闭 	elemtype *_type // 元素类型 	sendx uint // 发送端下标 	recvx uint // 接收端下标 	recvq waitq // 接收端等待队列 	sendq waitq // 发送端等待队列  // 保护 hchan 并发访问的字段 	lock mutex } type waitq struct { first *sudog	// 等待队列链表的头节点 	last *sudog	// 尾节点 } 通过两个指针指向发送端和接收端接下来的操作位置，结合锁机制完成数据操作，这是很容易想到的并发处理方式。runtime/chan."><meta itemprop=datePublished content="2021-02-25T19:35:20+00:00"><meta itemprop=dateModified content="2021-02-25T19:35:20+00:00"><meta itemprop=wordCount content="125"><meta itemprop=keywords content="Go,源码,"><meta property="og:title" content="深入理解 Go channel"><meta property="og:description" content="Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
 Go 语言倡导通过通信的方式共享内存，也就是减少锁的使用，尽量都通过 Channel 来进行协程间通信。
 其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
 两个实体 goroutine 通过 Channel 通信，收发消息。
 数据结构 Channel 是一种 带锁环状队列，运行时结构定义在 runtime/chan.hchan ，代码也比较容易理解。
-type hchan struct { qcount uint // 队列中元素数量 	dataqsiz uint // 环形队列总大小 	buf unsafe.Pointer // 底层数组指针 	elemsize uint16	// 元素大小 	closed uint32	// 是否已关闭 	elemtype *_type // 元素类型 	sendx uint // 发送端下标 	recvx uint // 接收端下标 	recvq waitq // 接收端等待队列 	sendq waitq // 发送端等待队列  // 保护 hchan 并发访问的字段 	lock mutex } type waitq struct { first *sudog	// 等待队列链表的头节点 	last *sudog	// 尾节点 } 通过两个指针指向发送端和接收端接下来的操作位置，结合锁机制完成数据操作，这是很容易想到的并发处理方式。runtime/chan." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/" />
-<meta property="article:published_time" content="2021-02-25T19:35:20+00:00" />
-<meta property="article:modified_time" content="2021-02-25T19:35:20+00:00" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="深入理解 Go channel"/>
-<meta name="twitter:description" content="Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
+type hchan struct { qcount uint // 队列中元素数量 	dataqsiz uint // 环形队列总大小 	buf unsafe.Pointer // 底层数组指针 	elemsize uint16	// 元素大小 	closed uint32	// 是否已关闭 	elemtype *_type // 元素类型 	sendx uint // 发送端下标 	recvx uint // 接收端下标 	recvq waitq // 接收端等待队列 	sendq waitq // 发送端等待队列  // 保护 hchan 并发访问的字段 	lock mutex } type waitq struct { first *sudog	// 等待队列链表的头节点 	last *sudog	// 尾节点 } 通过两个指针指向发送端和接收端接下来的操作位置，结合锁机制完成数据操作，这是很容易想到的并发处理方式。runtime/chan."><meta property="og:type" content="article"><meta property="og:url" content="https://kcode.icu/posts/go/2021-02-22-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3go-channel/"><meta property="article:published_time" content="2021-02-25T19:35:20+00:00"><meta property="article:modified_time" content="2021-02-25T19:35:20+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="深入理解 Go channel"><meta name=twitter:description content="Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。
 Go 语言倡导通过通信的方式共享内存，也就是减少锁的使用，尽量都通过 Channel 来进行协程间通信。
 其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。
 两个实体 goroutine 通过 Channel 通信，收发消息。
 数据结构 Channel 是一种 带锁环状队列，运行时结构定义在 runtime/chan.hchan ，代码也比较容易理解。
-type hchan struct { qcount uint // 队列中元素数量 	dataqsiz uint // 环形队列总大小 	buf unsafe.Pointer // 底层数组指针 	elemsize uint16	// 元素大小 	closed uint32	// 是否已关闭 	elemtype *_type // 元素类型 	sendx uint // 发送端下标 	recvx uint // 接收端下标 	recvq waitq // 接收端等待队列 	sendq waitq // 发送端等待队列  // 保护 hchan 并发访问的字段 	lock mutex } type waitq struct { first *sudog	// 等待队列链表的头节点 	last *sudog	// 尾节点 } 通过两个指针指向发送端和接收端接下来的操作位置，结合锁机制完成数据操作，这是很容易想到的并发处理方式。runtime/chan."/>
+type hchan struct { qcount uint // 队列中元素数量 	dataqsiz uint // 环形队列总大小 	buf unsafe.Pointer // 底层数组指针 	elemsize uint16	// 元素大小 	closed uint32	// 是否已关闭 	elemtype *_type // 元素类型 	sendx uint // 发送端下标 	recvx uint // 接收端下标 	recvq waitq // 接收端等待队列 	sendq waitq // 发送端等待队列  // 保护 hchan 并发访问的字段 	lock mutex } type waitq struct { first *sudog	// 等待队列链表的头节点 	last *sudog	// 尾节点 } 通过两个指针指向发送端和接收端接下来的操作位置，结合锁机制完成数据操作，这是很容易想到的并发处理方式。runtime/chan."><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color><link rel="shortcut icon" href=/favicon.ico><title>深入理解 Go channel</title><link rel=stylesheet href=https://kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css></head><body id=page><header id=site-header class="animated slideInUp faster"><div class="hdr-wrapper section-inner"><div class=hdr-left><div class=site-branding><a href=https://kcode.icu/>wasabi</a></div><nav class="site-nav hide-in-mobile"><a href=https://kcode.icu/posts/>文章</a>
+<a href=https://kcode.icu/summary>总结</a>
+<a href=https://kcode.icu/chore>杂项</a>
+<a href=https://kcode.icu/go>Go系列</a></nav></div><div class="hdr-right hdr-icons"><span class="hdr-social hide-in-mobile"><a href=https://github.com/sh1luo target=_blank rel="noopener me" title=Github><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77a5.44 5.44.0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a><a href=mailto:silo1999@163.com target=_blank rel="noopener me" title=Email><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1.0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1.0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a><a href="http://wpa.qq.com/msgrd?v=3&uin=690898835&site=qq&menu=yes" target=_blank rel="noopener me" title=Qq><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></a></span><button id=menu-btn class=hdr-btn title=Menu><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></div></header><div id=mobile-menu class="animated fast"><ul><li><a href=https://kcode.icu/posts/>文章</a></li><li><a href=https://kcode.icu/tags/>标签</a></li><li><a href=https://kcode.icu/about/>关于</a></li></ul></div><main class="site-main section-inner animated fadeIn faster"><article class=thin><header class=post-header><div class=post-meta><span>Feb 25, 2021</span></div><h1>深入理解 Go channel</h1></header><div class=content><p>Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。</p><p>Go 语言倡导通过通信的方式共享内存，也就是减少锁的使用，尽量都通过 Channel 来进行协程间通信。</p><p>其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。</p><p><img src=https://blogimagee.oss-cn-beijing.aliyuncs.com/images/csp.svg alt=csp></p><p>两个实体 goroutine 通过 Channel 通信，收发消息。</p><h2 id=数据结构>数据结构<a href=#数据结构 class=anchor aria-hidden=true><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 015 5 5 5 0 01-5 5h-3m-6 0H6a5 5 0 01-5-5 5 5 0 015-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a></h2><p>Channel 是一种 <strong>带锁环状队列</strong>，运行时结构定义在 <a href=https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/chan.go#L32>runtime/chan.hchan</a> ，代码也比较容易理解。</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kd>type</span> <span class=nx>hchan</span> <span class=kd>struct</span> <span class=p>{</span>
+	<span class=nx>qcount</span>   <span class=kt>uint</span>           <span class=c1>// 队列中元素数量
+</span><span class=c1></span>	<span class=nx>dataqsiz</span> <span class=kt>uint</span>           <span class=c1>// 环形队列总大小
+</span><span class=c1></span>	<span class=nx>buf</span>      <span class=nx>unsafe</span><span class=p>.</span><span class=nx>Pointer</span> <span class=c1>// 底层数组指针
+</span><span class=c1></span>	<span class=nx>elemsize</span> <span class=kt>uint16</span>			<span class=c1>// 元素大小
+</span><span class=c1></span>	<span class=nx>closed</span>   <span class=kt>uint32</span>			<span class=c1>// 是否已关闭
+</span><span class=c1></span>	<span class=nx>elemtype</span> <span class=o>*</span><span class=nx>_type</span> 		<span class=c1>// 元素类型
+</span><span class=c1></span>	<span class=nx>sendx</span>    <span class=kt>uint</span>   <span class=c1>// 发送端下标
+</span><span class=c1></span>	<span class=nx>recvx</span>    <span class=kt>uint</span>   <span class=c1>// 接收端下标
+</span><span class=c1></span>	<span class=nx>recvq</span>    <span class=nx>waitq</span>  <span class=c1>// 接收端等待队列
+</span><span class=c1></span>	<span class=nx>sendq</span>    <span class=nx>waitq</span>  <span class=c1>// 发送端等待队列
+</span><span class=c1></span>
+	<span class=c1>// 保护 hchan 并发访问的字段
+</span><span class=c1></span>	<span class=nx>lock</span> <span class=nx>mutex</span>
+<span class=p>}</span>
 
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-	<link rel="manifest" href="/site.webmanifest">
-	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
-	<link rel="shortcut icon" href="/favicon.ico">
+<span class=kd>type</span> <span class=nx>waitq</span> <span class=kd>struct</span> <span class=p>{</span>
+	<span class=nx>first</span> <span class=o>*</span><span class=nx>sudog</span>	<span class=c1>// 等待队列链表的头节点
+</span><span class=c1></span>	<span class=nx>last</span>  <span class=o>*</span><span class=nx>sudog</span>	<span class=c1>// 尾节点
+</span><span class=c1></span><span class=p>}</span>
+</code></pre></div><p>通过两个指针指向发送端和接收端接下来的操作位置，结合锁机制完成数据操作，这是很容易想到的并发处理方式。<a href=https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/chan.go#L53>runtime/chan.waiq</a> 是阻塞等待 goroutine 的双向链表，每一个节点是一个封装了的 goroutine，被命名为 <code>sudog</code>，定义在 <a href=https://github.com/golang/go/blob/41d8e61a6b/src/runtime/runtime2.go#L345>runtime/runtime2.go</a> 。</p><div class=highlight><pre class=chroma><code class=language-go data-lang=go><span class=kd>type</span> <span class=nx>sudog</span> <span class=kd>struct</span> <span class=p>{</span>
+	<span class=nx>g</span> <span class=o>*</span><span class=nx>g</span>
 
-	<title>深入理解 Go channel</title>
-	<link rel="stylesheet" href="https://www.kcode.icu/css/style.min.d3141168199607bf3a517216ce3c263814eecdbc8fca72a9a88700799a838219.css">
-	
-</head>
+	<span class=nx>next</span> <span class=o>*</span><span class=nx>sudog</span>
+	<span class=nx>prev</span> <span class=o>*</span><span class=nx>sudog</span>
+	<span class=nx>elem</span> <span class=nx>unsafe</span><span class=p>.</span><span class=nx>Pointer</span> <span class=c1>// data element (may point to stack)
+</span><span class=c1></span>	<span class=o>...</span>
 
-<body id="page">
-	
-	<header id="site-header" class="animated slideInUp faster">
-		<div class="hdr-wrapper section-inner">
-			<div class="hdr-left">
-				<div class="site-branding">
-					<a href="https://www.kcode.icu/">wasabi</a>
-				</div>
-				<nav class="site-nav hide-in-mobile">
-					<a href="https://www.kcode.icu/posts/">文章</a>
-					<a href="https://www.kcode.icu/summary">总结</a>
-					<a href="https://www.kcode.icu/chore">杂项</a>
-					<a href="https://www.kcode.icu/go">Go系列</a>
-				</nav>
-			</div>
-			<div class="hdr-right hdr-icons">
-				<span class="hdr-social hide-in-mobile"><a href="https://github.com/sh1luo" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:silo1999@163.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=690898835&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener me" title="Qq"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
-			</div>
-		</div>
-	</header>
-	<div id="mobile-menu" class="animated fast">
-		<ul>
-			<li><a href="https://www.kcode.icu/posts/">文章</a></li>
-			<li><a href="https://www.kcode.icu/tags/">标签</a></li>
-			<li><a href="https://www.kcode.icu/about/">关于</a></li>
-		</ul>
-	</div>
-
-
-	<main class="site-main section-inner animated fadeIn faster">
-		<article class="thin">
-			<header class="post-header">
-				<div class="post-meta"><span>Feb 25, 2021</span></div>
-				<h1>深入理解 Go channel</h1>
-			</header>
-			<div class="content">
-				<p>Go 语言的 Channel 关键字是实现其原生并发编程的关键组成，你可能听说过 “不要通过共享内存的方式通信，要通过通信的方式共享内存”，这句话正是针对 Channel 说的。</p>
-<p>Go 语言倡导通过通信的方式共享内存，也就是减少锁的使用，尽量都通过 Channel 来进行协程间通信。</p>
-<p>其实这被称为一种并发模型名为 CSP（Communicating Sequential Processes），即通信顺序进程。</p>
-<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/csp.svg" alt="csp"></p>
-<p>两个实体 goroutine 通过 Channel  通信，收发消息。</p>
-<h2 id="数据结构">数据结构<a href="#数据结构" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<p>Channel 是一种 <strong>带锁环状队列</strong>，运行时结构定义在 <a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/chan.go#L32">runtime/chan.hchan</a> ，代码也比较容易理解。</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">hchan</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">qcount</span>   <span class="kt">uint</span>           <span class="c1">// 队列中元素数量
-</span><span class="c1"></span>	<span class="nx">dataqsiz</span> <span class="kt">uint</span>           <span class="c1">// 环形队列总大小
-</span><span class="c1"></span>	<span class="nx">buf</span>      <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// 底层数组指针
-</span><span class="c1"></span>	<span class="nx">elemsize</span> <span class="kt">uint16</span>			<span class="c1">// 元素大小
-</span><span class="c1"></span>	<span class="nx">closed</span>   <span class="kt">uint32</span>			<span class="c1">// 是否已关闭
-</span><span class="c1"></span>	<span class="nx">elemtype</span> <span class="o">*</span><span class="nx">_type</span> 		<span class="c1">// 元素类型
-</span><span class="c1"></span>	<span class="nx">sendx</span>    <span class="kt">uint</span>   <span class="c1">// 发送端下标
-</span><span class="c1"></span>	<span class="nx">recvx</span>    <span class="kt">uint</span>   <span class="c1">// 接收端下标
-</span><span class="c1"></span>	<span class="nx">recvq</span>    <span class="nx">waitq</span>  <span class="c1">// 接收端等待队列
-</span><span class="c1"></span>	<span class="nx">sendq</span>    <span class="nx">waitq</span>  <span class="c1">// 发送端等待队列
-</span><span class="c1"></span>
-	<span class="c1">// 保护 hchan 并发访问的字段
-</span><span class="c1"></span>	<span class="nx">lock</span> <span class="nx">mutex</span>
-<span class="p">}</span>
-
-<span class="kd">type</span> <span class="nx">waitq</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">first</span> <span class="o">*</span><span class="nx">sudog</span>	<span class="c1">// 等待队列链表的头节点
-</span><span class="c1"></span>	<span class="nx">last</span>  <span class="o">*</span><span class="nx">sudog</span>	<span class="c1">// 尾节点
-</span><span class="c1"></span><span class="p">}</span>
-</code></pre></div><p>通过两个指针指向发送端和接收端接下来的操作位置，结合锁机制完成数据操作，这是很容易想到的并发处理方式。<a href="https://github.com/golang/go/blob/41d8e61a6b9d8f9db912626eb2bbc535e929fefc/src/runtime/chan.go#L53">runtime/chan.waiq</a> 是阻塞等待 goroutine 的双向链表，每一个节点是一个封装了的 goroutine，被命名为 <code>sudog</code>，定义在 <a href="https://github.com/golang/go/blob/41d8e61a6b/src/runtime/runtime2.go#L345">runtime/runtime2.go</a> 。</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">sudog</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">g</span> <span class="o">*</span><span class="nx">g</span>
-
-	<span class="nx">next</span> <span class="o">*</span><span class="nx">sudog</span>
-	<span class="nx">prev</span> <span class="o">*</span><span class="nx">sudog</span>
-	<span class="nx">elem</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// data element (may point to stack)
-</span><span class="c1"></span>	<span class="o">...</span>
-
-<span class="p">}</span>
-</code></pre></div><p><code>next</code> 和 <code>prev</code> 就是指向前后节点的指针，并且包裹了一个 goroutine 结构。</p>
-
-			</div>
-			<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp"></div>
-			<hr class="post-end">
-			<footer class="post-info">
-				<p>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://www.kcode.icu/tags/go">Go</a></span><span class="tag"><a href="https://www.kcode.icu/tags/%E6%BA%90%E7%A0%81">源码</a></span>
-				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>125 Words</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-02-26 03:35 &#43;0800</p>
-			</footer>
-		</article>
-		<div class="post-nav thin">
-			<a class="next-post" href="https://www.kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</span>
-			</a>
-			<a class="prev-post" href="https://www.kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>记 MySQL 5.7.5 及以上实现的功能检测依赖报错分析</span>
-			</a>
-		</div>
-		<div id="comments" class="thin">
-						<script src="https://utteranc.es/client.js"
-							repo="sh1luo/sh1luo"
-							issue-term="pathname"
-							theme="github-light"
-							crossorigin="anonymous"
-							async>
-			</script>
-		</div>
-	</main>
-
-	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-		<p>&copy; 2018 - 2021 <a href="https://www.kcode.icu/">wasabi</a></p>
-		<p>
-			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://www.kcode.icu/post/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
-		</p>
-	</footer>
-
-
-	<script src="https://www.kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js"></script>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-193315904-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-</body>
-
-</html>
+<span class=p>}</span>
+</code></pre></div><p><code>next</code> 和 <code>prev</code> 就是指向前后节点的指针，并且包裹了一个 goroutine 结构。</p></div><div class=content><br><img src=https://blogimagee.oss-cn-beijing.aliyuncs.com/images/gzh.webp width=80% height=60%></div><hr class=post-end><footer class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://kcode.icu/tags/go>Go</a></span><span class=tag><a href=https://kcode.icu/tags/%E6%BA%90%E7%A0%81>源码</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>125 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2021-02-25 19:35 +0000</p></footer></article><div class="post-nav thin"><a class=next-post href=https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/><span class=post-nav-label><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>&nbsp;Newer</span><br><span>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</span></a>
+<a class=prev-post href=https://kcode.icu/posts/chore/2021-02-24-%E8%AE%B0-mysql-5.7.5-%E5%8F%8A%E4%BB%A5%E4%B8%8A%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A3%80%E6%B5%8B%E4%BE%9D%E8%B5%96/><span class=post-nav-label>Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span><br><span>记 MySQL 5.7.5 及以上实现的功能检测依赖报错分析</span></a></div><div id=comments class=thin><script src=https://utteranc.es/client.js repo=sh1luo/sh1luo issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer id=site-footer class="section-inner thin animated fadeIn faster"><p>&copy; 2018 - 2021 <a href=https://kcode.icu/>wasabi</a></p><p>Made with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> &#183; Theme <a href=https://github.com/Track3/hermit target=_blank rel=noopener>Hermit</a> &#183; <a href=https://kcode.icu/post/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a></p></footer><script src=https://kcode.icu/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-193315904-1','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>
