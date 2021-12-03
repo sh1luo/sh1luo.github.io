@@ -997,7 +997,64 @@ crypto/rsa，crypto/aes等。
 </span><span class="c1"></span>	<span class="p">}</span>
 	<span class="nx">_</span><span class="p">,</span> <span class="nx">_</span> <span class="p">=</span> <span class="nx">read</span><span class="p">,</span> <span class="nx">insert</span>
 <span class="p">}</span>
-</code></pre></div>]]></content></item><item><title>聊聊 22 届秋招的体验</title><link>https://kcode.icu/posts/interview/2021-12-interview/</link><pubDate>Sun, 21 Nov 2021 21:22:20 +0000</pubDate><guid>https://kcode.icu/posts/interview/2021-12-interview/</guid><description>今年的秋招早已结束了，因为我躺平了一个多月，所以这篇博客拖到了现在。</description><content type="html">&lt;p>今年的秋招早已结束了，因为我躺平了一个多月，所以这篇博客拖到了现在。&lt;/p></content></item><item><title>最近两个月及远程实习半个月小记</title><link>https://kcode.icu/posts/chore/2021-06-19-recent-life/</link><pubDate>Sat, 19 Jun 2021 15:00:13 +0000</pubDate><guid>https://kcode.icu/posts/chore/2021-06-19-recent-life/</guid><description>自 3 月末完成许多轮线上面试，4 月初拿到 offer，到现在因疫情远程实习，已经过去2个多月了，时间真的一晃就过去了，虽说还没拿到正式的秋招 offer，但也距离面试不远了，有必要记录一下这段时间的生活，顺便总结反思。
+</code></pre></div>]]></content></item><item><title>聊聊 22 届秋招的体验</title><link>https://kcode.icu/posts/interview/2021-12-interview/</link><pubDate>Sun, 21 Nov 2021 21:22:20 +0000</pubDate><guid>https://kcode.icu/posts/interview/2021-12-interview/</guid><description>今年的秋招早已结束了，因为我躺平了一个多月，所以这篇博客就拖到了现在。
+我的秋招结束的比较早，一共拿到了 6 家公司的 Offer：腾讯/字节/美团/百度/ThoughtWorks/好未来，其中有白菜也有 SSP。比较有趣的是，好未来这家公司在其他家公司都在薪资/意向沟通的时候，给我打来电话说的却是 Offer 被取消，原因是今年集团问题，不再招收校招生，以实习转正优先。打来电话是说明 如果有其他 Offer 可以签了，不用等好未来了，也算很良心了，没有钓鱼。。
+惊讶的是字节在最后给我开出了 SSP 的评级，给出的薪资应该是今年开发岗天花板。
+Offer 的情况都比较普通，我想着重聊聊我对 22 届互联网秋招的看法。
+敲门砖 学历 和 简历 依然是很重要的首要因素。
+学历 事实是，现在互联网中大厂应该普遍不接受专科及以下的学历了，对二/三本也有一些意见，例如有一位三本同学在拿到小红书的 SSP 的 Offer 后，被告知 Offer 审批不通过，给了个最低的价格，也俗称白菜价。评论区一致认为就是学历的锅，我也不置可否。
+快速发展的互联网行业，越来越多的研究生大军不断涌入，也属实没什么办法。
+简历 逛多了牛客/脉脉等求职平台，对一些同学的简历实在是无力吐槽，说好听点，叫对自己的定位不够清楚，说难听点，叫没有点 B 树。曾经献过血，有驾照，支教，当过超市服务员都往上写，实在是怕对面觉得你经历不够丰富。
+信息差是存在的，我经常给身边的朋友、同学推荐 超级简历 这个平台，没什么优点，就是简洁。因为我觉得在写简历这个过程中，最大的阻力应该是 排版，而不是内容。我们需要有一个专业的平台或者什么告诉我们该怎么写，而写什么别人没法教，也教不了。
+找一份标准的排版，把你的教育经历、实习经历、项目经历、专业技能和个人相关（可省略）逐条写上去，做到清晰，干净即可，目标是让别人一眼看出你的求职意愿，你的特长优势。我们只需要专注于内容本身，而不用去过度纠结该把这段字设置成 4 号还是 5 号。
+秋招流程 秋招的战线比较长，且有不断增长的趋势，这意味着我们有更多的时间去准备。
+实习 有一段大厂的实习经历会让你的秋招事半功倍。因为你相当于经过了一次筛选，大厂帮他们提前面试了一次，面试的一部分话题可以从传统八股文转变到实习与项目经历上来，这对我们是非常有利的，因为这是难得的主动权由我们掌握，另一个是自我介绍。
+你想想让面试官追着你细扣 epoll 源码简单，还是问你在实习中做了什么简单？
+所以我的建议是，能去大厂实习尽量去大厂实习一次，2 个月以上，实在不行去中等规模的也行，但是不要去太小的，因为你得不到太多的锻炼，更多的是打杂。
+这其中存在的问题是大多数同学大三无法出去实习，毕竟不是所有人的学校都是北上广深等，这里我推荐我的两种方法，线上实习 和 开源经历。
+线上实习 现在有不少公司/公司的部门支持线上支持，往往这些部门没有机密性，不必强行到岗，只要完成任务即可，实话实说，这类机会比较少。而能否线上实习是和具体的部门有关，你需要去和部门 mentor/leader 沟通。我是在大三拿到腾讯实习 Offer 后，遭遇公司所在地疫情，遂线上入职，后续就连续线上实习直到离职了。我个人认为，对于技术岗而言，线上实习不是最优解，反而是下策。毕竟线下实习除了获得经历外，最重要的是体验公司/工作，而且线上不方便交流，线下的话你直接跑到导师工位面基，线上就得问 在吗。。而且往往效率低。
+开源经历 我强烈推荐大家参与一些开源项目，用代码证明自己的经历与实力，简单粗暴。现在有许多开源活动，主要参与人群就是大学生，例如 GSOC（Google Summer of Code），还有国内新起的 CSOC（China &amp;hellip;），你只需要定期贡献，在报名时写一份 Proposal，说明自己曾经的贡献，实力，参加的决心即可，这个 Proposal 类似简历。不但有名师指导，开源经历，还有钱拿。据我所知，GSOC 现在结项后可以拿到 13kRMB左右，前两年可以拿到 18k。国内的 CSOC 是12K，至少今年是，分两次，中期报告和结项报告，各一半。税后到手10K+。感兴趣的同学可以去了解下。</description><content type="html"><![CDATA[<p>今年的秋招早已结束了，因为我躺平了一个多月，所以这篇博客就拖到了现在。</p>
+<p>我的秋招结束的比较早，一共拿到了 6 家公司的 Offer：腾讯/字节/美团/百度/ThoughtWorks/好未来，其中有白菜也有 SSP。比较有趣的是，好未来这家公司在其他家公司都在薪资/意向沟通的时候，给我打来电话说的却是 Offer 被取消，原因是今年集团问题，不再招收校招生，以实习转正优先。打来电话是说明 如果有其他 Offer 可以签了，不用等好未来了，也算很良心了，没有钓鱼。。</p>
+<p>惊讶的是字节在最后给我开出了 SSP 的评级，给出的薪资应该是今年开发岗天花板。</p>
+<p>Offer 的情况都比较普通，我想着重聊聊我对 22 届互联网秋招的看法。</p>
+<h2 id="敲门砖">敲门砖</h2>
+<p><strong>学历</strong> 和 <strong>简历</strong> 依然是很重要的首要因素。</p>
+<h3 id="学历">学历</h3>
+<p>事实是，现在互联网中大厂应该普遍不接受专科及以下的学历了，对二/三本也有一些意见，例如有一位三本同学在拿到小红书的 SSP 的 Offer 后，被告知 Offer 审批不通过，给了个最低的价格，也俗称白菜价。评论区一致认为就是学历的锅，我也不置可否。</p>
+<p>快速发展的互联网行业，越来越多的研究生大军不断涌入，也属实没什么办法。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20211203154508870.png" alt="小红书事件"></p>
+<h3 id="简历">简历</h3>
+<p>逛多了牛客/脉脉等求职平台，对一些同学的简历实在是无力吐槽，说好听点，叫对自己的定位不够清楚，说难听点，叫没有点 B 树。曾经献过血，有驾照，支教，当过超市服务员都往上写，实在是怕对面觉得你经历不够丰富。</p>
+<p>信息差是存在的，我经常给身边的朋友、同学推荐 <a href="https://www.wondercv.com/">超级简历</a> 这个平台，没什么优点，就是简洁。因为我觉得在写简历这个过程中，最大的阻力应该是 <strong>排版</strong>，而不是内容。我们需要有一个专业的平台或者什么告诉我们该怎么写，而写什么别人没法教，也教不了。</p>
+<p>找一份标准的排版，把你的教育经历、实习经历、项目经历、专业技能和个人相关（可省略）逐条写上去，做到清晰，干净即可，目标是让别人一眼看出你的求职意愿，你的特长优势。我们只需要专注于内容本身，而不用去过度纠结该把这段字设置成 4 号还是 5 号。</p>
+<h2 id="秋招流程">秋招流程</h2>
+<p>秋招的战线比较长，且有不断增长的趋势，这意味着我们有更多的时间去准备。</p>
+<h3 id="实习">实习</h3>
+<p>有一段大厂的实习经历会让你的秋招事半功倍。因为你相当于经过了一次筛选，大厂帮他们提前面试了一次，面试的一部分话题可以从传统八股文转变到实习与项目经历上来，这对我们是非常有利的，因为这是难得的主动权由我们掌握，另一个是自我介绍。</p>
+<p>你想想让面试官追着你细扣 epoll 源码简单，还是问你在实习中做了什么简单？</p>
+<p>所以我的建议是，能去大厂实习尽量去大厂实习一次，2 个月以上，实在不行去中等规模的也行，但是不要去太小的，因为你得不到太多的锻炼，更多的是打杂。</p>
+<p>这其中存在的问题是大多数同学大三无法出去实习，毕竟不是所有人的学校都是北上广深等，这里我推荐我的两种方法，<strong>线上实习</strong> 和 <strong>开源经历</strong>。</p>
+<h4 id="线上实习">线上实习</h4>
+<p>现在有不少公司/公司的部门支持线上支持，往往这些部门没有机密性，不必强行到岗，只要完成任务即可，实话实说，这类机会比较少。而能否线上实习是和具体的部门有关，你需要去和部门 mentor/leader 沟通。我是在大三拿到腾讯实习 Offer 后，遭遇公司所在地疫情，遂线上入职，后续就连续线上实习直到离职了。我个人认为，对于技术岗而言，线上实习不是最优解，反而是下策。毕竟线下实习除了获得经历外，最重要的是体验公司/工作，而且线上不方便交流，线下的话你直接跑到导师工位面基，线上就得问 在吗。。而且往往效率低。</p>
+<h4 id="开源经历">开源经历</h4>
+<p>我强烈推荐大家参与一些开源项目，用代码证明自己的经历与实力，简单粗暴。现在有许多开源活动，主要参与人群就是大学生，例如 GSOC（Google Summer of Code），还有国内新起的 CSOC（China &hellip;），你只需要定期贡献，在报名时写一份 Proposal，说明自己曾经的贡献，实力，参加的决心即可，这个 Proposal 类似简历。不但有名师指导，开源经历，还有钱拿。据我所知，GSOC 现在结项后可以拿到 13kRMB左右，前两年可以拿到 18k。国内的 CSOC 是12K，至少今年是，分两次，中期报告和结项报告，各一半。税后到手10K+。感兴趣的同学可以去了解下。</p>
+<p>想强调的是，没有想象的难，原因是：</p>
+<ol>
+<li>你往往只是负责某模块中的某个 Feature，贡献并不需要完全理解整个项目。</li>
+<li>在开发过程中，大家都很热情，往往很活跃，贡献并不是你想象的埋头各干各的，如果真是这样的话，开源这两个字也就失去了它的灵魂了。所以，大胆卖出第一步才是最重要的。</li>
+</ol>
+<p>在参与开源时，不仅可以锻炼你的项目/工程经验，也可以熟练应用并理解 Git 等软件。</p>
+<h4 id="小结">小结</h4>
+<p>有一个回答说的很好：</p>
+<blockquote>
+<p>“怎么定义一个人是否强？”</p>
+<p>“我更愿意把 “强” 理解为 “制造 impact 的能力”，也就是你能通过你的代码产生多大的<strong>影响力</strong>。”</p>
+</blockquote>
+<p>有一个前端大佬叫三元，他的前端项目教程在掘金小册上卖了几万份，GitHub 上也收获了上千 Stars，最终以评级 SSP 进入了字节前端基础架构组。</p>
+<p>还有一个牛客网友叫 何人听我楚狂声，通过编写一个简单的 RPC 框架参与面试，让许多人模仿，收获显著，在社区拥有了一定的知名度。</p>
+<p>我认为这都是实力的体现。总之，你需要尽力地做一些”显而易见“的成就，让面试成功拥有事半功倍的效果。</p>
+<h3 id="提前批与正式批">提前批与正式批</h3>
+]]></content></item><item><title>最近两个月及远程实习半个月小记</title><link>https://kcode.icu/posts/chore/2021-06-19-recent-life/</link><pubDate>Sat, 19 Jun 2021 15:00:13 +0000</pubDate><guid>https://kcode.icu/posts/chore/2021-06-19-recent-life/</guid><description>自 3 月末完成许多轮线上面试，4 月初拿到 offer，到现在因疫情远程实习，已经过去2个多月了，时间真的一晃就过去了，虽说还没拿到正式的秋招 offer，但也距离面试不远了，有必要记录一下这段时间的生活，顺便总结反思。
 前段时间 在拿到实习 offer 后，和之前学习状态相比有点佛系，一方面是因为阶段性的目标没了，短时间内没有下一个目标；另一方面是把重心从看/背知识点转移到了深入思考，理解上来了。因为在准备时有一些知识难免是死记硬背的，或者理解不透彻，需要复现并弄清楚。
 针对第一方面，其实我之前已经有了另一个目标的雏形，也是针对我的简历项目比较薄弱。就是寻找一个 “亮眼” 的项目来丰富简历上的项目部分，思前想后主要有四大块方向，竞赛类项目，开源贡献，造轮子，还有 秒杀/CRUD 类。
 竞赛类项目是一些参加比赛的项目，比如一年一次的微信小程序开发大赛，用小程序解决一个实际问题或者开发一个趣味游戏。这个我现在来不及了，不适合。开源贡献这块我一直在关注 GSoC，奈何要求确实略高，另外需要提前至少 1-2 个月进行准备，为目标社区的项目贡献，联系导师等，之前加入了国内 GSoC 的 Gitter 社区讨论群，在 5 月恰巧看到群里有人说国内也搞了个开源夏令营，模仿谷歌的，是第二年举办，我就参加了，贡献了半个多月，累计 PR 10 个左右 ，也是常常肝到凌晨，目前结果怎么样还未知，不过学习到的东西真的很多，例如更多的 Git 用法，开源规范，还有具体项目的知识。这个如果成功了我觉得也应该比单纯的 CRUD 好（希望😄
@@ -1537,7 +1594,7 @@ go+qml项目问了几个关于cgo的特性，聊了聊优劣势，看得出来�
 <p>开学面了俩除了阿里云就是这个，比较顺，刚oc。</p>
 <p>一面是俩人，问项目，应用层协议，https过程，最后写了个树的题，递归写的比较简单，忘了。。</p>
 <p>二面就20分钟，全程问go rpc，穿插一些网络方面的问题，比如tcp udp选择，区别，技术实现等等，没写题。有的问题我感觉答的不好，比如序列化是自己实现的吗，我说用标准库，感觉对方有点失望，我也意识到这个应该自己写一下锻炼锻炼。感觉对方也不是很满意要凉了，最后还是过了，莫名其妙。</p>
-]]></content></item><item><title>Go unsafe.Pointer、uintptr、Pointer之间的区别与联系</title><link>https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link><pubDate>Sun, 14 Mar 2021 13:35:20 +0000</pubDate><guid>https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid><description>前几天见到了一个问题：
+]]></content></item><item><title>Go unsafe.Pointer、uintptr、Pointer 之间的区别与联系</title><link>https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</link><pubDate>Sun, 14 Mar 2021 13:35:20 +0000</pubDate><guid>https://kcode.icu/posts/go/2021-03-14-go-unsafe.pointeruintptr%E4%B8%8E%E6%8C%87%E9%92%88/</guid><description>前几天见到了一个问题：
 uintptr与 unsafe.Pointer 有什么区别？ 你可能曾经看到过类似这样的代码：
 type T struct { a uint8 b bool c string } t := T{a: 1, b: true, c: &amp;#34;goooo&amp;#34;} Tc := *(*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&amp;amp;a)) + unsafe.Offsetof(T{}.c))) fmt.Println(Tc) 这一行代码看似实现的功能非常复杂，其实它就是等价于：
 fmt.Println(t.c) 从某种意义上来说，这好像没什么用（确实没啥作用&amp;hellip;），那你再看一段代码：
@@ -2494,30 +2551,34 @@ Go内存管理 goroutine 什么时候会阻塞？ goroutine有几种状态？ m�
 <h2 id="锁机制饥饿模式正常模式锁底层原理">锁机制？饥饿模式正常模式？锁底层原理？</h2>
 <h2 id="channel使用坑底层原理">channel使用，坑，底层原理？</h2>
 ]]></content></item><item><title>几经周折的博客变迁史</title><link>https://kcode.icu/posts/chore/blog_journey/</link><pubDate>Wed, 06 Jan 2021 21:13:13 +0000</pubDate><guid>https://kcode.icu/posts/chore/blog_journey/</guid><description>仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
-尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。 使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。 发现了国内访问速度更快的 Gitee Page。 再次购买域名，使用 CDN 加速国外空间，未果（下文说）&amp;hellip;&amp;hellip; 前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
+尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。 使用 Hexo 框架系统化内容，并部署在 GitHub Pages 交给 GitHub 管理。 转用 Hugo 框架，利用 GitHub Actions 自动化构建，依然在 GitHub Pages。 前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾的挺多但是都是应用层面上的，对我来说更多的是 动手能力 的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
+我之所以最终选择将博客托管在 GitHub Pages，也是考虑都未来可能自己不会坚持购买服务器，说不定哪天没有服务器但是还写博客，那样就没地方在线看了。
+最终采用的方案是：Hugo + GitHub Actions + GitHub Pages + 自定义域名。最终的效果是，只需要本地编写博客文件后，直接推送即可自动化构建 + 自动更新推送。
+唯一的缺点是我的域名是在国外的平台 Namesilo 购买的，无法使用 CDN 加速，导致国内用户时常访问异常，现象是无预期的卡顿。。我也没办法，想使用国内 CDN 加速，域名必须备案。
 当时配置那个 A 记录，CNAME 记录啥的根本不知道是什么东西，也不知道 DNS 是什么，就是配，成功了就行，不成功就猜，一个个试呗。现在想想，真的是走了不少弯路，如果能系统地学一下多好。不过这些问题也都在我后来的实践以及学习过程中逐一解决了，现在遇到问题也不用像没头苍蝇一样乱撞了，这种感觉很不错 :)
 这件事也让我大致理解了一句老话，大致是这么说的：真正厉害的技术人员不是说他写程序一定要多么多么厉害，而是他有非常强悍的问题定位能力（trouble shooting），能解决别人解决不了的问题，而这一切都源自于无数经验的积累以及深度的思考。
 下面说我的最后一次迁移：)
 之所以有两个部分是因为买了域名后才发现必须要国内域名并且备案，才能加速国内。我买的是国外域名所以没办法，最后就用 GitHub Page + 自定义域名了。
-GitHub Page+自定义域名 这种方案比较简单（因为GitHub 都帮我们做了），这也是我现在的方式，只不过我的域名是国外的，所以没办法使用 CDN 加速。
-你首先需要创建一个名为 &amp;lt;YourGitHubName&amp;gt;.github.io 的仓库，比如 sh1luo.github.io，然后购买一个域名（国内国外都行，国内要备案），因为我们是要使用 GitHub 的自定义域名，所以需要使用 CNAME 记录，在域名服务器处添加两条CNAME 记录 ，就像这样
-我是国外的域名，不能使用国内 CDN 加速，正好 CloudFlare 提供免费全球 CDN，虽然效果一般，但是它提供的免费功能也是非常的多，包括各种流量统计分析，也是很良心了。想使用 CloudFlare 当 DNS 服务器做法也非常简单。注册一个账号填上域名信息，然后会提供给我们两个 DNS 服务器域名，我们把原域名服务器商的 NameServers 改成新解析服务器提供的就好了。
-当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加两条 CNAME 记录，然后在 GitHub Pages 仓库的发布分支放一个 CNAME 文件，文件内容就是你的 CNAME 地址就可以了，它会自动帮你设置为这个域名并搞定一切的:)</description><content type="html"><![CDATA[<p>仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：</p>
-<ul>
+GitHub Page + 自定义域名 这种方案比较简单（因为GitHub 都帮我们做了），这也是我现在的方式，只不过我的域名是国外的，所以没办法使用 CDN 加速。
+你首先需要创建一个名为 &amp;lt;YourGitHubName&amp;gt;.</description><content type="html"><![CDATA[<p>仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：</p>
+<ol>
 <li>尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。</li>
-<li>使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。</li>
-<li>发现了国内访问速度更快的 Gitee Page。</li>
-<li>再次购买域名，使用 CDN 加速国外空间，未果（下文说）&hellip;&hellip;</li>
-</ul>
+<li>使用 <a href="https://github.com/hexojs/hexo">Hexo</a> 框架系统化内容，并部署在 GitHub Pages 交给 GitHub 管理。</li>
+<li>转用 <a href="https://github.com/gohugoio/hugo">Hugo</a> 框架，利用 GitHub Actions 自动化构建，依然在 GitHub Pages。</li>
+</ol>
 <p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118174633253.png" alt="现在的博客"></p>
-<p>前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。</p>
+<p>前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾的挺多但是都是应用层面上的，对我来说更多的是 <strong>动手能力</strong> 的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。</p>
+<p>我之所以最终选择将博客托管在 GitHub Pages，也是考虑都未来可能自己不会坚持购买服务器，说不定哪天没有服务器但是还写博客，那样就没地方在线看了。</p>
+<p>最终采用的方案是：Hugo + GitHub Actions + GitHub Pages + 自定义域名。最终的效果是，只需要本地编写博客文件后，直接推送即可自动化构建 + 自动更新推送。</p>
+<p>唯一的缺点是我的域名是在国外的平台 <a href="https://www.namesilo.com/">Namesilo</a> 购买的，无法使用 CDN 加速，导致国内用户时常访问异常，现象是无预期的卡顿。。我也没办法，想使用国内 CDN 加速，域名必须备案。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20211203152728270.png" alt="域名"></p>
 <p>当时配置那个 A 记录，CNAME 记录啥的根本不知道是什么东西，也不知道 DNS 是什么，就是配，成功了就行，不成功就猜，一个个试呗。现在想想，真的是走了不少弯路，如果能系统地学一下多好。不过这些问题也都在我后来的实践以及学习过程中逐一解决了，现在遇到问题也不用像没头苍蝇一样乱撞了，这种感觉很不错 :)</p>
 <p>这件事也让我大致理解了一句老话，大致是这么说的：真正厉害的技术人员不是说他写程序一定要多么多么厉害，而是他有非常强悍的问题定位能力（trouble shooting），能解决别人解决不了的问题，而这一切都源自于无数经验的积累以及深度的思考。</p>
 <p>下面说我的最后一次迁移：)</p>
 <blockquote>
 <p>之所以有两个部分是因为买了域名后才发现必须要国内域名并且备案，才能加速国内。我买的是国外域名所以没办法，最后就用 GitHub Page + 自定义域名了。</p>
 </blockquote>
-<h2 id="github-page自定义域名">GitHub Page+自定义域名</h2>
+<h2 id="github-page--自定义域名">GitHub Page + 自定义域名</h2>
 <p>这种方案比较简单（因为GitHub 都帮我们做了），这也是我现在的方式，只不过我的域名是国外的，所以没办法使用 CDN 加速。</p>
 <p>你首先需要创建一个名为 <code>&lt;YourGitHubName&gt;.github.io</code> 的仓库，比如 <code>sh1luo.github.io</code>，然后购买一个域名（国内国外都行，国内要备案），因为我们是要使用 GitHub 的自定义域名，所以需要使用 <a href="https://baike.baidu.com/item/CNAME/9845877?fr=aladdin">CNAME</a> 记录，在域名服务器处添加两条CNAME 记录 ，就像这样</p>
 <p><img src="https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210126230446099.png" alt="DNS记录"></p>
@@ -2534,34 +2595,41 @@ GitHub Page+自定义域名 这种方案比较简单（因为GitHub 都帮我们
 <h2 id="自动化构建">自动化构建</h2>
 <p>自动化构建意思是说你只需要完成博客内容部分，其他生成静态页面，打包，发布部署等功能都交给一套脚本去完成。这里介绍我曾经体验过的几种。</p>
 <h3 id="github-actions">Github Actions</h3>
-<p>这是 Github 提供的功能较为全面的自动化部署解决方案，使用方法有两种，一是在 <code>.git</code> 文件的同级目录下创建一个 <code>.github/workflow</code> 目录，然后新建 <code>gh-pages.yaml</code> 文件，另一个是在 Web端登录进入你 <code>yourname.github.io</code> 仓库， <code>Code</code> 栏右侧的 <code>Action</code> ，点进去图形化创建并编辑文件即可，这里展示我的 action 脚本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Deploy Hugo</span><span class="w">
+<p>这是 Github 提供的功能较为全面的自动化部署解决方案，使用方法有两种，一是在 <code>.git</code> 文件的同级目录下创建一个 <code>.github/workflow</code> 目录，然后新建 <code>gh-pages.yaml</code> 文件，另一个是在 Web端登录进入你 <code>yourname.github.io</code> 仓库， <code>Code</code> 栏右侧的 <code>Action</code> ，点进去图形化创建并编辑文件即可，这里展示我的 Action 脚本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">GitHub Pages</span><span class="w">
+</span><span class="w">
 </span><span class="w"></span><span class="nt">on</span><span class="p">:</span><span class="w">
 </span><span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w">
 </span><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span>- <span class="l">master</span><span class="w">
+</span><span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span><span class="w">
+</span><span class="w">
 </span><span class="w"></span><span class="nt">jobs</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="nt">build-deploy</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l">ubuntu-18.04</span><span class="w">
+</span><span class="w">  </span><span class="nt">deploy</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l">ubuntu-20.04</span><span class="w">
+</span><span class="w">    </span><span class="nt">concurrency</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l">${{ github.workflow }}-${{ github.ref }}</span><span class="w">
 </span><span class="w">    </span><span class="nt">steps</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span>- <span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">actions/checkout@v2</span><span class="w">
 </span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">submodules</span><span class="p">:</span><span class="w"> </span><span class="l">recursive</span><span class="w"> </span><span class="c"># Fetch Hugo themes (true OR recursive)</span><span class="w">
-</span><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="c"># Fetch all history for .GitInfo and .Lastmod</span><span class="w">
+</span><span class="w">          </span><span class="nt">submodules</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">  </span><span class="c"># Fetch Hugo themes (true OR recursive)</span><span class="w">
+</span><span class="w">          </span><span class="c"># fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod</span><span class="w">
+</span><span class="w">
 </span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Setup Hugo</span><span class="w">
 </span><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-hugo@v2</span><span class="w">
 </span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">hugo-version</span><span class="p">:</span><span class="w"> </span><span class="l">latest</span><span class="w">
+</span><span class="w">          </span><span class="nt">hugo-version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;0.80.0&#39;</span><span class="w">
 </span><span class="w">          </span><span class="nt">extended</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">
 </span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Build</span><span class="w">
-</span><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">hugo &amp;&amp; echo www.kcode.icu &gt; ./public/CNAME</span><span class="w">
+</span><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">hugo --minify</span><span class="w">
+</span><span class="w">
 </span><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Deploy</span><span class="w">
 </span><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-gh-pages@v3</span><span class="w">
+</span><span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l">${{ github.ref == &#39;refs/heads/master&#39; }}</span><span class="w">
 </span><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">personal_token</span><span class="p">:</span><span class="w"> </span><span class="l">${{ secrets.personal_token }}</span><span class="w"> </span><span class="c"># personal_token 这里新建一个 https://github.com/settings/tokens</span><span class="w">
-</span><span class="w">          </span><span class="nt">PUBLISH_BRANCH</span><span class="p">:</span><span class="w"> </span><span class="l">gh-pages</span><span class="w"> </span><span class="c"># 推送到当前 gh-pages 分支</span><span class="w">
-</span><span class="w">          </span><span class="nt">PUBLISH_DIR</span><span class="p">:</span><span class="w"> </span><span class="l">./public</span><span class="w"> </span><span class="c"># hugo 生成到 public 作为跟目录</span><span class="w">
-</span><span class="w">          </span><span class="nt">commit_message</span><span class="p">:</span><span class="w"> </span><span class="l">${{ github.event.head_commit.message }}</span><span class="w">
+</span><span class="w">          </span><span class="nt">github_token</span><span class="p">:</span><span class="w"> </span><span class="l">${{ secrets.GITHUB_TOKEN }}</span><span class="w">
+</span><span class="w">          </span><span class="nt">cname</span><span class="p">:</span><span class="w"> </span><span class="l">kcode.icu</span><span class="w">
 </span></code></pre></div><p>也比较好理解，就是执行 <code>hugo</code> 命令然后创建一个 CNAME 文件用于自动设置一个自定义域名，然后推到 <code>gh-pages</code> 分支。</p>
 <p>这种方案的优点是自定义程度高，缺点相对就是需要自己全权控制写一个控制脚本，有一定学习成本。</p>
 <p>这是我的自动化构建执行结果：</p>
@@ -2697,7 +2765,7 @@ REST vs. RPC你要使用API去解决什么问题？ 有一则关于这个农民�
 <h2 id="根据调用">根据调用</h2>
 <p>自从 FORTRAN Ⅱ 在1958 年提出调用（也叫函数）这个概念，函数（调用）就一直是组织计算机代码的主要结构。所有现在主流被用来构建和使用 API 的编程语言例如 Java,Javascript, Python, Golang, C/C++ 和 PHP 都使用调用（也就是函数）来作为他们的主要组织结构。因此这数十年来”函数调用“以远程过程调用（RPC） 的形式称为设计和实现分布式 API 的主要模型也就不足为奇了。</p>
 <p>如果你要问大多数软件开发者为什么要定义和构建 API，他们可能会解释说他们有个应用，它需要实现多个分布式组件，并且这些组件之间可以互相调用，来使整个应用程序正常运行。他们也可能说需要实现由多个应用程序使用的服务 API。</p>
-]]></content></item><item><title>Linux du/df命令总结</title><link>https://kcode.icu/posts/chore/linux_df_du/</link><pubDate>Wed, 04 Nov 2020 18:15:13 +0000</pubDate><guid>https://kcode.icu/posts/chore/linux_df_du/</guid><description>linux 在我们日常学习中用的非常多，连接远程 linux 服务器，使用各种 linux 命令，或者物理机就是 linux 系统或者 MacOS。如果你想要学习进阶知识，linux 已经是必不可少的一个组件了。这篇博客记录一下 linux 下常被混淆的 du/df 命令。
+]]></content></item><item><title>Linux du/df 命令总结</title><link>https://kcode.icu/posts/chore/linux_df_du/</link><pubDate>Wed, 04 Nov 2020 18:15:13 +0000</pubDate><guid>https://kcode.icu/posts/chore/linux_df_du/</guid><description>linux 在我们日常学习中用的非常多，连接远程 linux 服务器，使用各种 linux 命令，或者物理机就是 linux 系统或者 MacOS。如果你想要学习进阶知识，linux 已经是必不可少的一个组件了。这篇博客记录一下 linux 下常被混淆的 du/df 命令。
 df df 就是 “disk free” 的缩写，一般是用来快速浏览你的文件系统，会显示所有磁盘的大小，使用空间，剩余空间，使用百分比还有磁盘挂载到哪个分区上了。使用的时候一般要带上 -h 参数来增加可读性。这些数据都是从挂载点或者文件系统级别计算出来的，比较 “宏观”。
 而且，-h 标记会使你的数据四舍五入更方便显示，比如它显示 3G 的大小，实际上可能是 2.9G 或者 3.1G，并不确定。
 du du 就是 “disk usage” 的缩写，如果你需要计算某个特定目录大小的时候非常好用。一般搭配 -sh 参数让结果更易读，比如这样：
@@ -2715,7 +2783,7 @@ df VS. du 看了这两个命令大致用法后，它们在使用场景是什么�
 <p>看了这两个命令大致用法后，它们在使用场景是什么呢，众所周知不结合使用场景的技术都是耍流氓。大致可以这样总结：<code>df</code> 命令提供一个关于你整个文件系统的概览，比如你多少空间正在使用等等，<code>du</code> 命令更倾向于计算某个目录的精确快照。</p>
 <p>如果非要说哪个的结果更有用一点，我觉得是 <code>du</code>。举个例子，我在 <code>/var</code> 目录下安装一个第三方包时遇到了一个目录空间不足的错误，那么我就可以先跑一下 <code>df</code> 命令去看看这个目录的空间来确认一下这是不是真的。我如果看到 <code>/var</code> 有足够空间，那我会接着跑一下 <code>du /var</code> 去看看是它的哪个子目录因为空间不够报的错。这样我就可以一直通过 <code>df </code> 去缩小出错目录的范围，直到找到问题。</p>
 <p>理解这些命令的区别能让我们串联使用这些工具，从而更快的定位并解决我们所面临的绝大多数的问题。</p>
-]]></content></item><item><title>一文搞懂ASCII、Unicode和UTF</title><link>https://kcode.icu/posts/ascii-unicode-utf/</link><pubDate>Fri, 18 Sep 2020 09:27:13 +0000</pubDate><guid>https://kcode.icu/posts/ascii-unicode-utf/</guid><description>起因 最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 Byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在 会用 的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。
+]]></content></item><item><title>一文搞懂 ASCII、Unicode与UTF 编码</title><link>https://kcode.icu/posts/ascii-unicode-utf/</link><pubDate>Fri, 18 Sep 2020 09:27:13 +0000</pubDate><guid>https://kcode.icu/posts/ascii-unicode-utf/</guid><description>起因 最初在学习 Go 语言的各种类型时发现内置字符类型有两种类型，一种是 Byte（1 字节表示一个 ASCII 字符），还有一个就是 rune 类型，可能从其他语言转过来的开发者都会对 rune 觉得非常陌生，我自己也是仅仅停留在 会用 的阶段上，久而久之就会特别乱，所以写一篇博客介绍一下各种字符以及编码方便彼此学习，彻底解决这类问题。
 什么是ASCII，为什么又要引入Unicode 都应该了解过 ASCII、Unicode、Unicode 码点、UTF-8等一系列名词。先说 ASCII（American Standard Code for Information Interchange: 美国信息交换标准代码），它是一种字符集，说白了就是一个字符和数字的一一对应关系，你想找这个字符怎么办，计算机又不认识字符？给出他的对应的数字就行了。最初只有美国等一些使用英文的国家使用，所以 128 个字符完全够用，它包含了标点符号、数字和字母等。但是随着世界上使用计算机的国家越来越多，这 128 个字符是完全不够用的。所以 Unicode 字符集 就出现了。Unicode 包含了世界上绝大多数的字符，给他们提供了一一对应关系，比如“知”字对应 30693，即 U+77e5（16 进制形式）。所以说白了 ASCII 和 Unicode 就是一种字符集，一种字符对应关系，Unicode 中每个字符被称为一个 Code Point（码点），而 Go 语言中的 rune 类型正是代表了这样一个单位，即一个 rune 代表了一个 unicode 字符。
 那么大家肯定都听说过 UTF-8，UTF-16 吧，那问题来了， UTF 又是什么呢，UTF-8 和 UTF-16 到底又有什么关系呢？
 UTF（Unicode Transformation Format） 从字面上你就应该能看出来，这就是一个 Unicode 转换格式。什么是转换格式，为什么需要转换格式？上文说了 Unicode 就是提供了字符间的一一对应关系，比如“知”对应了 30693，那计算机怎么表示这个数（计算机只认识二进制）？很显然，它首先必须要做到 准确识别每一个字符。
@@ -2853,7 +2921,8 @@ internal/fs/utils.js:230
 <span class="o">(</span>node:9504<span class="o">)</span> <span class="o">[</span>DEP0018<span class="o">]</span> DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero <span class="nb">exit</span> code.
 </code></pre></div><p>执行完后会得到一个 80 MB 左右的 asar 文件，拿它覆盖原安装包内的 asar 文件，运行 StarUML。</p>
 <p>搞定。</p>
-]]></content></item><item><title>OBS显示器捕获黑屏解决方案</title><link>https://kcode.icu/posts/chore/obs/</link><pubDate>Sun, 26 Apr 2020 11:34:13 +0000</pubDate><guid>https://kcode.icu/posts/chore/obs/</guid><description>问题起因 由于我最近重新安装了系统，在重新下载 OBS 后发现捕获不到桌面。我之前解决方法就是直接在显卡控制面板里将 OBS 设置为集显就行了。但是这次设置了也不行，有可能是我下载的显卡驱动版本不对。。于是就找到了这个终极解决方案，基本电脑上有这个功能的都能解决。
+]]></content></item><item><title>OBS/Bilibili 直播姬的显示器捕获黑屏解决方案</title><link>https://kcode.icu/posts/chore/obs/</link><pubDate>Sun, 26 Apr 2020 11:34:13 +0000</pubDate><guid>https://kcode.icu/posts/chore/obs/</guid><description>OBS 与 Bilibili直播姬 操作类似。
+问题起因 由于我最近重新安装了系统，在重新下载 OBS 后发现捕获不到桌面。我之前解决方法就是直接在显卡控制面板 里将 OBS 设置为集显就行了。但是这次设置了也不行，有可能是我下载的显卡驱动版本不对。。于是就找到了这个终极解决方案。
 问题环境 操作系统：Win10 64位 专业版 - 1909
 CPU 集成显卡型号：Inter(R) UHD Graphics 630
 独立显卡型号：NVIDIA GeForce GTX 1050
@@ -2862,8 +2931,12 @@ OBS 版本：25.0.4(64 bit)
 问题描述 在来源中添加显示器捕获后 ，是黑屏，无法捕获到显示器。
 问题分析 目前网上能搜集到的解决方案大部分是以下几种：
 右键 OBS 属性 - 兼容性 - 兼容模式 - 以兼容模式运行这个程序（win7）设置 - 以管理员方式运行 桌面上右键打开 NVIDIA 控制面板，管理 3D 设置 - 程序设置，找到 OBS，设置为集成图形。 但是我都试了都解决不了，我就去搜了一下问题的原因，最终发现 OBS 只能捕捉到和自己跟自己使用相同显卡的应用，然后我右键打开任务管理器，发现笔记本桌面使用的是我的集显。所以就需要把 OBS 设置为应用集显。
-解决方法 左下角开始按钮 - 设置 - 系统 - 显示 - 图形设置 - 经典应用里浏览添加 OBS ，点击选项，设置为节能，节能就是使用集显。然后你再打开 OBS&amp;hellip;&amp;hellip;</description><content type="html"><![CDATA[<h2 id="问题起因">问题起因</h2>
-<p>由于我最近重新安装了系统，在重新下载 OBS 后发现捕获不到桌面。我之前解决方法就是直接在<strong>显卡控制面板</strong>里将 OBS 设置为集显就行了。但是这次设置了也不行，有可能是我下载的显卡驱动版本不对。。于是就找到了这个终极解决方案，基本电脑上有这个功能的都能解决。</p>
+解决方法 左下角开始按钮 - 设置 - 系统 - 显示 - 图形设置 - 经典应用里浏览添加 OBS ，点击选项，设置为节能，节能就是使用集显。然后你再打开 OBS&amp;hellip;&amp;hellip;</description><content type="html"><![CDATA[<blockquote>
+<p>OBS 与 Bilibili直播姬 操作类似。</p>
+</blockquote>
+<h2 id="问题起因">问题起因</h2>
+<p>由于我最近重新安装了系统，在重新下载 OBS 后发现捕获不到桌面。我之前解决方法就是直接在<strong>显卡控制面板</strong> 里将 OBS 设置为集显就行了。但是这次设置了也不行，有可能是我下载的显卡驱动版本不对。。于是就找到了这个终极解决方案。</p>
+<p><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20211203163901757.png" alt="N卡设置"></p>
 <h2 id="问题环境">问题环境</h2>
 <p>操作系统：Win10 64位 专业版 - 1909</p>
 <p>CPU 集成显卡型号：Inter(R) UHD Graphics 630</p>
@@ -2922,7 +2995,7 @@ OBS 版本：25.0.4(64 bit)
 <p><img src="http://cdn.shiluo.design/aaa.png" alt="版本原因的错误"></p>
 <p>因为作者基本不维护，所以提的问题也没解决，目前也不确定是哪方面的问题，所以记录一下，希望以后使用此库的人能注意。</p>
 <p>以上。</p>
-]]></content></item><item><title>优化Golang服务减少40%以上的CPU</title><link>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</link><pubDate>Mon, 16 Mar 2020 16:46:08 +0000</pubDate><guid>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</guid><description>优化 Golang 服务来减少 40% 以上的 CPU 十年前，谷歌正在面临一个由 C++ 编译时间过长所造成的严重瓶颈，并且需要一个全新的方式来解决这个问题。谷歌的工程师们通过创造了一种新的被称作 Go （又名 Golang）的语言来应对挑战。这个新语言 Go 带来了 C++ 最好的部分（最主要的是它的性能和稳定性），又与 Python 的速度相结合，使得 Go 能够在实现并发的同时快速地使用多核心。
+]]></content></item><item><title>优化一个 Golang 服务减少40%以上的CPU</title><link>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</link><pubDate>Mon, 16 Mar 2020 16:46:08 +0000</pubDate><guid>https://kcode.icu/posts/translation/20200303-optimizing-a-golang-service-to-reduce-over-40-cpu/</guid><description>优化 Golang 服务来减少 40% 以上的 CPU 十年前，谷歌正在面临一个由 C++ 编译时间过长所造成的严重瓶颈，并且需要一个全新的方式来解决这个问题。谷歌的工程师们通过创造了一种新的被称作 Go （又名 Golang）的语言来应对挑战。这个新语言 Go 带来了 C++ 最好的部分（最主要的是它的性能和稳定性），又与 Python 的速度相结合，使得 Go 能够在实现并发的同时快速地使用多核心。
 在 Coralogix（译者注：一个提供全面日志分析的服务产品，官网），我们为了去给我们的客户提供关于他们日志实时的分析、警报和元数据，要去解析他们的日志。在解析阶段，我们需要非常快速地解析包含多个复杂规则的服务日志，这个目标是促使我们决定使用 Golang 的原因之一。
 这项新的服务现在就全天候的跑在生产阶段，尽管我们看到了非常好的结果，但是它也需要跑在高性能的机器上。这项 Go 的服务跑在一台 AWS m4.2xlarge 实例上 ，带有 8 CPUs 和 36 GB 的配置，每天要解析几十亿的日志。
 在这个阶段一切都运行正常，我们本可以自我感觉良好，但是那并不是我们在 Coralogix 想要的表现。我们想要更多的特性，比如性能等等，或者使用更少的 AWS 实例。为了改进，我们首先需要理解瓶颈的本质以及我们如何能够减少或者完全解决这些问题。
