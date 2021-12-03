@@ -1,5 +1,5 @@
 ---
-title: "优化Golang服务减少40%以上的CPU"
+title: "优化一个 Golang 服务减少40%以上的CPU"
 date: 2020-03-16 16:46:08
 tags:
   - 翻译

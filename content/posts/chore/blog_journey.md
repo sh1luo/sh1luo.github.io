@@ -10,14 +10,21 @@ tags:
 
 仔细想起来我的博客旅程也有好多年了，兜兜转转地走了不少弯路，也确实在这个过程中学到了很多东西，大致有这些时间节点：
 
-- 尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。
-- 使用 hexo 框架系统化内容，并部署到 GitHub Page 上交给 GitHub 管理。
-- 发现了国内访问速度更快的 Gitee Page。
-- 再次购买域名，使用 CDN 加速国外空间，未果（下文说）......
+1. 尝试购买了国内域名和学生机服务器，看到自己写的内容能在公网上让全世界的人看到就高兴了好久，内容很随意，自己管理。
+2. 使用 [Hexo](https://github.com/hexojs/hexo) 框架系统化内容，并部署在 GitHub Pages 交给 GitHub 管理。
+3. 转用 [Hugo](https://github.com/gohugoio/hugo) 框架，利用 GitHub Actions 自动化构建，依然在 GitHub Pages。
 
 ![现在的博客](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118174633253.png)
 
-前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾地挺多但是都是应用层面上的，对我来说更多的是动手能力的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
+前前后后也折腾了好几年，技术上的提升我倒觉得不太大，因为折腾的挺多但是都是应用层面上的，对我来说更多的是 **动手能力** 的提高，有好多东西不经过自己亲手尝试是根本理解不了的，我前面很多东西就是别人远程或者一步一步告诉我让我去点这个点那个就可以了，但是回过头来问你，你根本不知道发生了什么，甚至隔天就忘，这是典型的不理解、死记硬背式学习方法。
+
+我之所以最终选择将博客托管在 GitHub Pages，也是考虑都未来可能自己不会坚持购买服务器，说不定哪天没有服务器但是还写博客，那样就没地方在线看了。
+
+最终采用的方案是：Hugo + GitHub Actions + GitHub Pages + 自定义域名。最终的效果是，只需要本地编写博客文件后，直接推送即可自动化构建 + 自动更新推送。
+
+唯一的缺点是我的域名是在国外的平台 [Namesilo](https://www.namesilo.com/) 购买的，无法使用 CDN 加速，导致国内用户时常访问异常，现象是无预期的卡顿。。我也没办法，想使用国内 CDN 加速，域名必须备案。
+
+![域名](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20211203152728270.png)
 
 当时配置那个 A 记录，CNAME 记录啥的根本不知道是什么东西，也不知道 DNS 是什么，就是配，成功了就行，不成功就猜，一个个试呗。现在想想，真的是走了不少弯路，如果能系统地学一下多好。不过这些问题也都在我后来的实践以及学习过程中逐一解决了，现在遇到问题也不用像没头苍蝇一样乱撞了，这种感觉很不错 :)
 
@@ -27,7 +34,7 @@ tags:
 
 > 之所以有两个部分是因为买了域名后才发现必须要国内域名并且备案，才能加速国内。我买的是国外域名所以没办法，最后就用 GitHub Page + 自定义域名了。
 
-## GitHub Page+自定义域名
+## GitHub Page + 自定义域名
 
 这种方案比较简单（因为GitHub 都帮我们做了），这也是我现在的方式，只不过我的域名是国外的，所以没办法使用 CDN 加速。
 
@@ -61,36 +68,43 @@ tags:
 
 ### Github Actions
 
-这是 Github 提供的功能较为全面的自动化部署解决方案，使用方法有两种，一是在 `.git` 文件的同级目录下创建一个 `.github/workflow` 目录，然后新建 `gh-pages.yaml` 文件，另一个是在 Web端登录进入你 `yourname.github.io` 仓库， `Code` 栏右侧的 `Action` ，点进去图形化创建并编辑文件即可，这里展示我的 action 脚本：
+这是 Github 提供的功能较为全面的自动化部署解决方案，使用方法有两种，一是在 `.git` 文件的同级目录下创建一个 `.github/workflow` 目录，然后新建 `gh-pages.yaml` 文件，另一个是在 Web端登录进入你 `yourname.github.io` 仓库， `Code` 栏右侧的 `Action` ，点进去图形化创建并编辑文件即可，这里展示我的 Action 脚本：
 
 ```yaml
-name: Deploy Hugo
+name: GitHub Pages
+
 on:
   push:
     branches:
       - master
+  pull_request:
+
 jobs:
-  build-deploy:
-    runs-on: ubuntu-18.04
+  deploy:
+    runs-on: ubuntu-20.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v2
         with:
-          submodules: recursive # Fetch Hugo themes (true OR recursive)
-          fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
+          submodules: true  # Fetch Hugo themes (true OR recursive)
+          # fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: latest
+          hugo-version: '0.80.0'
           extended: true
+
       - name: Build
-        run: hugo && echo www.kcode.icu > ./public/CNAME
+        run: hugo --minify
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          personal_token: ${{ secrets.personal_token }} # personal_token 这里新建一个 https://github.com/settings/tokens
-          PUBLISH_BRANCH: gh-pages # 推送到当前 gh-pages 分支
-          PUBLISH_DIR: ./public # hugo 生成到 public 作为跟目录
-          commit_message: ${{ github.event.head_commit.message }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          cname: kcode.icu
 ```
 
 也比较好理解，就是执行 `hugo` 命令然后创建一个 CNAME 文件用于自动设置一个自定义域名，然后推到 `gh-pages` 分支。
