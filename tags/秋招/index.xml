@@ -1,17 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>秋招 on wasabi</title><link>https://kcode.icu/tags/%E7%A7%8B%E6%8B%9B/</link><description>Recent content in 秋招 on wasabi</description><generator>Hugo -- gohugo.io</generator><language>zh-hans</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 21 Nov 2021 21:22:20 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E7%A7%8B%E6%8B%9B/index.xml" rel="self" type="application/rss+xml"/><item><title>聊聊 22 届秋招的体验</title><link>https://kcode.icu/posts/interview/2021-12-interview/</link><pubDate>Sun, 21 Nov 2021 21:22:20 +0000</pubDate><guid>https://kcode.icu/posts/interview/2021-12-interview/</guid><description>今年的秋招早已结束了，因为我躺平了一个多月，所以这篇博客就拖到了现在。
-我的秋招结束的比较早，没有刻意投哪个公司，有一些公司投了没消息或者笔试后没消息：京东/阿里/Bilibili/小米等，有一些记不清楚了。一共拿到了 6 家公司的 Offer：腾讯/字节/美团/百度/ThoughtWorks/好未来，其中有白菜也有 SSP。比较有趣的是，好未来这家公司在其他家公司都在薪资/意向沟通的时候，给我打来电话说的却是 Offer 被取消，原因是今年集团问题，不再新招收校招生，以实习转正优先。打来电话是说明 如果有其他 Offer 可以签了，不用等好未来了，也算很良心了，没有钓鱼。惊讶的是字节在最后给我开出了 SSP 的评级（从薪资猜测），给出的薪资接近今年校招开发岗最高。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>秋招 on wasabi</title><link>https://kcode.icu/tags/%E7%A7%8B%E6%8B%9B/</link><description>Recent content in 秋招 on wasabi</description><generator>Hugo -- gohugo.io</generator><language>zh-hans</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 21 Nov 2021 21:22:20 +0000</lastBuildDate><atom:link href="https://kcode.icu/tags/%E7%A7%8B%E6%8B%9B/index.xml" rel="self" type="application/rss+xml"/><item><title>聊聊 22 届秋招的体验</title><link>https://kcode.icu/posts/interview/2021-12-interview/</link><pubDate>Sun, 21 Nov 2021 21:22:20 +0000</pubDate><guid>https://kcode.icu/posts/interview/2021-12-interview/</guid><description>个人情况 我的秋招结束的比较早，没有刻意投哪些公司，也没有海投，所以也并没有像一些同学一样列一个详细的表格来记录笔试/面试日程。
+在提前批时期，投了十多家公司，有一些公司投了没下文或者笔试后没消息，例如京东/阿里/Bilibili/小米等。最终一共拿到了 6 家公司的 Offer，岗位均为后端开发：
+腾讯-IEG-游戏工作室
+字节跳动-国际化电商
+美团-金融支付组
+百度-小度
+ThoughtWorks
+好未来-技术中台
+其中有白菜也有较高评级。
+比较有趣的是，好未来这家公司在其他家公司都在薪资/意向沟通的时候，给我打来电话说的却是 Offer 被取消，原因是今年集团问题，不再新招收校招生，以实习转正优先。打来电话是说明「如果有其他 Offer 可以签了，不用等好未来了 」，也算很良心了，没有钓鱼。惊讶的是字节在最后给我开出了意料之外的薪资。
 Offer 的情况都比较普通，这里着重聊聊我对 22 届互联网秋招的看法。
-敲门砖 线上面试与线下面试差别不大，学历 和 简历 依然是两个重要因素。
-学历 事实是，现在互联网中大厂应该普遍不接受专科及以下的学历了，对二/三本也有一些意见，例如有一位三本同学在拿到小红书的 SSP 的 Offer 后，被告知 Offer 审批不通过，给了个最低的价格，也俗称白菜价。评论区一致认为就是学历的锅，我也不置可否。
-快速发展的互联网行业，越来越多的研究生大军不断涌入，也属实没什么办法。
-我的未来导师也跟我说，现在校招生的压力很大，比社招难多了。学生太多，导致筛选条件越来越多，对于大厂面试来说，八股 + 写题 + 实习 + 项目 都是基本操作了。
-对于一些公司的内部招聘系统，算法会自动给招聘者打上标签，例如 “985/211等双一流高校” “大厂实习” “国赛奖项”，如果你有 3、4 个标签，甚至直接约面；相反，如果一个标签都没有，你简历写的再好，可能也没机会。
-从这个方向可以看出来，秋招或者春招之前，最好提前准备自己能决定的条件。
-简历 逛多了牛客/脉脉等 互联网求职 平台，对一些同学的简历实在是无力吐槽，说好听点，叫对自己的定位不够清楚，说难听点，叫没有点 B 树。曾经献过血，有驾照，支教，当过超市服务员都往上写，实在是怕对面觉得你经历不够丰富。
-**信息差是存在的。**我经常给身边的朋友、同学推荐 超级简历 这个平台，没什么优点，就是纯粹。因为我觉得在写简历这个过程中，最大的阻力应该是 排版，而不是内容。我们需要有一个专业的平台或者什么告诉我们该怎么写，而写什么别人没法教，也教不了，超级简历这个平台我认为足够了，当然还有一些也很不错，这里的意思是挑一个平台即可，重点在内容。
-找一份标准的排版，把你的教育经历、实习经历、项目经历、专业技能和个人相关（可省略）逐条写上去，做到清晰，干净即可，目标是让别人一眼看出你的求职意愿，你的特长优势。我们只需要专注于内容本身，而不用去过度纠结该把这段字设置成 4 号还是 5 号。
-作为技术岗的我们，应该有一个基本的素养：专业名词不能拼写错，大小写尽量也别错，如果你说精通某个技术，结果连拼写都写不对，过分不？如果是我筛简历，拼写都能错，如果其他地方有亮眼地方，我也许会拉来面试，但是我会着重问写错的部分，如果没有，直接就 pass了。
-说直白点，这个拼写的细节是能体现出你对这个技术的熟悉程度的。
-秋招流程 秋招的战线比较长，且有不断增长的趋势，这意味着我们有更多的时间去准备。
-实习 有一段大厂的实习经历会让你的秋招事半功倍。因为你相当于经过了一次筛选，大厂帮他们提前面试了一次，面试的一部分话题可以从传统八股文转变到实习与项目经历上来，这对我们是非常有利的，因为这是难得的主动权由我们掌握，另一个是自我介绍。
-你想想让面试官追着你细扣 epoll 源码简单，还是问你在实习中做了什么简单？</description></item></channel></rss>
+敲门砖 线上投递面试与线下差别不大，学历 和 简历 依然是两个首要因素。
+学历 需要认清的事实是，现在互联网中大厂应该普遍不接受专科及以下的学历了，对二/三本也有一些意见，例如有一位三本同学在拿到小红书的 SSP 的 Offer 后，被告知 Offer 审批不通过，给了个最低的价格，也俗称白菜价。评论区一致认为就是学历的锅，我也不置可否。
+快速发展的互联网行业，越来越多的研究生大军不断涌入，也属实没什么办法。如果学历不够的话，想进入规模较大的公司发展，就尽快尽量地提高学历吧。
+我的导师也跟我说，现在校招生的压力很大，比社招难多了。学生太多，导致筛选条件越来越多。对于现在的大厂校招面试来说，八股 + 写题 + 实习 + 项目 的一套组合拳都是基本操作了。
+可笑的是，社招经常出现求着别人投简历、约面试，几个月都招不到合适的人。而且社招一般考察过往经历、项目经验，校招注重基础，而且为了区分度，不同面试官差异较大，与社招考察方式不同。
+对于一些公司的内部招聘系统，算法会自动给招聘者打上标签，例如 “985/211等知名高校” 、“大厂实习” 以及 “国赛奖项” 等，如果你有 3、4 个标签，可以跳过笔试，甚至直接约面（例如字节，在简历没有硬伤的情况下，简历评估通过可以直接安排面试，否则需要先笔试）；相反，如果一个标签都没有，你简历写的再好，可能也没机会。
+从这个方向可以看出来，秋招或者春招之前，提前准备自己能决定的条件，到时便可游刃有余，不至于慌手慌脚。
+简历 逛多了牛客/脉脉等互联网求职交流平台，对一些同学的简历实在是无力吐槽。曾经献过血，有驾照，支教，当过超市服务员都往上写，实在是怕 HR 或面试官觉得经历不够丰富。</description></item></channel></rss>
