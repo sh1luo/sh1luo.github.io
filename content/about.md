@@ -23,6 +23,8 @@ date: "2019-12-15"
 
 ### 我的公众号
 
+![](https://uploadfiles.nowcoder.com/images/20220611/843360125_1654956547481/AF369B11824A00BFCEE0E82223075F0A)
+
 平时喜欢分享 Go 语言、校招、学习历程，可以加交流群，我的个人微信，欢迎关注我的公众号：
 
 ![个人公众号](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/扫码_搜索联合传播样式-标准色版.png)
