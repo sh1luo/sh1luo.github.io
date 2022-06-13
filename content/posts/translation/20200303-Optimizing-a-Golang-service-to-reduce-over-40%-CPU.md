@@ -1,5 +1,5 @@
 ---
-title: "优化一个 Golang 服务减少40%以上的CPU"
+title: "优化一个 Golang 服务减少 40% 以上的CPU"
 date: 2020-03-16 16:46:08
 tags:
   - 翻译
@@ -25,7 +25,7 @@ tags:
 
 第二，为了更好的理解我们的流程以及弄清楚我们应该在哪花费时间和资源，我们开始去进行分析。
 
-分析不同的服务和程序语言可能看起来很复杂并且令人望而生畏，但是对于 Go 来说它实际上十分容易，仅仅几个命令就能够描述清楚。Go 有一个专门的工具叫“pprof”，它通过监听一个路由（默认端口6060）能够应用在你的 app 上，并且使用 Go 的包来管理 HTTP 连接：
+分析不同的服务和程序语言可能看起来很复杂并且令人望而生畏，但是对于 Go 来说它实际上十分容易，仅仅几个命令就能够描述清楚。Go 有一个专门的工具叫 “pprof”，它通过监听一个路由（默认端口 6060）能够应用在你的 app 上，并且使用 Go 的包来管理 HTTP 连接：
 
 ```go
 import _ "net/http/pprof"
@@ -51,7 +51,7 @@ pprof 的默认配置是每 30 秒对 CPU 的使用情况进行采样。有许�
 
 我们主要关注 CPU 使用，因此在生产阶段采取了一个 30 秒的性能分析，并且发现了你在下图所看到的情况（提醒一下：这是在我们把 Go 版本升级并且将 Go 的内部组件降到最低之后的结果）：
 
-![Go profiling — Coralogix](http://cdn.shiluo.design/0.png)
+![Go profiling — Coralogix](https://miro.medium.com/max/875/0*a9L3eu_Ij6UbTpFn.png)
 
 正如你所看到的，我们发现了许多运行时库的活动：GC 几乎使用了 **29% 的 CPU**（还仅仅只是消耗最多的前 20 个对象）。因为 Go 的 GC 非常快并且做了巨大的优化，最好的实践就是不要去改变或者修改它。因为我们的内存消耗非常低（与我们先前的 Go 版本相比），所以主要的怀疑对象就变成了较高的对象分配率。
 
@@ -64,9 +64,9 @@ pprof 的默认配置是每 30 秒对 CPU 的使用情况进行采样。有许�
 
 这立刻**增加了我们的内存使用，从大约 200 MB 到 大约 2.7 GB**（那还是由于我们的 Go 版本更新，在内存消耗降低的情况下），另外也**减少了我们 CPU 大约 10% 的使用。**
 
-这个接下来的截图就展示了这些基准测试的结果：
+这个截图就是这些基准测试的结果：
 
-![GOGC =2000 results — Coralogix benchmark](http://cdn.shiluo.design/01.png)
+![GOGC =2000 results — Coralogix benchmark](https://miro.medium.com/max/875/0*ph2lZaEJjG-2tg-k.png)
 
 前面的四个 CPU 的消耗函数就是我们的服务函数，这十分有意义。全部的 GC 使用现在**大约是 13%，是先前消耗的一半还少！**
 
@@ -84,9 +84,9 @@ http://localhost:6060/debug/pprof/heap
 go tool pprof -alloc_objects <HEAP.PROFILE.FILE>
 ```
 
-我们的截图看起来像这样：
+这次的截图看起来像这样：
 
-![](http://cdn.shiluo.design/02.png)
+![](https://miro.medium.com/max/818/0*0uxzm-5sDGLoe_JH.png)
 
 除了第三行一切似乎都很合理，这是一个监控函数，在每个 Carologix 规则解析阶段的末尾向我们的 Promethes 调用者展示结果。为了获取进一步信息，我们运行如下命令：
 
@@ -100,14 +100,14 @@ list <FunctionName>
 list reportRuleExecution
 ```
 
-然后我们会获得如下结果：
+会获得这个结果：
 
-![](http://cdn.shiluo.design/3.png)
+![](https://miro.medium.com/max/875/0*lVGTGdZWeecjPBFl.png)
 
 WithLabelValues 的两个调用都是为了软件度量的 Prometheus 函数（我们将这个留给产品去决定是否真正需要）。而且，我们可以看到第一行创建了大量的对象（由这个函数所创建的全部对象的 10%）。我们进一步查看发现它是一个对于绑定到导出数据的消费者 ID 从 int 到 string 的转换，十分重要，但是考虑到实际情况，我们数据库中消费者的数量十分有限，我们不应该采用 Prometheus 的方式来接收变量作为 string 类型。因此取代了每次创建一个新的 string 并且在函数末尾都抛弃的这种方法（浪费分配还有 GC 的多余工作），我们在对象的分配阶段定义了 map，配对了所有从 1 到 10 万的数字和一个需要执行的 “get” 方法。
 
 现在运行一个新的性能分析会话来验证我们的论点并且它的对的（你可以看到这一部分并不会再分配对象了）：
-![](http://cdn.shiluo.design/4.png)
+![](https://miro.medium.com/max/875/0*pv-_OEq_cm7rZZaB.png)
 
 这并不是一个显著的改进，但是总体来说为我们节省了另一个 GC 的活动，说的更具体一点就是节省了大约 1% 的 CPU。
 
@@ -123,11 +123,11 @@ WithLabelValues 的两个调用都是为了软件度量的 Prometheus 函数（�
 
 在我们 Golang 优化前的 CPU：
 
-![](http://cdn.shiluo.design/6.png)
+![](https://miro.medium.com/max/875/0*jz7EcSRDxR5n3MQj.png)
 
 在我们 Golang 优化后的CPU：
 
-![](http://cdn.shiluo.design/7.png)
+![](https://miro.medium.com/max/875/0*Akyd0xfQ3FRsMiII.png)
 
 总体来说，我们可以看到主要的改进是在每秒日志处理量增加时的高峰时间。这就意味着我们的基础架构不仅不需要再为了异常值进行调整，而且变得更加稳定了。
 
@@ -137,10 +137,9 @@ WithLabelValues 的两个调用都是为了软件度量的 Prometheus 函数（�
 
 ---
 
-via：https://medium.com/coralogix-engineering/optimizing-a-golang-service-to-reduce-over-40-cpu-366b67c67ef9
-
+原文：[Optimizing a Golang service to reduce over 40%CPU](https://medium.com/coralogix-engineering/optimizing-a-golang-service-to-reduce-over-40-cpu-366b67c67ef9)
 作者：[Eliezer Yaacov](https://medium.com/@eliezerj8)
 译者：[sh1luo](https://github.com/sh1luo)
 校对：[@unknwon](https://github.com/unknwon)
 
-本文由 [GCTT](https://github.com/studygolang/GCTT) 原创编译，[Go中文网](https://studygolang.com/) 荣誉推出
+本文由 [GCTT](https://github.com/studygolang/GCTT) 原创编译
