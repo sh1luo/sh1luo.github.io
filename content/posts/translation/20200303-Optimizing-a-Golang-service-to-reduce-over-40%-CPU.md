@@ -113,7 +113,7 @@ WithLabelValues 的两个调用都是为了软件度量的 Prometheus 函数（�
 
 最终的状态就是下面的截图：
 
-![](http://cdn.shiluo.design/5.png)
+![](https://miro.medium.com/max/875/0*C7GBurb09ZUHHpRb.png)
 
 ## 最终结果
 
