@@ -87,12 +87,15 @@ If that's not enough, you can see [Overriding templates](#overriding-templates) 
 In Hugo, layouts can live in either the project’s (root) or the themes’ layout folders, any template inside the root layout folder will override theme's layout that relative to it, for example: `layouts/_default/baseof.html` will override `themes/hermit/layouts/_default/baseof.html`. So, you can easily customize the theme without edit it directly, which makes updating the theme easier. Here's some common customizations:
 
 ##### Customize social icons
+
 You can modify or add any svg icons in site's `layouts/partials/svg.html`.
 
 ##### Customize comment system
+
 We only have built-in support for Disqus at the moment, if that doesn't fit your needs, you can just add html to site's `layouts/partials/comments.html`.
 
 ##### Add custom analytics
+
 If you prefer to use different analytics system other than google analytics, then add them inside `layouts/partials/analytics.html`.
 
 #### Customize CSS
@@ -100,10 +103,12 @@ If you prefer to use different analytics system other than google analytics, the
 If you'd like to customize theme color or fonts, you can simply override `assets/scss/_predefined.scss`, by simply copy it to site's root (keep the same relative path) then edit those variables. But keep in mind, you'll need **Hugo extended version** which has the ability to rebuild SCSS. You don't have to use extended version in production but in this case it's necessary to make sure the `resources` folder is committed and "up to date" (by running `hugo` or `hugo server` locally using the extended version). But anyway, always use the extended version if you can.
 
 For adding other custom CSS to the theme, you can assign an array of references in `config.toml` like following:
+
 ```
 [params]
   customCSS = ["css/foo.css", "css/bar.css"]
 ```
+
 You may reference as many stylesheets as you want. Their paths need to be relative to the `static` folder or it can be a full URL for external resources.
 
 #### Code injection

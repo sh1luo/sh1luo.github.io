@@ -6,7 +6,7 @@
 
 - ~~静态文件目录是 `/docs` 是因为 `GitHub Page` 允许开放的目录固定为 `/` 或 `/docs`，为了方便，我编写了一个简单的 shell 程序来做一些固定的事情，因此也并没有单开分支专门放置 `public` 文件夹。~~
 - ~~每次写完使用 `./build.sh` 进行打包发布，它具体做了什么参考 [build.sh](https://github.com/sh1luo/sh1luo.github.io/blob/master/build.sh) 文件。~~
-**- 使用 GitHub Actions 自动化构建，并发布到 gh-pages 分支，GitHub Pages 设置发布 gh-pages 分支即可。**
+  **- 使用 GitHub Actions 自动化构建，并发布到 gh-pages 分支，GitHub Pages 设置发布 gh-pages 分支即可。**
 - 在线阅读比较慢可能是因为服务器在国外，DNS 在国内。
 
 ## 在线阅读
