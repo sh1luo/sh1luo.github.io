@@ -1,6 +1,7 @@
 ---
 title: "记人生中前几次面试及思考"
 date: 2021-01-03 21:18:13
+description: "复盘早期几次实习面试，从简历、技术表达和算法准备三个方面总结经验。"
 tags:
   - 面试
 ---
@@ -15,7 +16,7 @@ tags:
 
 ### 简历
 
-![](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210103221551405.png)
+![简历版式示例](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210103221551405.png)
 
 这里使用的简历风格是参考了 @帅地玩编程 和 @码农桃花源 两位大佬，一个是本科腾讯大学时期年入几十万的，第二个是 Go 圈的全成大佬，推荐大家关注。
 

@@ -1,6 +1,8 @@
 ---
 title: "在线博客的图床解决方案"
 date: 2021-01-20 15:45:13
+description: "比较 GitHub/Gitee、OSS、SM.MS 等图床方案，并记录 PicGo 自动上传与编辑器协作流程。"
+versionNote: "本文记录的是 2021 年的图床生态和配置流程，平台策略、访问限制与工具界面可能已经变化。"
 toc: true
 tags:
   - 杂谈
@@ -65,11 +67,11 @@ OSS （Object Storage Service）即对象存储服务，用来做个人博客的
 
 ## PicGo
 
-![](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120134735352.png)
+![PicGo 图片上传界面](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120134735352.png)
 
 [PicGo](https://github.com/Molunerfinn/PicGo) 是一款使用 Node + Electron 开发的跨平台可视化图片上传开源软件，支持 N 种图床平台，配置灵活简单，最重要的是它支持插件功能，理论上支持任意图床平台的使用（需要提供相应上传下载的 API），可以自行开发插件。操作也比较简单，把图片拖到框里就可以拿到 URL。这张图是 gitee 相关配置，其他平台类似，只需若干个必要参数即可：
 
-![配置](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120135009612.png)
+![PicGo 的 Gitee 图床配置界面](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120135009612.png)
 
 ## 配合使用
 
@@ -83,7 +85,6 @@ OSS （Object Storage Service）即对象存储服务，用来做个人博客的
 
 最后配一个最终的成品 GIF 图给大家看一下效果：
 
-![dddd](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/dddd.gif)
+![PicGo 与 Markdown 编辑器联动上传演示](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/dddd.gif)
 
 如果你有什么问题欢迎来找我玩，一起交流。
-

@@ -1,6 +1,7 @@
 ---
 title: Linux du/df 命令总结
 date: 2020-11-04 18:15:13
+description: "比较 Linux 中 df 与 du 的统计口径、常用参数以及磁盘占用结果不一致的原因。"
 tags:
   - Linux
   - 杂谈

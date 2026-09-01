@@ -1,6 +1,10 @@
 ---
 title: "Go的随机数是怎样产生的？"
 date: 2019-12-29 21:14:55
+description: "从启动时随机源和运行时实现出发，解释 Go 1.13 中伪随机数生成的性能设计。"
+images:
+  - "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191202-Go-How-Are-Random-Numbers-Generated/01.png"
+versionNote: "译文及基准数据基于 Go 1.13，当前随机数包 API 与实现可能已经变化。"
 tags:
   - 翻译
   - Go
@@ -8,7 +12,7 @@ tags:
 
 # Go：随机数是怎样产生的？
 
-![](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191202-Go-How-Are-Random-Numbers-Generated/01.png)
+![Go 随机数文章题图](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191202-Go-How-Are-Random-Numbers-Generated/01.png)
 
 <p align="center">Illustration created for “A Journey With Go”, made from the original Go Gopher, created by Renee French.</p>
 
@@ -77,7 +81,7 @@ func main() {
 
 在你每次运行这个程序时，这个序列将会保持不变。这是构建此序列的工作流：
 
-![](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191202-Go-How-Are-Random-Numbers-Generated/02.png)
+![Go 启动时预生成随机数序列](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191202-Go-How-Are-Random-Numbers-Generated/02.png)
 
 <p align="center">The sequence is pre-generated at the bootstrap</p>
 获取一个全新序列的解决方案是使用一个在运行时能改变的变量，比如当前时间：

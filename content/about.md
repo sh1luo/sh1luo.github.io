@@ -13,8 +13,6 @@ date: "2019-12-15"
 
 公众号名字的来源也正是 Golang 的音译。
 
-> 如果你打开我的博客较慢，可能是因为部署服务器在国外（GitHub Pages），DNS 在国内（使用的腾讯 DNSPod 域名服务器）
-
 ### 联系方式
 
 - Github：<https://github.com/sh1luo>
@@ -25,4 +23,4 @@ date: "2019-12-15"
 
 平时喜欢分享 Go 语言、校招、学习历程，可以加交流群，我的个人微信，欢迎关注我的公众号：
 
-![个人公众号](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/_gzh.png)
+![公众号狗浪人儿二维码](/images/wechat-qr.jpg)

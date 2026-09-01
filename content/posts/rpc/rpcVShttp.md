@@ -1,6 +1,8 @@
 ---
 title: "你觉得HTTP最香是因为你还不知道RPC"
 date: 2020-11-10 21:30:13
+description: "从调用模型、资源模型和 API 设计目标出发比较 RPC 与 REST，而不是简单判断孰优孰劣。"
+versionNote: "本文为早期译文，示例生态可能已变化，请重点参考 RPC 与 REST 的设计取舍。"
 tags:
   - REST
   - RPC

@@ -1,13 +1,17 @@
 ---
 title : "Go的GC是怎样监听你的应用的？"
 date : 2020-01-01 20:43:19
+description: "结合运行时追踪图理解 Go 1.13 垃圾收集器的标记阶段、后台 worker 与 mutator assist。"
+images:
+  - "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/1.png"
+versionNote: "译文及图示基于 Go 1.13，当前运行时实现可能已经变化。"
 tags:
   - 翻译
 ---
 
 # Go: GC 是怎样监听你的应用的？
 
-![](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/1.png)
+![Go GC 文章题图](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/1.png)
 
 <p align="center">Illustration created for “A Journey With Go”, made from the original Go Gopher, created by Renee French.</p>
 >  这篇文章是基于Go的 *1.13* 版本
@@ -45,7 +49,7 @@ func BenchmarkAllocationEveryMs(b *testing.B) {
 
 追踪器向我们展示了 GC 什么时候被调用：
 
-![](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/2.png)
+![GC 周期与堆大小变化](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/2.png)
 
 <p align="center">Garbage collector cycles and heap size</p>
 一旦堆的大小增加了一倍，内存分配器就会触发执行 GC 。通过设置 `GODEBUG=gctrace=1` ，来打印出若干循环的信息就能够证实这一点：
@@ -84,36 +88,36 @@ GC 主要由两个主要阶段组成：
 
 为了解决这个问题，Go 在标记内存的同时会跟踪新的内存分配，并关注 GC 何时过载。第一步在 GC 触发时执行，它会首先为每一个处理器准备一个 处于 sleep状态的goroutine，等待标记阶段。
 
-![](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/3.png)
+![标记阶段使用的 goroutine](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/3.png)
 
 <p align="center">Goroutines for marking phase</p>
 跟踪器能够显示出这些 goroutines：
 
-![](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/4.png)
+![追踪器中的标记 goroutine](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/4.png)
 
 <p align="center">Goroutines for marking phase</p>
 当这些 goroutine 生成后， GC 就开始标记阶段，该阶段会检查哪些变量应收集并清除。被标记为`GC dedicated` 的 goroutines 会运行标记，并不会被抢占，然而那些标记为`GC idle` 的 goroutines 就会去工作，因为他们没有任何其他事情。可以被抢占。
 
 GC 现在已经能够去标记那些不再使用的变量。对于每一个被扫描到的变量，它会增加一个计数器，以便继续跟踪当前的工作并且也能够获得剩余工作的快照。当一个 goroutine 在 GC 期间被安排了任务，Go 将会比较所需要的分配和已经扫描到的，以便对比扫描的速度和分配的需求。如果比较的结果是扫描内容较多，那么当前的 goroutine 并不需要去提供帮助。换句话说，如果扫描与分配相比有所欠缺，那么 Go 就会使用 goroutine来协助。这有一个图表来反应这个逻辑：
 
-![](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/5.png)
+![基于扫描债务的标记协助逻辑](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/5.png)
 
 <p align="center">Mark assist based on scanning debt</p>
 在我们的示例中，因为扫描 / 分配的差值为负数，所以 goroutine 14 被请求工作：
 
-![](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/6.png)
+![goroutine 协助 GC 标记](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/6.png)
 
 <p align="center">Assistance for marking</p>
 ## CPU限制
 
 Go 语言 GC 的目标之一是不占用 25 % 的 CPU。这就意味着 Go 在标记阶段不应分配超过四分之一的处理器。实际上，这正是我们在前面的示例中所看到的，在八个处理器中只有两个 goroutine 被 GC 充分利用：
 
-![](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/7.png)
+![专用于标记阶段的 goroutine](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/7.png)
 
 <p align="center">Dedicated goroutine for marking phase</p>
 正如我们所看到的，其他的 goroutine 仅在没有其他事情要做的情况下才会在标记阶段工作。但是，在 GC 的协助请求下，Go 程序可能会在高峰时间最终占用超过 25 % 的 CPU ，如 goroutine 14 所示：
 
-![](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/8.png)
+![专用 goroutine 与标记协助共同工作](https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/8.png)
 
 <p align="center">Mark assistance with dedicated goroutines</p>
 在我们的示例中，短时间内将我们处理器的 37.5 % （八分之三）分配给了标记阶段。这可能很少见，只有在分配很高的情况下才会发生。
@@ -127,4 +131,3 @@ via：[来源地址](https://medium.com/a-journey-with-go/go-how-does-the-garbag
 校对：[lxbwolf](https://github.com/lxbwolf)
 
 本文由 [GCTT](https://github.com/studygolang/GCTT) 原创编译，[Go中文网](https://studygolang.com/) 荣誉推出
-

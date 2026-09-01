@@ -1,6 +1,12 @@
 ---
 title: "谈谈最常见的 HTTP"
 date: 2021-01-15 23:10:22
+description: "从请求语义、版本演进和实际通信过程理解 HTTP，而不止停留在常见面试结论。"
+featured: true
+featuredWeight: 10
+images:
+  - "https://gitee.com/sh1luo/imgs/raw/master/imgs/multiplexing.png"
+versionNote: "本文写于 2021 年，协议现状和浏览器实现可能已经变化，请结合当前标准阅读。"
 tags:
   - HTTP
 ---

@@ -1,6 +1,8 @@
 ---
 title: "深入理解 Go channel"
 date: 2021-02-25 19:35:20
+description: "从 hchan 数据结构和运行时源码理解 Go channel 的发送、接收、阻塞与调度机制。"
+versionNote: "本文基于 2021 年前后的 Go 源码，运行时实现可能已经演进，请以文中链接的源码 commit 为准。"
 tags:
   - Go
   - 源码
@@ -58,4 +60,3 @@ type sudog struct {
 ```
 
 `next` 和 `prev` 就是指向前后节点的指针，并且包裹了一个 goroutine 结构。
-

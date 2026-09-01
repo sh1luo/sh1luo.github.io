@@ -1,6 +1,9 @@
 ---
 title: "极客时间专栏《RPC实战与核心原理》读后笔记"
 date: 2021-05-14 21:45:13
+description: "围绕 RPC 架构、服务发现、连接管理、序列化与治理，整理课程阅读笔记。"
+images:
+  - "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210515133206463.png"
 tags:
   - RPC
 ---
@@ -11,7 +14,7 @@ tags:
 
 以下的二级标题均对应专栏的课程大纲，同样分单元总结。
 
-![image-20210515133206463](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210515133206463.png)
+![RPC 实战与核心原理专栏课程目录](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210515133206463.png)
 
 ## 开篇词
 
@@ -26,4 +29,3 @@ RPC 即远程过程调用，目的是使调用另一台机器上的程序就像�
 最初的我学习 RPC 也是由浅入深，从 “字面意思” 出发，即如何调用远程主机上的某个函数，实现了编解码，序列化等等一整套调用流程，成功执行了远程主机的程序，当然了，这还是点对点的。
 
 后来我发现这些仅仅是基础，冰山下的还包括一系列服务治理功能：连接管理，健康检测，负载均衡，优雅启停机，异常重试，业务分组以及熔断限流等等。十分复杂又充满了挑战性。
-

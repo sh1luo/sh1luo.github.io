@@ -1,9 +1,9 @@
 {{ define "header" }}
-{{ partialCached "header.html" . }}
+{{ partial "header.html" . }}
 {{ end }}
 
 {{ define "main" }}
-	<main class="site-main section-inner thin animated fadeIn faster">
+	<main id="main-content" class="site-main section-inner thin">
 		<h1>{{ .Title }}</h1>
 		{{- if .Content }}
 		<div class="content">
@@ -12,11 +12,11 @@
 		{{- end }}
 		{{- range .Data.Pages.GroupByDate "2006" }}
 		<div class="posts-group">
-			<div class="post-year" id="{{ .Key }}">{{ .Key }}</div>
+			<h2 class="post-year" id="{{ .Key }}"><a href="#{{ .Key }}">{{ .Key }}</a></h2>
 			<ul class="posts-list">
 				{{- range .Pages }}
 				<li class="post-item">
-					<a href="{{.Permalink}}">
+					<a href="{{ .RelPermalink }}">
 						<span class="post-title">{{.Title}}</span>
 						<span class="post-day">{{ .Date.Format .Site.Params.dateformShort }}</span>
 					</a>

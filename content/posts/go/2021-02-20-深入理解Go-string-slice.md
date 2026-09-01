@@ -1,6 +1,10 @@
 ---
 title: "深入理解 Go string 与 slice"
 date: 2021-02-15 23:35:20
+description: "结合源码和内存布局分析 Go string 与 slice 的数据结构、转换、扩容及常见性能问题。"
+featured: true
+featuredWeight: 30
+versionNote: "本文基于 2021 年前后的 Go 源码，运行时实现可能已经演进，请以文中链接的源码 commit 为准。"
 tags:
   - Go
   - 源码
@@ -48,8 +52,6 @@ go.string."abc" SRODATA dupok size=3
 ```
 
 很直观的可以看到字符串被分配到了 RODATA 区段，也就是只读区段（Read Only），也就是说 **Go 字符串是不可修改的**。
-
-
 
 
 

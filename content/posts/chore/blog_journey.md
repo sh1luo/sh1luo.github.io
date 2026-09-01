@@ -1,6 +1,8 @@
 ---
 title: "几经周折的博客变迁史"
 date: 2021-01-06 21:13:13
+description: "记录个人博客从静态页面、Hexo 到 Hugo 与 GitHub Pages 的迁移过程。"
+versionNote: "这是历史记录：文中的自定义域名已过期，当前站点仅使用 https://sh1luo.github.io/。"
 toc: true
 tags:
   - 博客
@@ -44,13 +46,13 @@ tags:
 
 我是国外的域名，不能使用国内 CDN 加速，正好 CloudFlare 提供免费全球 CDN，虽然效果一般，但是它提供的免费功能也是非常的多，包括各种流量统计分析，也是很良心了。想使用 CloudFlare 当 DNS 服务器做法也非常简单。注册一个账号填上域名信息，然后会提供给我们两个 DNS 服务器域名，我们把原域名服务器商的 NameServers 改成新解析服务器提供的就好了。
 
-![](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210126231932450.png)
+![Cloudflare DNS 服务器配置](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210126231932450.png)
 
 当然，如果你本来就是国内域名，就不用这么麻烦了，直接添加两条 CNAME 记录，然后在 GitHub Pages 仓库的发布分支放一个 CNAME 文件，文件内容就是你的 CNAME 地址就可以了，它会自动帮你设置为这个域名并搞定一切的:)
 
 最终应该是这样：
 
-![](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210126232019604.png)
+![GitHub Pages 自定义域名配置结果](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210126232019604.png)
 
 ## CDN加速
 
@@ -60,7 +62,7 @@ tags:
 
 不过我这里是尝试了一下，发现国内都是不支持加速国外域名，所以放弃了。
 
-![](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118184423991.png)
+![CDN 配置尝试结果](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118184423991.png)
 
 ## 自动化构建
 
@@ -113,7 +115,7 @@ jobs:
 
 这是我的自动化构建执行结果：
 
-![image-20210331160251498](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331160251498.png)
+![GitHub Actions 自动构建成功记录](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331160251498.png)
 
 ### Gitee Page
 
@@ -121,7 +123,7 @@ Gitee 提供了常见的几个博客框架的自动化部署功能，Hugo，Hexo
 
 优点是国内速度比 Github 快，毕竟服务器近，缺点是每次推完还要手动点更新，自动的一年 99RMB。
 
-![image-20210331155953211](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331155953211.png)
+![Gitee Pages 手动更新入口](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331155953211.png)
 
 ## 画图工具
 
@@ -135,7 +137,7 @@ Gitee 提供了常见的几个博客框架的自动化部署功能，Hugo，Hexo
 
 我之前一直使用这个工具画图，优点是免费，功能丰富，暂无发现缺点 :joy: 推荐给要求较高的同学使用，画彩色图，花里胡哨图。
 
-![image-20210619170357266](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619170357266.png)
+![diagrams.net 绘图界面示例](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619170357266.png)
 
 ### Ascii
 
@@ -145,7 +147,7 @@ Ascii 图是我看 [曹大博客](https://xargin.com/diagram-tools-intro/) 了�
 
 毕竟曹大在讲 plan9 汇编时说过，学习的最大动力就是装逼，不服可以去线下面基他 :smile:，这种风格的图真的 geek 风拉满，“程序员味”十足。
 
-![image-20210619170049500](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619170049500.png)
+![ASCII 文本图示例](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619170049500.png)
 
 说点正经的，我喜欢这种图最大的优点是 **简洁**，无他。我不用操心颜色搭配，字体大小，迁移存储等一切问题，只专心图所能表达出的含义就 OK 了。这里推荐两个站点：
 

@@ -1,6 +1,8 @@
 ---
 title: "超越代码的贡献:对于每一个人的开源"
 date: 2020-02-14 21:21:55
+description: "介绍代码之外参与开源社区的方式，包括文档、设计、测试、项目管理和社区协作。"
+versionNote: "本文是 2020 年保存的未完整译稿，保留作历史记录。"
 tags:
   - 翻译
 ---
@@ -57,6 +59,6 @@ via：https://blog.gopheracademy.com/advent-2019/contribute-beyond-code/
 
 作者：Jennifer Davis
 译者：[sh1luo](https://github.com/sh1luo)
-校对：[](https://github.com/)
+校对：暂无
 
 本文由 [GCTT](https://github.com/studygolang/GCTT) 原创编译，[Go中文网](https://studygolang.com/) 荣誉推出

@@ -1,10 +1,6 @@
 {{ define "head" }}
 	{{ if .Params.featuredImg -}}
 	<style>.bg-img {background-image: url('{{.Params.featuredImg}}');}</style>
-	{{- else if .Params.images -}}
-		{{- range first 1 .Params.images -}}
-		<style>.bg-img {background-image: url('{{. | absURL}}');}</style>
-		{{- end -}}
 	{{- end -}}
 {{ end }}
 
@@ -13,19 +9,23 @@
 {{ end }}
 
 {{ define "main" }}
-	{{- if (or .Params.images .Params.featuredImg) }}
-	<div class="bg-img"></div>
+	{{- if .Params.featuredImg }}
+	<div id="featured-image" class="bg-img" role="button" tabindex="0" aria-label="关闭特色图片"></div>
 	{{- end }}
-	<main class="site-main section-inner animated fadeIn faster">
+	<main id="main-content" class="site-main section-inner">
 		<article id="articles" class="thin">
-			<header class="post-header">
-				<div class="post-meta"><span>{{ .Date.Format .Site.Params.dateform }}</span></div>
-				<h1>{{ .Title }}</h1>
-			</header>
-			<div class="content">
-				{{ .Content | replaceRE "(<h[1-6] id=\"([^\"]+)\".+)(</h[1-6]+>)" `${1}<a href="#${2}" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a>${3}` | safeHTML }}
+				<header class="post-header">
+					<div class="post-meta"><span>{{ .Date.Format .Site.Params.dateform }}</span></div>
+					<h1>{{ .Title }}</h1>
+				</header>
+				{{ partial "content-status.html" . }}
+				<div class="content">
+				{{ .Content }}
 			</div>
-			<div class="content"><br><img src="https://blogimagee.oss-cn-beijing.aliyuncs.com/images/_gzh.png"  alt=""/></div>
+			<aside class="wechat-card" aria-label="公众号">
+				<p>更多 Go 与后端工程内容，欢迎关注公众号「狗浪人儿」。</p>
+				<img src="{{ "images/wechat-qr.jpg" | relURL }}" alt="公众号狗浪人儿二维码" width="344" height="344" loading="lazy" decoding="async">
+			</aside>
 			<hr class="post-end">
 			<footer class="post-info">
 				{{- with .Params.tags }}
@@ -51,19 +51,21 @@
 		{{- end }}
 		<div class="post-nav thin">
 			{{- with .NextInSection }}
-			<a class="next-post" href="{{ .Permalink }}">
+			<a class="next-post" href="{{ .RelPermalink }}">
 				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;{{ i18n "newer" }}</span><br><span>{{ .Title }}</span>
 			</a>
 			{{- end }}
 			{{- with .PrevInSection }}
-			<a class="prev-post" href="{{ .Permalink }}">
+			<a class="prev-post" href="{{ .RelPermalink }}">
 				<span class="post-nav-label">{{ i18n "older" }}&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>{{ .Title }}</span>
 			</a>
 			{{- end }}
 		</div>
-		<div id="comments" class="thin">
-			{{ partialCached "comments.html" . }}
-		</div>
+		{{- $commentsEnabled := .Site.Params.comments }}
+		{{- if isset .Params "comments" }}{{ $commentsEnabled = .Params.comments }}{{ end }}
+		{{- if $commentsEnabled }}
+		<div id="comments" class="thin">{{ partial "comments.html" . }}</div>
+		{{- end }}
 	</main>
 {{ end }}
 

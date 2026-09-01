@@ -1,6 +1,8 @@
 ---
 title: "Go语言net/url包源码初探"
 date: 2020-03-11 22:49:51
+description: "结合中文查询参数导致的 400 错误，阅读 Go net/url 源码并理解 URL 转义规则。"
+versionNote: "本文基于 2020 年前后的 Go 标准库源码，核心转义规则仍有参考价值，具体实现请以当前版本为准。"
 tags:
   - Go
   - 源码

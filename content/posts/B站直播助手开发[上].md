@@ -1,6 +1,10 @@
 ---
 title: Go+QML开发的跨平台桌面直播助手[上]
 date: 2020-03-05 15:45:13
+description: "通过浏览器抓包分析 Bilibili 直播弹幕 WebSocket 协议、握手流程与二进制消息结构。"
+images:
+  - "https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210125220539933.png"
+versionNote: "本文记录的是 2020 年的 Bilibili 直播协议与接口，相关地址、字段和鉴权方式可能已经变化。"
 tags:
   - 抓包
   - 协议

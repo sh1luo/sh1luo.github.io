@@ -1,25 +1,30 @@
 baseURL = "https://sh1luo.github.io/"
-languageCode = "zh-hans"
-defaultContentLanguage = "en"
-title = "wasabi"
+locale = "zh-Hans"
+defaultContentLanguage = "zh-hans"
+hasCJKLanguage = true
+title = "Wasabi"
 theme = "hermit"
-# enableGitInfo = true
+enableGitInfo = true
+enableRobotsTXT = true
 pygmentsCodefences  = true
 pygmentsUseClasses  = true
-# hasCJKLanguage = true  # If Chinese/Japanese/Korean is your main content language, enable this to make wordCount works right.
-rssLimit = 10  # Maximum number of items in the RSS feed.
-copyright = "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License." # This message is only used by the RSS template.
+copyright = "文章采用知识共享署名-非商业性使用-相同方式共享 3.0 中国大陆许可协议。"
 enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/functions/emojify/
-googleAnalytics = "UA-193315904-1"
-# disqusShortname = "yourdiscussshortname"
 
-[author]
-  name = "wasabi"
+[frontmatter]
+  lastmod = [":git", "lastmod", "date", "publishDate"]
 
-[blackfriday]
-  # hrefTargetBlank = true
-  # noreferrerLinks = true
-  # nofollowLinks = true
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[services]
+  [services.rss]
+    limit = 10
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
 
 [taxonomies]
   tag = "tags"
@@ -28,28 +33,29 @@ googleAnalytics = "UA-193315904-1"
 [params]
   since = "2018"
   toc = true
+  comments = true
 
-  dateform        = "Jan 2, 2006"
-  dateformShort   = "Jan 2"
+  dateform        = "2006 年 1 月 2 日"
+  dateformShort   = "01-02"
   dateformNum     = "2006-01-02"
   dateformNumTime = "2006-01-02 15:04 -0700"
 
   # Metadata mostly used in document's head
-  description = "博客,学习总结,go,golang,源码分析"
-  # images = [""]
+  description = "Wasabi 的个人技术博客，记录 Go 后端、系统原理、源码分析与工程实践。"
+  images = ["images/og.jpg"]
   themeColor = "#494f5c"
 
-  homeSubtitle = "Summary, Thinking, Life"
+  homeSubtitle = "Go 后端 · 系统原理 · 工程实践"
 
   # Toggling this option needs to rebuild SCSS, requires Hugo extended version
   justifyContent = false  # Set "text-align: justify" to `.content`.
 
   relatedPosts = true  # Add a related content section to all single posts page
 
-  code_copy_button = true # Turn on/off the code-copy-button for code-fields
-  
-  # Add custom css
-  # customCSS = ["css/foo.css", "css/bar.css"]
+  gitUrl = "https://github.com/sh1luo/sh1luo.github.io/commit/"
+
+  [params.author]
+    name = "Wasabi"
 
   # Social Icons
   # Check https://github.com/Track3/hermit#social-icons for more info.
@@ -62,10 +68,6 @@ googleAnalytics = "UA-193315904-1"
     name = "email"
     url = "mailto:silo1999@163.com"
 
-  [[params.social]]
-    name = "qq"
-    url = "http://wpa.qq.com/msgrd?v=3&uin=690898835&site=qq&menu=yes"
-
 [menu]
 
   [[menu.main]]
@@ -74,32 +76,21 @@ googleAnalytics = "UA-193315904-1"
     weight = 10
 
   [[menu.main]]
+    name = "Go 系列"
+    url = "posts/go/"
+    weight = 20
+
+  [[menu.main]]
+    name = "总结"
+    url = "summary/"
+    weight = 30
+
+  [[menu.main]]
     name = "标签"
     url = "tags/"
-    weight = 15
+    weight = 40
 
   [[menu.main]]
     name = "关于"
     url = "about/"
-    weight = 20
-
-
-  [[menu.nav]]
-    name = "文章"
-    url = "posts/"
-    weight = 10
-
-  [[menu.nav]]
-    name = "总结"
-    url = "summary"
-    weight = 11
-
-  [[menu.nav]]
-    name = "杂项"
-    url = "chore"
-    weight = 12
-
-  [[menu.nav]]
-    name = "Go系列"
-    url = "go"
-    weight = 13
+    weight = 50

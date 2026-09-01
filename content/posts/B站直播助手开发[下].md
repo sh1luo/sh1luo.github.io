@@ -1,6 +1,10 @@
 ---
 title: Go+QML开发的跨平台桌面直播助手[下]
 date: 2020-03-13 13:22:23
+description: "使用 Go、WebSocket 和 QML 实现桌面直播助手，记录消息处理、协程池和界面通信方案。"
+images:
+  - "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/go_qml_flowchart.png"
+versionNote: "本文基于 2020 年的 Bilibili 协议、Go 与 QML 生态，接口和构建方式可能已经变化。"
 tags:
   - WebSocket
   - Go

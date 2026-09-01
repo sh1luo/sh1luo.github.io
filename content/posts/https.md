@@ -1,6 +1,12 @@
 ---
 title: "https 为什么安全"
 date: 2021-01-27 15:57:50
+description: "通过证书、非对称加密、密钥协商和 Wireshark 抓包理解 HTTPS 如何抵御窃听与中间人攻击。"
+featured: true
+featuredWeight: 20
+images:
+  - "https://gitee.com/sh1luo/imgs/raw/master/imgs/640.png"
+versionNote: "本文写于 2021 年，TLS 版本采用情况可能已经变化，原理部分仍可结合文中上下文阅读。"
 tags:
   - HTTPS
   - 安全
@@ -44,7 +50,7 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 
 在你申请到 CA 的证书并部署，在客户端请求时返回后，客户端的验证过程是有信任链验证的。你可以随便打开一个部署了 HTTPS 的站点，点击锁图标查看证书路径。
 
-![](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210129114612091.png)
+![浏览器中的 HTTPS 证书路径](https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210129114612091.png)
 
 可以看到你的证书是处于最下级，也就是三级证书，这个证书是由上一级证书机构 Secure Site CA G2 签发的，由于它不是根证书，无法认为它可靠，所以要再向上级寻找直到根证书。然后使用根证书公钥验证二级证书，依次向下，直到目标服务器的证书。
 
@@ -58,7 +64,7 @@ SSL/TLS 加密手段本质就是进行若干次握手，协商出一个对称加
 
 方式之一来查看本地根证书。
 
-![](https://gitee.com/sh1luo/imgs/raw/master/imgs/Snipaste_2021-01-28_21-32-27.png)
+![Windows 证书管理界面中的根证书](https://gitee.com/sh1luo/imgs/raw/master/imgs/Snipaste_2021-01-28_21-32-27.png)
 
 好了，你现在应该大致明白了证书的验证过程，再来一张图看总结一下。
 
@@ -93,7 +99,7 @@ TLS/1.2 的共需要 4 次握手，花费两个 RTT（Round-Trip Time，RTT）�
 
    2. 向客户端发送 Certificate 消息，即服务端的证书链，其中包含证书支持的域名、发行方和有效期等信息；
 
-      ![](https://gitee.com/sh1luo/imgs/raw/master/imgs/server-certificate.png)
+      ![TLS 握手中的服务端证书消息](https://gitee.com/sh1luo/imgs/raw/master/imgs/server-certificate.png)
 
    3. 向客户端发送 Server Key Exchange 消息，传递 ECDHE 算法的参数，也被称为 server_params，还有签名等信息。这个过程还会被签名：
 
@@ -232,4 +238,3 @@ TLS1.3 还多了一个 Vertificate Verify，也就是服务端用自己的私钥
 整体上通过引入第三方 CA 和证书机制验证双方身份，加密确保消息不会被窃听，签名确保消息不会被篡改解决了 HTTP 三大不安全问题。
 
 如果你从 HTTP -> 传统RSA -> TLS1.2 -> TLS1.3 一路看过来就会发现，技术的变化也是需要时间的，有许多设计并不是一开始就完美无缺，**方案总是需要实践的检验才能被人们认可**。
-

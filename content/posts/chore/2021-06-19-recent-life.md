@@ -1,13 +1,14 @@
 ---
 title: 最近两个月及远程实习半个月小记
 date: 2021-06-19 15:00:13
+description: "记录 2021 年实习、开源贡献和校招准备阶段的经历与反思。"
 tags:
   - 实习
 ---
 
 自 3 月末完成许多轮线上面试，4 月初拿到 offer，到现在因疫情远程实习，已经过去2个多月了，时间真的一晃就过去了，虽说还没拿到正式的秋招 offer，但也距离面试不远了，有必要记录一下这段时间的生活，顺便总结反思。
 
-![image-20210619155644748](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619155644748.png)
+![2021 年实习与校招阶段记录](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619155644748.png)
 
 ## 前段时间
 
@@ -17,11 +18,11 @@ tags:
 
 竞赛类项目是一些参加比赛的项目，比如一年一次的微信小程序开发大赛，用小程序解决一个实际问题或者开发一个趣味游戏。这个我现在来不及了，不适合。开源贡献这块我一直在关注 GSoC，奈何要求确实略高，另外需要提前至少 1-2 个月进行准备，为目标社区的项目贡献，联系导师等，之前加入了国内 GSoC 的 Gitter 社区讨论群，在 5 月恰巧看到群里有人说国内也搞了个开源夏令营，模仿谷歌的，是第二年举办，我就参加了，贡献了半个多月，累计 PR 10 个左右 ，也是常常肝到凌晨，目前结果怎么样还未知，不过学习到的东西真的很多，例如更多的 Git 用法，开源规范，还有具体项目的知识。这个如果成功了我觉得也应该比单纯的 CRUD 好（希望:smile:
 
-![image-20210703211531387](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210703211531387.png)
+![开源夏令营贡献记录](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210703211531387.png)
 
 参加这类夏令营，大多都不看重 proposal，也就是申请书/简历一类的，强调在实际贡献中体现代码及工程能力，所以要提前一段时间准备，了解项目。
 
-![image-20210619163352964](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619163352964.png)
+![开源项目申请与贡献记录](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619163352964.png)
 
 造轮子就是创造一些小工具，这个需要有一定的代码能力，做得好了也很加分，但是我觉得写 用 tcp 实现 http，json 解析器之类的可以自己写，就没必要写简历上了，一来没啥问的，二来没啥实际用途。我个人是用 Go 写了个 rpc 框架的小轮子，不过难点也很多，很容易被怼。
 
@@ -37,7 +38,7 @@ tags:
 
 很多资料，格式/规范，除非一部分实习生没权限之外（比如腾讯的乐问），技术资料都公开。因为可能是出售的产品，所以有的代码是不能访问，需要开权限才能访问。当然内部开源的工具的源码还是随便看的。
 
-![image-20210703211945974](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210703211945974.png)
+![远程实习期间的工作记录](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210703211945974.png)
 
 等疫情过去，7 月多我就过去线下实习体验一下，还是挺期待现场实习的。
 
@@ -45,10 +46,7 @@ tags:
 >
 > 顺便吐槽一下，入选有时候真的看运气，有的项目4、5个人，卷的飞起，10 几个PR不一定能进，有的没人，可能写个申请书随便交点PR就进了 :joy:
 
-![image-20210630160301943](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210630160301943.png)
-
-
-
+![开源夏令营入选结果](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210630160301943.png)
 
 
 

@@ -3,3 +3,10 @@
 _book/
 node_modules/
 .drawio
+/public/
+/resources/_gen/
+/themes/*/resources/_gen/
+/.hugo_build.lock
+/.cache/
+__pycache__/
+*.py[cod]

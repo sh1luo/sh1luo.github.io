@@ -1,6 +1,8 @@
 ---
 title: "StarUML3.x 版本解包分析"
 date: 2020-05-20 22:11:13
+description: "记录 StarUML 3.2.2 的 Electron 与 asar 包结构分析，以及当时环境中的问题排查。"
+versionNote: "本文基于 2020 年的 StarUML 3.2.2，仅保留作技术研究记录；请使用合法授权的软件版本。"
 tags:
   - UML
   - 工具

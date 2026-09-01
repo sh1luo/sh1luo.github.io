@@ -1,6 +1,8 @@
 ---
 title: "一些常见 Go 语言及面试问题的整理"
 date: 2021-01-15 21:10:55
+description: "整理 Go make/new、map、channel 等常见面试问题及其底层实现思路。"
+versionNote: "本文是 2021 年留下的未完成面试笔记，部分答案经过简化，且尚未按当前 Go 版本复核。"
 toc: true
 tags:
   - 杂谈

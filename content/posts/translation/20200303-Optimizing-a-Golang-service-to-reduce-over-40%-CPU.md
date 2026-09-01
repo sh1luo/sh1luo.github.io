@@ -1,6 +1,8 @@
 ---
 title: "优化一个 Golang 服务减少 40% 以上的CPU"
 date: 2020-03-16 16:46:08
+description: "通过升级 Go、调整 GOGC 和分析内存分配，复盘生产服务降低 CPU 使用率的过程。"
+versionNote: "案例基于 Go 1.12.4 至 1.13.8 及当时的生产负载，参数结论不应直接套用到当前服务。"
 tags:
   - 翻译
   - 优化
@@ -86,7 +88,7 @@ go tool pprof -alloc_objects <HEAP.PROFILE.FILE>
 
 这次的截图看起来像这样：
 
-![](https://miro.medium.com/max/818/0*0uxzm-5sDGLoe_JH.png)
+![pprof 内存分配对象分析](https://miro.medium.com/max/818/0*0uxzm-5sDGLoe_JH.png)
 
 除了第三行一切似乎都很合理，这是一个监控函数，在每个 Carologix 规则解析阶段的末尾向我们的 Promethes 调用者展示结果。为了获取进一步信息，我们运行如下命令：
 
@@ -102,18 +104,18 @@ list reportRuleExecution
 
 会获得这个结果：
 
-![](https://miro.medium.com/max/875/0*lVGTGdZWeecjPBFl.png)
+![reportRuleExecution 函数分配热点](https://miro.medium.com/max/875/0*lVGTGdZWeecjPBFl.png)
 
 WithLabelValues 的两个调用都是为了软件度量的 Prometheus 函数（我们将这个留给产品去决定是否真正需要）。而且，我们可以看到第一行创建了大量的对象（由这个函数所创建的全部对象的 10%）。我们进一步查看发现它是一个对于绑定到导出数据的消费者 ID 从 int 到 string 的转换，十分重要，但是考虑到实际情况，我们数据库中消费者的数量十分有限，我们不应该采用 Prometheus 的方式来接收变量作为 string 类型。因此取代了每次创建一个新的 string 并且在函数末尾都抛弃的这种方法（浪费分配还有 GC 的多余工作），我们在对象的分配阶段定义了 map，配对了所有从 1 到 10 万的数字和一个需要执行的 “get” 方法。
 
 现在运行一个新的性能分析会话来验证我们的论点并且它的对的（你可以看到这一部分并不会再分配对象了）：
-![](https://miro.medium.com/max/875/0*pv-_OEq_cm7rZZaB.png)
+![优化后的对象分配分析](https://miro.medium.com/max/875/0*pv-_OEq_cm7rZZaB.png)
 
 这并不是一个显著的改进，但是总体来说为我们节省了另一个 GC 的活动，说的更具体一点就是节省了大约 1% 的 CPU。
 
 最终的状态就是下面的截图：
 
-![](https://miro.medium.com/max/875/0*C7GBurb09ZUHHpRb.png)
+![服务优化后的性能分析结果](https://miro.medium.com/max/875/0*C7GBurb09ZUHHpRb.png)
 
 ## 最终结果
 
@@ -123,11 +125,11 @@ WithLabelValues 的两个调用都是为了软件度量的 Prometheus 函数（�
 
 在我们 Golang 优化前的 CPU：
 
-![](https://miro.medium.com/max/875/0*jz7EcSRDxR5n3MQj.png)
+![Go 服务优化前的 CPU 使用率](https://miro.medium.com/max/875/0*jz7EcSRDxR5n3MQj.png)
 
 在我们 Golang 优化后的CPU：
 
-![](https://miro.medium.com/max/875/0*Akyd0xfQ3FRsMiII.png)
+![Go 服务优化后的 CPU 使用率](https://miro.medium.com/max/875/0*Akyd0xfQ3FRsMiII.png)
 
 总体来说，我们可以看到主要的改进是在每秒日志处理量增加时的高峰时间。这就意味着我们的基础架构不仅不需要再为了异常值进行调整，而且变得更加稳定了。
 

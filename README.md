@@ -1,29 +1,73 @@
-## 这是什么
+# Wasabi
 
-这里是我的博客的源代码仓库，你可以在这里看到所有文章构建前的手稿，甚至可以自己构建一份一模一样的
+这是 [Wasabi 的个人技术博客](https://sh1luo.github.io/)源代码，主要记录 Go 后端、系统原理、源码分析与工程实践。
 
-## 部署文件说明
+## 本地运行
 
-- ~~静态文件目录是 `/docs` 是因为 `GitHub Page` 允许开放的目录固定为 `/` 或 `/docs`，为了方便，我编写了一个简单的 shell 程序来做一些固定的事情，因此也并没有单开分支专门放置 `public` 文件夹。~~
-- ~~每次写完使用 `./build.sh` 进行打包发布，它具体做了什么参考 [build.sh](https://github.com/sh1luo/sh1luo.github.io/blob/master/build.sh) 文件。~~
-  **- 使用 GitHub Actions 自动化构建，并发布到 gh-pages 分支，GitHub Pages 设置发布 gh-pages 分支即可。**
-- 在线阅读比较慢可能是因为服务器在国外，DNS 在国内。
+站点使用 Hugo Extended `0.165.0` 构建。安装对应版本后，统一通过 Makefile 执行常用操作：
 
-## 在线阅读
+```bash
+make preview
+```
 
-- ~~<https://kcode.icu/>~~，域名到期了
-- 使用 Github免费域名部署，<https://sh1luo.github.io/>
+浏览器访问 <http://localhost:1313/>。生产构建与内部链接、页面锚点检查：
 
-## 我的公众号
+```bash
+make check
+```
 
-![](https://gitee.com/sh1luo/imgs/raw/master/imgs/qrcode_for_gh_8b9d3fa3063c_344%20(1).jpg)
+外部图片仍由内容发布流程中的图床托管，可按需执行可用性巡检：
 
-## ？
+```bash
+make check-external-images
+```
 
-如果有任何疑问或错误，欢迎在 issues 进行提问或给予修正意见
+可以通过 `HUGO` 指定 Hugo 二进制，例如 `make preview HUGO=/path/to/hugo`；`BIND` 和 `PORT` 可分别覆盖监听地址与端口。
 
-如果喜欢或对你有所帮助，欢迎 star，对作者是一种鼓励和推进 😀
+### 文章图片尺寸
 
-## License
+站点会把文章图片默认限制在正文可读宽度内，不会修改图片 URL，也不影响同一份 Markdown 发布到其他平台。需要单独控制时，可以把尺寸写在 Markdown 图片标题中：
 
-所有文章采用 [知识共享署名-非商业性使用-相同方式共享 3.0 中国大陆许可协议](https://creativecommons.org/licenses/by-nc-sa/3.0/cn/) 进行许可
+```markdown
+![图片说明](https://example.com/image.jpg "size=small")
+![图片说明](https://example.com/image.jpg "size=medium")
+![图片说明](https://example.com/image.jpg "size=large")
+![图片说明](https://example.com/image.jpg "size=full")
+```
+
+四档最大宽度分别约为 420、640、832 像素和正文全宽。这个写法仍是标准 Markdown；不了解该约定的平台只会忽略尺寸效果。若某个平台支持 HTML，也可以使用带 `width` 或内联 `style` 的 `<img>` 标签精确指定宽度。
+
+### 从 Mac 访问开发机预览
+
+先在开发机仓库中保持 `make preview` 运行，再在 Mac 建立隧道：
+
+```bash
+ssh -N -L 1313:127.0.0.1:1313 liujikun@10.37.126.33
+```
+
+隧道只负责转发连接；如果开发机没有运行 Hugo，浏览器会收到 `Connection refused`。
+
+## 发布
+
+`master` 分支更新后，[GitHub Actions](.github/workflows/hugo.yml) 会构建站点并发布到 GitHub Pages：
+
+<https://sh1luo.github.io/>
+
+Pull Request 只执行构建和内部链接检查，不发布线上版本。
+
+## 目录
+
+- `content/`：文章和栏目内容。
+- `layouts/`：在 Hermit 主题之上的模板覆盖。
+- `assets/`：站点自有并由 Hugo 指纹化的 CSS 与 JavaScript。
+- `static/`：图标和站点自有图片。
+- `themes/hermit/`：内置维护的 Hermit 主题副本，站点模板与脚本在根目录覆盖。
+- `scripts/`：内部链接、锚点和外部图片检查。
+
+## 许可
+
+文章与代码的许可范围见 [LICENSE.md](LICENSE.md)。
+
+## 公众号
+
+![公众号狗浪人儿二维码](static/images/wechat-qr.jpg)

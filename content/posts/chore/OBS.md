@@ -1,6 +1,8 @@
 ---
 title: "OBS/Bilibili 直播姬的显示器捕获黑屏解决方案"
 date: 2020-04-26 11:34:13
+description: "记录 Windows 10 双显卡环境下 OBS 与 Bilibili 直播姬捕获桌面黑屏的排查方法。"
+versionNote: "本文环境为 Windows 10 1909、当时版本的 OBS/Bilibili 直播姬与 NVIDIA 驱动，仅作为旧环境排查记录。"
 tags:
   - 踩坑
 ---
@@ -11,7 +13,7 @@ tags:
 
 由于我最近重新安装了系统，在重新下载 OBS 后发现捕获不到桌面。我之前解决方法就是直接在**显卡控制面板** 里将 OBS 设置为集显就行了。但是这次设置了也不行，有可能是我下载的显卡驱动版本不对。。于是就找到了这个终极解决方案。
 
-![N卡设置](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20211203163901757.png)
+![NVIDIA 控制面板中的 OBS 图形处理器设置](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20211203163901757.png)
 
 ## 问题环境
 
@@ -27,7 +29,7 @@ OBS 版本：25.0.4(64 bit)
 
 ## 问题描述
 
-![](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/obs-noscreen.png)
+![OBS 显示器捕获黑屏](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/obs-noscreen.png)
 
 在来源中添加**显示器捕获后** ，是黑屏，**无法捕获到显示器**。
 
@@ -38,7 +40,7 @@ OBS 版本：25.0.4(64 bit)
 - 右键 OBS 属性 - 兼容性 - 兼容模式 - 以兼容模式运行这个程序（win7）设置 -  以管理员方式运行
 - 桌面上右键打开 NVIDIA 控制面板，管理 3D 设置 - 程序设置，找到 OBS，设置为集成图形。
 
-![任务管理器最下面](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/obs-gpu.png)
+![Windows 任务管理器中的 GPU 引擎列](https://blogimagee.oss-cn-beijing.aliyuncs.com/images/obs-gpu.png)
 
 但是我都试了都解决不了，我就去搜了一下问题的原因，**最终**发现 OBS **只能捕捉到和自己跟自己使用相同显卡的应用**，然后我右键打开任务管理器，发现笔记本桌面使用的是我的集显。所以就需要把 OBS 设置为应用集显。
 
