@@ -59,7 +59,7 @@ jobs:
         run: python3 scripts/check_internal_links.py public
       - name: Upload artifact
         if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./public
 
