@@ -1,0 +1,7 @@
+{{- if or .Params.versionNote .Params.lastReviewed .Params.appliesTo }}
+<aside class="version-note" aria-label="内容适用范围">
+	{{- with .Params.versionNote }}<p>{{ . }}</p>{{ end }}
+	{{- with .Params.appliesTo }}<p><strong>适用范围：</strong>{{ delimit . "、" }}</p>{{ end }}
+	{{- with .Params.lastReviewed }}<p><strong>最后核对：</strong>{{ . }}</p>{{ end }}
+</aside>
+{{- end }}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Locale }}">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="referrer" content="same-origin">
+	{{- with .Site.Params.themeColor }}
+	<meta name="theme-color" content="{{.}}">
+	<meta name="msapplication-TileColor" content="{{.}}">
+	{{- end }}
+	{{- partial "structured-data.html" . }}
+	{{- partial "favicons.html" }}
+	{{- $description := .Description | default .Summary | default .Site.Params.description | plainify | htmlUnescape | truncate 160 }}
+	<meta name="description" content="{{ $description }}">
+	<link rel="canonical" href="{{ .Permalink }}">
+	<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} · {{ .Site.Title }}{{ end }}</title>
+	{{ range .AlternativeOutputFormats -}}
+		<link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ $.Site.Title }}">
+	{{ end -}}
+	{{ $style := resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "css/style.css" . | toCSS | minify | fingerprint -}}
+	<link rel="stylesheet" href="{{ $style.RelPermalink }}">
+	{{- block "head" . -}}{{- end }}
+	{{- with resources.Get "css/custom.css" }}
+		{{- $customStyle := . | minify | fingerprint }}
+	<link rel="stylesheet" href="{{ $customStyle.RelPermalink }}">
+	{{- end }}
+	{{- if templates.Exists "partials/extra-head.html" -}}
+	{{ partial "extra-head.html" . }}
+	{{- end }}
+</head>
+
+<body id="page">
+	<a class="screen-reader-text" href="#main-content">跳至正文</a>
+	{{ block "header" . -}}{{ end -}}
+	{{ block "main" . -}}{{ end -}}
+	{{ block "footer" . -}}{{ end }}
+	{{ $script := resources.Get "js/main.js" | minify | fingerprint -}}
+	<script src="{{ $script.RelPermalink }}" defer></script>
+	{{ $searchScript := resources.Get "js/search.js" | minify | fingerprint -}}
+	<script src="{{ $searchScript.RelPermalink }}" defer></script>
+	{{- block "scripts" . }}{{- end }}
+	{{- if templates.Exists "partials/extra-foot.html" -}}
+	{{ partial "extra-foot.html" . }}
+	{{- end }}
+</body>
+
+</html>

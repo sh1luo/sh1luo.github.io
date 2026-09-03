@@ -1,0 +1,75 @@
+{{ define "header" }}
+{{ partial "header.html" . }}
+{{ end }}
+
+{{ define "main" }}
+<main id="main-content" class="home-main section-inner">
+	<section class="home-intro" aria-labelledby="intro-title">
+		<p class="home-kicker">个人技术博客</p>
+		<h1 id="intro-title">{{ .Site.Title }}</h1>
+		<p class="home-subtitle">{{ .Site.Params.homeSubtitle }}</p>
+		<p class="home-description">记录 Go 后端开发中的源码阅读、系统原理、工程实践，以及一路上的思考。</p>
+		<div class="home-controls">
+			<div class="home-actions">
+				<a class="primary-action" href="{{ "posts/" | relLangURL }}">浏览全部文章</a>
+				<a href="{{ "about/" | relLangURL }}">关于我</a>
+			</div>
+			{{- with .Site.Params.social }}
+			<div class="home-social" aria-label="联系方式">
+				{{ partialCached "social-icons.html" . }}
+			</div>
+			{{- end }}
+		</div>
+	</section>
+
+	{{- $posts := where .Site.RegularPages "Section" "posts" }}
+	{{- $featured := where $posts "Params.featured" true }}
+	{{- with $featured }}
+	<section class="home-featured" aria-labelledby="featured-posts-title">
+		<div class="section-heading">
+			<div>
+				<p class="home-kicker">Editor's picks</p>
+				<h2 id="featured-posts-title">精选文章</h2>
+			</div>
+		</div>
+		<div class="featured-posts">
+			{{- range sort . "Params.featuredWeight" "asc" }}
+			<article class="featured-post">
+				<a href="{{ .RelPermalink }}">
+					<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+					<h3>{{ .Title }}</h3>
+					<p>{{ .Description | default .Summary | plainify | htmlUnescape | truncate 110 }}</p>
+					<span aria-hidden="true">阅读全文 →</span>
+				</a>
+			</article>
+			{{- end }}
+		</div>
+	</section>
+	{{- end }}
+
+	<section class="home-latest" aria-labelledby="latest-posts-title">
+		<div class="section-heading">
+			<div>
+				<p class="home-kicker">Latest writing</p>
+				<h2 id="latest-posts-title">最近文章</h2>
+			</div>
+			<a href="{{ "posts/" | relLangURL }}">查看全部 →</a>
+		</div>
+		<div class="home-posts">
+			{{- range first 6 $posts.ByDate.Reverse }}
+			<article class="home-post">
+				<a href="{{ .RelPermalink }}">
+					<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+					<h3>{{ .Title }}</h3>
+					<p>{{ .Description | default .Summary | plainify | htmlUnescape | truncate 92 }}</p>
+				</a>
+			</article>
+			{{- end }}
+		</div>
+	</section>
+</main>
+{{ end }}
+
+{{ define "footer" }}
+{{ partialCached "footer.html" . }}
+{{ end }}

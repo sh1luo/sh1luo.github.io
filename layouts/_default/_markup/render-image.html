@@ -1,0 +1,16 @@
+{{- $sizeClass := "" -}}
+{{- if eq .Title "size=small" -}}
+	{{- $sizeClass = " image-small" -}}
+{{- else if eq .Title "size=medium" -}}
+	{{- $sizeClass = " image-medium" -}}
+{{- else if eq .Title "size=large" -}}
+	{{- $sizeClass = " image-large" -}}
+{{- else if eq .Title "size=full" -}}
+	{{- $sizeClass = " image-full" -}}
+{{- end -}}
+<img class="article-image{{ $sizeClass }}"
+     src="{{ .Destination | safeURL }}"
+     alt="{{ .Text }}"
+     {{- if and .Title (eq $sizeClass "") }} title="{{ .Title }}"{{ end }}
+     loading="lazy"
+     decoding="async">

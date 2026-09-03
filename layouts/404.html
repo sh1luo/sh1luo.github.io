@@ -1,0 +1,12 @@
+{{ define "main" }}
+	<main id="spotlight" class="error-404" aria-labelledby="not-found-title">
+		<div id="main-content" class="banner-404">
+			<h1 id="not-found-title">404</h1>
+			<p>这个页面不存在，可能已经移动或删除。</p>
+			<p class="btn-404">
+				<a href="{{ .Site.Home.RelPermalink }}">返回首页</a>
+				<a href="{{ "posts/" | relLangURL }}">浏览文章</a>
+			</p>
+		</div>
+	</main>
+{{ end }}

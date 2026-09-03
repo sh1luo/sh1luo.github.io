@@ -1,0 +1,96 @@
+baseURL = "https://sh1luo.github.io/"
+locale = "zh-Hans"
+defaultContentLanguage = "zh-hans"
+hasCJKLanguage = true
+title = "Wasabi"
+theme = "hermit"
+enableGitInfo = true
+enableRobotsTXT = true
+pygmentsCodefences  = true
+pygmentsUseClasses  = true
+copyright = "文章采用知识共享署名-非商业性使用-相同方式共享 3.0 中国大陆许可协议。"
+enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/functions/emojify/
+
+[frontmatter]
+  lastmod = [":git", "lastmod", "date", "publishDate"]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[services]
+  [services.rss]
+    limit = 10
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[taxonomies]
+  tag = "tags"
+  # Categories are disabled by default.
+
+[params]
+  since = "2018"
+  toc = true
+  comments = true
+
+  dateform        = "2006 年 1 月 2 日"
+  dateformShort   = "01-02"
+  dateformNum     = "2006-01-02"
+  dateformNumTime = "2006-01-02 15:04 -0700"
+
+  # Metadata mostly used in document's head
+  description = "Wasabi 的个人技术博客，记录 Go 后端、系统原理、源码分析与工程实践。"
+  images = ["images/og.jpg"]
+  themeColor = "#494f5c"
+
+  homeSubtitle = "Go 后端 · 系统原理 · 工程实践"
+
+  # Toggling this option needs to rebuild SCSS, requires Hugo extended version
+  justifyContent = false  # Set "text-align: justify" to `.content`.
+
+  relatedPosts = true  # Add a related content section to all single posts page
+
+  gitUrl = "https://github.com/sh1luo/sh1luo.github.io/commit/"
+
+  [params.author]
+    name = "Wasabi"
+
+  # Social Icons
+  # Check https://github.com/Track3/hermit#social-icons for more info.
+
+  [[params.social]]
+    name = "github"
+    url = "https://github.com/sh1luo"
+
+  [[params.social]]
+    name = "email"
+    url = "mailto:silo1999@163.com"
+
+[menu]
+
+  [[menu.main]]
+    name = "文章"
+    url = "posts/"
+    weight = 10
+
+  [[menu.main]]
+    name = "Go 系列"
+    url = "posts/go/"
+    weight = 20
+
+  [[menu.main]]
+    name = "总结"
+    url = "summary/"
+    weight = 30
+
+  [[menu.main]]
+    name = "标签"
+    url = "tags/"
+    weight = 40
+
+  [[menu.main]]
+    name = "关于"
+    url = "about/"
+    weight = 50

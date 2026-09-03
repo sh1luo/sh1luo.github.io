@@ -1,0 +1,31 @@
+{{ define "head" }}
+	{{ if .Params.featuredImg -}}
+	<style>.bg-img {background-image: url('{{.Params.featuredImg}}');}</style>
+	{{- end -}}
+{{ end }}
+
+{{ define "header" }}
+{{ partial "header.html" . }}
+{{ end }}
+
+{{ define "main" }}
+	{{- if .Params.featuredImg }}
+	<div id="featured-image" class="bg-img" role="button" tabindex="0" aria-label="关闭特色图片"></div>
+	{{- end }}
+	<main id="main-content" class="site-main section-inner thin">
+		<h1>{{ .Title }}</h1>
+		{{ partial "content-status.html" . }}
+		<div class="content">
+			{{ .Content }}
+		</div>
+		{{- $commentsEnabled := .Site.Params.comments }}
+		{{- if isset .Params "comments" }}{{ $commentsEnabled = .Params.comments }}{{ end }}
+		{{- if $commentsEnabled }}
+		<div id="comments" class="thin">{{ partial "comments.html" . }}</div>
+		{{- end }}
+	</main>
+{{ end }}
+
+{{ define "footer" }}
+{{ partialCached "footer.html" . }}
+{{ end }}
