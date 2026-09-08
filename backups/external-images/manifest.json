@@ -1,0 +1,878 @@
+{
+  "images": {
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/2C28140D4115AF68D708DAB4515B012C.jpg": {
+      "bytes": 18763,
+      "file": "objects/329215af23d40530ac5630b9a13d0d5d121786565e1b71e9e19eca6a09972b17.jpg",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "329215af23d40530ac5630b9a13d0d5d121786565e1b71e9e19eca6a09972b17",
+      "sources": [
+        "content/posts/rpc/rpcg.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/ascii.png": {
+      "bytes": 466565,
+      "file": "objects/30a251ed9e7d989ae788553684fe16dc706d639a7357af4783604d1684a12966.png",
+      "savedAt": "2026-09-08T03:13:13+00:00",
+      "sha256": "30a251ed9e7d989ae788553684fe16dc706d639a7357af4783604d1684a12966",
+      "sources": [
+        "content/posts/ascii-unicode-utf.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/ch3-3-arch-amd64-02.ditaa.png": {
+      "bytes": 24924,
+      "file": "objects/d8674a4fc91e99f978e3d79d7ef904bde34b210d0b80387daac9514d23cbb5d4.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "d8674a4fc91e99f978e3d79d7ef904bde34b210d0b80387daac9514d23cbb5d4",
+      "sources": [
+        "content/posts/go/2021-03-20-Go 使用的 plan9 汇编语言初探.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/csp.svg": {
+      "bytes": 21910,
+      "file": "objects/efc1125225c27db5695ee0d92796de532a4418baff899fb313ec0b08ca74dcbf.svg",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "efc1125225c27db5695ee0d92796de532a4418baff899fb313ec0b08ca74dcbf",
+      "sources": [
+        "content/posts/go/2021-02-22-深入理解Go-channel.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/dddd.gif": {
+      "bytes": 1265786,
+      "file": "objects/0dcfeeb033c44b4d53a446746f796144b5672293a69793ce36bbeced7cd859fc.gif",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "0dcfeeb033c44b4d53a446746f796144b5672293a69793ce36bbeced7cd859fc",
+      "sources": [
+        "content/posts/chore/blog_imgs.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/down.png": {
+      "bytes": 23125,
+      "file": "objects/2b4adeba1852dd2925ef9d789dd1d0c78b0d756c4a373cb6cc58661a8ad13f51.png",
+      "savedAt": "2026-09-08T03:13:13+00:00",
+      "sha256": "2b4adeba1852dd2925ef9d789dd1d0c78b0d756c4a373cb6cc58661a8ad13f51",
+      "sources": [
+        "content/posts/B站直播助手开发[下].md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/go_qml_flowchart.png": {
+      "bytes": 131790,
+      "file": "objects/723e009fcce2fbcbe36c764f168d3fa8c8cee3436b764685188e5627a3fa9215.png",
+      "savedAt": "2026-09-08T03:13:13+00:00",
+      "sha256": "723e009fcce2fbcbe36c764f168d3fa8c8cee3436b764685188e5627a3fa9215",
+      "sources": [
+        "content/posts/B站直播助手开发[下].md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210103221551405.png": {
+      "bytes": 275794,
+      "file": "objects/2d4b891d1cc630933f81596a2efe408c82f1affc93e0d8d02863c79fcbf5f14c.png",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "2d4b891d1cc630933f81596a2efe408c82f1affc93e0d8d02863c79fcbf5f14c",
+      "sources": [
+        "content/posts/interview/2020-12-interview.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118174633253.png": {
+      "bytes": 51662,
+      "file": "objects/c5527e1663625b5d887bb83c3e0234b4ef5e2ff61541c50f5bc629f0a348653d.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "c5527e1663625b5d887bb83c3e0234b4ef5e2ff61541c50f5bc629f0a348653d",
+      "sources": [
+        "content/posts/chore/blog_journey.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210118184423991.png": {
+      "bytes": 56956,
+      "file": "objects/77b4bf84f34642789a39ebb221687d870bdf9ac4f9dedc3ea0fe707617645482.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "77b4bf84f34642789a39ebb221687d870bdf9ac4f9dedc3ea0fe707617645482",
+      "sources": [
+        "content/posts/chore/blog_journey.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331155953211.png": {
+      "bytes": 66347,
+      "file": "objects/15e5e40f626f55cab7fc919bcbfbf990f4e0d44fbcf57bdeab58b4ea4029661e.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "15e5e40f626f55cab7fc919bcbfbf990f4e0d44fbcf57bdeab58b4ea4029661e",
+      "sources": [
+        "content/posts/chore/blog_journey.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210331160251498.png": {
+      "bytes": 67303,
+      "file": "objects/62a4b59be10398120b4ea46bcbbd7a6f26d3e54e0011d242bec4ef695e3b3e2b.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "62a4b59be10398120b4ea46bcbbd7a6f26d3e54e0011d242bec4ef695e3b3e2b",
+      "sources": [
+        "content/posts/chore/blog_journey.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210425171314612.png": {
+      "bytes": 30428,
+      "file": "objects/18eb064970f846a27a02d6cd896e4efc96794d2bf448c1d4c857d7bc5e94aaad.png",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "18eb064970f846a27a02d6cd896e4efc96794d2bf448c1d4c857d7bc5e94aaad",
+      "sources": [
+        "content/posts/os/mitos.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210515133206463.png": {
+      "bytes": 46268,
+      "file": "objects/a15c3f0f1d75eb40246a612c646c0cb9fb8d63fde5b63082ac3f7fe09336fed9.png",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "a15c3f0f1d75eb40246a612c646c0cb9fb8d63fde5b63082ac3f7fe09336fed9",
+      "sources": [
+        "content/posts/rpc/geektime-rpc.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210605145233924.png": {
+      "bytes": 34978,
+      "file": "objects/132f81dfe3ea1cff77c528fe01bb36be1a52a97fe482630d04d8105cd17c6c13.png",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "132f81dfe3ea1cff77c528fe01bb36be1a52a97fe482630d04d8105cd17c6c13",
+      "sources": [
+        "content/posts/interview/2021-06-05-如何只使用一个指针域实现双向链表.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619155644748.png": {
+      "bytes": 76173,
+      "file": "objects/8de54276f76d6a6e785ab1ecbac883ed042e0596a040f42d70cf352e986cf154.png",
+      "savedAt": "2026-09-08T03:13:13+00:00",
+      "sha256": "8de54276f76d6a6e785ab1ecbac883ed042e0596a040f42d70cf352e986cf154",
+      "sources": [
+        "content/posts/chore/2021-06-19-recent-life.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619163352964.png": {
+      "bytes": 17981,
+      "file": "objects/40a683189ee908e83c4ff31d10706964336fdcc5517e5206f4b85dc12b6cbadb.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "40a683189ee908e83c4ff31d10706964336fdcc5517e5206f4b85dc12b6cbadb",
+      "sources": [
+        "content/posts/chore/2021-06-19-recent-life.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619170049500.png": {
+      "bytes": 125197,
+      "file": "objects/ebf7df74b83f2952e49f321cfc3f04e268c4186c52ffb58bd11741fe1c522a16.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "ebf7df74b83f2952e49f321cfc3f04e268c4186c52ffb58bd11741fe1c522a16",
+      "sources": [
+        "content/posts/chore/blog_journey.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210619170357266.png": {
+      "bytes": 237364,
+      "file": "objects/dccccabcbaf495c93ae3c8ed1d5ddd0586dda621e1f0bb160e0c9de707626a47.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "dccccabcbaf495c93ae3c8ed1d5ddd0586dda621e1f0bb160e0c9de707626a47",
+      "sources": [
+        "content/posts/chore/blog_journey.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210630160301943.png": {
+      "bytes": 18774,
+      "file": "objects/39aade652995b258fc4e20bf7acc4f4616ea7573fedb39d5fe6b09e579141c96.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "39aade652995b258fc4e20bf7acc4f4616ea7573fedb39d5fe6b09e579141c96",
+      "sources": [
+        "content/posts/chore/2021-06-19-recent-life.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210703211531387.png": {
+      "bytes": 88153,
+      "file": "objects/047fd80e2c004000a11777d9b7bbbcfe8cc8319412ab8273d6093b19bc7c8a0c.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "047fd80e2c004000a11777d9b7bbbcfe8cc8319412ab8273d6093b19bc7c8a0c",
+      "sources": [
+        "content/posts/chore/2021-06-19-recent-life.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20210703211945974.png": {
+      "bytes": 88729,
+      "file": "objects/9cf9cbf17cb177591054c85564aaaaa7a3cadd961056e62bc18e7b268679b2b4.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "9cf9cbf17cb177591054c85564aaaaa7a3cadd961056e62bc18e7b268679b2b4",
+      "sources": [
+        "content/posts/chore/2021-06-19-recent-life.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20211203152728270.png": {
+      "bytes": 164147,
+      "file": "objects/d8a72e44835c3c0e56337e8cf0d03a66067dbaab1be94b2ba720bc5367d5915a.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "d8a72e44835c3c0e56337e8cf0d03a66067dbaab1be94b2ba720bc5367d5915a",
+      "sources": [
+        "content/posts/chore/blog_journey.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/image-20211203163901757.png": {
+      "bytes": 29282,
+      "file": "objects/7a9e575b2edad8394bcc9aa163259a5bb323c4a13b5c54c8187c13cfa5841b27.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "7a9e575b2edad8394bcc9aa163259a5bb323c4a13b5c54c8187c13cfa5841b27",
+      "sources": [
+        "content/posts/chore/OBS.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/obs-gpu.png": {
+      "bytes": 55506,
+      "file": "objects/54487ba6aa4719ba9291477f9dd84f4764b191932adb874911bd5906235a1d58.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "54487ba6aa4719ba9291477f9dd84f4764b191932adb874911bd5906235a1d58",
+      "sources": [
+        "content/posts/chore/OBS.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/obs-noscreen.png": {
+      "bytes": 28833,
+      "file": "objects/2edcbbe6e5c1fc9e1f95b804f122c7b68e2b494bf2d8cc1fc3ea27bebd2fd06b.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "2edcbbe6e5c1fc9e1f95b804f122c7b68e2b494bf2d8cc1fc3ea27bebd2fd06b",
+      "sources": [
+        "content/posts/chore/OBS.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/obs-setting.png": {
+      "bytes": 38113,
+      "file": "objects/2a30b01363cb3f9f75b75dae1696e0671f364406208808988469ca378ee7c6f0.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "2a30b01363cb3f9f75b75dae1696e0671f364406208808988469ca378ee7c6f0",
+      "sources": [
+        "content/posts/chore/OBS.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/test.png": {
+      "bytes": 50237,
+      "file": "objects/f1d68662de8e5545bf9a2f9a9af4e43768c37230a68080e52c80d5f5cf8559ec.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "f1d68662de8e5545bf9a2f9a9af4e43768c37230a68080e52c80d5f5cf8559ec",
+      "sources": [
+        "content/posts/chore/blog_imgs.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/unsafe_uintptr_p.svg": {
+      "bytes": 13758,
+      "file": "objects/c0fe46a338a8ae39f29f00f1efc187a74e4544a94e3da7590e21c2d617b5b8af.svg",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "c0fe46a338a8ae39f29f00f1efc187a74e4544a94e3da7590e21c2d617b5b8af",
+      "sources": [
+        "content/posts/go/2021-03-14-Go unsafe.Pointer、uintptr与指针.md"
+      ]
+    },
+    "https://blogimagee.oss-cn-beijing.aliyuncs.com/images/up.png": {
+      "bytes": 25902,
+      "file": "objects/677ab40f76e7c71f095067b8cb969b49289e933f6f8e48c5e4c041771ce616db.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "677ab40f76e7c71f095067b8cb969b49289e933f6f8e48c5e4c041771ce616db",
+      "sources": [
+        "content/posts/B站直播助手开发[下].md"
+      ]
+    },
+    "https://files.mdnice.com/user/29269/3b71f396-f3ab-4582-b775-88383a53c2b2.jpg": {
+      "bytes": 74768,
+      "file": "objects/d5c4f9c28c0475b7404288d9db334e2cc3bae386f647c65e878346da75f4cccd.jpg",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "d5c4f9c28c0475b7404288d9db334e2cc3bae386f647c65e878346da75f4cccd",
+      "sources": [
+        "content/posts/interview/2021-12-interview.md"
+      ]
+    },
+    "https://files.mdnice.com/user/29269/5e01cf65-1b43-44a2-a8fb-67886b2dbe61.jpg": {
+      "bytes": 37831,
+      "file": "objects/1ffdabe081b7b407add1f3e79abe7d6866455387f9538eadca7b4a2d0688481e.jpg",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "1ffdabe081b7b407add1f3e79abe7d6866455387f9538eadca7b4a2d0688481e",
+      "sources": [
+        "content/posts/interview/2021-12-interview.md"
+      ]
+    },
+    "https://files.mdnice.com/user/29269/699091a4-c773-49fe-8a9a-a7b3fdf87dfd.jpg": {
+      "bytes": 86433,
+      "file": "objects/aa017dedaa491a8acba72a446c067ca398896d16f1d913ea747956504f480a9a.jpg",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "aa017dedaa491a8acba72a446c067ca398896d16f1d913ea747956504f480a9a",
+      "sources": [
+        "content/posts/interview/2021-12-interview.md"
+      ]
+    },
+    "https://files.mdnice.com/user/29269/72d9d196-3a13-4e6c-a31e-b76ae98f8585.jpg": {
+      "bytes": 127149,
+      "file": "objects/58c87e7477eab3baaefe456d2a5d93da18e5e871999ee514bf04cbcc1b672910.jpg",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "58c87e7477eab3baaefe456d2a5d93da18e5e871999ee514bf04cbcc1b672910",
+      "sources": [
+        "content/posts/interview/2021-12-interview.md"
+      ]
+    },
+    "https://files.mdnice.com/user/29269/96bce342-afcc-4d0f-ab80-82c6cfe37d91.jpg": {
+      "bytes": 319391,
+      "file": "objects/a784b0a6883523ebb64bec7ab93ba67d8e53c551b237cd2c2e6481af6d0f5ae1.jpg",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "a784b0a6883523ebb64bec7ab93ba67d8e53c551b237cd2c2e6481af6d0f5ae1",
+      "sources": [
+        "content/posts/interview/2021-12-interview.md"
+      ]
+    },
+    "https://files.mdnice.com/user/29269/9bfb901a-d7f1-46fe-b936-b9d2818c0514.jpg": {
+      "bytes": 52440,
+      "file": "objects/0ca2a90d0dd184811f697e002a14b1b8fcf713fa05e67514ac5b58fef6afd71d.jpg",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "0ca2a90d0dd184811f697e002a14b1b8fcf713fa05e67514ac5b58fef6afd71d",
+      "sources": [
+        "content/posts/interview/2021-12-interview.md"
+      ]
+    },
+    "https://files.mdnice.com/user/29269/ba412237-84d2-4149-9c1f-1d4d39ada602.jpg": {
+      "bytes": 87840,
+      "file": "objects/afa11ac04dd90c001f224754c12e423f5ae8926456fbcce3d6f0a465400ef988.jpg",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "afa11ac04dd90c001f224754c12e423f5ae8926456fbcce3d6f0a465400ef988",
+      "sources": [
+        "content/posts/interview/2021-12-interview.md"
+      ]
+    },
+    "https://files.mdnice.com/user/29269/dbebbb8f-7271-4180-830e-1ce87cbda3f0.jpg": {
+      "bytes": 101515,
+      "file": "objects/188d6715dc11824bd7425f6092c0e5cbac0210da713e689a84a4e099a7678150.jpg",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "188d6715dc11824bd7425f6092c0e5cbac0210da713e689a84a4e099a7678150",
+      "sources": [
+        "content/posts/interview/2021-12-interview.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/123.png": {
+      "bytes": 81726,
+      "file": "objects/4eb87a9f31941dc5a627dce33efd1ae9a9af432a4f974c8ba6b29cc3369c3dca.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "4eb87a9f31941dc5a627dce33efd1ae9a9af432a4f974c8ba6b29cc3369c3dca",
+      "sources": [
+        "content/posts/chore/blog_imgs.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/640%20(1).png": {
+      "bytes": 58636,
+      "file": "objects/0788ef216b0b25ca856a6f988464d6233ffde4a5503a8d12729ad9c3bf2aa456.png",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "0788ef216b0b25ca856a6f988464d6233ffde4a5503a8d12729ad9c3bf2aa456",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/640.png": {
+      "bytes": 254566,
+      "file": "objects/9f0a30208523639f32c04dee2c0e5a046cac130708d2e1b70869e2a9446c9d4a.png",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "9f0a30208523639f32c04dee2c0e5a046cac130708d2e1b70869e2a9446c9d4a",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/GIF%202021-1-20%2018-44-01.gif": {
+      "bytes": 436271,
+      "file": "objects/e0d518dbbb04f0c432cfde94280a20d79050fe18b5f5aef2691b75a0e3d261cb.gif",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "e0d518dbbb04f0c432cfde94280a20d79050fe18b5f5aef2691b75a0e3d261cb",
+      "sources": [
+        "content/posts/chore/blog_imgs.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/Snipaste_2021-01-28_21-32-27.png": {
+      "bytes": 386902,
+      "file": "objects/ee6ff56a47973e663315a59d2959895be845b7d2a7b4f523c35039841f2ad6b0.png",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "ee6ff56a47973e663315a59d2959895be845b7d2a7b4f523c35039841f2ad6b0",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/ca.png": {
+      "bytes": 85775,
+      "file": "objects/be3c3bdc74fe734e825d757603e3ed0a872e1bfca8407b13668b99cccb01d37c.png",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "be3c3bdc74fe734e825d757603e3ed0a872e1bfca8407b13668b99cccb01d37c",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/client-dhe-key%20(1).png": {
+      "bytes": 5666,
+      "file": "objects/eab2ca2fd1b61e6dfc2adaec8f3ac0fac309999e68052dcec815e188ab247a51.png",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "eab2ca2fd1b61e6dfc2adaec8f3ac0fac309999e68052dcec815e188ab247a51",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/client-hello.png": {
+      "bytes": 65083,
+      "file": "objects/6ad3a1980c3da80bbd94828924bd7ad5943c5241ff5ac0010a9c36111beb4d53.png",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "6ad3a1980c3da80bbd94828924bd7ad5943c5241ff5ac0010a9c36111beb4d53",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/dhe-params.png": {
+      "bytes": 13132,
+      "file": "objects/2ae63c0320fe350775551f8d8c3ec44eb821379e9f37f24910391d654a6b00f0.png",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "2ae63c0320fe350775551f8d8c3ec44eb821379e9f37f24910391d654a6b00f0",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/du.png": {
+      "bytes": 22468,
+      "file": "objects/48ee1c9799e8b8b732e4bee31474595cd108848ea068aba3fb6e5e87f3168260.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "48ee1c9799e8b8b732e4bee31474595cd108848ea068aba3fb6e5e87f3168260",
+      "sources": [
+        "content/posts/chore/linux_df_du.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120131946016.png": {
+      "bytes": 200521,
+      "file": "objects/12e17239e5069c24fa33e04a22b46013210e3a5375465e989dd2fef8fbcc4de9.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "12e17239e5069c24fa33e04a22b46013210e3a5375465e989dd2fef8fbcc4de9",
+      "sources": [
+        "content/posts/chore/blog_imgs.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120132728890.png": {
+      "bytes": 145268,
+      "file": "objects/d727d5287cea98f0ff0e23c60cf778e313e0667373a3d319ae4cad18fb3dd101.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "d727d5287cea98f0ff0e23c60cf778e313e0667373a3d319ae4cad18fb3dd101",
+      "sources": [
+        "content/posts/chore/blog_imgs.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120134735352.png": {
+      "bytes": 39291,
+      "file": "objects/fe08dcab7c927adbc75c22bf1c60dd3d3d92a6ccc5a7dea10b97ce753e03dc38.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "fe08dcab7c927adbc75c22bf1c60dd3d3d92a6ccc5a7dea10b97ce753e03dc38",
+      "sources": [
+        "content/posts/chore/blog_imgs.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210120135009612.png": {
+      "bytes": 45680,
+      "file": "objects/08124ac81496fa92e0401695bfb39cfe92e8f924412a433e72a9d9ee4b16abfb.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "08124ac81496fa92e0401695bfb39cfe92e8f924412a433e72a9d9ee4b16abfb",
+      "sources": [
+        "content/posts/chore/blog_imgs.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210125220539933.png": {
+      "bytes": 40682,
+      "file": "objects/9e80b2ca9d9566149f6469ac08da188ade2ae78669e89ab1d28b7a301168ecc8.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "9e80b2ca9d9566149f6469ac08da188ade2ae78669e89ab1d28b7a301168ecc8",
+      "sources": [
+        "content/posts/B站直播助手开发[上].md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210125220806540.png": {
+      "bytes": 54776,
+      "file": "objects/db82c7e5e5e30259945d87fcaafc8162cd9e8bff950ed3d1d1c0d1a0db6f7cc8.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "db82c7e5e5e30259945d87fcaafc8162cd9e8bff950ed3d1d1c0d1a0db6f7cc8",
+      "sources": [
+        "content/posts/B站直播助手开发[上].md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210126230446099.png": {
+      "bytes": 55145,
+      "file": "objects/97409fbadb65cf3c88a000aff14a0bc873a490b0589094fca4c491c2a1aea6c3.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "97409fbadb65cf3c88a000aff14a0bc873a490b0589094fca4c491c2a1aea6c3",
+      "sources": [
+        "content/posts/chore/blog_journey.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210126231932450.png": {
+      "bytes": 30292,
+      "file": "objects/56f2e5abaedab10a9cbf84121a96679347cfdccf6b96a7dc5a0ad570a31d65c4.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "56f2e5abaedab10a9cbf84121a96679347cfdccf6b96a7dc5a0ad570a31d65c4",
+      "sources": [
+        "content/posts/chore/blog_journey.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210126232019604.png": {
+      "bytes": 56765,
+      "file": "objects/fd7a410d3c0f63c0665f6d801b41f14ff84e75f012b45bb0588f36795162219c.png",
+      "savedAt": "2026-09-08T03:13:15+00:00",
+      "sha256": "fd7a410d3c0f63c0665f6d801b41f14ff84e75f012b45bb0588f36795162219c",
+      "sources": [
+        "content/posts/chore/blog_journey.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/image-20210129114612091.png": {
+      "bytes": 19747,
+      "file": "objects/2da48324859d71b8c354f97c36b53d474b35a52e2000c195d74670bab57f7e71.png",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "2da48324859d71b8c354f97c36b53d474b35a52e2000c195d74670bab57f7e71",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/map_zipper.svg": {
+      "bytes": 84762,
+      "file": "objects/455200b23d4175a664e4262dc24b2a89831b208b4f7e763b4fa7ecb04671d583.svg",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "455200b23d4175a664e4262dc24b2a89831b208b4f7e763b4fa7ecb04671d583",
+      "sources": [
+        "content/posts/go/2021-02-22-深入理解Go-map.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/multiplexing.png": {
+      "bytes": 43489,
+      "file": "objects/a9d866d29f5deb0b74d09ce612810ff7b727417dc6c8c327d5b59e065d41648e.png",
+      "savedAt": "2026-09-08T03:13:14+00:00",
+      "sha256": "a9d866d29f5deb0b74d09ce612810ff7b727417dc6c8c327d5b59e065d41648e",
+      "sources": [
+        "content/posts/HTTP.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/new_suit.jpg": {
+      "bytes": 276039,
+      "file": "objects/e740dc1e7faec5344a7def48ad1e95a4a4d936e8f4c9c226fd116735296e1854.jpg",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "e740dc1e7faec5344a7def48ad1e95a4a4d936e8f4c9c226fd116735296e1854",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/rsa.png": {
+      "bytes": 300517,
+      "file": "objects/2742174ffa138b2b1114b0dcd3cf72cc3b9de7d49cb9695662e843de4641f33b.png",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "2742174ffa138b2b1114b0dcd3cf72cc3b9de7d49cb9695662e843de4641f33b",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/server-certificate.png": {
+      "bytes": 24295,
+      "file": "objects/3b70383d7a5a8a217cceac79a8dfd6e9d1b022e3f74f2b4671d35227e665132f.png",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "3b70383d7a5a8a217cceac79a8dfd6e9d1b022e3f74f2b4671d35227e665132f",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/server-hello-done.png": {
+      "bytes": 5616,
+      "file": "objects/74dd663e471da97b4c69d127193341c5db9e5fcd7e73002664b1951cb477a26d.png",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "74dd663e471da97b4c69d127193341c5db9e5fcd7e73002664b1951cb477a26d",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/server-hello.png": {
+      "bytes": 18401,
+      "file": "objects/5d722f99740f565c6cad04929a9a5b5bc7e9b29a1e7d6332f63215241cd3cf85.png",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "5d722f99740f565c6cad04929a9a5b5bc7e9b29a1e7d6332f63215241cd3cf85",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/sh.png": {
+      "bytes": 122412,
+      "file": "objects/12cc597d434762f30a83f25335d9cfb320bc7dbba287be7236954e6aaf02aaed.png",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "12cc597d434762f30a83f25335d9cfb320bc7dbba287be7236954e6aaf02aaed",
+      "sources": [
+        "content/posts/chore/linux_df_du.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/tls-hs-ecdhe.png": {
+      "bytes": 38052,
+      "file": "objects/cbbcc90a4a6f6e14290ed2a7b0218009d4ae18062e53fbd9cd27a1703aeb47ed.png",
+      "savedAt": "2026-09-08T03:13:16+00:00",
+      "sha256": "cbbcc90a4a6f6e14290ed2a7b0218009d4ae18062e53fbd9cd27a1703aeb47ed",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://gitee.com/sh1luo/imgs/raw/master/imgs/tls13.png": {
+      "bytes": 386237,
+      "file": "objects/e9e2db03508fe27b700504234f288d2ee88ebae26d9f6569d72dde28417bce4b.png",
+      "savedAt": "2026-09-08T03:13:17+00:00",
+      "sha256": "e9e2db03508fe27b700504234f288d2ee88ebae26d9f6569d72dde28417bce4b",
+      "sources": [
+        "content/posts/https.md"
+      ]
+    },
+    "https://miro.medium.com/max/818/0*0uxzm-5sDGLoe_JH.png": {
+      "bytes": 107138,
+      "file": "objects/cfca586857c928c03ec03bd873b5e028360854ad497f7251eb145918c6ceaf2f.png",
+      "savedAt": "2026-09-08T03:13:21+00:00",
+      "sha256": "cfca586857c928c03ec03bd873b5e028360854ad497f7251eb145918c6ceaf2f",
+      "sources": [
+        "content/posts/translation/20200303-Optimizing-a-Golang-service-to-reduce-over-40%-CPU.md"
+      ]
+    },
+    "https://miro.medium.com/max/875/0*Akyd0xfQ3FRsMiII.png": {
+      "bytes": 40462,
+      "file": "objects/87cb3171309fb418a75b2cd2c283b29a1717f33ac349b2de2ec573b8401a839e.png",
+      "savedAt": "2026-09-08T03:13:22+00:00",
+      "sha256": "87cb3171309fb418a75b2cd2c283b29a1717f33ac349b2de2ec573b8401a839e",
+      "sources": [
+        "content/posts/translation/20200303-Optimizing-a-Golang-service-to-reduce-over-40%-CPU.md"
+      ]
+    },
+    "https://miro.medium.com/max/875/0*C7GBurb09ZUHHpRb.png": {
+      "bytes": 104543,
+      "file": "objects/a02a537ed60d82dc5d960f1f0e9758ec702c3a44dbab5b1eee8204e3324b0f3a.png",
+      "savedAt": "2026-09-08T03:13:22+00:00",
+      "sha256": "a02a537ed60d82dc5d960f1f0e9758ec702c3a44dbab5b1eee8204e3324b0f3a",
+      "sources": [
+        "content/posts/translation/20200303-Optimizing-a-Golang-service-to-reduce-over-40%-CPU.md"
+      ]
+    },
+    "https://miro.medium.com/max/875/0*a9L3eu_Ij6UbTpFn.png": {
+      "bytes": 105015,
+      "file": "objects/0970075f837950a5b9d511e6f8ed6bd1bb2c0535de8f28d811615bb3e219afb4.png",
+      "savedAt": "2026-09-08T03:13:21+00:00",
+      "sha256": "0970075f837950a5b9d511e6f8ed6bd1bb2c0535de8f28d811615bb3e219afb4",
+      "sources": [
+        "content/posts/translation/20200303-Optimizing-a-Golang-service-to-reduce-over-40%-CPU.md"
+      ]
+    },
+    "https://miro.medium.com/max/875/0*jz7EcSRDxR5n3MQj.png": {
+      "bytes": 37762,
+      "file": "objects/ddbfb6866400abb6cf0325c245ade8b25f5e3def6f7e39ac1549ad23d2670519.png",
+      "savedAt": "2026-09-08T03:13:22+00:00",
+      "sha256": "ddbfb6866400abb6cf0325c245ade8b25f5e3def6f7e39ac1549ad23d2670519",
+      "sources": [
+        "content/posts/translation/20200303-Optimizing-a-Golang-service-to-reduce-over-40%-CPU.md"
+      ]
+    },
+    "https://miro.medium.com/max/875/0*lVGTGdZWeecjPBFl.png": {
+      "bytes": 61096,
+      "file": "objects/f14d0d61b94aef043e612c48d720592d53f30b065bd3c7ff7fa79765295ee62d.png",
+      "savedAt": "2026-09-08T03:13:21+00:00",
+      "sha256": "f14d0d61b94aef043e612c48d720592d53f30b065bd3c7ff7fa79765295ee62d",
+      "sources": [
+        "content/posts/translation/20200303-Optimizing-a-Golang-service-to-reduce-over-40%-CPU.md"
+      ]
+    },
+    "https://miro.medium.com/max/875/0*ph2lZaEJjG-2tg-k.png": {
+      "bytes": 108249,
+      "file": "objects/f0d5de7edc464abbc6ff4ec5f33d3c0f45c82b28b3a487ded728868d7d8a0106.png",
+      "savedAt": "2026-09-08T03:13:21+00:00",
+      "sha256": "f0d5de7edc464abbc6ff4ec5f33d3c0f45c82b28b3a487ded728868d7d8a0106",
+      "sources": [
+        "content/posts/translation/20200303-Optimizing-a-Golang-service-to-reduce-over-40%-CPU.md"
+      ]
+    },
+    "https://miro.medium.com/max/875/0*pv-_OEq_cm7rZZaB.png": {
+      "bytes": 49809,
+      "file": "objects/9d469b2412835cc4c71c3e0300eb63a706a8f0b909146a0cf81f4ad840b21a1c.png",
+      "savedAt": "2026-09-08T03:13:21+00:00",
+      "sha256": "9d469b2412835cc4c71c3e0300eb63a706a8f0b909146a0cf81f4ad840b21a1c",
+      "sources": [
+        "content/posts/translation/20200303-Optimizing-a-Golang-service-to-reduce-over-40%-CPU.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/1.png": {
+      "bytes": 139148,
+      "file": "objects/74a0758f09ca10ec5f82132ff8b762d497c8993f2495111e170127ced1c22401.png",
+      "savedAt": "2026-09-08T03:13:18+00:00",
+      "sha256": "74a0758f09ca10ec5f82132ff8b762d497c8993f2495111e170127ced1c22401",
+      "sources": [
+        "content/posts/translation/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/2.png": {
+      "bytes": 45847,
+      "file": "objects/410c61719e1f3109bb02d0cd965fa8ef8c64261d8d94a7eb5dd74f7218708f5f.png",
+      "savedAt": "2026-09-08T03:13:18+00:00",
+      "sha256": "410c61719e1f3109bb02d0cd965fa8ef8c64261d8d94a7eb5dd74f7218708f5f",
+      "sources": [
+        "content/posts/translation/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/3.png": {
+      "bytes": 26405,
+      "file": "objects/9ed454fbae84651a3c2a53a79beb39e6381672364a6f2618e14122d36594d145.png",
+      "savedAt": "2026-09-08T03:13:18+00:00",
+      "sha256": "9ed454fbae84651a3c2a53a79beb39e6381672364a6f2618e14122d36594d145",
+      "sources": [
+        "content/posts/translation/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/4.png": {
+      "bytes": 173208,
+      "file": "objects/55a321c174b226569c5c33583d44f217807d3fa4c881aa80806419296329cdc5.png",
+      "savedAt": "2026-09-08T03:13:19+00:00",
+      "sha256": "55a321c174b226569c5c33583d44f217807d3fa4c881aa80806419296329cdc5",
+      "sources": [
+        "content/posts/translation/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/5.png": {
+      "bytes": 30826,
+      "file": "objects/c6f5413dafef86f98fcce42315155e689a5b752bf58e3a68deed05015b915eb9.png",
+      "savedAt": "2026-09-08T03:13:18+00:00",
+      "sha256": "c6f5413dafef86f98fcce42315155e689a5b752bf58e3a68deed05015b915eb9",
+      "sources": [
+        "content/posts/translation/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/6.png": {
+      "bytes": 78754,
+      "file": "objects/f307f1789105a5a4758fd347e06e1d4fc2a3e901d23115d0b6ebae65ae93d64a.png",
+      "savedAt": "2026-09-08T03:13:18+00:00",
+      "sha256": "f307f1789105a5a4758fd347e06e1d4fc2a3e901d23115d0b6ebae65ae93d64a",
+      "sources": [
+        "content/posts/translation/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/7.png": {
+      "bytes": 67037,
+      "file": "objects/883db23a99502e32d171f598eb6e895fd849e9e595871a24bcdd22ad490622ee.png",
+      "savedAt": "2026-09-08T03:13:19+00:00",
+      "sha256": "883db23a99502e32d171f598eb6e895fd849e9e595871a24bcdd22ad490622ee",
+      "sources": [
+        "content/posts/translation/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application/8.png": {
+      "bytes": 57276,
+      "file": "objects/72552ec7d96b89ab8765a025ed4f8569d27d0d689772b07896c34a917bdb6495.png",
+      "savedAt": "2026-09-08T03:13:18+00:00",
+      "sha256": "72552ec7d96b89ab8765a025ed4f8569d27d0d689772b07896c34a917bdb6495",
+      "sources": [
+        "content/posts/translation/20191002-Go-How-Does-the-Garbage-Collector-Watch-Your-Application.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191109-Go-Memory-Management-and-Memory-Sweep/01.png": {
+      "bytes": 178171,
+      "file": "objects/18ffe4413f9d20c22ee28d9f269c6c21ed643c813a88890c6689cc02c7a1ec91.png",
+      "savedAt": "2026-09-08T03:13:19+00:00",
+      "sha256": "18ffe4413f9d20c22ee28d9f269c6c21ed643c813a88890c6689cc02c7a1ec91",
+      "sources": [
+        "content/posts/translation/20191109-Go-Memory-Management-and-Memory-Sweep.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191109-Go-Memory-Management-and-Memory-Sweep/02.png": {
+      "bytes": 17318,
+      "file": "objects/9191cc2106214ecfd3bcb6eec338f8c3deb0f5260c69411d8334011e307d2df4.png",
+      "savedAt": "2026-09-08T03:13:19+00:00",
+      "sha256": "9191cc2106214ecfd3bcb6eec338f8c3deb0f5260c69411d8334011e307d2df4",
+      "sources": [
+        "content/posts/translation/20191109-Go-Memory-Management-and-Memory-Sweep.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191109-Go-Memory-Management-and-Memory-Sweep/03.png": {
+      "bytes": 9911,
+      "file": "objects/4d638ca253f06480b42cab3bb01b0823a7ed53096c13a4557cb0794e2e1459a0.png",
+      "savedAt": "2026-09-08T03:13:19+00:00",
+      "sha256": "4d638ca253f06480b42cab3bb01b0823a7ed53096c13a4557cb0794e2e1459a0",
+      "sources": [
+        "content/posts/translation/20191109-Go-Memory-Management-and-Memory-Sweep.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191109-Go-Memory-Management-and-Memory-Sweep/04.png": {
+      "bytes": 10040,
+      "file": "objects/a0c4a966621308059c5a1ba46f869ec86b9e3adb486a9e627e665414a2d272a7.png",
+      "savedAt": "2026-09-08T03:13:19+00:00",
+      "sha256": "a0c4a966621308059c5a1ba46f869ec86b9e3adb486a9e627e665414a2d272a7",
+      "sources": [
+        "content/posts/translation/20191109-Go-Memory-Management-and-Memory-Sweep.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191109-Go-Memory-Management-and-Memory-Sweep/05.png": {
+      "bytes": 13760,
+      "file": "objects/fddb1959d3c5ef2aa9ad4df341cdf6d391ac17c0a3ed759a9a1e05eb59eb1a2f.png",
+      "savedAt": "2026-09-08T03:13:19+00:00",
+      "sha256": "fddb1959d3c5ef2aa9ad4df341cdf6d391ac17c0a3ed759a9a1e05eb59eb1a2f",
+      "sources": [
+        "content/posts/translation/20191109-Go-Memory-Management-and-Memory-Sweep.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191109-Go-Memory-Management-and-Memory-Sweep/06.png": {
+      "bytes": 14778,
+      "file": "objects/f925eecc4b579b03fa56113897aeaf762cb92f61dc0e280a19c84d1550720cdb.png",
+      "savedAt": "2026-09-08T03:13:19+00:00",
+      "sha256": "f925eecc4b579b03fa56113897aeaf762cb92f61dc0e280a19c84d1550720cdb",
+      "sources": [
+        "content/posts/translation/20191109-Go-Memory-Management-and-Memory-Sweep.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191109-Go-Memory-Management-and-Memory-Sweep/07.png": {
+      "bytes": 17473,
+      "file": "objects/8a0c7f2219ae65dcbcbc1920701abd8ea9c0c288fab8d3a1947d5c369515ce1c.png",
+      "savedAt": "2026-09-08T03:13:19+00:00",
+      "sha256": "8a0c7f2219ae65dcbcbc1920701abd8ea9c0c288fab8d3a1947d5c369515ce1c",
+      "sources": [
+        "content/posts/translation/20191109-Go-Memory-Management-and-Memory-Sweep.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191109-Go-Memory-Management-and-Memory-Sweep/08.png": {
+      "bytes": 54777,
+      "file": "objects/d93530564ee51876878b74010697ac34842f38b4bc0f445b5a6956a3468acc0b.png",
+      "savedAt": "2026-09-08T03:13:20+00:00",
+      "sha256": "d93530564ee51876878b74010697ac34842f38b4bc0f445b5a6956a3468acc0b",
+      "sources": [
+        "content/posts/translation/20191109-Go-Memory-Management-and-Memory-Sweep.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191109-Go-Memory-Management-and-Memory-Sweep/09.png": {
+      "bytes": 28339,
+      "file": "objects/242e88519822b43757888a969dc68bc8d2be417c5e70189d1c878f86f1bd43d0.png",
+      "savedAt": "2026-09-08T03:13:20+00:00",
+      "sha256": "242e88519822b43757888a969dc68bc8d2be417c5e70189d1c878f86f1bd43d0",
+      "sources": [
+        "content/posts/translation/20191109-Go-Memory-Management-and-Memory-Sweep.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191109-Go-Memory-Management-and-Memory-Sweep/10.png": {
+      "bytes": 13173,
+      "file": "objects/69f9f65da97a0c2a0c470380b7e8fe391322e724efe823dabab55596886a757d.png",
+      "savedAt": "2026-09-08T03:13:20+00:00",
+      "sha256": "69f9f65da97a0c2a0c470380b7e8fe391322e724efe823dabab55596886a757d",
+      "sources": [
+        "content/posts/translation/20191109-Go-Memory-Management-and-Memory-Sweep.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191109-Go-Memory-Management-and-Memory-Sweep/11.png": {
+      "bytes": 51604,
+      "file": "objects/fafa0f5f64b1713ff8ce108994dd1698d11d0bd98d4bbcf59f3a7c66a0d2f5ea.png",
+      "savedAt": "2026-09-08T03:13:20+00:00",
+      "sha256": "fafa0f5f64b1713ff8ce108994dd1698d11d0bd98d4bbcf59f3a7c66a0d2f5ea",
+      "sources": [
+        "content/posts/translation/20191109-Go-Memory-Management-and-Memory-Sweep.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191202-Go-How-Are-Random-Numbers-Generated/01.png": {
+      "bytes": 366404,
+      "file": "objects/a64663c198333e8e66f203a494fd9dac884bc9e84ea515414e5b236958198f09.png",
+      "savedAt": "2026-09-08T03:13:20+00:00",
+      "sha256": "a64663c198333e8e66f203a494fd9dac884bc9e84ea515414e5b236958198f09",
+      "sources": [
+        "content/posts/translation/20191202-Go-How-Are-Random-Numbers-Generated.md"
+      ]
+    },
+    "https://raw.githubusercontent.com/studygolang/gctt-images2/master/20191202-Go-How-Are-Random-Numbers-Generated/02.png": {
+      "bytes": 28249,
+      "file": "objects/5b6ba917c2565a5ca8dbfba8915171b28b4134b7e64fdc28e9d6a14c7b877a66.png",
+      "savedAt": "2026-09-08T03:13:20+00:00",
+      "sha256": "5b6ba917c2565a5ca8dbfba8915171b28b4134b7e64fdc28e9d6a14c7b877a66",
+      "sources": [
+        "content/posts/translation/20191202-Go-How-Are-Random-Numbers-Generated.md"
+      ]
+    }
+  },
+  "version": 1
+}

@@ -1,0 +1,15 @@
+{{ define "header" }}{{ partial "header.html" . }}{{ end }}
+
+{{ define "main" }}
+<main id="main-content" class="site-main section-inner thin">
+	<h1>{{ .Title }}</h1>
+	<p class="archive-count">共 {{ len .Data.Terms }} 个标签，按文章数量排列</p>
+	<ul class="tag-list">
+		{{- range .Data.Terms.ByCount }}
+		<li><a href="{{ .Page.RelPermalink }}"><span>{{ .Page.Title }}</span><span class="tag-count">{{ .Count }} 篇</span></a></li>
+		{{- end }}
+	</ul>
+</main>
+{{ end }}
+
+{{ define "footer" }}{{ partialCached "footer.html" . }}{{ end }}

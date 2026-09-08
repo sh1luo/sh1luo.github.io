@@ -10,7 +10,17 @@
 			{{ .Content }}
 		</div>
 		{{- end }}
-		{{- range .Data.Pages.GroupByDate "2006" }}
+		{{- if .IsSection }}
+		{{- with .Sections }}
+		<nav class="section-links" aria-label="文章栏目">
+			{{- range . }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
+		</nav>
+		{{- end }}
+		{{- end }}
+		{{- $pages := .RegularPages }}
+		{{- if .IsSection }}{{ $pages = .RegularPagesRecursive }}{{ end }}
+		<p class="archive-count">共 {{ len $pages }} 篇文章</p>
+		{{- range $pages.GroupByDate "2006" }}
 		<div class="posts-group">
 			<h2 class="post-year" id="{{ .Key }}"><a href="#{{ .Key }}">{{ .Key }}</a></h2>
 			<ul class="posts-list">

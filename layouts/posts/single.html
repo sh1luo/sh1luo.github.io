@@ -19,6 +19,12 @@
 					<h1>{{ .Title }}</h1>
 				</header>
 				{{ partial "content-status.html" . }}
+				{{- if and (.Param "toc") (findRE "<a " .TableOfContents) }}
+				<details id="toc" class="article-toc" open>
+					<summary>{{ i18n "tableOfContents" }}</summary>
+					{{ .TableOfContents }}
+				</details>
+				{{- end }}
 				<div class="content">
 				{{ .Content }}
 			</div>
@@ -43,12 +49,6 @@
 				{{- end }}
 			</footer>
 		</article>
-		{{- if .Params.toc }}
-		<aside id="toc" class="show-toc">
-			<div class="toc-title">{{ i18n "tableOfContents" }}</div>
-			{{ .TableOfContents }}
-		</aside>
-		{{- end }}
 		<div class="post-nav thin">
 			{{- with .NextInSection }}
 			<a class="next-post" href="{{ .RelPermalink }}">

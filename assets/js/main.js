@@ -39,12 +39,21 @@
     }
   });
 
-  tocButton?.addEventListener('click', () => {
-    if (!toc) return;
-    const open = !toc.classList.contains('show-toc');
-    toc.classList.toggle('show-toc', open);
-    tocButton.setAttribute('aria-expanded', String(open));
-  });
+  if (toc) {
+    const wideScreen = window.matchMedia('(min-width: 1300px)');
+    const syncTocButton = () => tocButton?.setAttribute('aria-expanded', String(toc.open));
+    const adaptToc = () => {
+      toc.open = wideScreen.matches;
+      syncTocButton();
+    };
+    adaptToc();
+    wideScreen.addEventListener('change', adaptToc);
+    toc.addEventListener('toggle', syncTocButton);
+    tocButton?.addEventListener('click', () => {
+      toc.open = !toc.open;
+      syncTocButton();
+    });
+  }
 
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;

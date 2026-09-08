@@ -6,18 +6,23 @@ HUGO_CACHEDIR ?= $(CURDIR)/.cache/hugo
 NAME ?=
 SECTION ?=
 MESSAGE ?=
+export NAME SECTION MESSAGE
+
+SHELL := /bin/bash
+.SHELLFLAGS := -e -o pipefail -c
 
 .DEFAULT_GOAL := help
 
-.PHONY: help check-hugo new preview build check check-external-images publish
+.PHONY: help check-hugo new preview build check check-external-images backup-images publish
 
 help:
 	@printf '%s\n' \
 		'make new                   交互式创建一篇草稿' \
 		'make preview               启动本地预览（包含草稿）' \
 		'make build                 生成生产站点' \
-		'make check                 构建并检查内部链接与锚点' \
+		'make check                 构建并检查链接、图片备份与发布工具' \
 		'make check-external-images 检查外部图片可用性' \
+		'make backup-images         备份外部图片并记录原 URL' \
 		'make publish               检查、提交并推送文章' \
 		'' \
 		'只需要记住 make；它会显示这份帮助。'
@@ -28,7 +33,7 @@ check-hugo:
 	@"$(HUGO)" version | grep -q extended || { printf '需要 Hugo Extended 版本。\n' >&2; exit 1; }
 
 new: check-hugo
-	@name='$(NAME)'; \
+	@name="$$NAME"; \
 	if [ -z "$$name" ]; then \
 		printf '文章文件名（例如 go-memory-model）: '; \
 		IFS= read -r name; \
@@ -42,7 +47,7 @@ new: check-hugo
 	esac; \
 	name=$$(printf '%s' "$$name" | tr ' ' '-'); \
 	name=$${name%.md}; \
-	section='$(SECTION)'; \
+	section="$$SECTION"; \
 	if [ -z "$$section" ]; then \
 		printf '分类（留空为普通文章，例如 go、chore）: '; \
 		IFS= read -r section; \
@@ -66,9 +71,14 @@ build: check-hugo
 
 check: build
 	python3 scripts/check_internal_links.py public
+	python3 scripts/backup_external_images.py content --verify
+	python3 -m unittest discover -s tests
 
 check-external-images:
 	python3 scripts/check_external_images.py content
+
+backup-images:
+	python3 scripts/backup_external_images.py content
 
 publish: check
 	@branch=$$(git branch --show-current); \
@@ -76,23 +86,26 @@ publish: check
 		printf '当前分支是 %s；只有 master 会自动部署。\n' "$$branch" >&2; \
 		exit 1; \
 	fi; \
-	git add content; \
-	drafts=$$(git diff --cached --name-only --diff-filter=ACM -- content | while IFS= read -r file; do \
+	git add -- content backups; \
+	drafts=$$(git -c core.quotePath=false diff --cached --name-only --diff-filter=ACM -- content | while IFS= read -r file; do \
 		if grep -q '^draft:[[:space:]]*true[[:space:]]*$$' "$$file"; then printf '%s\n' "$$file"; fi; \
 	done); \
 	if [ -n "$$drafts" ]; then \
 		printf '以下文章仍是草稿，请先把 draft 改为 false：\n%s\n' "$$drafts" >&2; \
 		exit 1; \
 	fi; \
-	if git diff --cached --quiet -- content; then \
-		printf 'content/ 下没有需要发布的改动。\n' >&2; \
+	if git diff --cached --quiet -- content backups; then \
+		printf 'content/ 和 backups/ 下没有需要发布的改动。\n' >&2; \
 		exit 1; \
+	else \
+		status=$$?; \
+		if [ "$$status" -ne 1 ]; then exit "$$status"; fi; \
 	fi; \
-	message='$(MESSAGE)'; \
+	message="$$MESSAGE"; \
 	if [ -z "$$message" ]; then \
 		printf '提交说明（留空使用默认值）: '; \
 		IFS= read -r message; \
 	fi; \
 	if [ -z "$$message" ]; then message='post: publish article'; fi; \
-	git commit -m "$$message" -- content; \
+	git commit -m "$$message" -- content backups; \
 	git push origin "$$branch"

@@ -20,19 +20,39 @@ make publish
 
 `make new` 会询问文章文件名和分类，并创建一篇 `draft: true` 的草稿；`make preview` 默认包含草稿。写完后把文章头部的 `draft` 改为 `false`，再运行 `make publish`，它会检查站点、提交文章并推送到 `master`。
 
-浏览器访问 <http://localhost:1313/>。生产构建与内部链接、页面锚点检查：
+浏览器访问 <http://localhost:1313/>。生产构建、内部链接与页面锚点、图片备份完整性和工具回归检查：
 
 ```bash
 make check
 ```
 
-外部图片仍由内容发布流程中的图床托管，可按需执行可用性巡检：
+新增外部图片后，先执行 `make backup-images`，再检查、发布。外部图片仍由内容发布流程中的图床托管，可按需执行可用性巡检：
 
 ```bash
 make check-external-images
 ```
 
 可以通过 `HUGO` 指定 Hugo 二进制，例如 `make preview HUGO=/path/to/hugo`；`BIND` 和 `PORT` 可分别覆盖监听地址与端口。
+
+### 外部图片备份与恢复
+
+```bash
+make backup-images
+```
+
+图片保存在 `backups/external-images/objects/`，`manifest.json` 记录原 URL、引用文章、备份文件、保存时间和 SHA-256。这个目录应随源码一起提交；它不进入网站发布目录。已验证的备份会直接复用，即使图床后来失效也不会被删除。下载失败会保留成功的备份和错误记录，并返回失败状态；再次运行会重试缺失或损坏的图片。
+
+`make check` 和 CI 会离线校验备份，也会发现新文章中尚未备份的图片。恢复时，按原 URL 导出图片到一个尚不存在的文件：
+
+```bash
+python3 scripts/backup_external_images.py \
+  --restore 'https://example.com/image.png' \
+  --output static/images/restored.png
+```
+
+把示例 URL 换成清单中的原 URL。恢复后可重新上传到图床，或把 Markdown 图片链接改为 `/images/restored.png`。恢复命令会校验文件哈希并拒绝覆盖已有文件，全程无需联网。
+
+`make publish` 会一起提交 `content/` 和 `backups/` 的变更，确保文章和图片副本同时保存。发布中的检查、暂存、提交或推送任何一步失败，命令都会停止并返回失败状态。
 
 ### 文章图片尺寸
 
@@ -63,7 +83,7 @@ ssh -N -L 1313:127.0.0.1:1313 liujikun@10.37.126.33
 
 <https://sh1luo.github.io/>
 
-Pull Request 只执行构建和内部链接检查，不发布线上版本。
+Pull Request 会执行构建、内部链接检查、图片备份校验和工具回归测试，不发布线上版本。
 
 ## 目录
 
@@ -73,6 +93,8 @@ Pull Request 只执行构建和内部链接检查，不发布线上版本。
 - `static/`：图标和站点自有图片。
 - `themes/hermit/`：内置维护的 Hermit 主题副本，站点模板与脚本在根目录覆盖。
 - `scripts/`：内部链接、锚点和外部图片检查。
+- `backups/`：外部图片的可恢复副本和 URL 清单，不随网站发布。
+- `tests/`：发布失败处理和图片备份、恢复的回归测试。
 
 ## 许可
 
