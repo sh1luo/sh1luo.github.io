@@ -16,8 +16,8 @@ originalURL: "https://mp.weixin.qq.com/s/rRwAs98kOyTrr_UV9f23pg"
 
 往期文章移步这里：
 
-- [2025是我26岁人生收获最多的一年](https://mp.weixin.qq.com/s?__biz=MzA5NjM3NzcwNA==&mid=2247485200&idx=1&sn=3fed2d385c64dcd98b7598b894eeffa5&scene=21#wechat_redirect)
-- [本科校招毕业两年攒100w之后我还收获了什么](https://mp.weixin.qq.com/s?__biz=MzA5NjM3NzcwNA==&mid=2247485184&idx=1&sn=dfc744036ea877df0af409765e3543aa&scene=21#wechat_redirect)
+- [2025是我26岁人生收获最多的一年](/posts/wechat/2026-01-23-2025-year-in-review/)
+- [本科校招毕业两年攒100w之后我还收获了什么](/posts/wechat/2025-04-06-two-years-after-graduation/)
 
 内容有几个大类：<u>为什么要投资，哪些人适合投资和我的投资心得。</u>
 
